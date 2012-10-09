@@ -1,0 +1,2036 @@
+#!/bin/bash
+
+# @section license
+#
+# Copyright (c) 2006-2012 David Osborn
+#
+# Permission is granted to use and redistribute this software in source and
+# binary form, with or without modification, subject to the following
+# conditions:
+#
+# 1. Redistributions in source form must retain the above copyright notice, this
+#    list of conditions, and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions, and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution, and in the same
+#    place and form as other copyright, license, and disclaimer information.
+#
+# As a special exception, distributions of derivative works in binary form may
+# include an acknowledgement in place of the above copyright notice, this list
+# of conditions, and the following disclaimer in the documentation and/or other
+# materials provided with the distribution, and in the same place and form as
+# other acknowledgements, similar in substance to the following:
+#
+#    Portions of this software are based on the work of David Osborn.
+#
+# This software is provided "as is", without any express or implied warranty. In
+# no event will the authors be liable for any damages arising out of the use of
+# this software.
+
+################################################################################
+# version information
+
+NAME='PAGE'
+PACKAGE='page'
+AUTHOR='David Osborn'
+BUGS='davidcosborn@gmail.com'
+LONGNAME='Portable Adventure Game Engine'
+COPYRIGHT='Copyright (c) 2006-2012 David Osborn'
+
+VER_MAJOR=0
+VER_MINOR=3
+VER_PATCH=0
+VERSION=$VER_MAJOR.$VER_MINOR
+test "$VER_PATCH" -ne 0 && VERSION=$VERSION.$VER_PATCH
+
+DATE=`date +%x`
+TIME=`date +%X`
+
+################################################################################
+# feature defaults
+
+unset `set | grep '^enable_' | sed 's/=.*//'`
+
+enable_debug=no
+enable_partial_debug=no
+enable_profile=no
+enable_static=no
+
+################################################################################
+# package database
+#
+# The term "package" refers to an external dependency, typically a library.
+# This section contains information about the packages that can be used by the
+# program.
+#
+# The variable "packages" is a list of all of the packages.
+#
+# The variable "pkg_conflicts" is a string containing a list of conflicting
+# packages.  Each group of conflicting packages is separated by a space, and
+# each package in the group is separated by a colon.  No more than one package
+# may be selected from a single group.  If there is a default package in the
+# group, it is specified after a question-mark at the end of the group.
+# Otherwise, the default package is the first one.
+#
+# The variables prefixed with "pkg_category_" are a list of packages in that
+# category.
+#
+# FIXME: It would be good if more of the package management were put into the
+# database, rather than being hard-coded further down in the script, especially
+# in the case of package categories.
+
+packages='angelscript bzip2 carbon cg curl d3d9 dinput9 dsound9 expat ffmpeg flac freetype gif jpeg lua minizip mng ogg openal openexr opengl png posix python sphinx squirrel theora tiff ungif vorbis win32 x zip zlib'
+pkg_conflicts='carbon:win32:x?window d3d9:opengl?video dsound9:openal?audio gif:ungif minizip:zip mng:jpeg mng:png'
+
+pkg_category_audio='dsound9 openal'
+pkg_category_input='carbon dinput9 win32 x'
+pkg_category_script='angelscript lua python squirrel'
+pkg_category_video='d3d9 opengl'
+pkg_category_window='carbon win32 x'
+
+################################################################################
+# package defaults
+
+unset `set | grep '^with_' | sed 's/=.*//'`
+
+for package in $packages; do
+	eval "with_$package=auto"
+done
+
+################################################################################
+# package query functions
+
+pkg_get_name()
+{
+	case "$1" in
+		angelscript)         echo AngelScript;;
+		bzip2)               echo libbzip2;;
+		carbon)              echo Carbon;;
+		cg)                  echo Cg;;
+		curl)                echo libcurl;;
+		d3d9)                echo Direct3D 9;;
+		dinput9)             echo DirectInput 9;;
+		dsound9)             echo DirectSound 9;;
+		expat)               echo Expat;;
+		ffmpeg)              echo FFmpeg;;
+		flac)                echo libFLAC;;
+		freetype)            echo FreeType 2;;
+		gif)                 echo giflib;;
+		jpeg)                echo libjpeg;;
+		lua)                 echo Lua;;
+		minizip)             echo minizip;;
+		mng)                 echo libmng;;
+		ogg)                 echo libogg;;
+		openal)              echo OpenAL;;
+		openexr)             echo OpenEXR;;
+		opengl)              echo OpenGL;;
+		opengl_glu)          echo GLU;;
+		png)                 echo libpng;;
+		posix)               echo POSIX;;
+		posix_clock_gettime) echo clock_gettime;;
+		posix_ftime)         echo ftime;;
+		posix_gettimeofday)  echo gettimeofday;;
+		python)              echo Python;;
+		sphinx)              echo Sphinx;;
+		squirrel)            echo Squirrel;;
+		theora)              echo libtheora;;
+		tiff)                echo libtiff;;
+		ungif)               echo ungif;;
+		vorbis)              echo libvorbis;;
+		win32)               echo Win32;;
+		x)                   echo X11;;
+		zip)                 echo libzip;;
+		zlib)                echo zlib;;
+		*)
+			echo "$me: unrecognized package '$1'" >&2
+			exit 1
+	esac
+}
+pkg_get_linkage()
+{
+	sel=`test "$enable_static" = yes && echo static || echo dynamic`
+	case "$1" in
+		angelscript) echo $sel;;
+		bzip2)       echo $sel;;
+		carbon)      echo dynamic;;
+		cg)          echo dynamic;;
+		curl)        echo $sel;;
+		d3d9)        echo dynamic;;
+		dinput9)     echo dynamic;;
+		dsound9)     echo dynamic;;
+		expat)       echo $sel;;
+		ffmpeg)      echo dynamic;;
+		flac)        echo $sel;;
+		freetype)    echo $sel;;
+		gif)         echo $sel;;
+		jpeg)        echo $sel;;
+		lua)         echo $sel;;
+		minizip)     echo $sel;;
+		mng)         echo $sel;;
+		ogg)         echo $sel;;
+		openal)      echo dynamic;;
+		openexr)     echo $sel;;
+		opengl)      echo dynamic;;
+		png)         echo $sel;;
+		posix)       echo dynamic;;
+		python)      echo $sel;;
+		sphinx)      echo $sel;;
+		squirrel)    echo $sel;;
+		theora)      echo $sel;;
+		tiff)        echo $sel;;
+		ungif)       echo $sel;;
+		vorbis)      echo $sel;;
+		win32)       echo dynamic;;
+		x)           echo dynamic;;
+		zip)         echo $sel;;
+		zlib)        echo $sel;;
+		*)
+			echo "$me: unrecognized package '$1'" >&2
+			exit 1
+	esac
+}
+pkg_get_pkg_config_name()
+{
+	case "$1" in
+		curl)     echo libcurl;;
+		ffmpeg)   echo libavformat;;
+		freetype) echo freetype2;;
+		openexr)  echo OpenEXR;;
+		png)      echo libpng;;
+		vorbis)   echo vorbisfile;;
+		zip)      echo libzip;;
+		*)        echo "$1";;
+	esac
+}
+
+################################################################################
+# package initialization functions
+
+pkg_init_angelscript()
+{
+	ANGELSCRIPT_CFLAGS="$ANGELSCRIPT_CFLAGS "`pkg_config_cflags angelscript`
+	ANGELSCRIPT_LIBS="$ANGELSCRIPT_LIBS "`pkg_config_libs angelscript || echo '-langelscript'`
+}
+pkg_init_bzip2()
+{
+	BZIP2_CFLAGS="$BZIP2_CFLAGS "`pkg_config_cflags bzip2`
+	BZIP2_LIBS="$BZIP2_LIBS "`pkg_config_libs bzip2 || echo '-lbz2'`
+}
+pkg_init_carbon()
+{
+	CARBON_LIBS="$CARBON_LIBS -lcarbon"
+}
+pkg_init_cg()
+{
+	CG_LIBS="$CG_LIBS -lcg"
+	test "$with_d3d9" = yes && CG_LIBS="$CG_LIBS -lcgD3D9"
+	test "$with_opengl" = yes && CG_LIBS="$CG_LIBS -lcgGL"
+}
+pkg_init_curl()
+{
+	CURL_CFLAGS="$CURL_CFLAGS "`pkg_sh curl-config --cflags || pkg_config_cflags curl`
+	CURL_LIBS="$CURL_LIBS "`pkg_sh curl-config --libs || pkg_config_libs curl || echo '-lcurl'`
+}
+pkg_init_d3d9()
+{
+	D3D9_LIBS="$D3D9_LIBS -ld3d9"
+}
+pkg_init_dinput9()
+{
+	DINPUT9_LIBS="$DINPUT9_LIBS -ldinput9"
+}
+pkg_init_dsound9()
+{
+	DSOUND9_LIBS="$DSOUND9_LIBS -ldsound9"
+}
+pkg_init_expat()
+{
+	EXPAT_LIBS="$EXPAT_LIBS -lexpat"
+}
+pkg_init_ffmpeg()
+{
+	FFMPEG_CFLAGS="$FFMPEG_CFLAGS "`pkg_config_cflags ffmpeg`
+	FFMPEG_LIBS="$FFMPEG_LIBS "`pkg_config_libs ffmpeg || echo '-lavformat -lavcodec -lavutil'`
+}
+pkg_init_flac()
+{
+	# HACK: libFLAC include directory contains conflicting assert.h
+	FLAC_CFLAGS="$FLAC_CFLAGS "`pkg_config_cflags flac --cflags-only-other`
+	FLAC_LIBS="$FLAC_LIBS "`pkg_config_libs flac || echo '-lFLAC'`
+	# HACK: libFLAC requires ntohl from Winsock on Win32
+	test "$host_os" = win32 && FLAC_LIBS="$FLAC_LIBS -lws2_32"
+}
+pkg_init_freetype()
+{
+	FREETYPE_CFLAGS="$FREETYPE_CFLAGS "`pkg_sh freetype-config --cflags || pkg_config_cflags freetype || echo '-I/usr/local/include/freetype2'`
+	FREETYPE_LIBS="$FREETYPE_LIBS "`pkg_sh freetype-config --libs || pkg_config_libs freetype || echo '-lfreetype'`
+}
+pkg_init_gif()
+{
+	GIF_LIBS="$GIF_LIBS -lgif"
+}
+pkg_init_jpeg()
+{
+	JPEG_LIBS="$JPEG_LIBS -ljpeg"
+}
+pkg_init_lua()
+{
+	LUA_LIBS="$LUA_LIBS -llua"
+}
+pkg_init_minizip()
+{
+	MINIZIP_LIBS="$MINIZIP_LIBS -lminizip"
+}
+pkg_init_mng()
+{
+	MNG_LIBS="$MNG_LIBS -lmng"
+}
+pkg_init_ogg()
+{
+	OGG_CFLAGS="$OGG_CFLAGS "`pkg_config_cflags ogg`
+	OGG_LIBS="$OGG_LIBS "`pkg_config_libs ogg || echo '-logg'`
+}
+pkg_init_openal()
+{
+	OPENAL_LIBS="$OPENAL_LIBS "`test "$host_os" = win32 && echo '-lopenal32' || echo '-lopenal'`
+}
+pkg_init_openexr()
+{
+	OPENEXR_CFLAGS="$OPENEXR_CFLAGS "`pkg_config_cflags openexr`
+	OPENEXR_LIBS="$OPENEXR_LIBS "`pkg_config_libs openexr || echo '-lIlmImf'`
+}
+pkg_init_opengl()
+{
+	OPENGL_LIBS="$OPENGL_LIBS "`test "$host_os" = win32 && echo '-lopengl32' || echo '-lGL'`
+}
+pkg_init_opengl_glu()
+{
+	GLU_LIBS="$GLU_LIBS "`test "$host_os" = win32 && echo '-lglu32' || echo '-lGLU'`
+}
+pkg_init_png()
+{
+	PNG_CFLAGS="$PNG_CFLAGS "`pkg_sh libpng-config --I_opts || pkg_config_cflags png`
+	PNG_LIBS="$PNG_LIBS "`pkg_sh libpng-config --libs || pkg_config_libs png || echo '-lpng'`
+}
+pkg_init_posix()
+{
+	:
+}
+pkg_init_posix_clock_gettime()
+{
+	CLOCK_GETTIME_LIBS="$CLOCK_GETTIME_LIBS -lrt -lpthread"
+}
+pkg_init_posix_ftime()
+{
+	:
+}
+pkg_init_posix_gettimeofday()
+{
+	:
+}
+pkg_init_python()
+{
+	PYTHON_CFLAGS="$PYTHON_CFLAGS "`pkg_sh python-config --includes || pkg_config_cflags python || echo '-I/usr/local/include/python'`
+	PYTHON_LIBS="$PYTHON_LIBS "`pkg_sh python-config --ldflags || pkg_config_libs python || echo '-lpython25'`
+}
+pkg_init_sphinx()
+{
+	SPHINX_LIBS="$SPHINX_LIBS -ls3decoder -lutil"
+}
+pkg_init_squirrel()
+{
+	SQUIRREL_LIBS="$SQUIRREL_LIBS -lsquirrel"
+}
+pkg_init_theora()
+{
+	THEORA_CFLAGS="$THEORA_CFLAGS "`pkg_config_cflags theora`
+	THEORA_LIBS="$THEORA_LIBS "`pkg_config_libs theora || echo '-ltheora'`
+}
+pkg_init_tiff()
+{
+	TIFF_LIBS="$TIFF_LIBS -ltiff"
+}
+pkg_init_ungif()
+{
+	UNGIF_LIBS="$UNGIF_LIBS -lungif"
+}
+pkg_init_vorbis()
+{
+	VORBIS_CFLAGS="$VORBIS_CFLAGS "`pkg_config_cflags vorbis`
+	VORBIS_LIBS="$VORBIS_LIBS "`pkg_config_libs vorbis || echo '-lvorbisfile -lvorbis -logg'`
+}
+pkg_init_win32()
+{
+	WIN32_CPPFLAGS="$WIN32_CPPFLAGS -DWINVER=0x400"
+	WIN32_CFLAGS="$WIN32_CFLAGS -mwindows"
+	# FIXME: only need -lwinmm if using win32 for audio
+	WIN32_LIBS="$WIN32_LIBS -lshlwapi -lwinmm"
+}
+pkg_init_x()
+{
+	X_LIBS="$X_LIBS -lX11"
+}
+pkg_init_zip()
+{
+	ZIP_CFLAGS="$ZIP_CFLAGS "`pkg_config_cflags zip`
+	ZIP_LIBS="$ZIP_LIBS "`pkg_config_libs zip || echo '-lzip'`
+}
+pkg_init_zlib()
+{
+	ZLIB_LIBS="$ZLIB_LIBS -lz"
+}
+
+################################################################################
+# package testing functions
+
+pkg_test_angelscript()
+{
+	test_cxx_prog \
+'#include <angelscript.h>
+int main() {}'
+	test_cxx_ld "$ANGELSCRIPT_CPPFLAGS" "$ANGELSCRIPT_CFLAGS" "$ANGELSCRIPT_LIBS"
+}
+pkg_test_bzip2()
+{
+	test_cxx_prog \
+'#include <bzlib.h>
+int main() {}'
+	test_cxx_ld "$BZIP2_CPPFLAGS" "$BZIP2_CFLAGS" "$BZIP2_LIBS"
+}
+pkg_test_carbon()
+{
+	test_cxx_prog \
+'#include <carbon.h>
+int main() {}'
+	test_cxx_ld "$CARBON_CPPFLAGS" "$CARBON_CFLAGS" "$CARBON_LIBS"
+}
+pkg_test_cg()
+{
+	test_cxx_prog \
+'#include <Cg/cg.h>
+int main() {}'
+	test_cxx_ld "$CG_CCPFLAGS" "$CG_CFLAGS" "$CG_LIBS"
+}
+pkg_test_curl()
+{
+	test_cxx_prog \
+'#include <curl/curl.h>
+int main() {}'
+	test_cxx_ld "$CURL_CPPFLAGS" "$CURL_CFLAGS" "$CURL_LIBS"
+}
+pkg_test_d3d9()
+{
+	test_cxx_prog \
+'#include <d3d9.h>
+int main() {}'
+	test_cxx_ld "$D3D9_CPPFLAGS" "$D3D9_CFLAGS" "$D3D9_LIBS"
+}
+pkg_test_dinput9()
+{
+	test_cxx_prog \
+'#include <dinput9.h>
+int main() {}'
+	test_cxx_ld "$DINPUT9_CPPFLAGS" "$DINPUT9_CFLAGS" "$DINPUT9_LIBS"
+}
+pkg_test_dsound9()
+{
+	test_cxx_prog \
+'#include <dsound9.h>
+int main() {}'
+	test_cxx_ld "$DSOUND9_CPPFLAGS" "$DSOUND9_CFLAGS" "$DSOUND9_LIBS"
+}
+pkg_test_expat()
+{
+	test_cxx_prog \
+'#include <expat.h>
+int main() {}'
+	test_cxx_ld "$EXPAT_CPPFLAGS" "$EXPAT_CFLAGS" "$EXPAT_LIBS"
+}
+pkg_test_ffmpeg()
+{
+	test_cxx_prog \
+'extern "C"
+{
+	#include <libavformat/avformat.h>
+}
+int main()
+{
+	av_register_all();
+}'
+	test_cxx_ld "$FFMPEG_CPPFLAGS" "$FFMPEG_CFLAGS" "$FFMPEG_LIBS"
+}
+pkg_test_flac()
+{
+	test_cxx_prog \
+'#include <FLAC/stream_decoder.h>
+int main() {}'
+	test_cxx_ld "$FLAC_CPPFLAGS" "$FLAC_CFLAGS" "$FLAC_LIBS"
+}
+pkg_test_freetype()
+{
+	test_cxx_prog \
+'#include <ft2build.h>
+#include FT_FREETYPE_H
+int main() {}'
+	test_cxx_ld "$FREETYPE_CPPFLAGS" "$FREETYPE_CFLAGS" "$FREETYPE_LIBS"
+}
+pkg_test_gif()
+{
+	test_cxx_prog \
+'#include <gif_lib.h>
+int main() {}'
+	test_cxx_ld "$GIF_CPPFLAGS" "$GIF_CFLAGS" "$GIF_LIBS"
+}
+pkg_test_jpeg()
+{
+	test_cxx_prog \
+'#include <stddef.h>
+#include <stdio.h>
+#include <jpeglib.h>
+int main() {}'
+	test_cxx_ld "$JPEG_CPPFLAGS" "$JPEG_CFLAGS" "$JPEG_LIBS"
+}
+pkg_test_lua()
+{
+	test_cxx_prog \
+'#include <lua.hpp>
+int main() {}'
+	test_cxx_ld "$LUA_CPPFLAGS" "$LUA_CFLAGS" "$LUA_LIBS"
+}
+pkg_test_minizip()
+{
+	test_cxx_prog \
+'#include <minizip/unzip.h>
+int main() {}'
+	test_cxx_ld "$MINIZIP_CPPFLAGS" "$MINIZIP_CFLAGS" "$MINIZIP_LIBS"
+}
+pkg_test_mng()
+{
+	test_cxx_prog \
+'#include <libmng.h>
+int main() {}'
+	test_cxx_ld "$MNG_CPPFLAGS" "$MNG_CFLAGS" "$MNG_LIBS"
+}
+pkg_test_ogg()
+{
+	test_cxx_prog \
+'#include <ogg/ogg.h>
+int main() {}'
+	test_cxx_ld "$OGG_CPPFLAGS" "$OGG_CFLAGS" "$OGG_LIBS"
+}
+pkg_test_openal()
+{
+	test_cxx_prog \
+'#include <AL/al.h>
+int main() {}'
+	test_cxx_ld "$OPENAL_CPPFLAGS" "$OPENAL_CFLAGS" "$OPENAL_LIBS"
+}
+pkg_test_openexr()
+{
+	test_cxx_prog \
+'#include <OpenEXR/ImfInputFile.h>
+int main() {}'
+	test_cxx_ld "$OPENEXR_CPPFLAGS" "$OPENEXR_CFLAGS" "$OPENEXR_LIBS"
+}
+pkg_test_opengl()
+{
+	test_cxx_prog \
+'#ifdef _WIN32
+#	define WIN32_LEAN_AND_MEAN
+#	include <windows.h>
+#endif
+#include <GL/gl.h>
+int main() {}'
+	test_cxx_ld "$OPENGL_CPPFLAGS" "$OPENGL_CFLAGS" "$OPENGL_LIBS"
+}
+pkg_test_opengl_glu()
+{
+	test_cxx_prog \
+'#ifdef _WIN32
+#	define WIN32_LEAN_AND_MEAN
+#	include <windows.h>
+#endif
+#include <GL/glu.h>
+int main() {}'
+	test_cxx_ld "$GLU_CPPFLAGS" "$GLU_CFLAGS" "$GLU_LIBS"
+}
+pkg_test_png()
+{
+	test_cxx_prog \
+'#include <png.h>
+int main() {}'
+	test_cxx_ld "$PNG_CPPFLAGS" "$PNG_CFLAGS" "$PNG_LIBS"
+}
+pkg_test_posix()
+{
+	test_cxx_prog \
+'#include <unistd.h>
+#ifndef _POSIX_VERSION
+#	error "_POSIX_VERSION not defined"
+#endif
+int main() {}'
+	test_cxx "$POSIX_CPPFLAGS" "$POSIX_CFLAGS" "$POSIX_LIBS"
+}
+pkg_test_posix_clock_gettime()
+{
+	test_cxx_prog \
+'#include <time.h>
+int main()
+{
+	timespec ts;
+	return clock_gettime(CLOCK_MONOTONIC, &ts);
+}'
+	test_cxx_ld "$CLOCK_GETTIME_LIBS"
+}
+pkg_test_posix_ftime()
+{
+	test_cxx_prog \
+'#include <sys/timeb.h>
+int main()
+{
+	timeb tb;
+	return ftime(&tb);
+}'
+	test_cxx_ld
+}
+pkg_test_posix_gettimeofday()
+{
+	test_cxx_prog \
+'#include <sys/time.h>
+int main()
+{
+	timeval tv;
+	return gettimeofday(&tv, 0);
+}'
+	test_cxx_ld
+}
+pkg_test_python()
+{
+	test_cxx_prog \
+'#include <Python.h>
+int main() {}'
+	test_cxx_ld "$PYTHON_CPPFLAGS" "$PYTHON_CFLAGS" "$PYTHON_LIBS"
+}
+pkg_test_sphinx()
+{
+	test_cxx_prog \
+'#include <sphinx3.h>
+int main() {}'
+	test_cxx_ld "$SPHINX_CPPFLAGS" "$SPHINX_CFLAGS" "$SPHINX_LIBS"
+}
+pkg_test_squirrel()
+{
+	test_cxx_prog \
+'#include <squirrel.h>
+int main() {}'
+	test_cxx_ld "$SQUIRREL_CPPFLAGS" "$SQUIRREL_CFLAGS" "$SQUIRREL_LIBS"
+}
+pkg_test_theora()
+{
+	test_cxx_prog \
+'#include <theora/theora.h>
+int main() {}'
+	test_cxx_ld "$THEORA_CPPFLAGS" "$THEORA_CFLAGS" "$THEORA_LIBS"
+}
+pkg_test_tiff()
+{
+	test_cxx_prog \
+'#include <tiff.h>
+int main() {}'
+	test_cxx_ld "$TIFF_CPPFLAGS" "$TIFF_CFLAGS" "$TIFF_LIBS"
+}
+pkg_test_ungif()
+{
+	test_cxx_prog \
+'#include <gif_lib.h>
+int main() {}'
+	test_cxx_ld "$UNGIF_CPPFLAGS" "$UNGIF_CFLAGS" "$UNGIF_LIBS"
+}
+pkg_test_vorbis()
+{
+	test_cxx_prog \
+'#include <vorbis/vorbisfile.h>
+int main() {}'
+	test_cxx_ld "$VORBIS_CPPFLAGS" "$VORBIS_CFLAGS" "$VORBIS_LIBS"
+}
+pkg_test_win32()
+{
+	test_cxx_prog \
+'#include <windows.h>
+int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {}'
+	test_cxx_ld "$WIN32_CPPFLAGS" "$WIN32_CFLAGS" "$WIN32_LIBS"
+}
+pkg_test_x()
+{
+	test_cxx_prog \
+'#include <X11/Xlib.h>
+int main() {}'
+	test_cxx_ld "$X_CPPFLAGS" "$X_CFLAGS" "$X_LIBS"
+}
+pkg_test_zip()
+{
+	test_cxx_prog \
+'#include <zip.h>
+int main() {}'
+	test_cxx_ld "$ZIP_CPPFLAGS" "$ZIP_CFLAGS" "$ZIP_LIBS"
+}
+pkg_test_zlib()
+{
+	test_cxx_prog \
+'#include <zlib.h>
+int main() {}'
+	test_cxx_ld "$ZLIB_CPPFLAGS" "$ZLIB_CFLAGS" "$ZLIB_LIBS"
+}
+
+################################################################################
+# package post-initialization functions (called when package is selected)
+
+pkg_post_angelscript()
+{
+	:
+}
+pkg_post_bzip2()
+{
+	:
+}
+pkg_post_carbon()
+{
+	:
+}
+pkg_post_cg()
+{
+	:
+}
+pkg_post_curl()
+{
+	:
+}
+pkg_post_d3d9()
+{
+	:
+}
+pkg_post_dinput9()
+{
+	:
+}
+pkg_post_dsound9()
+{
+	:
+}
+pkg_post_expat()
+{
+	:
+}
+pkg_post_ffmpeg()
+{
+	:
+}
+pkg_post_flac()
+{
+	:
+}
+pkg_post_freetype()
+{
+	:
+}
+pkg_post_gif()
+{
+	:
+}
+pkg_post_jpeg()
+{
+	:
+}
+pkg_post_lua()
+{
+	:
+}
+pkg_post_minizip()
+{
+	:
+}
+pkg_post_mng()
+{
+	:
+}
+pkg_post_ogg()
+{
+	:
+}
+pkg_post_openal()
+{
+	:
+}
+pkg_post_openexr()
+{
+	:
+}
+pkg_post_opengl()
+{
+	pkg_check_part opengl_glu have_glu
+	test "$cv_have_glu" = yes && OPENGL_LIBS="$OPENGL_LIBS $GLU_LIBS"
+}
+pkg_post_png()
+{
+	:
+}
+pkg_post_posix()
+{
+	pkg_check_part posix_clock_gettime func_clock_gettime
+	# FIXME: should only use libraries if clock_gettime is selected for timing
+	test "$cv_func_clock_gettime" = yes && POSIX_LIBS="$POSIX_LIBS $CLOCK_GETTIME_LIBS"
+	pkg_check_part posix_ftime func_ftime
+	pkg_check_part posix_gettimeofday func_gettimeofday
+}
+pkg_post_python()
+{
+	:
+}
+pkg_post_sphinx()
+{
+	:
+}
+pkg_post_squirrel()
+{
+	:
+}
+pkg_post_theora()
+{
+	:
+}
+pkg_post_tiff()
+{
+	:
+}
+pkg_post_ungif()
+{
+	:
+}
+pkg_post_vorbis()
+{
+	:
+}
+pkg_post_win32()
+{
+	:
+}
+pkg_post_x()
+{
+	:
+}
+pkg_post_zip()
+{
+	:
+}
+pkg_post_zlib()
+{
+	:
+}
+
+################################################################################
+# callbacks for resolving mutually exclusive package selections
+
+pkg_pick_audio()
+{
+	for package in "$@"; do
+		test "$with_win32" = yes -a "$package" = dsound9 && { echo dsound9; return;}
+	done
+	echo "$1"
+}
+pkg_pick_video()
+{
+	for package in "$@"; do
+		test "$with_win32" = yes -a "$package" = d3d9 && echo d3d9 && return
+	done
+	echo "$1"
+}
+pkg_pick_window()
+{
+	for package in "$@"; do
+		case "$host_os-$package" in
+			macos-carbon) echo carbon; return;;
+			win32-win32) echo win32; return;;
+			macos-* | win32-*);;
+			*-x) echo x; return;;
+		esac
+	done
+	echo "$1"
+}
+
+################################################################################
+# shell configuration
+
+slash0=`echo '\0'`
+if test ${#slash0} -eq 2; then
+	slash1='\1'
+	slash2='\2'
+else
+	slash1='\\1'
+	slash2='\\2'
+fi
+
+newline='
+'
+
+################################################################################
+# internal variables
+
+unset build_alias cross_prefix host_alias
+unset `set | grep '^cv_' | sed 's/=.*//'`
+
+cache_file=/dev/null
+no_create=no
+silent=no
+verbose=no
+
+prefix='/usr/local'
+exec_prefix='$(prefix)'
+bindir='$(exec_prefix)/bin'
+sbindir='$(exec_prefix)/sbin'
+libexecdir='$(exec_prefix)/libexec'
+datarootdir='$(prefix)/share'
+datadir='$(datarootdir)'
+sysconfdir='$(prefix)/etc'
+sharedstatedir='$(prefix)/com'
+localstatedir='$(prefix)/var'
+docdir="\$(datarootdir)/doc/$PACKAGE"
+infodir='$(datarootdir)/info'
+htmldir='$(docdir)'
+dvidir='$(docdir)'
+pdfdir='$(docdir)'
+psdir='$(docdir)'
+libdir='$(exec_prefix)/lib'
+mandir='$(datarootdir)/man'
+
+cmdline="$0${@:+ $@}"
+me=`basename "$0"`
+topdir=`dirname "$0"`
+
+################################################################################
+# utility functions
+
+list_and()
+{
+	result=
+	for item1 in $1; do
+		for item2 in $2; do
+			if test "$item1" = "$item2"; then
+				result="${result:+$result }$item1"
+				break
+			fi
+		done
+	done
+	echo "$result"
+}
+list_len()
+{
+	set -- $@
+	echo $#
+}
+pad_with_dots()
+{
+	result=$1
+	while test ${#result} -lt "$2"; do
+		result=$result.
+	done
+	echo $result
+}
+
+################################################################################
+# functions for printing helpful information for the user
+
+usage()
+{
+	cat <<EOF
+Usage: $0 [options] [host]
+Options:
+     --cache-file=FILE    Cache test results in FILE
+  -C --config-cache       Cache test results in config.cache
+  -h --help               Print command line usage information
+  -n --no-create          Do not create output files
+  -q --quiet --silent     Do not print test results
+  -v --verbose            Print as much information as possible
+  -V --version            Print file version information
+
+Build options:
+  --build=PLATFORM        Configure for build PLATFORM
+  --cross-prefix=PREFIX   Use PREFIX for cross toolchain
+  --host=PLATFORM         Configure for host PLATFORM
+
+Features:
+  --enable-debug          Enable debugging
+  --enable-profile        Enable profiling
+  --enable-static         Force static linking
+
+Packages:
+  --with-angelscript      Use AngelScript for scripting
+  --with-bzip2            Use libbzip2 for bzip2 compression
+  --with-carbon           Use Carbon for windowing
+  --with-cg               Use Cg for Cg shading language support
+  --with-curl             Use libcurl for network protocol support
+  --with-d3d9             Use Direct3D 9 for rendering
+  --with-dinput9          Use DirectInput 9 for input
+  --with-directx9         Use DirectX 9 for audio, input, and rendering
+  --with-dsound9          Use DirectSound 9 for audio
+  --with-expat            Use Expat for XML parsing
+  --with-ffmpeg           Use FFmpeg for audio/video coding
+  --with-flac             Use libFLAC for FLAC support
+  --with-freetype         Use FreeType for font processing
+  --with-gif              Use giflib for GIF support
+  --with-jpeg             Use libjpeg for JPEG support
+  --with-lua              Use Lua for scripting
+  --with-minizip          Use minizip for ZIP support
+  --with-mng              Use libmng for JNG, JPEG, MNG, and PNG, support
+  --with-ogg              Use libogg for Ogg support
+  --with-openal           Use OpenAL for audio
+  --with-openexr          Use OpenEXR for EXR support
+  --with-opengl           Use OpenGL for rendering
+  --with-png              Use libpng for PNG support
+  --with-posix            Use POSIX
+  --with-python           Use Python for scripting
+  --with-sphinx           Use CMU Sphinx-3 for speech recognition
+  --with-squirrel         Use Squirrel for scripting
+  --with-theora           Use libtheora for Theora support
+  --with-tiff             Use libtiff for TIFF support
+  --with-ungif            Use libungif for uncompressed GIF support
+  --with-vorbis           Use libvorbis for vorbis support
+  --with-win32            Use Win32 for windowing
+  --with-x                Use X11 for windowing
+  --with-zip              Use libzip for ZIP file support
+  --with-zlib             Use zlib for DEFLATE compression
+
+Report bugs to <$BUGS>
+EOF
+}
+version()
+{
+	echo "Configure script for $NAME $VERSION"
+}
+
+################################################################################
+# functions for handling command-line parsing errors
+
+more_info()
+{
+	echo "Try '$0 --help' for more information." >&2
+}
+bad_option()
+{
+	echo "$me: unrecognized option '$1'" >&2
+	more_info
+	exit 1
+}
+bad_feature()
+{
+	echo "$me: unrecognized feature '$1'" >&2
+	more_info
+	exit 1
+}
+bad_package()
+{
+	echo "$me: unrecognized package '$1'" >&2
+	more_info
+	exit 1
+}
+bad_argument()
+{
+	echo "$me: invalid argument '${1#*=}' to '${1%%=*}'" >&2
+	more_info
+	exit 1
+}
+no_argument()
+{
+	echo "$me: missing argument to '$1'" >&2
+	more_info
+	exit 1
+}
+
+################################################################################
+# parse command-line options
+
+parse_feature()
+{
+	feature=`expr "$1" : '--[[:lower:]]*-\([[:alnum:]-]*\)'`
+	cmp=enable_`echo "$feature" | tr '-' _`
+	for var in `set | grep '^enable_' | sed s/=.*//`; do
+		if test "$var" = "$cmp"; then
+			case "$1" in
+				--enable-*=yes) eval "$var=yes"; return;;
+				--enable-*=no) eval "$var=no"; return;;
+				--enable-*=*) bad_argument "$1";;
+				--enable-*) eval "$var=yes"; return;;
+				--disable-*=*) bad_argument "$1";;
+				--disable-*) eval "$var=no"; return;;
+			esac
+		fi
+	done
+	bad_feature "$feature"
+}
+parse_package()
+{
+	package=`expr "$1" : '--[[:lower:]]*-\([[:alnum:]-]*\)'`
+	cmp=with_`echo "$package" | tr '-' _`
+	for var in `set | grep '^with_' | sed s/=.*//`; do
+		if test "$var" = "$cmp"; then
+			case "$1" in
+				--with-*=yes) eval "$var=yes"; return;;
+				--with-*=no) eval "$var=no"; return;;
+				--with-*=*) bad_argument "$1";;
+				--with-*) eval "$var=yes"; return;;
+				--without-*=*) bad_argument "$1";;
+				--without-*) eval "$var=no"; return;;
+			esac
+		fi
+	done
+	bad_package "$package"
+}
+
+prev=
+while test $# -gt 0; do
+	case "$1" in
+		-c | --cache-file) prev=cache_file;;
+		--cache-file=*) cache_file=${1#*=};;
+		-C | --config-cache) cache_file=./config.cache;;
+		-h | --help) usage; exit;;
+		-n | --no-create) no_create=yes;;
+		-q | --quiet | --silent) silent=yes;;
+		-v | --verbose) verbose=yes;;
+		-V | --version) version; exit;;
+
+		--build) prev=build_alias;;
+		--build=*) build_alias=${1#*=};;
+		--cross-prefix) prev=cross_prefix;;
+		--cross-prefix=*) cross_prefix=${1#*=};;
+		--host) prev=host_alias;;
+		--host=*) host_alias=${1#*=};;
+
+		--enable-debug=partial) enable_partial_debug=yes;;
+
+		--with-directx9 | --with-directx9=yes) with_d3d9=yes with_dinput9=yes with_dsound9=yes;;
+		--without-directx9 | --with-directx9=no) with_d3d9=no with_dinput9=no with_dsound9=no;;
+		--with-directx9=*) bad_argument "$1";;
+
+		--enable-* | --disable-*) parse_feature "$1";;
+		--with-* | --without-*) parse_package "$1";;
+
+		--) shift; break;;
+		-*) bad_option "$1";;
+		*) break;;
+	esac
+	if test "$prev"; then
+		if test $# -le 1; then
+			no_argument "$1"
+		fi
+		shift
+		eval "$prev='$1'"
+		prev=
+	fi
+	shift
+done
+if test $# -gt 0; then
+	host_alias=$1
+	shift
+fi
+
+################################################################################
+# check for mutually exclusive package selections
+
+for mutex in $pkg_conflicts; do
+	sel=
+	mutex_packages=`echo "${mutex%%\?*}" | tr : ' '`
+	for package in $mutex_packages; do
+		eval "test \"\$with_$package\" = yes" && sel=${sel:+$sel }$package
+	done
+	if test `set -- $sel; echo $#` -gt 1; then
+		echo "$me: mutually exclusive packages '$sel'" >&2
+		exit 1
+	fi
+	if test `set -- $sel; echo $#` -eq 1; then
+		for package in $mutex_packages; do
+			test "$package" != "$sel" && eval "with_$package=no"
+		done
+	fi
+done
+
+################################################################################
+# initialize file descriptors for output
+
+# &5 is used for logging raw output for debugging purposes (config.log)
+# &6 is used for printing test results
+
+exec 5>config.log
+test "$silent" = yes && exec 6>/dev/null || exec 6>&1
+
+################################################################################
+# initialize the log file with basic information
+
+cat >&5 <<EOF
+Generated by '$cmdline'
+--------------------------------------------------------------------------------
+hostname = `hostname`
+uname -m = `uname -m`
+uname -s = `uname -s`
+uname -r = `uname -r`
+uname -v = `uname -v`
+
+`echo "$PATH" | tr : '\n' | sed 's/^/PATH: /'`
+EOF
+
+################################################################################
+# initialize the exit signal handler
+
+trap 'exit_status=$?
+test_clean
+exit $exit_status' EXIT
+
+################################################################################
+# functions for printing progress messages
+
+msg_checking()
+{
+	echo -n "checking for `pad_with_dots \"$1\" 26`" >&6
+	cat >&5 <<EOF
+--------------------------------------------------------------------------------
+$me: checking for $1
+EOF
+}
+msg_cached()
+{
+	echo -n " (cached)" >&6
+}
+msg_result()
+{
+	echo " $1" >&6
+	echo "$me: result: $1" >&5
+}
+msg_failed()
+{
+	echo " FAILED" >&6
+	echo "$me: result: FAILED" >&5
+}
+
+################################################################################
+# functions for performing system tests
+
+test_cxx_prog()
+{
+	echo "$1" >&5
+	echo "$1" >conftest.cpp
+}
+test_cxx()
+{
+	echo "$cv_cxx -c $CPPFLAGS $CXXFLAGS $@ conftest.cpp" >&5
+	$cv_cxx -c $CPPFLAGS $CXXFLAGS $@ conftest.cpp >&5 2>&1
+}
+test_ld()
+{
+	echo "$cv_cxx -o conftest conftest$cv_objext $LDFLAGS $@" >&5
+	$cv_cxx -o conftest conftest$cv_objext $LDFLAGS $@ >&5 2>&1
+}
+test_cxx_ld()
+{
+	echo "$cv_cxx $CPPFLAGS $CXXFLAGS -o conftest conftest.cpp $LDFLAGS $@" >&5
+	$cv_cxx $CPPFLAGS $CXXFLAGS -o conftest conftest.cpp $LDFLAGS $@ >&5 2>&1
+}
+test_exec()
+{
+	echo "conftest$cv_exeext $@" >&5
+	./conftest$cv_exeext $@ >&5 2>&1
+}
+test_sh()
+{
+	echo "$@" >&5
+	$@ 2>&5
+}
+test_failed()
+{
+	msg_failed
+	exit 1
+}
+test_clean()
+{
+	rm -f conftest conftest.*
+}
+
+################################################################################
+# determine canonical build and host names
+
+msg_checking 'build system type'
+if test ${build_alias+set}; then
+	build=`test_sh $topdir/misc/build/config.sub "$build_alias"` || test_failed
+else
+	build_alias=`test_sh $topdir/misc/build/config.guess` || test_failed
+	build=$build_alias
+fi
+msg_result "$build"
+
+msg_checking 'host system type'
+if test ${host_alias+set}; then
+	host=`test_sh $topdir/misc/build/config.sub "$host_alias" "$build"` || test_failed
+else
+	host_alias=$build
+	host=$host_alias
+fi
+msg_result "$host"
+
+build_cpu=${build%%-*}
+build_os=${build#*-}
+host_cpu=${host%%-*}
+host_os=${host#*-}
+
+################################################################################
+# prepare for cross-compilation
+
+if test "$host" != "$build"; then
+	cross_compiling=yes
+	: ${cross_prefix=$host_alias-}
+else
+	cross_compiling=no
+	cross_prefix=
+fi
+
+################################################################################
+# load previously cached test results
+
+if test -r "$cache_file"; then
+	if test -f "$cache_file"; then
+		echo "$me: loading cache $cache_file"
+		. "$cache_file"
+	fi
+else
+	echo "$me: creating cache $cache_file"
+	>"$cache_file"
+fi
+
+################################################################################
+# check system configuration
+
+msg_checking "C++ `test \"$cross_compiling\" = yes && echo cross-`compiler"
+if test ${cv_cxx+set}; then
+	msg_cached
+else
+	cxx_found=no
+	test_cxx_prog 'int main() {}'
+	for cv_cxx in $CXX ${cross_prefix}g++ ${cross_prefix}c++ ${cross_prefix}cxx; do
+		if test_cxx_ld; then
+			cxx_found=yes
+			break
+		fi
+	done
+	test "$cxx_found" != yes && test_failed
+fi
+msg_result "$cv_cxx"
+
+msg_checking 'object suffix'
+if test ${cv_objext+set}; then
+	msg_cached
+else
+	test_clean
+	test_cxx_prog 'int main() {}'
+	test_cxx || test_failed
+	for file in conftest.o conftest.obj conftest conftest.*; do
+		test -f "$file" || continue
+		case $file in
+			conftest.cpp);;
+			conftest | conftest.*) cv_objext=${file##conftest}; break;;
+		esac
+	done
+	test -z ${cv_objext+set} && test_failed
+fi
+msg_result "${cv_objext:-none}"
+
+msg_checking 'executable suffix'
+if test ${cv_exeext+set}; then
+	msg_cached
+else
+	test_clean
+	test_cxx_prog 'int main() {}'
+	test_cxx_ld || test_failed
+	for file in conftest.exe conftest conftest.*; do
+		test -f "$file" || continue
+		case $file in
+			conftest.cpp | conftest$cv_objext);;
+			conftest | conftest.*) cv_exeext=${file##conftest}; break;;
+		esac
+	done
+	test -z ${cv_exeext+set} && test_failed
+fi
+msg_result "${cv_exeext:-none}"
+
+msg_checking 'big-endian architecture'
+if test ${cv_bigendian+set}; then
+	msg_cached
+else
+	cv_bigendian=no
+	if test "$cross_compiling" = no; then
+		test_cxx_prog \
+'int main() // Harbison and Steele, C: A Reference Manual, 1987
+{
+	union
+	{
+		long l;
+		char c;
+	} u = {1};
+	return u.c;
+}'
+		test_cxx_ld || test_failed && test_exec && cv_bigendian=yes
+	else
+		test_cxx_prog \
+'int main() // concept from Guido Draheim, Autoconf Macro Archive, 2002
+{
+	static const short be[] __attribute__((used)) = {0x4269, 0x6745, 0x6e64, 0x6961, 0x6e00};
+	static const short le[] __attribute__((used)) = {0x694c, 0x7474, 0x656c, 0x6e45, 0x6964, 0x6e61};
+}'
+		test_cxx || test_failed
+		test_sh grep BigEndian conftest$cv_objext >&5 && cv_bigendian=yes ||
+		test_sh grep LittleEndian conftest$cv_objext >&5 || test_failed
+	fi
+fi
+msg_result "$cv_bigendian"
+
+################################################################################
+# functions for selecting packages
+
+pkg_check()
+{
+	test $# -eq 0 && set -- `set | sed -n 's/^with_\(.*\)=.*/\1/p'`
+	for package in "$@"; do
+		if eval "test \"\$with_$package\" != no -a \"\$pkg_tested_$package\" != yes"; then
+			pkg_check_part "$package" "have_$package"
+			eval "pkg_tested_$package=yes"
+			if eval "test \"\$with_$package\" = yes"; then
+				if eval "test \"\$cv_have_$package\" = yes"; then
+					eval "pkg_post_$package"
+				else
+					echo "$me: missing package '$package'" >&2
+					exit 1
+				fi
+
+			fi
+		fi
+	done
+}
+pkg_check_part()
+{
+	msg_checking `pkg_get_name "$1"`
+	eval "pkg_init_$1"
+	if eval "test \${cv_$2+set}"; then
+		msg_cached
+	else
+		eval "cv_$2=`pkg_test_$1 && echo yes || echo no`"
+	fi
+	eval "msg_result \"\$cv_$2\""
+}
+pkg_select()
+{
+	test $# -eq 0 && set -- `set | sed -n 's/^with_\(.*\)=.*/\1/p'`
+	sel=
+	for package in "$@"; do
+		eval "test \"\$with_$package\" = auto -a \"\$cv_have_$package\" = yes" && sel=${sel:+$sel }$package
+	done
+	for mutex in $pkg_conflicts; do
+		mutex_packages=`echo ${mutex%%\?*} | tr : ' '`
+		mutex_sel=`list_and "$mutex_packages" "$sel"`
+		if test "$mutex_sel"; then
+			if test `list_len $mutex_sel` -gt 1; then
+				if test "${mutex#*\?}" != "$mutex"; then
+					picked=`pkg_pick_${mutex#*\?} $mutex_sel`
+					mutex_sel=${picked:-$mutex_sel}
+				fi
+				mutex_sel=${mutex_sel%% *}
+			fi
+			for package in $mutex_packages; do
+				eval "with_$package=`test \"\$package\" = \"\$mutex_sel\" && echo yes || echo no`"
+			done
+			eval "pkg_post_$mutex_sel"
+		fi
+	done
+	for package in "$@"; do
+		if eval "test \"\$with_$package\" = auto"; then
+			eval "with_$package=\"\${cv_have_$package:-no}\""
+			eval "test \"\$with_$package\" = yes && pkg_post_$package"
+		fi
+	done
+}
+pkg_assert_atleastone()
+{
+	for package in "$@"; do
+		eval "test \"\$with_$package\" = yes" && return
+	done
+	echo "$me: must select one package of '$@'" >&2
+	exit 1
+}
+
+################################################################################
+# functions for configuring packages
+
+pkg_sh()
+{
+	echo "$@" >&5
+	$@ 2>&5
+}
+pkg_config()
+{
+	pkg=`pkg_get_pkg_config_name "$1"`
+	shift
+	echo "pkg-config $@" $pkg >&5
+	pkg-config $@ $pkg 2>&5
+}
+pkg_config_cflags()
+{
+	pkg_config $@ --cflags
+}
+pkg_config_libs()
+{
+	pkg_config $@ --libs `test "$enable_static" = yes && echo '--static'`
+}
+
+################################################################################
+# check for packages
+
+pkg_check $pkg_category_window
+pkg_select $pkg_category_window
+pkg_assert_atleastone $pkg_category_window
+
+pkg_check $pkg_category_video
+pkg_select $pkg_category_video
+pkg_assert_atleastone $pkg_category_video
+
+pkg_check $pkg_category_audio
+pkg_select $pkg_category_audio
+# NOTE: we can get by without an audio package
+
+pkg_check $pkg_category_input
+pkg_select $pkg_category_input
+pkg_assert_atleastone $pkg_category_input
+
+pkg_check $pkg_category_script
+pkg_select $pkg_category_script
+pkg_assert_atleastone $pkg_category_script
+
+pkg_check
+pkg_select
+
+################################################################################
+# display which package was selected for each category
+
+# FIXME: this could be better
+
+if test "$verbose" = yes; then
+	echo
+	pkg_categories=`set | grep '^pkg_category_' | sed -n 's/^pkg_category_\(.*\)=.*/\1/p'`
+	for category in $pkg_categories; do
+		sel=
+		eval "packages=\"\$pkg_category_$category\""
+		for package in $packages; do
+			if eval "test \"\$with_$package\" = yes"; then
+				sel="${sel:+$sel }$package"
+			fi
+		done
+		packages="$sel"
+		sel=
+		for package in $packages; do
+			sel="${sel:+$sel, }`pkg_get_name $package`"
+		done
+		packages="$sel"
+		packages=`echo $packages | sed 's/, \([^,]*\)$/, and \1/'`
+		echo "using $packages for $category"
+	done
+	echo
+fi
+
+################################################################################
+# update the cache file with the new test results
+
+if test "$cache_file" != "/dev/null"; then
+	if test -w "$cache_file"; then
+		echo "$me: updating cache $cache_file"
+		cat >$cache_file <<EOF
+#! /bin/sh
+# Generated by '$cmdline'
+
+if test "\$build" = '$build' -a "\$host" = '$host'; then
+`set | sed -n 's/^\(cv_.*\)/	: \${\1}/p'`
+fi
+EOF
+	else
+		echo "$me: not updating unwritable cache $cache_file"
+	fi
+fi
+
+################################################################################
+# initialize compiler flags for selected platform, features, and packages
+
+# NOTE: using -Wno-deprecated-declarations for auto_ptr during C++0x transition
+CXXFLAGS="$CXXFLAGS -std=gnu++0x -pedantic-errors -pipe -Werror -Wno-deprecated-declarations"
+
+if test "$enable_debug" = yes; then
+	CPPFLAGS="$CPPFLAGS" #-D_GLIBCXX_DEBUG
+	CXXFLAGS="$CXXFLAGS -g"
+else
+	# NOTE: -fstrict-aliasing is default for -O3 in GCC 3.4
+	# NOTE: -ftree-vectorize is default for -O3 in GCC 4.3
+	CXXFLAGS="$CXXFLAGS -O3 -fomit-frame-pointer -ffast-math -fno-finite-math-only -funsafe-math-optimizations -fgcse-sm -fgcse-las"
+	LDFLAGS="$LDFLAGS -s -Wl,-O1"
+fi
+if test "$enable_profile" = yes; then
+	CXXFLAGS="$CXXFLAGS -pg"
+	LDFLAGS="$LDFLAGS -pg"
+fi
+
+test "$host_cpu" = amd64 && CXXFLAGS="$CXXFLAGS -m64"
+# FIXME: -mfpmath=sse inhibits some cache invalidation signals
+test "$host_cpu" = i386 && CXXFLAGS="$CXXFLAGS -march=pentium3"
+test "$host_cpu" = ppc && CXXFLAGS="CXXFLAGS -mcpu=powerpc"
+test "$host_cpu" = ppc64 && CXXFLAGS="$CXXFLAGS -mcpu=powerpc64 -m64"
+test "$host_cpu" = sparc64 && CXXFLAGS="$CXXFLAGS -mcpu=v9 -m64"
+# HACK: -lmingwthrd resolves dependency on mingwm10.dll caused by -mthreads
+test "$host_os" = win32 && CXXFLAGS="$CXXFLAGS -mthreads" LDFLAGS="$LDFLAGS -lmingwthrd"
+
+for package in `set | sed -n 's/^with_\(.*\)=.*/\1/p'`; do
+	if eval "test \"\$with_$package\" = yes"; then
+		upper_package=`echo "$package" | tr '[:lower:]' '[:upper:]'`
+		eval "CPPFLAGS=\"\$CPPFLAGS \$${upper_package}_CPPFLAGS\""
+		eval "CXXFLAGS=\"\$CXXFLAGS \$${upper_package}_CFLAGS\""
+		libs=LIBS_`pkg_get_linkage $package | tr '[:lower:]' '[:upper:]'`
+		eval "$libs=\"\$$libs \$${upper_package}_LIBS\""
+	fi
+done
+
+LIBS="$LIBS $LIBS_DYNAMIC"
+test "$LIBS_STATIC" && LIBS="$LIBS -Wl,-Bstatic $LIBS_STATIC -Wl,-Bdynamic"
+
+################################################################################
+# initialize source code for selected platform, features, and packages
+
+SRC='aud/Channel aud/channel/AmbientChannel aud/channel/SpacialChannel aud/Driver aud/NullDriver aud/Sound cache cache/proxy/Aabb cache/proxy/Bounds cache/proxy/GlyphImage cache/proxy/Skin cfg cfg/domain cfg/Source cfg/source/ConfSource cfg/source/IniSource cfg/source/OptSource cfg/Var clip/Encoder clip/encoder/registry clip/Stream env/Console env/msg env/Window err err/msg game/Character game/Entity game/Game game/Interface game/Object game/Player game/Scene inp/Device inp/device/registry inp/Driver inp/State log log/Filter log/filter/BufferFilter log/filter/GateFilter log/filter/IndentFilter log/filter/PrefixFilter log/filter/TimeFilter log/Indenter log/manip log/sink/BufferSink log/sink/ConSink log/sink/ErrSink log/sink/FileSink log/sink/OutSink log/stats log/Stream main math/algorithm math/pow2 opt phys/aabb phys/attrib/Ambient phys/attrib/AmbientRange phys/attrib/Aspect phys/attrib/Attenuation phys/attrib/Cutoff phys/attrib/Deformation phys/attrib/Depth phys/attrib/Diffuse phys/attrib/DiffuseRange phys/attrib/Emissive phys/attrib/EmissiveRange phys/attrib/Exposure phys/attrib/Falloff phys/attrib/Fov phys/attrib/LifetimeRange phys/attrib/Material phys/attrib/Mesh phys/attrib/Normal phys/attrib/Opacity phys/attrib/OpacityRange phys/attrib/Orientation phys/attrib/Pose phys/attrib/Position phys/attrib/PositionNormal phys/attrib/PositionNormalScale phys/attrib/PositionOrientation phys/attrib/PositionOrientationScale phys/attrib/Range phys/attrib/Scale phys/attrib/Size phys/attrib/SizeRange phys/attrib/Specular phys/attrib/SpecularRange phys/attrib/SpeedRange phys/attrib/TexCoord phys/attrib/Volume phys/Body phys/Bounds phys/Camera phys/Controller phys/controller/AnimationController phys/controller/AnimationTargetController phys/controller/BlinkController phys/controller/CameraFocusController phys/controller/ConstrainPositionToPlaneController phys/controller/EyeController phys/controller/FollowController phys/controller/FrameController phys/controller/GaitController phys/controller/HeroCamController phys/controller/IdleController phys/controller/LipsyncController phys/controller/LocomotionController phys/controller/PathfindingController phys/controller/TargetController phys/Emitter phys/Form phys/Frame phys/Light phys/mixin/Collidable phys/mixin/Controllable phys/mixin/Positionable phys/mixin/Trackable phys/mixin/Transformable phys/Particle phys/Scene phys/Skin phys/Sound res/adapt/text res/adapt/text/ParseTree res/adapt/text/LineIterator res/adapt/text/Parser res/Index res/load/animation/native res/load/cameraSet/native res/load/character/native res/load/cursor/native res/load/gait/native res/load/material/native res/load/mesh/3ds res/load/mesh/native res/load/model/native res/load/object/native res/load/registry res/load/scene/native res/load/skeleton/native res/load/sound/wav res/load/theme/native res/load/track/native res/Node res/path res/Pipe res/pipe/CatPipe res/pipe/EndianPipe res/pipe/FilePipe res/pipe/MemPipe res/pipe/NullPipe res/pipe/SubPipe res/save res/save/image/bmp res/save/registry res/scan/registry res/Source res/source/DirSource res/source/FileSource res/source/registry res/Stream res/type/Animation res/type/CameraSet res/type/Character res/type/Cursor res/type/Font res/type/Gait res/type/Image res/type/Material res/type/Mesh res/type/Model res/type/Object res/type/registry res/type/Scene res/type/Script res/type/script/ScriptFormat res/type/Skeleton res/type/Sound res/type/sound/AudioDecoder res/type/sound/AudioStream res/type/sound/PcmDecoder res/type/Theme res/type/Track script/Driver script/Machine script/machine/registry script/Process script/Router sys sys/file sys/Timer ui/DrawContext ui/Interface ui/Widget ui/widget/Array ui/widget/Button ui/widget/Edit ui/widget/Image ui/widget/List ui/widget/Text ui/widget/Window ui/WidgetContainer util/bit util/buffer util/cstring util/endian util/hash util/Identifiable util/ios util/lang util/locale util/path util/ScopeGuard util/Signal vid/draw vid/DrawContext vid/Driver vid/Filter vid/ViewContext'
+
+test "$host_cpu" = i386 -o "$host_cpu" = amd64 && SRC="$SRC sys/i386"
+
+test "$with_curl" = yes && SRC="$SRC res/pipe/CurlPipe res/source/CurlSource"
+test "$with_d3d9" = yes && SRC="$SRC vid/d3d9/Driver"
+test "$with_dinput9" = yes && SRC="$SRC inp/dinput9/Driver"
+test "$with_dsound9" = yes && SRC="$SRC aud/dsound9/Driver"
+test "$with_expat" = yes && SRC="$SRC res/load/cursor/native/expat res/load/gait/native/expat res/load/material/native/expat res/load/model/native/expat res/load/scene/native/expat res/load/theme/native/expat"
+test "$with_ffmpeg" = yes && SRC="$SRC clip/encoder/FfmpegEncoder"
+test "$with_flac" = yes && SRC="$SRC res/adapt/flac res/load/sound/flac res/type/sound/FlacDecoder"
+test "$with_freetype" = yes && SRC="$SRC res/adapt/freetype res/load/font/freetype res/load/font/freetype/sub res/scan/freetype res/type/font/freetype"
+test "$with_lua" = yes && SRC="$SRC err/lua res/load/script/lua script/lua/Library script/lua/lib/Base script/lua/lib/Character script/lua/lib/Class script/lua/lib/Coroutine script/lua/lib/Debug script/lua/lib/Entity script/lua/lib/Game script/lua/lib/Object script/lua/lib/Standard script/lua/lib/Table script/lua/Machine script/lua/Process util/lua"
+test "$with_minizip" = yes && SRC="$SRC res/adapt/minizip res/pipe/MinizipPipe res/scan/minizip"
+test "$with_ogg" = yes && SRC="$SRC res/scan/ogg"
+test "$with_openal" = yes && SRC="$SRC aud/openal/Buffer aud/openal/buffer/StaticBuffer aud/openal/buffer/StreamBuffer aud/openal/Channel aud/openal/channel/AmbientChannel aud/openal/channel/SpacialChannel aud/openal/Driver cache/proxy/openal/Buffer err/openal res/type/sound/openal"
+test "$with_opengl" = yes && SRC="$SRC cache/proxy/opengl/Drawable cache/proxy/opengl/FontTexture cache/proxy/opengl/Program cache/proxy/opengl/Texture cfg/opengl err/opengl res/load/opengl/shader/FragmentShader res/load/opengl/shader/VertexShader res/type/opengl/Shader util/opengl/shader util/opengl/string vid/opengl/activeTexture vid/opengl/ActiveTextureSaver vid/opengl/AttribGuard vid/opengl/blend vid/opengl/clientActiveTexture vid/opengl/ClientActiveTextureSaver vid/opengl/ClientAttribGuard vid/opengl/Drawable vid/opengl/DrawContext vid/opengl/Driver vid/opengl/ext vid/opengl/Filter vid/opengl/filter/AlphaFilter vid/opengl/filter/GlowFilter vid/opengl/filter/MedianFilter vid/opengl/filter/SaturationFilter vid/opengl/filter/ScaleBiasFilter vid/opengl/FontTexture vid/opengl/Framebuffer vid/opengl/get vid/opengl/Index vid/opengl/matrix vid/opengl/MatrixGuard vid/opengl/Program vid/opengl/ProgramSaver vid/opengl/RenderTarget vid/opengl/RenderTargetPool vid/opengl/RenderTargetSaver vid/opengl/Resources vid/opengl/resources/ShaderMaterialResources vid/opengl/resources/ShaderOutlineResources vid/opengl/resources/ShadowResources vid/opengl/state vid/opengl/tex vid/opengl/Texture vid/opengl/tune vid/opengl/Vertex vid/opengl/VertexArray vid/opengl/VertexBuffer vid/opengl/ViewContext"
+test "$with_png" = yes && SRC="$SRC res/adapt/png res/load/image/png res/save/image/png"
+test "$with_posix" = yes && SRC="$SRC err/posix sys/posix sys/posix/file sys/posix/proc"
+test "$with_python" = yes && SRC="$SRC script/python/ScopedRef"
+test "$with_theora" = yes && SRC="$SRC clip/encoder/TheoraEncoder"
+test "$with_vorbis" = yes && SRC="$SRC res/adapt/vorbis res/load/sound/vorbis res/type/sound/VorbisDecoder"
+test "$with_win32" = yes && SRC="$SRC cache/proxy/win32/Cursor cfg/source/win32/RegSource env/win32/Console env/win32/msg env/win32/Window math/win32 res/type/cursor/win32 res/type/image/win32 sys/win32 sys/win32/file sys/win32/proc util/win32/string"
+test "$with_x" = yes && SRC="$SRC env/x11/Console env/x11/msg env/x11/Window err/x11 util/x11/event"
+test "$with_zip" = yes && SRC="$SRC res/adapt/zip res/pipe/ZipPipe res/source/ZipSource"
+
+# opengl video driver adapters
+if test "$with_opengl" = yes; then
+	{ test "$with_carbon" = yes && SRC="$SRC vid/opengl/carbon/Driver";} ||
+	{ test "$with_win32" = yes && SRC="$SRC vid/opengl/win32/Driver vid/opengl/win32/ext";} ||
+	{ test "$with_x" = yes && SRC="$SRC vid/opengl/x11/Driver vid/opengl/x11/ext";}
+fi
+
+# non-dedicated audio driver fallbacks
+if test "$with_dsound9" = no -a "$with_openal" = no; then
+	{ test "$with_carbon" = yes && SRC="$SRC aud/carbon/Driver";} ||
+	{ test "$with_win32" = yes && SRC="$SRC aud/win32/Driver";}
+fi
+
+# non-dedicated input driver fallbacks
+if test "$with_dinput9" = no; then
+	{ test "$with_carbon" = yes && SRC="$SRC inp/carbon/Driver";} ||
+	{ test "$with_win32" = yes && SRC="$SRC inp/win32/Driver";} ||
+	{ test "$with_x" = yes && SRC="$SRC inp/x11/Driver";}
+fi
+
+# timer selection
+{ test "$with_win32" = yes && SRC="$SRC sys/timer/win32/PcTimer";} ||
+{ test "$with_posix" = yes &&
+	{ test "$cv_func_clock_gettime" = yes && SRC="$SRC sys/timer/posix/ClockTimer";} ||
+	{ test "$cv_func_gettimeofday" = yes && SRC="$SRC sys/timer/posix/TimedayTimer";} ||
+	{ test "$cv_func_ftime" = yes && SRC="$SRC sys/timer/posix/FtimeTimer";};} ||
+	SRC="$SRC sys/timer/ClockTimer"
+
+################################################################################
+# initialize macros for selected platform, features, and packages
+
+have_audio=`test "$with_carbon" = yes -o "$with_dsound9" = yes -o "$with_openal" = yes -o "$with_win32" = yes && echo yes || echo no`
+
+################################################################################
+# clean up exported variables
+
+beautify()
+{
+	tr -s '[:space:]' '\n' | sort -f | uniq | tr '\n' ' ' | sed 's/ $//'
+}
+beautify_libs()
+{
+	tr -s '[:space:]'
+}
+fix_includes()
+{
+	sed 's/ \-I/ \-isystem /g'
+}
+
+CPPFLAGS=`echo $CPPFLAGS | beautify | fix_includes`
+CXXFLAGS=`echo $CXXFLAGS | beautify | fix_includes`
+LDFLAGS=` echo $LDFLAGS  | beautify`
+LIBS=`    echo $LIBS     | beautify_libs`
+SRC=`     echo $SRC      | beautify`
+
+################################################################################
+# create config.status
+
+cs_makefile_vars=(
+	"topdir:$topdir"
+	"prefix:$prefix"
+	"exec_prefix:$exec_prefix"
+	"bindir:$bindir"
+	"sbindir:$sbindir"
+	"libexecdir:$libexecdir"
+	"datarootdir:$datarootdir"
+	"datadir:$datadir"
+	"sysconfdir:$sysconfdir"
+	"sharedstatedir:$sharedstatedir"
+	"localstatedir:$localstatedir"
+	"docdir:$docdir"
+	"infodir:$infodir"
+	"htmldir:$htmldir"
+	"dvidir:$dvidir"
+	"pdfdir:$pdfdir"
+	"psdir:$psdir"
+	"libdir:$libdir"
+	"mandir:$mandir"
+	"CXX:$cv_cxx"
+	"CPPFLAGS:$CPPFLAGS"
+	"CXXFLAGS:$CXXFLAGS"
+	"LDFLAGS:$LDFLAGS"
+	"OBJEXT:$cv_objext"
+	"EXEEXT:$cv_exeext"
+	"PACKAGE:$PACKAGE"
+	"VERSION:$VERSION"
+	"VER_MAJOR:$VER_MAJOR"
+	"VER_MINOR:$VER_MINOR"
+	"VER_PATCH:$VER_PATCH"
+	"BUILD:$build_alias"
+	"BUILD_CPU:$build_cpu"
+	"BUILD_OS:$build_os"
+	"HOST:$host_alias"
+	"HOST_CPU:$host_cpu"
+	"HOST_OS:$host_os"
+	"SRC:$SRC"
+	"LIBS:$LIBS")
+
+cs_header_vars=(
+	"NAME:$NAME"
+	"PACKAGE:$PACKAGE"
+	"AUTHOR:$AUTHOR"
+	"BUGS:$BUGS"
+	"LONGNAME:$LONGNAME"
+	"COPYRIGHT:$COPYRIGHT"
+	"VERSION:$VERSION"
+	"VER_MAJOR:$VER_MAJOR"
+	"VER_MINOR:$VER_MINOR"
+	"VER_PATCH:$VER_PATCH"
+	"BUILD:$build_alias"
+	"BUILD_CPU:$build_cpu"
+	"BUILD_OS:$build_os"
+	"HOST:$host_alias"
+	"HOST_CPU:$host_cpu"
+	"HOST_OS:$host_os"
+	"DATE:$DATE"
+	"TIME:$TIME")
+cs_header_defs=(
+	"DEBUG:$enable_debug"
+	"PARTIAL_DEBUG:$enable_partial_debug"
+	"PROFILE:$enable_profile"
+	"USE_ANGELSCRIPT:$with_angelscript"
+	"USE_BZIP2:$with_bzip2"
+	"USE_CARBON:$with_carbon"
+	"USE_CG:$with_cg"
+	"USE_CURL:$with_curl"
+	"USE_D3D9:$with_d3d9"
+	"USE_DINPUT9:$with_dinput9"
+	"USE_DSOUND9:$with_dsound9"
+	"USE_EXPAT:$with_expat"
+	"USE_FFMPEG:$with_ffmpeg"
+	"USE_FLAC:$with_flac"
+	"USE_FREETYPE:$with_freetype"
+	"USE_GIF:$with_gif"
+	"USE_JPEG:$with_jpeg"
+	"USE_LUA:$with_lua"
+	"USE_MINIZIP:$with_minizip"
+	"USE_MNG:$with_mng"
+	"USE_OGG:$with_ogg"
+	"USE_OPENAL:$with_openal"
+	"USE_OPENEXR:$with_openexr"
+	"USE_OPENGL:$with_opengl"
+	"USE_PNG:$with_png"
+	"USE_POSIX:$with_posix"
+	"USE_PYTHON:$with_python"
+	"USE_SPHINX:$with_sphinx"
+	"USE_SQUIRREL:$with_squirrel"
+	"USE_THEORA:$with_theora"
+	"USE_TIFF:$with_tiff"
+	"USE_UNGIF:$with_ungif"
+	"USE_VORBIS:$with_vorbis"
+	"USE_WIN32:$with_win32"
+	"USE_X11:$with_x"
+	"USE_ZIP:$with_zip"
+	"USE_ZLIB:$with_zlib"
+	"HAVE_AUDIO:$have_audio"
+	"HAVE_CLOCK_GETTIME:$cv_func_gettime"
+	"HAVE_FTIME:$cv_func_ftime"
+	"HAVE_GETTIMEOFDAY:$cv_func_gettimeofday"
+	"HAVE_GLU:$cv_have_glu"
+	"WORDS_BIGENDIAN:$cv_bigendian")
+
+cs_other_vars=(
+	"topdir:$topdir"
+	"NAME:$NAME"
+	"PACKAGE:$PACKAGE"
+	"AUTHOR:$AUTHOR"
+	"BUGS:$BUGS"
+	"LONGNAME:$LONGNAME"
+	"COPYRIGHT:$COPYRIGHT"
+	"VERSION:$VERSION"
+	"VER_MAJOR:$VER_MAJOR"
+	"VER_MINOR:$VER_MINOR"
+	"VER_PATCH:$VER_PATCH"
+	"BUILD:$build_alias"
+	"BUILD_CPU:$build_cpu"
+	"BUILD_OS:$build_os"
+	"HOST:$host_alias"
+	"HOST_CPU:$host_cpu"
+	"HOST_OS:$host_os"
+	"DATE:$DATE"
+	"TIME:$TIME")
+
+if test "$no_create" != yes; then
+	echo "$me: creating config.status"
+	cat >config.status <<\CSEOF
+#!/bin/bash
+#
+# @section license
+#
+# Copyright (c) 2006-2012 David Osborn
+#
+# Permission is granted to use and redistribute this software in source and
+# binary form, with or without modification, subject to the following
+# conditions:
+#
+# 1. Redistributions in source form must retain the above copyright notice, this
+#    list of conditions, and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions, and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution, and in the same
+#    place and form as other copyright, license, and disclaimer information.
+#
+# As a special exception, distributions of derivative works in binary form may
+# include an acknowledgement in place of the above copyright notice, this list
+# of conditions, and the following disclaimer in the documentation and/or other
+# materials provided with the distribution, and in the same place and form as
+# other acknowledgements, similar in substance to the following:
+#
+#    Portions of this software are based on the work of David Osborn.
+#
+# This software is provided "as is", without any express or implied warranty. In
+# no event will the authors be liable for any damages arising out of the use of
+# this software.
+#
+# @file
+#
+CSEOF
+	cat >>config.status <<CSEOF
+# Generated by '$cmdline'
+CSEOF
+	cat >>config.status <<\CSEOF
+
+################################################################################
+
+cmdline="$0${@:+ $@}"
+me=`basename "$0"`
+recheck=no
+silent=no
+
+################################################################################
+# functions for printing helpful information for the user
+
+usage()
+{
+	cat <<EOF
+Usage: $0 [options] [files]
+Options:
+  -h --help      Print command line usage information
+  -q --quiet     Do not print progress messages
+     --recheck   Run configure to update config.status
+  -V --version   Print file version information
+
+Report bugs to <$BUGS>
+EOF
+}
+version()
+{
+	cat <<EOF
+Status of configure script for $NAME $VERSION
+Generated by '$cmdline'
+EOF
+}
+
+################################################################################
+# functions for handling command-line parsing errors
+
+more_info()
+{
+	echo "Try '$0 --help' for more information." >&2
+}
+bad_option()
+{
+	echo "$me: unrecognized option '$1'" >&2
+	more_info
+	exit 1
+}
+bad_file()
+{
+	echo "$me: unrecognized target '$1'" >&2
+	more_info
+	exit 1
+}
+
+################################################################################
+# parse command-line options
+
+while test $# -gt 0; do
+	case "$1" in
+		-h | --help) usage; exit;;
+		-q | --quiet) silent=yes;;
+		--recheck) recheck=yes;;
+		-V | --version) version; exit;;
+		--) shift; break;;
+		-*) bad_option "$1";;
+		*) break;;
+	esac
+	shift
+done
+
+################################################################################
+# regenerate config.status (if requested)
+
+CSEOF
+	cat >>config.status <<CSEOF
+if test "\$recheck" = yes; then
+	rc_args=`test "$no_create" = yes && echo \'' --no-create'\'`
+
+	test "\$silent" = yes && rc_args="\$rc_args --silent"
+	exec /bin/sh $cmdline\$rc_args
+fi
+CSEOF
+	cat >>config.status <<\CSEOF
+
+################################################################################
+# separate files into categories
+
+if test $# -eq 0; then
+	CONFIG_MAKEFILES='Makefile'
+	CONFIG_HEADERS='config.h'
+	CONFIG_OTHERS='doc/doxygen.cfg'
+else
+	unset CONFIG_MAKEFILES CONFIG_HEADERS
+	while test $# -gt 0; do
+		case "$1" in
+			Makefile) CONFIG_MAKEFILES="$CONFIG_MAKEFILES $1";;
+			config.h) CONFIG_HEADERS="$CONFIG_HEADERS $1";;
+			doc/doxygen.cfg) CONFIG_OTHERS="$CONFIG_OTHERS $1";;
+			*) bad_file "$1";;
+		esac
+		shift
+	done
+fi
+
+################################################################################
+# initialize file descriptors for output
+
+# &5 is used for logging raw output for debugging purposes (config.log)
+# &6 is used for printing test results
+
+exec 5>>config.log
+test "$silent" = yes && exec 6>/dev/null || exec 6>&1
+
+################################################################################
+# generate makefiles
+
+for file in $CONFIG_MAKEFILES; do
+	echo "$me: creating $file"
+CSEOF
+	cat >>config.status <<CSEOF
+	sed -f- "$topdir/misc/build/\$file.in" <<\EOF |
+CSEOF
+	for spec in "${cs_makefile_vars[@]}"; do
+		echo "s/@${spec%%:*}@/`echo \"${spec#*:}\" | sed 's/\\\\/\\\\\\\\/g;s/\//\\\\\//g'`/g" >>config.status
+	done
+	cat >>config.status <<\CSEOF
+EOF
+sed "s/@GENERATOR@/$(echo \'$cmdline\' | sed 's/\//\\\//g')/g" >"$file"
+done
+
+################################################################################
+# generate headers
+
+for file in $CONFIG_HEADERS; do
+	echo "$me: creating $file"
+CSEOF
+	cat >>config.status <<CSEOF
+	sed -f- "$topdir/misc/build/\$file.in" <<\EOF |
+CSEOF
+	for spec in "${cs_header_vars[@]}"; do
+		echo "s/@${spec%%:*}@/`echo \"${spec#*:}\" | sed 's/\\\\/\\\\\\\\/g;s/\//\\\\\//g'`/g" >>config.status
+	done
+	for spec in "${cs_header_defs[@]}"; do
+		if test "${spec#*:}" = yes; then
+			echo "s/^\\([[:space:]]*\\)#undef\\([[:space:]]\\{1\\}${spec%%:*}\\)/$slash1#define$slash2 1/" >>config.status
+		else
+			echo "/^[[:space:]]*#undef[[:space:]]\\{1\\}${spec%%:*}/s/^/\\/\\//" >>config.status
+		fi
+	done
+	cat >>config.status <<\CSEOF
+EOF
+sed "s/@GENERATOR@/$(echo \'$cmdline\' | sed 's/\//\\\//g')/g" >"$file"
+done
+
+################################################################################
+# generate other files
+
+for file in $CONFIG_OTHERS; do
+	echo "$me: creating $file"
+	install -d "$(dirname "$file")"
+CSEOF
+	cat >>config.status <<CSEOF
+	sed -f- "$topdir/\$file.in" <<\EOF |
+CSEOF
+	for spec in "${cs_other_vars[@]}"; do
+		echo "s/@${spec%%:*}@/`echo \"${spec#*:}\" | sed 's/\\\\/\\\\\\\\/g;s/\//\\\\\//g'`/g" >>config.status
+	done
+	cat >>config.status <<\CSEOF
+EOF
+sed "s/@GENERATOR@/$(echo \'$cmdline\' | sed 's/\//\\\//g')/g" >"$file"
+done
+CSEOF
+
+	chmod +x config.status
+
+################################################################################
+# execute config.status
+
+	cs_args=
+	test "$silent" = yes && cs_args="$cs_args --quiet"
+	# &5 is temporarily closed to allow config.status to access it
+	exec 5>/dev/null
+	./config.status$cs_args
+	exec 5>>config.log
+fi

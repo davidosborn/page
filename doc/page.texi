@@ -1,0 +1,255 @@
+\input texinfo @c -*-texinfo-*-
+@c %**start of header
+@setfilename man.info
+@settitle PAGE @value{VERSION}
+@include version.texi
+@c %**end of header
+
+@dircategory Software development
+@direntry
+* PAGE: (page) Graphical adventure game engine.
+@end direntry
+
+@copying
+This manual is for PAGE, the Portable Adventure Game Engine.
+
+Copyright @copyright{} 2006-2012 David Osborn
+
+@noindent
+Permission is granted to use and redistribute this software in source and binary form, with or without modification, subject to the following conditions:
+
+@enumerate
+@item
+Redistributions in source form must retain the above copyright notice, this list of conditions, and the following disclaimer.
+
+@item
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation and/or other materials provided with the distribution, and in the same place and form as other copyright, license, and disclaimer information.
+@end enumerate
+
+@noindent
+As a special exception, distributions of derivative works in binary form may include an acknowledgement in place of the above copyright notice, this list of conditions, and the following disclaimer in the documentation and/or other materials provided with the distribution, and in the same place and form as other acknowledgements, similar in substance to the following:
+
+@quotation
+Portions of this software are based on the work of David Osborn.
+@end quotation
+
+@noindent
+This software is provided "as is", without any express or implied warranty. In no event will the authors be liable for any damages arising out of the use of this software.
+
+PAGE includes some third-party libraries, each with its own copying conditions, which have been reproduced here.
+
+@strong{The Loki Library}
+
+Copyright @copyright{} 2001 by Andrei Alexandrescu
+
+@noindent
+This code accompanies the book:
+Alexandrescu, Andrei. "Modern C++ Design: Generic Programming and Design Patterns Applied". Copyright (c) 2001. Addison-Wesley.
+
+@noindent
+Permission to use, copy, modify, distribute and sell this software for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation.
+
+@noindent
+The author or Addison-Welsey Longman make no representations about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty.
+@end copying
+
+@titlepage
+@title PAGE
+@subtitle the Portable Adventure Game Engine
+@subtitle version @value{VERSION}, @value{UPDATED}
+@author David Osborn <@email{page@@david.osborn.name}>
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@shortcontents
+@contents
+
+@ifnottex
+@node Top
+@top The Portable Adventure Game Engine
+@end ifnottex
+
+@menu
+* Introduction::         Introduction
+* The Engine::           The Engine
+* Tools::                Tools
+* Copying Conditions::   Copying Conditions
+* Index::                General index
+
+@detailmenu
+The Engine
+
+* Audio::           Audio
+* Cache::           Cache
+* Configuration::   Configuration
+* Physics::         Physics
+
+Tools
+
+* Blender::         Blender scripts
+
+Copying Conditions
+
+* License::         License for using the software
+* Modification::    Guidelines for modification
+* Distribution::    Guidelines for distribution
+@end detailmenu
+@end menu
+
+@node Introduction
+@chapter Introduction
+
+Welcome to the world of adventure game development. This manual provides the information needed to manipulate @acronym{PAGE} in the construction of graphical adventure games.
+
+@node The Engine
+@chapter The Engine
+
+@menu
+* Audio::           Audio
+* Cache::           Cache
+* Configuration::   Configuration
+* Physics::         Physics
+@end menu
+
+@node Audio
+@section Audio
+(@code{namespace aud})
+
+@cindex audio
+The audio system is responsible for managing audio output. Sounds come in two distinct varieties, ambient and spacial.
+
+@subsection Ambient Sounds
+
+@cindex ambient sounds
+Ambient sounds have no source or origin; they envelop the listener from all directions. They are not part of the game world, instead supplementing the interface experience for the player. Examples of ambient sounds include background music and user interface sounds.
+
+Ambient sounds are triggered externally. When another part of the engine determines that an ambient sound should be played, it calls the @code{Play} member function of audio driver.
+
+@subsection Spacial Sounds
+
+@cindex spacial sounds
+Spacial sounds are part of the game world. They exist in the physics system as regular objects, capable of animation and attachment to other objects. The audio driver continually updates a list of the spacial sounds that are closest to the player. These sounds are assigned to audio channels for playback. As the player moves through the world, and various sounds fall in and out of proximity, the volume levels of the sounds are faded to soften the transition.
+
+Spacial sounds are triggered internally. The audio driver acts as an observer over the scene, updating its spacial sound set to match changes in the scene.
+
+@node Cache
+@section Cache
+(@code{namespace cache})
+
+@cindex cache
+The cache is the central repository for storing derived data. For an object to be stored in the cache, it should satisfy the following expectations:
+
+@enumerate
+@item
+The entire state should be derived from external data, serializable parameters, and other cacheable objects.
+
+@item
+It must be possible to recreate the object with the same state given the same data and parameters.
+
+@item
+It should demand substantial resources to create and sustain.
+@end enumerate
+
+The fundamental machinery of the cache is a mapping of identifiers to datums. An identifier is a string created by serializing the state of the parameters used to create the cached object. A datum contains information about the cached object, including its last access time and a shared pointer to the object itself. When the last access time for an object exceeds the specified limit, the object will be purged from the cache, unless the shared pointer is found to be in use.
+
+@node Configuration
+@section Configuration
+(@code{namespace cfg})
+
+The configuration system is a globally accessible repository for persistent and user-configurable behaviour.
+
+@node Physics
+@section Physics
+(@code{namespace phys})
+
+@cindex physics
+The physics system contains a physical description of the game world. It includes structural objects such as cameras, forms, lights, and sounds.
+
+@subsection Space Partitioning
+
+@cindex quadtree
+@cindex space partitioning
+Space partitioning has not yet been implemented. However, the ultimate intention is to use a dynamic quadtree for frustum culling.
+
+@subsection Attributes
+
+@cindex attributes
+Each physics object has a set of controllable attributes.
+
+@node Tools
+@chapter Tools
+
+@menu
+* Blender::   Blender scripts
+@end menu
+
+@node Blender
+@section Blender
+
+@cindex Blender
+Blender is the primary 3D content creation tool supported by @acronym{PAGE}. There are a number of scripts for importing and exporting, as well as supplementary scripts to simplify the creative process.
+
+@node Copying Conditions
+@chapter Copying Conditions
+
+@menu
+* License::        Terms of use of the software
+* Modification::   Guidelines for modification
+* Distribution::   Guidelines for distribution
+@end menu
+
+@node License
+@section License
+
+@cindex license
+Copyright @copyright{} 2006-2012 David Osborn
+
+@noindent
+Permission is granted to use and redistribute this software in source and binary form, with or without modification, subject to the following conditions:
+
+@enumerate
+@item
+Redistributions in source form must retain the above copyright notice, this list of conditions, and the following disclaimer.
+
+@item
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation and/or other materials provided with the distribution, and in the same place and form as other copyright, license, and disclaimer information.
+@end enumerate
+
+@noindent
+As a special exception, distributions of derivative works in binary form may
+include an acknowledgement in place of the above copyright notice, this list of
+conditions, and the following disclaimer in the documentation and/or other
+materials provided with the distribution, and in the same place and form as
+other acknowledgements, similar in substance to the following:
+
+@example
+Portions of this software are based on the work of David Osborn.
+@end example
+
+@noindent
+This software is provided "as is", without any express or implied warranty. In no event will the authors be liable for any damages arising out of the use of this software.
+
+@node Modification
+@section Modification
+
+@acronym{PAGE} was created to serve as a foundation for the development of adventure games. Modification is therefore encouraged. If you make any significant changes, I'd be interesting in hearing about them.
+
+@node Distribution
+@section Distribution
+
+@acronym{PAGE} can be configured to use a number of open source libraries, each with its own copying restrictions. If you include any of these libraries in a binary distribution, then you should also include the relevant copyright notices in the accompanying documentation. At the very least, you must reproduce the copyright and permission notices for @acronym{PAGE}.
+
+@appendix Idiosyncrasies
+
+@enumerate
+@item
+@dfn{Norm} is short for the normalize function, and does not refer to the abstract quantity norm.
+@end enumerate
+
+@node Index
+@unnumbered Index
+@printindex cp
+
+@bye

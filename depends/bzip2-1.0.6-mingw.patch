@@ -1,0 +1,18 @@
+diff -ur bzip2-1.0.6/Makefile bzip2-1.0.6/Makefile
+--- bzip2-1.0.6/Makefile	2011-08-01 18:12:53 -0600
++++ bzip2-1.0.6/Makefile	2011-08-01 18:13:38 -0600
+@@ -79,10 +79,10 @@
+ 	cp -f bzip2 $(PREFIX)/bin/bunzip2
+ 	cp -f bzip2 $(PREFIX)/bin/bzcat
+ 	cp -f bzip2recover $(PREFIX)/bin/bzip2recover
+-	chmod a+x $(PREFIX)/bin/bzip2
+-	chmod a+x $(PREFIX)/bin/bunzip2
+-	chmod a+x $(PREFIX)/bin/bzcat
+-	chmod a+x $(PREFIX)/bin/bzip2recover
++	chmod a+x $(PREFIX)/bin/bzip2.exe
++	chmod a+x $(PREFIX)/bin/bunzip2.exe
++	chmod a+x $(PREFIX)/bin/bzcat.exe
++	chmod a+x $(PREFIX)/bin/bzip2recover.exe
+ 	cp -f bzip2.1 $(PREFIX)/man/man1
+ 	chmod a+r $(PREFIX)/man/man1/bzip2.1
+ 	cp -f bzlib.h $(PREFIX)/include

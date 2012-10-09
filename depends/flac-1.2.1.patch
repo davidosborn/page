@@ -1,0 +1,23 @@
+diff -ur flac-1.2.1/examples/cpp/encode/file/main.cpp flac-1.2.1/examples/cpp/encode/file/main.cpp
+--- flac-1.2.1/examples/cpp/encode/file/main.cpp	2007-09-13 09:58:03 -0600
++++ flac-1.2.1/examples/cpp/encode/file/main.cpp	2011-08-08 08:47:36 -0600
+@@ -30,6 +30,7 @@
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <string.h>
+ #include "FLAC++/metadata.h"
+ #include "FLAC++/encoder.h"
+ 
+diff -ur flac-1.2.1/include/share/alloc.h flac-1.2.1/include/share/alloc.h
+--- flac-1.2.1/include/share/alloc.h	2007-09-11 23:32:21 -0600
++++ flac-1.2.1/include/share/alloc.h	2011-08-08 08:39:50 -0600
+@@ -35,7 +35,7 @@
+ 
+ #ifndef SIZE_MAX
+ # ifndef SIZE_T_MAX
+-#  ifdef _MSC_VER
++#  if defined _MSC_VER || defined __MINGW32__
+ #   define SIZE_T_MAX UINT_MAX
+ #  else
+ #   error

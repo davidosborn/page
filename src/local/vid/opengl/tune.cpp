@@ -1,0 +1,96 @@
+/**
+ * @section license
+ *
+ * Copyright (c) 2006-2012 David Osborn
+ *
+ * Permission is granted to use and redistribute this software in source and
+ * binary form, with or without modification, subject to the following
+ * conditions:
+ *
+ * 1. Redistributions in source form must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution, and in the same
+ *    place and form as other copyright, license, and disclaimer information.
+ *
+ * As a special exception, distributions of derivative works in binary form may
+ * include an acknowledgement in place of the above copyright notice, this list
+ * of conditions, and the following disclaimer in the documentation and/or other
+ * materials provided with the distribution, and in the same place and form as
+ * other acknowledgements, similar in substance to the following:
+ *
+ *    Portions of this software are based on the work of David Osborn.
+ *
+ * This software is provided "as is", without any express or implied warranty.
+ * In no event will the authors be liable for any damages arising out of the use
+ * of this software.
+ */
+
+#include <iostream> // cout
+#include <string>
+#include <GL/gl.h> // glGetString
+#include "../../cfg/domain.hpp" // ScopedDomain
+#include "../../cfg/opengl.hpp" // vid*
+#include "../../log/Indenter.hpp"
+#include "ext.hpp" // ARB_{fragment_shader,shader_objects,shadow,vertex_buffer_object}, EXT_framebuffer_object, NV_register_combiners
+
+namespace page
+{
+	namespace vid
+	{
+		namespace opengl
+		{
+			void Tune()
+			{
+				cfg::ScopedDomain domain(cfg::siteDomain);
+				if (haveExtFramebufferObject)
+				{
+					// FIXME: implement
+				}
+				if (haveArbVertexBufferObject)
+				{
+					// profile vertex arrays
+					// FIXME: implement
+					float varTime = 1;
+					// profile vertex buffers
+					// FIXME: implement
+					float vboTime = 1;
+					// determine optimal solution
+					cfg::opengl::vidVbo = vboTime <= varTime;
+				}
+				std::cout << "vertex buffering = " << (*cfg::opengl::vidVbo ? "enabled" : "disabled") << std::endl;
+				if (haveExtFramebufferObject && haveArbShadow)
+				{
+					// FIXME: implement
+					cfg::opengl::vidShadow = true;
+				}
+				std::cout << "shadowing        = " << (*cfg::opengl::vidBump ? "enabled" : "disabled") << std::endl;
+				if (haveArbFragmentShader && haveArbShaderObjects ||
+					haveNvRegisterCombiners)
+				{
+					// FIXME: implement
+					cfg::opengl::vidBump = true;
+				}
+				std::cout << "bump mapping     = " << (*cfg::opengl::vidBump ? "enabled" : "disabled") << std::endl;
+			}
+			void InitProfile()
+			{
+				if (!*cfg::opengl::vidTuneAuto) return;
+				cfg::ScopedDomain domain(cfg::siteDomain);
+				std::string
+					deviceProfile(std::string(reinterpret_cast<const char *>(glGetString(GL_VENDOR))) + ' ' + reinterpret_cast<const char *>(glGetString(GL_RENDERER))),
+					profile(deviceProfile + ' ' + reinterpret_cast<const char *>(glGetString(GL_VERSION)));
+				if (profile != *cfg::opengl::vidTuneProfile)
+				{
+					std::cout << "tuning new " <<
+						(deviceProfile == cfg::opengl::vidTuneProfile->substr(0, deviceProfile.size()) ?
+						"driver" : "device") << std::endl;
+					log::Indenter indenter;
+					Tune();
+					cfg::opengl::vidTuneProfile = profile;
+				}
+			}
+		}
+	}
+}

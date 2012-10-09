@@ -1,0 +1,1245 @@
+Figure out where to put the build files.  Until now, doxygen.cfg.in has been in the doc directory, but config.h.in wasn't in the src directory, so it wasn't really balanced...
+
+Switch from backticks to parentheses (ie: echo $(dirname $blah)) in Bash.
+
+Things to send to SoureFire:
+- err/exception
+- math/Vector
+- res/
+- vid/
+- phys/
+- cache/
+- cfg/
+- uti/serialize/
+
+char(ASCII) -> char(UTF-8) = std::ctype<char>().widen
+char(ASCII) -> wchar_t     = std::ctype<wchar_t>().widen
+char(UTF-8) -> char(ASCII) = std::ctype<char>().narrow
+char(UTF-8) -> wchar_t     = std::codecvt_utf8<wchar_t> (?)
+char(UTF-8) -> char16_t    = std::codecvt_utf8_utf16<char16_t>
+char(UTF-8) -> char32_t    = std::codecvt_utf8<char32_t>
+char16_t    -> char(UTF-8) = std::codecvt_utf8_utf16<char16_t>
+char16_t    -> char32_t    = std::codecvt_utf16<char32_t>
+
+wctombcs
+wstring_convert
+codecvt
+ctype
+
+If you call peek or get on a stream that has already reached EOF, failbit will be set.
+
+Important information for when you get an "undefined reference" to a "static constexpr":
+http://gcc.gnu.org/wiki/VerboseDiagnostics#missing_static_const_definition.  Moral of story is to always use "enum { a = 1 };" instead of "static constexpr int a = 1;"
+
+The exceptions in err/exception/stdexcept need to inherit better, so that you can unambiguously refer to ::{Tags,[wW]hat} (ie: all the members), and at the same time, they must inherit from both BaseException and err::Exception<BaseException::Tags, __VA_ARGS__, Tags...> to ensure that they can be caught in all the different configurations.
+
+util/locale might need to be templated for charT and traits, and if so, then probably also the log system should be to.
+
+Need to clean up util/lexical_cast.tpp.
+
+Always pass by value in assignment operators when you can take advantage of copy elision: http://cpp-next.com/archive/2009/08/want-speed-pass-by-value/.
+
+Use ENABLE_IF everywhere (instead of std::enable_if).
+
+There are lots of classes that should be not only NonCopyable, but also Moveable.
+
+We can't use log::Indenter in Source::ScanToBuildIndex because, since its a recursive function, the indentation will grow more and more... we want it to stay at a stable level.
+
+log::Indenter should be a util::StateSaver or util::ScopeGuard.
+
+The cfg system could be implemented better maybe?  Like cfg::BasicVar::Begin is kind of weird.  Maybe a thing like res::Index where there's a global cfg::Config class that contains a list of variables?
+
+The iterators in util/iterator/*_iterator.hpp could be fixed up a bit.
+
+TODO right away
+- can util::range take a container in the constructor (something with begin/end)?
+	- if so, then update Collidable.tpp
+- make the std::pair to util::range conversion in chain_iterator.tpp prettier
+- util/string could be fixed up a bit maybe
+
+The following code works (so use it for stuff):
+
+	template <typename T> struct A
+	{
+	};
+	template <template <typename T> class U, typename... V> struct B
+	{
+	};
+	B<A, int, float> b;
+
+Working on updating math components... got as far as OrthoFrustum (needs work).
+
+C++0x updates:
+- use nullptr
+	- instead of implicit bool conversions, use X != nullptr
+	- instead of X = 0, use X = nullptr
+- learn how to use move semantics (R-value references)
+- use deleted/defaulted functions
+	- for util::NonCopyable
+- use direct container initialization (ie: Map map = {{'A', 'B'}, {1, 2}};)
+- use decltype for implicit math primitive conversions
+- use auto when appropriate
+- use lambda expressions for small functions
+- use variadic templates for util::Signal
+- see http://www2.research.att.com/~bs/C++0xFAQ.html#lambda
+- update util::{copy,scoped}_ptr to be like std::shared_ptr
+	- need to support nullptr comparisons
+	- no implicit bool conversions!
+- replace util::ArithmeticConversion
+- update util/functional.hpp
+- use std::move in Pose (or wherever we have a destructive copy right now)
+- make NonCopyable classes Moveable whenever possible
+- http://www.artima.com/cppsource/rvalue.html
+- use std::move and std::forward
+- don't use unary_function or binary_function
+- use range-based for-loops
+- look for instances of std::shared_ptr and replace with std::unique_ptr whenever possible
+- use std::tie to extract pairs/tuples into individual variables
+- update cat_iterator to support iterators of different types via variadic templates
+- http://gcc.gnu.org/gcc-4.7/changes.html
+- beware std::unique_ptr; usually use util::unique_ptr instead
+- we shouldn't use using Base::* when we don't have to
+
+- res/Source needs to be prettified
+- res/adapt/* needs to be made prettier too
+
+Issues:
+- see the FIXME in res/Index.cpp
+- finish updating the other iterators in util/iterator/*
+	- remove the reverse arithmetic operator
+	- remove the default constructor
+	- move the factory function implementation into the .tpp file
+
+Remove all the expat loaders, and maybe replace them with some kind of common adapter.
+
+Don't use references for scalar parts of math primitives (ie: Vector.x) because they should be copy-by-value.
+
+Consider moving some of the things like res/Stream into res/stream/Stream, and maybe even res.cpp into res/res.cpp.
+
+I think util/serialize and util/lexical_cast and util/string might have some duplicate functionality.
+
+Some of the resource system exceptions, such as "mismatched", could be better.
+Use util::Join more.
+Implement EndianPipe.
+
+Resource files to investigate for funkiness:
+- res/load.cpp
+- res/scan.cpp
+- res/Source.cpp
+
+Make InitIos more automatic.
+
+With vid.shadow.blur enabled, shadow map gets filled completely with shadow within a few seconds (not getting cleared?).
+
+Need to add finer grained logging of thing like resources, caching, etc.
+
+res::Source indexes on construction... not sure if it should do that.  What if we want to reindex at some point (ie: refresh the index)?
+It would be better if some log output in res.cpp could be moved into the appropriate classes (ie: Source).
+
+Make sure resource errors including the path use a consistent path format (with a consistent root).  Intercept exceptions thrown from loaders/savers and include path information.
+
+Add some kind of command-line config-editing mode.
+
+Look at all enums and try to update them to the new C++0x enum features.
+
+Music should either keep playing or fade out when you switch focus away from the window.
+
+----------
+
+Fix the implicit bool conversions by searching for "// FIXME: shouldn't have to do this".
+
+Implement pathfinding for Character:goto.
+
+In certain circumstances, we get a segfault when lua::CheckError throws.  This includes calling Character:__init with an invalid resource path.  The segfault happens in ??, a couple of steps after _Unwind_SjLj_RaiseException.
+
+Need to differentiate between actual Lua errors and errors that occur in a C function called from Lua.  This is especially important when we're using the router because if the game module produces an error, we shouldn't tag it as a Lua error.
+
+Implement cooperative virtual machines to support multiple scripting languages running concurrently.  Consider supporting Stackless Python with cooperative tasklets.
+
+When entities are inserted or removed from the scene, they should fade in or out respectively.
+
+Filters that wrap the scene rendering cause unwanted blending or other artifacts during shadow map blurring.  This can be seen with median filtering enabled, or during the initial fade-in with alpha filtering.  Strangely, it doesn't appear to happen during camera transitions, which also use alpha filtering.  But the initial fade-in would consist of a single camera, which would use opaque filtering, not alpha filtering.
+
+Only use shadow map blurring when vid.shadow.down is less than 2.  Use a 5x5 kernel for 0, and a 3x3 kernel for 1, with the appropriate gaussian size.  Consider implementing vid.shadow.blur.quality to switch between mean and convolution filtering.
+
+Prefer multi-pass mean filtering over single-pass gaussian filtering.
+
+Change the outline shader mechanism to use pure depth for drop-shadows.
+
+Simplify material system using megatexturing plan as a guide.  We should be able to require only one generic render-shader program (or more as fallbacks), as well as some special render-shader programs for water and other special materials.
+
+Drop scene editor in favour of using Blender for scene editing (see Apricot).  Create an automatic track-generation tool.  Create Blender extension with spheres-of-influence to replace camera editor.
+
+I'm concerned that texSize is being initialized to the size of the window, which would not be correct when rendering off-screen while taking a screenshot.  The median filter just looks worse in screenshots for some reason.
+
+We need to separate debug rendering from the rest of the rendering, such that it happens after all full-screen post-processing effects.
+
+It would be really nice to clean up the filter interface, but I'm not sure what the correct solution is for that right now.  Filter creation MUST pass through the concrete DrawContext, because otherwise there wouldn't be a way to determine which concrete Filter to create.
+
+Add anisotropic filtering via EXT_texture_filter_anisotropic.
+
+Coming back from being out-of-focus can break an assertion: something like "cursorMode == pointCursorMode".  It might only happen when in lookCursorMode.
+
+Typically, whenever we say using namespace std::placeholders, we should also say using std::bind, unless bind is implicit via koenig lookup.
+
+Get rid of as many instances of auto_ptr as possible.
+
+Can we replace ArithmeticConversion with decltype?
+
+util/serialize should be updated:
+- function template default arguments
+- enable_if in return type
+
+Finish implementation of HeroCamController with lift.  Determine whether lift and zoom should really be described in the input driver or whether they should be handled at a higher level, such as in HeroCamController, using the mouse deltas.
+
+Go on a TR1-to-C++0x conversion spree:
+- use std::{forward,move} as appropriate
+- delegating constructors
+- decltype (instead of ArithmeticConversion)
+- extern templates (for common math instantiations)
+- right-angle brackets (search and replace)
+- tr1 namespace (search and convert)
+- variadic templates (probably some stuff in util)
+- function template default arguments
+- __VA_ARGS__
+- long long
+
+Apparantly, the gaussian convolution kernels can be reimplemented as multi-pass box filters with only a 3% loss in accuracy.
+
+Switch to pocketsphinx and add package support for lcms.
+
+Create cache::IndirectProxy to take over from util::copy_ptr<cache::Proxy>.
+
+New implementation of util::Caller using tuple unpacking causes util::Signal to drop most calls.  Similar implementation using std::bind yielded the same result.  It has been left in the sandbox branch until the issues are resolved.
+
+Switching to megatexturing:
+- no need for res::Material
+	- see below
+- need 4 basic textures:
+	- diffuse
+	- normal
+	- specular
+	- emissive (glow)
+- first megatexture page should be reserved for default materials
+- drop back to 32-byte vertex format
+	- only need a single UV channel
+	- use signed shorts for normal and tangent
+- segment large meshes in res::Model post-loader
+	- wrap cache::Resource<res::Mesh> with cache::PartialMesh
+	- replace explicit cache::Resource with cache::IndirectProxy in resources
+- need tool to build and maintain megatexture on server
+	- must be able to:
+		- create new megatexture from scratch
+		- add models to megatexture
+			- add textures to atlas
+			- fix mesh texture coordinates
+		- extract models from megatexture
+			- extract textures from atlas
+			- fix mesh texture coordinates
+- would be nice to have the ability to use a traditional material system
+	- cut out all the extraneous settings in res::Material
+		- only keep the 4 basic textures
+	- provide flag for special materials:
+		- megaTexture
+			- ignores material texture settings and uses megatextures
+		- water
+			- uses special water shader
+	- when rendering, do pure megatexture materials separately from others
+- implementation details:
+	- http://www.gamedev.net/community/forums/topic.asp?topic_id=460053
+	- need special mipmap texture
+		- can be procedurally generated
+		- should be 2^(k-1) in size (one dimensional?)
+		- each mipmap level should be different grayscale color
+	- bind special mipmap texture
+	- disable depth testing
+	- set blending state to ensure color for highest mipmap level is used
+	- set render target to offscreen framebuffer with 1 texel per page
+		- clear to black, representing no mipmap level
+	- render visible geometry
+		- scale texture coordinate by 1/page-size and use as fragment position
+	- offscreen framebuffer now contains mipmap level for each page needed
+	- pull in pages at required mipmap level
+		- some may already be in system memory cache
+		- otherwise, store in cache
+		- limit cache size and overwrite LRU pages
+			- thrashing shouldn't happen, but if it does, overwrite MRU pages
+		- probably pull in lowest mipmap level first
+			- higher mipmap levels can be streamed asynchronously
+			- start from lowest, work up to highest, use whatever is available
+	- build atlas on scratch texture set
+		- one scratch texture for each of the 4 basic textures
+		- one additional scratch texture for texture coordinate transformations
+		- find best fit for each page and copy to scratch textures
+		- transformation texture contains UV offset to map megatexture to atlas
+			- UV scale can be inferred from previously generated framebuffer
+			- like previous framebuffer, one texel contains offset for one page
+	- bind generated mipmap buffer, offset texture, and scratch textures
+	- in fragment shader:
+		- transform UV by scale (mipmap) and offset textures
+		- look up 4 basic texture parts using transformed UV in atlas textures
+		- combine as usual and generate fragment
+
+The whole phys::Scene::focus thing is a little weird.  The current semantics are, when not focusing on a body, a default full-scene camera is used and the shadows remain stationary at their last position.  This is not good.  We *ALWAYS* need to have a focus position, at least for shadow mapping.  We *CANNOT* simply turn off shadow mapping when we don't have a focus position.  The camera should be able to go off on a different path during cutscenes, away from the focused object, and the shadows should follow the camera.  So there are a few options.  We could pick a reasonable distance from the camera and use that for shadow mapping.  We could require every camera to store a valid focal distance.
+
+We should also use the AABB in phys::Scene for the FollowControllers.
+
+For the HeroCamController and the FollowControllers in phys::Scene, we should use the *bind-pose* AABB.  This means using cache::Aabb(cache::Bound(firstMesh, lastMesh), pose).  Maybe there's an easier way to signify that we want the bind-pose AABB in the cache::{Aabb,Bounds} constructors?
+
+The "hero-cam" should probably be debug mode only.  Otherwise, we have to deal with a skybox and full-scene shadows, since the user will be able to look up and ahead.
+
+We need a way to notify dependent cache::Proxies when their dependencies are invalidated or purged, so that they themselves can be invalidated or purged.  Any signaling mechanism cannot rely on the dependencies being cached.  This is necessary to implement OBB caching, for a 3-stage AABB caching system.
+
+FollowController should focus on the center of the target's AABB.  This means generating AABBs, which we'll need for space partitioning anyway.  There are questions about how to deal with this in regard to skinned meshes.  The AABB can be useful for more than just partitioning, and it would be good to have a center point that moves to the center of skinned meshes as they are animated for FollowController, so that FollowController always follows the center of the object, regardless of whether the target is crouched on the ground or stretching toward the sky.  This means we want AABBs to be regenerated every frame for skinned objects (potentially slow, but maybe acceptable).  If we go with dynamic AABBs, we may want to consider the capsule-for-each-bone idea again.
+
+The current camera management code in phys::Scene is quite ugly.
+
+Implement Tom Forsyth's ID/depth shadow mapping.  Can degenerate to pure ID shadow mapping with no self-shadows.
+
+Consider multiplying the object transformation matrix by the pose matrix of each bone and adding the capsules to the AABB, rather than the OBB, to get a tighter result with a few more calculations.  Consider using a sphere for phys::Bounds::staticBox, since that may also produce a tighter result, and with simpler transformation calculations.
+
+Add CTRL-X hotkeys for changing some configuration variables.
+
+Remove copyright/license from top of all files.  AFAIK, only the COPYING and license.html.en files should contain the license.  Place a note somewhere saying that the license needs to be rewritten to avoid license copyrights.  Take down the current PAGE website.
+
+__GXX_EXPERIMENTAL_CXX0X__ is being used to ease the transition from TR1 to C++0x.  Once the transition is complete, all instances should be resolved.
+
+Implement Value's scalable text rendering technique.  See http://www.gamedev.net/community/forums/topic.asp?topic_id=490373 and http://www.gamedev.net/community/forums/mod/journal/journal.asp?jn=323357&#3201460.
+
+We should use glBufferDataARB instead of glMapBufferARB whenever possible, because the former avoids driver stalls by invalidating the previous data.  This will require us to have the data necessary to refill the VBO from scratch.
+
+The current method of passing the cursor position to the interface only allows the execution of logic when the cursor is "over", not when it is not "over" or in a non-pointing mode.
+
+Finish FFmpeg clip encoding.
+
+Implement extensions to variance shadow mapping algorithm as suggested by lonesock at http://www.gamedev.net/community/forums/topic.asp?topic_id=485290.  This includes a different storage format (depth,1-4*(depth-depth^2)) and a fake penumbra by basing the mipmap lookup on the estimated blocker distance (mean_depth-sigma).  See the demo and code under "shadow mapping/VSM_extended".
+
+For frustum culling, test against a sphere that fully encloses the object.  If that passes, test against the cached AABB for the object.
+
+The scale of the mouse values contributing to the input driver's look state could be better.
+
+For the DAG: Controllers may need to take potentially Controllable references as non-const so that non-const dependencies can be provided.  Otherwise, when dependencies are evaluated, they may need to be compared to the controllables being updated or const-casted.
+
+We need to build a DAG for controllables when updating.  Each controller should define which external controllable/attribute pairs it uses for input and which internal attributes it uses for output.  For each controllable, the sum of these dependencies for all controllers should be determined.  At this point we have a list of external input dependencies and a list of internal output dependencies for each controllable.  We can build a DAG between controllables using this information.  The controllable references should be implemented using the controllable's ID, or possibly its address (void pointer).  The attribute references should be implemented using a bitmask.  We will also need bitmasks for bones and vertices.  Once the DAG is generated, use a "topological sort" to generate a ordered linear list of controllables for updating.  Because its not possible to update individual attributes separately, it may only be necessary for each controller to provide a list of controllable dependencies, without any attributes.  Then the DAG would be based entirely on dependencies between controllables.  A recursive depth-first search can be used for the topological sort.  See http://wiki.blender.org/index.php/Blenderdev/DependancyGraph.  If using a super-layer approach, only layers with controllable dependencies need to be processed using a DAG.  Note that all layers can have dependencies, but each layer should be run through the DAG separately.  For example, object A might depend on object B in the pre-collision layer, but in the post-collision layer the dependency might be reversed.  This is perfectly acceptable since each layer is executed independently of the others.
+
+We need to do some work on environmental effects.  Clouds shadows can be implemented using a method similar to that used in Explorer.  Using a set of perlin-noise textures, generated at run-time and stored in Resources, we can build a render-target using a shader which combines the layers.  The texture coordinates for each layer will be scrolled at different rates depending on wind-speed.  They can be implemented in the fixed-function pipeline using multitexturing and a constant-alpha for global cloud density.  Rain and snow can be implemented using a particle system and ARB_point_sprite.  Support height-based fog, or volumetric fog, using EXT_fog_coord.
+
+Create a track generation tool in Python.  Alternatively, this could be integrated into the engine using the command-line (ie: page --make-track test.scene -o test.track).  If needing CSG (boolens), use a BSP tree: http://www.gamers.org/dhs/helpdocs/bsp_faq.html.  Perform a boolean union on all scene geometry.  Pick a starting triangle which is a valid track face.  Recurse into neighbouring triangles, checking steepness.  If a neighbour is too steep, it is either a wall or a step.  For it to be a step, it must lead to a triangle with a valid steepness within a certain distance from the traversed edge.  If part of it does, but the other part doesn't, it needs to be split.  Steps should be marked with the intention of converting them to a ramp after processing all triangles.  Because of intersections, some neighbouring triangles may not be accessible from the current triangle, being blocked by another neighbouring triangle sharing the same traversed edge.  Remember to recognized the fact that, after the union, an edge may be shared by more than 2 triangles.
+
+Providing the normal pointer causes glDrawElements to crash when using vertex arrays after cache times out.  Vertex arrays also cause lighting leaks in the ceiling.  Its possible that this could be a driver issue.  Note that we're also having problems with normals in the Linux/ATI version.
+
+Make vid::opengl::Program a base class and provide GlslProgram and CgProgram derivatives.  Also provide a MakeProgram function which defers to the matching registered program class for the given shader format.
+
+Multi-pass works like this:
+1. draw first pass with alpha-testing and no blending
+2. draw remaining passes with blending, no alpha-testing, and depth-test equal with no depth-writes
+
+Consider having the main scene run inside an actual UI widget.  We would create a 3D-view/scene widget during the game::Interface initialization and bind the game::Scene to it.  Mouse clicks would get passed through the interface to the scene widget.  game::Scene would have registered a click handler with the scene widget, and would receive the click and handle it.  Either the scene widget or game::Scene would have to be aware of the viewport defined by the top-level camera's aspect ratio to properly match the click position to an object in the scene.  We'll have to interface with the video driver at some point to do picking, and we'll need to render different things for picking that we would for regular rendering.  Since the vid::ViewContext has its own ideas about the viewport/aspect, perhaps we can defer the viewport determinance until the picking operation and allow the video system to figure it out.  Perhaps consider something like a PickContext and a ViewPickContext.
+
+Figure out why sync_with_stdio(false) inhibits console output.
+
+Consider moving tex into Texture.
+
+Consider using Texture in Framebuffer.  Texture needs to allow for the creation of uninitialized textures.  Consider deriving FontTexture from Texture.  Note that textures for framebuffers must not use mipmapping implicitly.
+
+Use err::{openal,opengl}::CheckError as a sanity check when more common errors have already been tested.  CheckError reports generic errors, so we should not depend on it for meaningful error messages.  Also note that glGetError can incur a pipeline stall, so don't use it in the main loop.
+
+Sony's vector math and SSE stuff is in the Bullet Physics repository.
+
+There should be a catch-all around the shader rendering pipeline which switches to the fixed-function pipeline if an exception is thrown.  The switch should be permanent, meaning that once the switch has occurred, the program must be restarted to get back to the shader pipeline.  In addition, if an exception is caught when rendering a complex material, reduced complexity shaders should be tried until one of them works.  If none of them work, the exception propogates and fixed-function mode is forced.  Shaders that don't work should be remembered as not working and the lower complexity shaders should be chosen automatically next time.  None of this fallback state should be permanant beyond the current execution process.
+
+res::Image needs blitting and cropping functions.  The functions need cleaner reference implementations and better support for implementation specializations (ie: RGBA8 to GA8 via SSE).
+
+We don't need to call glEnable(GL_TEXTURE_2D) after calling Bind(Texture) or Bind(FontTexture) because Bind already enables it.
+
+Figure out which Get{Clip,Frame,LogicalBox} functions, or derivatives thereof, would be most useful to have, considering how they're currently being applied.
+
+The UI module seriously needs some clean up.  There's a few places where Shrink(Aabb, Aabb) is being used.  That function is depreciated and, once we fix these applications, it should be removed.  Use the new arithmetic operators for going into and out of the space of another Aabb.
+
+New things to remember:
+- use indenter.Reset(true) where you had previously used indenter.Reset()
+- AttribGuard no longer takes a mask in its constructor or has push/pop methods
+- signed/unsigned integers of the same width are converted without bit changes
+- be careful when using StateSaver::Reset to maintain consistency of scope
+- math::Aabb provides arithmetic operators for going into and out of the space of another Aabb
+
+When buying the next Geforce card, get the highest-end version to ensure access to performance counters through the instrumented driver.  Consider adding a HUD with a graph showing performance counter values (when DEBUG is defined).
+
+Provide functions for generating convolution filter kernels.
+
+Filters that are constructed as "opaque" should have their clipping region marked as dirty on initialization.  Since non-opaque filters have no effect in areas where nothing is rendered, they can be marked clean on initialization.  2D drawing functions should give their AABB to the DrawContext base class, which can then update the dirty region of the current filter.  When a filter calls Fill on destruction, it should also give its dirty region to the DrawContext for updating the dirty region of the next filter.  We will have to be careful to consider that, at that moment, the current filter is still the filter being destroyed.
+
+CatMother has some Lua scripts and code which could help when designing our own Lua interface.  Also consider Coco for coroutines, available on the LuaJIT page.
+
+VertexArray and VertexBuffer should be derived from Drawable or something.  This would allow us to clean up some code that calls Draw and Update in vid/opengl/drawContext/DrawContext3.cpp and vid/opengl/skin.cpp.  We should also allow VertexArrays and VertexBuffers to be created for text.
+
+Aspect is now controlled by phys::Camera.  Add aspect to CameraSet format, loader, and tools.
+
+Consider implementing a global subsurface scattering thing where brighter colors are more saturated and darker colors are less saturated.  This would be implemented in the fragment shader using RGB/HSV conversions.  Also consider using rim highlights a la Team Fortress 2.
+
+Timer statistics are going to be skewed when the window is deactivated because the timer continues to update, but much faster since we're not rendering anything.  See the main loop in game/Game.cpp.
+
+glGet values to optimize:
+- viewport
+- matrices
+- framebuffer and draw-buffer (also only change if different)
+- clear color/alpha
+- clear buffer (when glClear is called, is the buffer already clear w/ color?)
+
+Demo #3:
+- X11 support
+- log synchronization cleanup
+- camera-set controllers
+Changes:
+- fixed a bug with RGB to Y'CbCr conversion causing invalid colors
+- removed extraneous vertex array/buffer updates when rendering scene more than once
+- removed member references from most math primitives in favor of anonymous unions/structs
+- implemented behind-the-scenes OpenGL state shadowing to optimize out glGet read-back stalls
+- major clean up of DrawContext classes with initial support for 3D in 2D
+- considering verse integration after hearing about it being used in Crystal Space on #gamedev
+
+Demo #4:
+- pathfinding
+- space partitioning
+- frustum culling
+- optimize vertex skinning using SIMD
+
+The info page of the portfolio doesn't look right in IE.  Use the HTML caption element for .box table headers in portfolio.
+
+Write letter to gramps.
+
+Changes for C++0x:
+- use c{begin,end} container member functions when necessary, instead of static_casting to const_iterator (search for static_cast)
+- remove whitespace before right-angle brackets in nested templates
+- use default arguments in function templates instead of overloading (see math primitive initialization functions)
+- use typedef templates instead of struct template hack
+- remove whitespace between right-angle-brackets in templates
+- remove braces inside right-angle-brackets in templates (ie: <(n > 1)>)?
+- enums no longer require static_cast when involved in arithmetic expressions
+
+Before next release, reactivate page@david.osborn.name forwarder.
+
+Log synchronization is kind of funky right now.  We have various crutches for synchronizing the standard streams, such as cfg::logSync and the --sync option, but we appear to have solved the problem by calling Sync in BufferSink::Flush whenever the current stream changes.  Therefore, these crutches may no longer be necessary.  UPDATE: there was recently an occurrence where two warnings in two different (but close) spots, ended up right next to one another, at the point of the first warning.  This would suggest a buffer synchronization issue between cout and clog.
+
+Add shear to ui::DrawContext::DrawImage and use instead of DrawQuad when drawing the frame.  Make sure clamp is correct, regardless of rotation.
+
+There's a bunch of stuff in vid/opengl/DrawContext that we don't need anymore, especially with regard to virtual cube maps.
+
+A lot of stuff in vid/opengl/DrawContext2/DoDrawText could be refactored into a common module like res/type/Font.
+
+For outlines, render 24-bit depth to RGB framebuffer (fragment alpha for alpha testing) and use in outline shader.  Only write outline to fragment if depth of fragment is greater than minimum sampled depth + some epsilon.
+
+RenderResources should ensure that it can create a program for most materials and that it has enough texture units to support it.  An easy way to validate a program against the maximum texture unit limit would be to count uniforms which are sampler types.  ShadowResources and OutlineResources will need to do the same thing, to support diffuse and mask texture sampling.  Both of these can also provide parameterized access, like RenderResources.
+
+Consider turning vid::opengl::Resources classes into aggregates.
+
+GLU and POSIX timers have been hacked into the configure script.  They're not quite packages, but they're more than simply package details.  If all the timing options were packages, they would be listed in pkg_conflicts and pkg_category_time.  However, its also good that they're checked in pkg_post_XXX.  Just like the DirectX packages, these packages depend on another package.  However, locking them into an ordered category might not make sense.
+
+We should not be checking for any DirectX packages unless with_win32=yes.
+
+It would be nice if we could check for the existance of pkg_{init,post}_XXX functions before calling them in the configure script.  This can be done using "declare -f", but it would require Bash.  Bash changes some things, such as the behaviour of "set", as well as adding yet another dependency, so we should avoid it for now.
+
+Tool TODO:
+- add option for mesh exporter to combine materials from separate objects
+- add option for mesh exporter to allow a numeric suffix to be reduced or removed on export if there are no other meshes currently being exported that would prevent it
+- Blender obj importer should have a toggle button for uses creases (?)
+- alpha and twoside scripts should work with object/edit mode selection
+	- consider combining alpha and twoside since they typically go together
+- need some kind of automatic track generating tool; it takes too long by hand
+- need a model exporter that exports materials, meshes, models, and skeletons
+- mesh exporter should flip normals of duplicates from double-sided faces
+
+Rendering TODO:
+- decide how to approach blended passes (done)
+	- blending must be separate from alpha
+	- alpha uses alpha testing and doesn't have back-to-front issues
+	- blending using OpenGL blending and is meant for layered passes
+	- compositing solves this issue
+		- render to framebuffer with OpenGL blending with additive alpha
+		- render result to parent framebuffer with alpha testing
+
+Track Generation Concept:
+- require user to specify starting point in world to generate track from
+- world geometry combined into polygon soup and stored in octree
+	- including all meshes from the scene
+	- should also store winged face data for ccontiguous faces
+- need to traverse the entire scene
+	- start from initial face, which is assumed to be a valid track face
+		- could verify this with a slope check
+	- check for intersections from other geometry
+		- if other geometry has acceptable slope, use boolean op to combine
+		- otherwise, other geometry is blocking, so use boolean op to subtract
+
+Normal Mapping TODO:
+- calculate tangents from vertices and texture coordinates in Vertex.tpp
+	- theory being that transforming tangents by bones will be slower, and that the burden of generating tangents should be on the engine, not the user
+	- should only be done when normal mapping is being used
+	- see http://www.terathon.com/code/tangent.php
+- consider making the vertex format part of the cache signature
+	- this would allow us to use 32-byte vertices in reduced format situations
+	- consider providing Vertex32 and Vertex64 structs
+- implement normal mapping shaders and integrate into rendering pipeline
+
+Demo #2 TODO:
+- make Vector (and others) not enlarged by references
+	- use anonymous union/struct with -fms-extensions
+	- implement SIMD matrix multiplication
+- create turning animation
+- fresnel effect for water
+- audio starting/stopping/looping is a little rough
+- implement non-shader outlines using backface wireframes
+- libtheora integration for recording video, with audio as a FIXME
+- finish winged face data structure in res/type/Track
+- normal mapping
+- add characters and objects to scene resource
+- implement object/object collision handling in engine
+- implement multisampling
+	- window must be recreated to change multisample mode, or even to determine whether multisampling is available
+
+Filter/Compositing TODO:
+- filters should work correctly with depth testing and masking
+	- this means storing the depth in the framebuffer and using it as the fragment depth when compositing
+- filters should calculate screen-space bounding box of submitted geometry and only composite as much of the framebuffer as was written to
+- filters always need alpha for correct compositing of polygons, unless a rectangular area of the framebuffer is completely filled with opaque geometry
+
+Coding Style Notes:
+- don't document constructors/destructors as include dependencies, except in exceptional cases
+
+Global TODO:
+- scene partitioning with AABBs
+- volume based camerasets (no longer dependant on track)
+	- judge visibility by whether center of AABB is inside camera's volume
+- scripting
+- scene transitions
+	- script activated
+	- activated by player crossing planar mesh (kind of like a portal)
+
+Clean up DrawContext3.cpp fixed-function section.  Move the lighting setup to the dump.
+
+DrawContext3::DrawXXX should be a single parameterized function with flags for selecting partial materials and special states.
+
+We need a more flexible way of creating and accessing shaders in RenderResources, simply because there will be so many combinations of them.  For creation, we should create a compile-time data structure containing the different bits that can be combined with categorization so that we can, for instance, select one shadow bit out of all the available shadow bits.  The shaders could be cached, but they don't take up many resources, so it would be better to load them all on initialization.
+
+Consider adding mipmap (and anisotropy) support to variance shadow mapping.
+
+Its possible that RGBA packed data could be filtered; try it and see.  This would be integral to filtering in the packed shadow mapping method.
+
+Shadow mapping concept:
+- use planar variance shadow mapping
+- center shadow map on player with predetermined extents
+	- a 512x512 shadow map with 25x25 meter area would provide 10 cm resolution
+- we need an orthogonal projection that intersects the player's origin from the camera
+- render shadow map first, then provide it to forward render shader
+- render shader could use plugs for different shadow techniques if necessary
+- lock light's frustum origin to steps matching the physical resolution of the shadow map, such that the frustum doesn't appear to move though the player moves
+- calculate the near/far planes (and the frustum origin) for the ortho projection from the maximum intersection of the directional light and the camera frustum, considering that the directional light ray must intersect the player's origin
+- the big question is: should the shadow map be centered on the player or something else?
+	- i think the more flexible and correct solution would be to center the shadow map on (and therefore pass the directional light line through) the closest visible point in the center of the view frustum, which could be found by looking at the Z-value at the center of the screen after rendering
+		- of course, this would require rendering the scene before would could get that Z-value, so another solution for finding this value is needed
+	- another idea is to use the vertically oriented plane intersecting the player's vertical origin that is clipped to the view frustum; then its a matter of fitting the shadow map over this clipped plane
+- use ATI ShadowMap demo for implementation help
+
+It'd be nice to have a partially transparent black base making up the command bar.  It would need to have no margins, which is currently difficult to do.
+
+Make UpdateControllables similar to Update{Collidables,Trackables} and store Controllables in the scene like we store {Collidables,Trackables}.
+
+Switch construct/copy/destroy to construct/destroy and assignment.  Some instances of construct/copy should really be construct.
+
+The dependency generating code in the Blender animation exporter doesn't handle the case where the torso and upper body rotates while the legs remain stationary.  It ignores the legs as dependants on the root bone.
+
+Download updates from environment-textures.com since previous subscription.
+
+Add support for naming cameras in camera sets.
+
+CameraSet is a bad name because it is more than one word, which causes case ambiguity questions.  Find a single word that means the same thing.
+
+Support camera names in the camera set format and loader.
+
+We should be adding bias to the projection matrix when rendering the track in wireframe.  See http://www.intel.com/cd/ids/developer/asmo-na/eng/168495.htm.  We should also use Vertex{Array,Buffer} for faster rendering.
+
+We should not need assert when dereferencing a smart pointer, because all smart pointers should internally assert before dereferencing.
+
+--------------------------------------------------------------------------------
+
+We should be using WM_ACTIVATE instead of WM_{KILL,SET}_FOCUS.
+
+It would be nice if we could remove orientation.w from the native animation file format.  If we want to do that, it might be necessary to negate the quaternion when the w component is positive.  We also need to fix cubicInterpolator (probably a math::Slep problem).
+
+If we're going to loop in the AnimationController, we also have to loop in the Interpolator.  Allow the constructors of both classes to take a bool specifying whether to loop.  If the AnimationController reaches the end and is not looping, it should kill itself using the Kill member function.  Note that there should be no time between the last frame and the first frame of a looped animation, assuming that duration is equal to the time of the last frame.
+
+Our old C legacy code is influencing the design of our skeleton and mesh file formats.  The animation format has been updated for C++; consider updating the others as well.
+
+We still get FileNotFound errors when trying to read a file that is open in another program.  This can happen after exporting something from Blender, perhaps if there's an error.
+
+We should not be using an alpha buffer for the saturation filter, but a color buffer.
+
+The SaturationFilter seems to affect one of the other filters, causing black outlines around the player and causing the track/ground to go black.  The cause of this might be that when we render the objects to the alpha buffer, it is black.  Then, when we blend it on to the screen, the black shows through at the edges between opacity and transparency.  I'm not sure what the solution is right now.
+
+Allow for a default animation to be specified for a Character/Object.  This animation will run constantly in the background forever.  Even better would be to allow for multiple of such animations.  Just push them to the back of the vector every time the parser matches an entry.
+
+To get a smooth opening sequence, run the first frame using a very short deltaTime, such as .001.  This will load everything into the cache and then you can continue with regular frames.  This could be a feature of the Game object.
+
+Cause music to fade in/out automatically, similar to phys::Controller.  This would have to be optional in the Play function to still allow for immediate sounds.
+
+Things to do:
+- clean up AnimationController
+	- its currently lacking support for bone/vertex animation
+- MultiAnimationController for GaitController and IdleController
+- BipedController
+- picking and pathfinding
+- deferred rendering
+- scripting for cutscenes (targeted locomotion, dialogs)
+
+--------------------------------------------------------------------------------
+
+We should allow for Play to start at a certain time.
+
+--------------------------------------------------------------------------------
+
+EndianPipe needs to be implemented.
+
+Walking issues:
+- once a foot contacts the ground, its orientation on the XZ plane should not change until it is released
+- allow for locomotion animation to be controlled by either specific animations (GaitController) or by the BipedController
+- res::Gait should provide information for both BipedController and GaitController
+
+The ball of the foot should define the contact position.  If the hip is close enough to the contact point that the knee can bend, we should only bend the knee and not the ankle.  Otherwise, the knee should be straight and we should bend the ankle to reach as close to the contact point as possible.
+
+In fact, the above idea only holds when the foot is leaving contact with the ground.  If its beginning contact, the heel should define the contact position.  In that case, the foot can remain at 90 degrees from the foreleg and roll into the above state as the leg becomes upright.  The dot product between the contact-hip vector, when forward-oriented, and the up-vector can be used to decide when to switch contact states.
+
+--------------------------------------------------------------------------------
+
+FLAC files generated by timidity from MIDI don't seem to play.  They're also slightly larger than the ones generated by the flac program.
+
+The whole playing/stopping/paused thing in aud/Sound and aud/channel/AmbientChannel could get a little confusing, although it should work.  Playing, so far as the member variables are concerned, is only true as long as you're not stopping.  Sound::IsPlaying, however, is true so long as you haven't stopped; you could still be in the process of stopping (ie: fading).
+
+Fade out sound tempo (or pitch) and volume when pausing.  When losing focus, the transition can be instantaneous.
+
+All channels, both ambient and spacial, will have to be notified when pausing or resuming the game.  Channel will need to maintain a pauseLevel variable and use it to modify the tempo of the audio.  There will have to be a HasTempoCap virtual function for determining if the platform supports tempo/pitch playback modification.  Once the game has been fully paused, the audio system will not receive another update, so it must be notified that the pausing is complete.  The Pause function with no arguments should suffice for this.  At this point, all Channels can be released.
+
+--------------------------------------------------------------------------------
+
+We should be using ab for (b - a) instead of ba in intersect.tpp.  ClosestPointSegmentWeight needs to be cleaned up.
+
+Collision lists should be cached and updated the same as crossings. Edge lists are only used to build the collision list; they are temporary and don't have to be cached.  Rebuild the collision list when the collider changes direction; use another dirty flag.  Rescale the weights in the collision list when stepping to a point in time.
+
+Try disabling GL_POLYGON_SMOOTH and see if that gives a speed up.  Presumably, OpenGL creates anti-aliasing primitives when polygon smoothing is enabled.
+
+When testing colliders against one another, build a multimap of touched track faces to colliders.  From that map, build a set of potential collider pairs.  Test each of the collider pairs using a distance calculation.
+
+Materal and Mesh should not be attributes because they do not work very well with frames or accumulation or persistent state.  Material is not really useful for particles because it provides too much information that wouldn't be useful for a particle.  OTOH material IS useful for particles because it provides an easy way to assign material to particles.  However, they should not be attributes.
+
+Cull vertical faces and warn about steep faces in track exporter.  Also, consider using boolean operations to merge intersecting faces, considering that the volume is defined by the space below the highest face.
+
+Test cfg::ConfSource commit/write using Linux.  Implement cfg::IniSource using cfg::ConfSource as a base.
+
+Finish user-controlled movement in game::Player and phys::LocomotionController.
+
+--------------------------------------------------------------------------------
+
+For demo release:
+- player control
+- collision
+- phys::BipedController
+- basic rendering
+- UI interaction
+- basic scripting
+
+--------------------------------------------------------------------------------
+
+I wonder if Deserialize and Extract are basically the same and could be combined?  Deserialize should default to whitespace separators with merged spaces.  The problem is that Extract requires more detailed information about the extraction process than Deserialize can provide.  It also requires predicates rather than delimiters.  Really, res/adapt/text/extract, util/serialize, and util/string should all be implemented using a super interface that combines all of their functionalities and requirements.
+
+--------------------------------------------------------------------------------
+
+We should provide two basic rendering paths: one partially deferred with framebuffer objects and shaders, and the other a fixed-function forward renderer with no shadow mapping and hardware lights.  If any of the necessary extensions are not available for the partially deferred path, we MUST revert to the forward path; there's simply no other solution.  In that case, Resources does not need to create any buffers or shaders that are ONLY used by the deferred path.
+
+If partially deferred doesn't pan out, we could always go with a pure forward renderer.  Our shadow buffer would need n color attachments which would get bound to the n closest shadowing lights at render time, unless we want to build the scene in multiple passes if there aren't enough color attachments for the lights.
+
+We should use hemispheric lighting for outdoor environments.  We could also use a per-vertex alpha for fading between indoors and outdoors.  See http://msdn2.microsoft.com/en-us/library/bb173489.aspx.
+
+vid::opengl::DrawContext has a bunch of public member functions that aren't really for public consumption and the interface is inflexible.  We seem to be using GLenum for cubeFace in some places, and unsigned for it in other places (ie: DrawContext, DrawContext3).
+
+res::Material should have an opacity value which can be combined with phys::attrib::Opacity for object-level opacity.  res::Material::fresnel will only effect partially transparent objects.  The alpha channel from res::Material::Diffuse::texture should be used for binary opacity via GL_ALPHA_TEST.
+
+Outline shader needs to interpret depth linearly.  Check out http://www.gamedev.net/community/forums/topic.asp?topic_id=461347.
+
+We need support for general interface transparency and we need to apply it in game::Interface to make the interface fade in on start up after the default intro scene fades in.
+
+Cache coherence and frame rate should be distributed over n frames.  High values in the stats window should be converted to kilo or mega values.
+
+Consider variance shadow maps for hardware texel filtering.
+
+Optionally track screen-space bounding box of rendered geometry when drawing to non-default framebuffer so that we only need to copy the used portion of the framebuffer.  Assume the entire framebuffer is in use when no bounding box information is provided.
+
+Be aware of certain attributes and their interaction with AttribGuard, particularly GL_DRAW_BUFFER, GL_SCISSOR_{BOX,TEST}, and GL_VIEWPORT.  Be careful that they are not corrupted by out-of-order stack guards, particularly the buffer stack and attribute stack.
+
+Implement proper rendering of multi-pass materials using alpha buffer compositing via filters.
+
+Allow for partially transparent user interfaces via cfg::uiOpacity or somesuch.
+
+Avoid glGetError during the rendering loop as it causes a "sync point" on SLI cards.
+
+Remember that nested classes can access the private/protected members of the nesting class.
+
+phys::Scene needs to make data available through various filters.  The scene rendering function is going to need to be able to request geometry that intersects a frustum, a sphere, and a parallelepiped, as well as optionally sorting it by attributes such as material.
+
+Provide default projection and SetCamera function in DrawContext3.  Implement rendering of meshes in DrawContext3.  Use multi-pass compositing approach to rendering.  Composite in a chain like so: camera, light, material passes.  Use initial depth pass and turn off depth writes for remaining passes.  How should transparent objects be composited taking into account the z-buffer?
+
+Text widget should exclude line spacing from last line unless its parent is a vertical array and it is not the last widget in the array.
+
+Resolution independent screenshot rendering fallback:
+- if Size(viewport), render to back buffer
+- if haveExtFramebufferObject, create temporary framebuffer and render to it
+- fail explicitly
+
+We should provide dynamic casted versions of member accessors that deal with virtual objects in virtual classes (ie: vid::opengl::win32::Driver::GetWindow returns env::win32::Window).
+
+Use shared_ptr to store objects in phys::Scene.  Load most objects in game::Scene and insert them into phys::Scene.  phys::Scene will store objects in octree, game::Scene will store them mapped by name.
+
+glGetString seems to be returning a null pointer in vid/opengl/Driver.cpp.
+
+Need a function in game::Interface that updates cursor state and returns a boolean specifying whether the new cursor position is over the interface or not.  Otherwise, game::Game can defer to a similar function in game::Scene.
+
+We should have a way to check dependencies between extensions.  EXT_blend_subtract depends on a function defined in EXT_blend_minmax.  If EXT_blend_minmax doesn't get loaded properly, but EXT_blend_subtract does, we could end up with a null function pointer call.  We should also auto-generate more parts of the ext source files, possibly the whole thing using templates like ext.cpp.in and ext.hpp.in.
+
+For Linux, we need:
+- cfg/source/(Conf,Opt)Source
+- vid/opengl/x11/Driver
+- env/x11/(Console,msg)
+- inp/x11/Driver
+- sys/posix/file: (List,Walk)Dir
+
+Interpolation:
+- Image: maintain a queue of images with opacities and when a new image is set, add it to the top of the queue with a zero opacity and fade it in, then remove the previous images when it is fully opaque.
+- List: when list items are added or removed, make them fade in/out (opacity) as well as growing/shrinking the amount of space they take up.  Vertical space should go from zero to lineHeight.  Horizontal space should go from the current max to the max taking into account the width of the new item.
+
+ui::Interface::Slot::GetBounds is ugly.  I wonder if we should implement it in context unit size or in theme pixel size.
+
+Always include GL/gl.h before including GL/glext.h.  Only include GL/glext.h if you need access to extension functions or definitions.  Only include ext.h if you need to determine if the extension is available.
+
+Note that anytime you use n.n, a double literal, in an expression that involves a float, the float will be converted to a double and the result will be double.  This may force more conversions and double-precision arithmetic than would otherwise be necessary.  Be aware.
+
+We should never push attributes that bind objects, only attributes that enable/disable state or change parameters.  We should go through all instances of glPushAttrib and verify their efficiency.
+
+We should always call "while (glError())" to clear the OpenGL error flag before doing something that will be tested for errors afterwards.  This will prevent errors from leaking through when we don't test for them.  Search for glError and apply this technique.  I'm not actually sure about this yet.
+
+An optimization for vid::opengl::LayerDrawContext would be to keep track of the coordinates for quad and text rendering calls.  This information can be used to create a bounding box which can be used to only composite the used portion of the context.
+
+If we want to store a reference to inserted widgets or slots, we need to use a list rather than a vector.
+
+OpenGL states that we're not tracking:
+- blend function
+- texture binding
+Note that some states are being tracked within a limited scope.  For instance, DrawContext keeps the blend function as GL_SRC_ALPHA/GL_ONE_MINUS_SRC_ALPHA for its duration, although others can temporarily change it as necessary.  Perhaps we should document these constraints somewhere.
+
+Interface TODO:
+- interaction
+- frame corners
+- theme for button and edit
+- rendering of button, edit, and list
+	- list separators
+	- list panel elements
+
+When specifying the minimum size of widgets, the size should be in terms of the height of the base context, from 0 to 1.  If you give the widget a width of 1 and the base context is 800x400, the widget's pixel width should be 400 because the physical distance of width and height should be the uniform and based on height.
+
+Start using 0 and 1 more instead of math::Vector() and math::ScaleVector().  Consider doing a search for Vector constructor calls or initializer functions.
+
+It would be nice if we could turn on/off horizontal/vertical interpolation separately and without storing copies of the texture for each option.
+
+Need better defaults for resource member variables and possibly automatic vertification.  Each resource type can have its own verification function which will automatically be called after the load function.
+
+time::Delta is inadequate for pausing.  We need to differentiate between the game being paused, and the game being out-of-focus.  If its out-of-focus, we can sleep every frame, relinquishing our time slice.  If its simply paused, we have to do every frame as usual, except scene objects won't move (or not as fast), but the ui::Interface continues to update and be drawn at full speed (so no sleeping).
+
+Grayscale conversion can be done with a dot product between the RGB color and (.222, .707, .071).  Perhaps the OpenGL dot3 extension can be used here.  Code for this is available in the sandbox.  This is only useful when shaders are not available.  Otherwise, there is a color2gray shader available which might be faster and less prone to inaccuracy.
+
+Consider providing UI-level particle effects for such things as trailing particles falling from the mouse cursor.  Also consider allowing for normal maps in UI themes and attaching a light to the cursor for 2D normal mapped shading.  The light position can be specified in vid::win32::DrawContext using glLight.
+
+Write some SIMD copy and swizzle functions for res/type/Image.cpp.  Image data has been aligned to 128-bit boundaries, so its compatible with SIMD.
+
+It may give a cleaner result to lock glyphs to whole pixels when rendering in DrawContext::DrawFont.  This would require converting bearing, size, and kerning to whole pixel scale using ceil and accounting for that during wrapping, positioning, and rendering.  We would need to hint our glyph outlines during RenderOutline to make this method really look good.  Note that FreeType can only hint glyphs at load-time, so we're on our own if we want to do it at render-time.
+
+See if OpenGL alignment is true alignment (ie: memory has to be aligned) or fake alignment (ie: rows need to be aligned relative to the base pointer).  If its the second case, we can implement more flexible alignment restrictions for OpenGL texture creation.  Actually, since image data is now 128-bit aligned, its likely that we could do this for both cases.
+
+res::Index is called in Game during an indexing phase.  We should only run the indexing phase if it has not been run yet or is out-of-date.  The indexing phase should involve a screen with some loading graphics and the indexed paths scrolling down.  The resource and cache systems will have a single, global state, but it is possible that sometime in the future, they will be refactored into objects which will be created and owned by Game.
+
+inp::Driver handles signal interception and dragging state
+inp::platform::Driver handles cursor state
+inp::Device and its derivatives handle signaling and continuous state updates
+
+Consider generating vertex buffers from text and storing them in the cache as an additional optimization.  Also consider rendering text to a texture.
+
+Implement phys::Scene.  We may want a Remove or Erase function to go along with Insert in ui::Panel, ui::Interface, and phys::Scene, especially if scene objects are to be destroyable.  I suppose we'd need a handle of some kind to identify inserted objects, since the inserted objects will be clones (unless they're shared_ptrs, in which case no handle is necessary).
+
+Extend scene editor to support material editing, especially 3D painting on blend maps.  Separate program into multiple source files.
+
+Issues with Pipes and Streams:
+- FileStream::Seek does not throw EndOfStream when seeking past the EOF
+- Pipe::Lock does not prevent the hard data from being changed
+	- locked data may not be representative of the hard data
+	- Stream::Size may not be accurate if new data is appended
+- pipes remain locked when scanning sub-pipes
+	- scanning occurs recursively, and pipes are not unlocked before their found nodes are locked and scanned
+
+A* pathfinding in res/type/Track.  See Amit's pathfinding info.  Need a way to find the center point of a track face.  GetCenter function or precompute it?  Need to finish ray-triangle intersection if using software hit testing.
+
+Implement Lua scripting with fake POSIX threads for concurrency and pure blocking operations.
+
+Add a tar scanner (libtar) and a gzip scanner (zlib).  We will need to build under linux to test the tar scanner because libtar requires a bunch of POSIX functions.  zlib scanners were implemented in rosin.
+
+Planning for object interaction and responsibility:
+- aud::Driver and vid::Driver observe phys::Scene
+	- need to iterate over cameras and for each camera:
+		- get n closest sounds
+		- get visible forms
+		- get visible particles
+- ui::Interface (or just each widget) tells vid::Driver how to draw itself
+	- could use observation like phys::Scene except for widget::Draw
+- game::Game passes input events to game::Interface, otherwise to game::Scene
+- (ui or game)::Interface calls events in aud::Driver
+
+Things to do:
+	- scanners should not be tested unless necessary
+		- this has to do with the current method of indexing everything; if we only scanned/loaded something to satisfy additional path elements on request, we wouldn't have a costly indexing step
+		- once satisfied, the paths should be cached/indexed to avoid having to search for the resource next time it is loaded
+	- store path in Pipe
+		- fixme in res/scan/minizip.cpp
+	- why are we indexing resources?
+		- causing scanners to run on every file
+- add skeleton constraints
+	- exporter
+	- resource
+	- inverse kinematics
+- implement script module
+- implement audio/win32 module
+- finish BipedController
+	- use res::Gait for configurable parameters
+- finish collision detection and response
+
+We need a Collider base class that can provide collision detection and response for collidable objects.
+
+We need a math::Ease function that takes a mu, ease-in, and ease-out and produces an eased mu.  This could be merged with the math/curve module.  This has been implemented in math/interp as Hermite(Interp,Scale).
+
+All attributes are mixins.  Mixins are not inherently Controllable.
+
+Provide fast versions of Pose::Bone::GetXXXMatrix that don't check the dirty flag, as well as a function to update all dirty bones in a Pose.  These functions can be used in cases, such as during rendering, where we need to access the matrices many times and checking the dirty flag each time would have a detrimental effect.  GetInvPoseMatrix may be a useful addition.  It would be nice to provide separate dirty flags for pose and skin matrices to avoid updating matrices that are not in use.
+
+If we need transient controllers, we can store them separately from persistent controllers in Controllable.  Attributes would need to implement LoadPersistent and SavePersistent to fetch/store the persistent state.  Our update order would be as follows: LoadPersistent, UpdatePersistent, SavePersistent, UpdateTransient.  Each step would have to be completed for all controllables before continuing to the next step to ensure persistent and transient updates are separated for bones and vertices (not anymore).
+
+Animation resources must use absolute parameters to avoid the need to access the bind pose and to avoid any ambiguity regarding the relativism of certain parameters.
+
+SCENE EDITOR TODO:
+- support recent scene files list
+- support recent model files list
+- disable mouse movement when out of focus to prevent affecting camera or tools
+- wrap cursor when not in selection mode
+	- see http://lists.wxwidgets.org/archive/wxPython-users/msg00293.html
+- consider hiding the mouse while not in selection mode
+
+IMPORT/EXPORT TODO:
+- in the OBJ importer, if two faces share two vertices but both have different normals then the edge should have a maximum crease
+- during export, split vertices of creased edges and recalculate the normals
+	- the normal is the average of all the faces that connect to the vertex
+
+WINGS TODO:
+- extrude edge
+
+THINGS TO DO:
+- implement audio
+- implement scripting
+- finish biped controller
+- finish collision detection
+
+Pose::Bone and Deformation::Vertex should not be individually controllable as this puts too much burden on the system for basically no benefit.  INCORRECT: there is practically no burden for a given controllable if it has no controllers.  So just don't attach controllers to vertices and you'll be fine.
+
+Material loader needs to handle uniform literals.
+
+Image conversion is incomplete and slow, but it works for simple conversions.  We should avoid using floating point during conversion; use large integers instead.  Simple conversions should have a dedicated codepath for speed.  We need to deal with endian issues when moving bytes into and out of words; use WORDS_BIGENDIAN to switch implementations.
+
+See EXT_secondary_color and EXT_separate_specular_color.
+
+To maintain a consistent look, we should use an all or none approach.  All rendered objects should have the same limitations, whether specular or not, normal or not, and blending or not.
+
+PHYSICS TODO:
+- need better algorithm for detecting edge crossings
+- need to clip segment collisions at ends (currently planar)
+- need more thorough detection of touched faces
+- need to handle body-body collisions (see below)
+
+- preprocess all bodies in the scene
+- find all of the track faces intersecting each swept circle
+- determine the first collision
+- build a constraint plane and add it to the list for any body involved
+- move the simulation ahead by the amount of time before the collision
+- repeat step 2, unless the simulation time is complete
+
+- we can separate bodies from one another, creating separate simulation worlds and avoiding the need to process the entire simulation together
+- if two bodies are moving away from one another, or the sum of their radii and the magnitude of their movement is less than their distance, then they can have no effect on other another
+- this could be faster and good enough if you just use the sum of the movement vector components rather than the length which entails a square root
+
+Bodies should have one of 3 possible collision states: collidable, meaning the body participates fully in collision detection, impassable, meaning the body acts as a collidable to other collidables but doesn't perform collision detection itself, and passable, meaning the body doesn't participate in collision detection.  Most NPCs and large objects can be impassable and most small objects can be passable, but the player should be collidable.
+
+For body collisions, construct a map of active bodies to potential active/passive bodies.  Include only those bodies who could possibly collide based on movement, radius, and distance.  Any passive bodies that are not included should be preprocessed like the inactive bodies.
+
+For every timestep, look first for collisions between moving active bodies and walls, and then look for collisions between bodies.  Take the first occurance of either and store information in "collision" struct.  Remember to update all potential passive bodies included in the map, alongside the active bodies that are already being updated, because they are not preprocessed like the other passive and inactive bodies.
+
+When we get lost in the ether after moving into a null track face, rather than binding the body to the null face, we should find the best track face for the body at its final position, assuming it makes it through all the collidables along the way, and bind it to that face, since it may have moved through the ether and into a viable face.
+
+TODO RIGHT AWAY:
+- implement collisions
+- implement animation loader and exporter
+- implement multipass multitexture rendering with blending for terrain
+- implement BipedController
+- implement basic OpenAL audio module
+- implement basic Lua scripting module
+
+Bind all framebuffer textures to a single framebuffer object and switch between them using glDrawBuffer(s).  This should make things easy and fast.
+
+We need to support quotes in our text loaders to allow for paths with spaces.  This could be implemented in util::Split as an optional feature.
+
+sys/Thread doesn't compile.  Also, sys/Mutex is not complete; the read/write selection interface is unreasonable and we may need to reference count the locks.  Herb Sutter notes 4 methods of structuring the Pimpl.  He recommends this one in particular: put all private members, data and functions, into the Pimpl.  See http://www.gotw.ca/publications/mill04.htm and http://www.gotw.ca/publications/mill05.htm for details.
+
+CURRENT ISSUES:
+- implement animation loader and exporter
+- integrate Gait resource with BipedController
+- implement BipedController
+- implement font loaders and renderer
+- implement scripting system with loaders
+- implement ui system with theme resource and loaders
+- implement hierarchical ui widgets
+- clean things up in preparation for resource change notifications
+	- make a Texture class
+		- necessary because deletion will involve removing self from notifier
+- fix the const issue in cache which is a problem with Var and Vbo
+	- they can't update because, since they're in the cache, they're forced to be const
+	- code will need to be fixed in vid/opengl.cpp
+
+IMAGE SPACE INK OUTLINES:
+- bind depth and normal textures from framebuffer via multitexturing
+- render fullscreen quad with edge detection vertex and fragment shader
+
+LINE PRIMITIVE INK OUTLINES:
+- if the above isn't possible, do it this way instead
+- during ambient pass, set state to render backfaces in thick wireframe
+
+NORMAL MAPPING:
+- normal map needs to be used in every light and normal pass
+
+FALLBACK ORDER:
+- if shaders are supported, but not all interdependent shaders could be created, drop all of the interdependent features out of shader mode into fixed function
+- we should prefer feature completeness over feature perfection
+
+MAIN LOOP ORDER:
+- game induced motion (control)
+	- update player using inp::control
+- controllers (animation)
+- physics (collision)
+	- bind phys::Body to phys::Track
+- deformation (skinning)
+	- apply phys::Skin to vertex arrays/buffers
+- rendering
+
+CORE VISUAL TECHNIQUES:
+- normal mapping
+- ink outlines
+- shadow mapping
+- offscreen composition
+
+FBO ALLOCATION
+- 1 RGB8 for camera compositing during cross-fades (more than 1 visible camera)
+- 1 XY8Z16 for ink outlines to store XY normals and 16-bit Z depth
+- 1 Z24 for shadow mapping
+- 1 RGBA8 for hierarchical UI compositing
+
+MATH NOTES:
+- cross product does not necessarily produce a normalized result
+- cross product inputs do not have to be normalized
+- dot product inputs need to be normalized when finding angle
+- assert every input that is required to be normalized
+
+BLENDER NOTES:
+- hotkeys can be found in .blender/scripts/hotkeys.py
+
+Consider deriving res::Stream from std::istream and use std::istream in loaders, scanners, savers, and adapters.
+
+configure does not handle preset CXX and friends very well.  The predefined values are ignored and overwritten and any flags appended to the program name are thrown away.  The value should be split at the first space, the flags being remembered and appended to the final program selection.  The preset program name should be assumed as the default, unless it is not available, in which case the standard search method should follow.
+
+It may be a bit more efficient to bind the appropriate textures and renderbuffers to the framebuffer at render time in cases where two framebuffer targets both require depth buffer information.
+
+Exporters that separate parts from objects, like the mesh and skeleton, must bring those parts into unison during exporting.  If a skeleton does not have the same origin as its associated mesh, things will not match up in the engine.  This fits well with the idea that mesh/skeleton exporters should find and export the associated parts of the expected type if given a bad type.  For example, a sksleton exporter, when a mesh is selected, should export the associated armature instead.
+
+Consider cutting the CameraFollowController in favour of just using preset camera views.  Each scene will have a set of optimum camera views.  Each track face will have a set of camera view references.  Every frame, a set of potential camera views will be selected based on the track face that the player is standing on.  This list will be culled by taking into account the track faces of the other entities that the player is interacting with.  Finally, the remaining views will be weighted based on the spread of the view (such that objects don't occlude one another), the player's ability to see where he is going, and the tendency to not change views unless necessary.  The transition between views will follow a spherical path around the center of the action.  During transitions, we will ignore changes to the potential view set until the end of the transition is reached.  When no preset camera is available, we should use a standard follow camera that can be rotated around the player using the mouse when the right mouse button is down.
+
+Consider providing a Gait resource which defines parameters for the BipedController in a text format.  The BipedController could take a Gait resource on construction and produce corresponding animations.
+
+We should be using ColIterators in ConvertMatrix rather than RowIterators to mirror our storage order for optimum theoretical efficiency.
+
+HAVEN'T YOU LEARNED C++ YET?
+- copy constructors and assignment operators are not automatically transmissive; when you write one, you probably want to write the other one too
+- remember to use the explicit keyword for any constructor that should not also be used for implicit conversions
+- nested types are non-deductible
+- base classes are accessible in derived classes without namespace scope resolution
+
+Pipes should contain the path used to create the Pipe.  This will allow loaders like the 3DS Model loader to construct an absolute path to its contained Mesh resource.  It will also allow for better error messages that provide the path to the resource and, for text formats, the line where the error occurred.
+
+We should have a method of locking files (or sections of files if possible) to prevent write access to the portions which are locked in the Pipe.  There would have to be a virtual function in Pipe which would be called with Lock to lock and unlock write access of the physical file.  These functions, at least for FilePipes, would then call the appropriate sys/file function to prevent or allow write access to the given range within the file.  See http://en.wikipedia.org/wiki/File_locking for ideas about how to implement this.
+
+We'll need more than just focal distance for depth of field.  The focal depth attribute should be set to zero by default in phys::Camera.  Then we need to provide another attribute giving the range in focus, as well as perhaps a falloff exponent.  These should be set, in Camera, to values that give an infinite focus range.
+
+phys::Forms should probably not be globally registered because they might need to be kept separate in some cases, and its impossible to do the collision detection with all at once because we need to pass them through a spacial subdivision scheme before even attempting collisions.  In that case, you'd want to pass a set of collidable forms to a collision function which would perform the physics calculations on that subset.
+
+- cache signatures cannot depend on pointers
+	- pointers can be overwritten with a deallocation and susequent allocation
+		- this could cause the signature to be bound to a dependency which was not the intended one
+	- SkinSig should have a different name since Skins are not cached anymore
+	- SkinSig should depend on the mesh and skeleton path, as well as a boolean specifying whether to optimize for writability
+- each Part in phy/Form should have its own Deformation attribute
+	- this will override the cumulative Deformation attribute
+- at what point will UpdatePose and UpdateDeformation be called?
+	- one possible option for UpdatePose would be to store the last updated PositionOrientationScale in the Pose and Bone and, when accessing the various Matrices in Pose and Bone, compare the PositionOrientationScale and, if its different, update the Matrices as necessary
+		- this could be slow when accessing matrices repeatedly for transforming a large number of  vertices
+		- the better solution would be to update a dirty flag whenever one of the Set functions is called in PositionOrientationScale
+
+- use 3D Perlin noise for the wind field
+	- the third dimension is time
+	- we can cache only the cells of the field that are in frustum range
+	- possibly extend to 4D Perlin noise to vary by height
+
+- terrain layer transitions via alpha textures
+	- requires a second texture coordinate for alpha texture (bad idea)
+	- perhaps good enough to just do vertex interpolation
+	- the alpha channel in the diffuse texture could be used to modulate the vertex interpolation
+		- at 0.5 vertex alpha, a 0 texture alpha would yield a 0 final alpha, and a 1 texture alpha would yield a 1 final alpha
+
+- Fading a Controller in/out fades its time-scale in/out at the same time.  For an absolute controller which is the first active controller and is being faded in, its opacity will define the time-scale and the interpolation between the attribute state before the controller began fading in, and the given state of the controller.  For all other first active controllers that are being faded in/out, the opacity will define the time-scale and nothing else.  For all non-first-active controllers that are being faded in/out, the opacity will define the time-scale and the interpolation between the attributes of the lower level and the controller.
+
+- ignore DAG for now, but continue looking into it as a potential unifier
+	- ignore anchoring until DAG gets figured out
+
+- here's an idea: derive all attributes from a template base class so that an attribute can be anchored to any attribute of the same type.  it would be even better if an attribute could be anchored to any attribute for which there is an assignment operator.  (this won't work because multiple base class instances will exist in a single object composed of multiple attributes of the same type)
+- we need to maintain a dependency graph of all anchors.  each attribute will have to form a separate graph, unless we support anchoring between different attributes.  each frame, all Controllables will be updated in the usual fashion.  then, the dependency graph will be transversed, each attribute maintaining its anchored value in relation to its parent.  if a child is anchored to two parents, it will maintain an average value between the two.
+- the correct method of dealing with dependencies like this is a DAG.  see http://www.blender.org/cms/Dependency_Graph.633.0.html for more details.  this could be the singular solution which unifies the Controllers, anchors, Pose, Deformation, and basically the entire physics system.
+- BipedController does not need anchoring.  the same thing can be done if we can find the world-space coordinates for a given bone.
+- Pose would not naturally contain visual information, but only skeletal transformations.  Deformation could deal with vertex transformations.  visual attributes would go in Form.  So there are these three: Pose, Deformation, and Form.
+
+Mounting, as accomplished through the scene graph, should support hierarchical transformations with local/world coordinate calculations.  Anchors can be used to provide supplementary binding of one node to another.  This would be used for things like anchoring the feet to the track in the biped controller.
+
+--------------------------------------------------------------------------------
+ALL ABOUT THE CACHE:
+
+We cannot rely on a binding between the cache and the resource system.  In reality, the two have no inherent relationship; only the stored elements have a relationship.  What we should be doing is, whenever an object is based on a resource, provide a callback function which will be called whenever the resource is modified.  We could attach a util::Signal to every resource which derived objects could add themselves to.  The actual signal would have to be stored in the resource manager at some level, not in the resource itself, unless we were to implement a Resource base class.
+
+The things that are put in the cache should not contain independent state, should be reconstructable from their dependencies at any time, and should take up memory that could be better used elsewhere.
+
+We need a way to invalidate (purge) a cache datum when one of its dependencies is modified in an unexpected way.  This would include a resource being modified on the file system, a phys::Form::Part being destroyed, etc.  One solution would be for a signature to be a combination of a set of parts, each part representing a specific dependency.  Then you can purge any datum that contains a given matching dependency.  This may require dynamic casting, but its the best solution we have right now.
+
+Continuing from the last paragraph, we need a more generic cache system with a way to update a dependant when one of its dependencies changes.  In turn, any of that dependant's dependants should also be updated, and so on.  The most obvious solution to this is some kind of generic hookable callback mechanism signaling a change in state.
+
+Continuing, this problem is more related to the resource system than the cache.  A given object that has some level of dependency on the resources, which are meant to be static, should be able to register itself to receive notifications when a certain resource changes state.
+
+Formalization of cache datum type dependencies: (invalid?)
+- resource
+	- explicitly, the type and path of the resource
+	- indirectly, the data stored in the containing archive
+- texture
+	- explicitly, the path of the image resource
+	- indirectly, the image resource used to initialize it
+- vertex buffer
+	- explicitly,
+	- indirectly, the form, including the mesh, pose, and deformation
+- skin
+	- explicitly, the path of the mesh resource and the pose
+	- indirectly, the mesh and the pose
+
+Formalization of resource dependants requiring notification if any of their dependencies change state:
+- phys::Skin
+	- directly depends on res::Mesh
+	- indirectly depends on res::Skeleton through phys::attrib::Pose
+- phys::Pose
+	- directly depends on res::Skeleton
+	- directly depends on res::Mesh for bounding volume construction
+- vid::Texture
+	- directly depends on res::Image
+- vid::VertexArray and vid::VertexBuffer
+	- directly depends on res::Mesh
+
+We need some sort of cache::Proxy which can be constructed with either a real object or a function for creating the real object.  This is a promise, a lazy creational proxy, as described here: http://okmij.org/MacHack96/promise.html.
+--------------------------------------------------------------------------------
+
+Game should provide the non-generic animation controllers.
+
+Game camera:
+- move spherically towards the target pos with soft accel
+- need to store:
+	- axis for rotation between current and target
+		- defined as Norm(Cross(focus - pos, focus - target))
+	- distance along sphere from current to target
+		- defined as angle * distance
+		- or std::acos(Dot(Norm(focus - pos), Norm(focus - target))) * distance
+
+We're not providing a full Vector facade in Slice (such as Dot) because that would be overwelming.  Slices need to be tested for their interactability with Vectors as far as the facade is concerned.  It would be nice not to have to convert Slices to Vectors whenever you want to do something non-trivial with them.
+
+Consider changing Matrix initialization to column major order.  This would have each vector given on construction used as a column vector rather than a row vector.  Functions that would be affected by this change include: LookMatrix.
+
+The math primitive implementations should be a bit more consistent.  There's a lot of deferral going on, in some cases none where there should be some, and sometimes different implementation methods for different functions in the same group.  Defer to the base class assignment operators whenever possible, rather than reimplementing them in every derived class implementation.
+
+Don't forget to use glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA) for most alpha blending.  See http://home.comcast.net/~tom_forsyth/blog.wiki.html#%5B%5BPremultiplied%20alpha%5D%5D for details.
+
+The image renderer needs to have no interpolation at polygon borders.  See the cursor for an example of what this causes.  We can use EXT_texture_edge_clamp to fix this.  Use glPushAttrib(GL_TEXTURE_BIT).
+
+How should case sensitivity work for resources?  I think resource paths should be case insensitive to avoid mods working for people on Windows but not on any other system because they mismatched the case.  On the other hand, this could lead to unexpected occlusion on case-sensitive filesystems, but that is unlikely if you give your resources reasonable names.  Probably this can be simply implemented in the res::NormPath function, depending on whether it is being used consistently.
+
+Serialization needs to be split.  Value serialization, for boolean, floating point, string, and vector types, needs to go into the cfg namespace.  Iterator serialization needs to stay in util under a different name, with the capacity to use either cfg serializers or std serializers.
+
+The image and mesh drawing functions are questionable as an interface.  Basically, they function like an immediate mode, while the audio system functions like a retained mode.  Which is more suitable in this case?  The solution is for the video system to request a set of renderables from the physics system.  The audio system should function in a similar manner.
+
+Finish png image saver.
+
+Need to tell the global cache to remove all the data derived from a res::Source which is being reindexed or destroyed.  Therefore, need a way to match global resource paths to Source-level resources to deal with occlusion.
+
+If no resolution is specified (ie: vid.res is 0,0), default to current screen resolution when changing into fullscreen mode.
+
+Implement screenshots.  Support arbitrary resolutions using "Rendering Print Resolution Screenshots," "Game Programming Gems 2," p. 406.
+
+We need to define a default floating point type somewhere, probably in config.h to ensure its available everywhere.  Currently, we're using float whenever we have to specify a floating point type, which will make it harder to switch to double if we want decide to.  If we implement this, we'll also have to stop making float literals and let them default to double as per the standard.
+
+Perform automatic preloading and prefetching in a separate thread.  Prefetching can be part of the cache interface, while preloading can be part of the resource system interface.  Both could be given requests from other parts of the program.  These requests would be fulfilled over time in auxiliary threads.  The cache system has automatic timeout and cleanup, so its prefetch interface would be trivial.  The resource system only keeps resources in memory while they are being used, so preloading would require someone to "own" the resource after it has been preloaded.  This can be accomplished with a Proxy which points to the partially constructed resource.  The Proxy can have a function that turns it a concrete resource.  The function could either simply call Load or, if the resource is partially loaded already, attempt to finish loading it somehow.
+
+Procedural walking animation can be implemented using anchor points which switch from foot to foot.  These points will force the entity to change position during animation in such a way that the anchored bone does not move.  Multiple bones can be anchored, contraining the pose.  Bones can be anchored to other objects/skeletons, functioning as mount points.  We'll have to resolve this intersection of functionality between anchors and mount points.
+
+The game camera should follow the mouse while keeping the player and as many areas of interest in view as possible.  The camera should move smoothly and it should focus on whatever the cursor is pointing to.  The input driver will need to move the cursor using relative coordinates.  The camera system can transform the cursor into world coordinates, rotate the camera (thereby causing the cursor to move), and calculate the resulting cursor position in screen coordinates.  Another option is to use a unit sphere to locate the cursor on when moving the camera.  Either way, the cursor screen position in will be affected by the camera.  This functionality could be turned off by setting cam::followMouse to false during cut-scenes.  We'll also need a similar means of hiding the cursor.  We'll need to use the delta mouse coordinates (independent of the camera) to deal with drag and double-click rectangles.
+
+cfg:: should hook env::focusSig.  When leaving focus, cfg:: should commit all of its modified variables.  cfg::commit can be removed from the shutdown routine in this case.  When coming back into focus, cfg:: should update all of its variables.  When a variable is changed during an update, we may need to fire some signals to let other parts of the program know that the variable has changed.  log:: should have all sinks and filters ready in case the log variables are modified.  env:: should integrate more closely with cfg:: and avoid storing local copies of its variables.  Other modules can hook env::focusSig as well, checking if any cvars have changed since cfg is just about the first system to initialize, so it will be called by env::focusSig first.
+
+res::Scan, res::GetLoader, and res::SaveImage should be able to deal with recursive extensions like .tar.gz by walking down each extension part.
+
+Switch from centralized configuration variables to distributed cvars, each local to its own sphere of influence.  This is how Doom 3 does it and it would reduce dependence on the cfg module.
+
+We should be comparing type_info using the built-in equality operator and before function, rather than using a pointer to the type_info object, because the object returned is not guaranteed to be the same object every time.
+
+During linking, high-level libraries should come before low-level libraries.  This could be done in configure using a sort function.
+
+Configure should test for different include directories.  For example, lua headers could be installed in <lua51/lua.h>, <lua/lua.h>, or <lua.h>.  Also check for pkg-config file.
+
+Consider using xxx-config whenever its available, and using reasonable defaults when its not.  This would aleviate the above package directory issue.
+
+Add support for config.site in configure.  Search $CONFIG_SITE, $prefix/share/config.site, and $prefix/etc/config.site.  If found, execute the site script and ensure that it gets used internally.
+
+Account for --includedir and --libdir options when searching for libraries.
+
+Support --sync in the bootloader.  When the bootloader receives --sync, it should use the same thread for both stdout and stderr, and duplicate the outWritePipe to get an errWritePipe.
+
+The bootloader should pass --console to the program, allowing it to decide whether to spawn a new console or assume the current one, at least under Win32.  On other platforms, other techniques may be necessary.  Once this is done, we may be able to remove log.con.spawn.
+
+Attempting to write to a spawned console (using WriteConsole) when run from the bootloader fails.  This may have something to do with the fact that WriteConsole cannot write to a file and the streams are redirected in special ways during bootloading.  WriteFile doesn't fail, but it still doesn't write to the console.  This might not be a problem given the use of the --console command, in which case we wouldn't ever spawn a console when run from the bootloader.
+
+Consider implementing color console support.  Partial support is in rosin/branch/sandbox/log.  Refer to http://en.wikipedia.org/wiki/ANSI_escape_code for more information.
+
+Consider implementing color management via lcms.
+
+We need to support different versions of the same OpenGL extension (ie: SGIS_texture_edge_clamp and EXT_texture_edge_clamp).
+
+We should ensure that functions that use resources recognize that the resources may be in a default state (ie: an image might have no size or channels).  So long as the state is consistent, its okay and shouldn't result in a bug/error.  We should verify the consistency of each resource after it is loaded before returning it.  Loaders and scanners should not depend on correct input; they should verify whatever they read before attempting to apply it, especially with regards to buffer overflows.
+
+Space partitioning ideas:
+- use an octree
+- calculate AABBs for each form
+	- can be done on construction
+	- use the mesh and skeleton information from res::Model
+	- calculate a capsule (hot dog) around every bone
+		- only need the maximum distance of all primary child vertices
+		- primary vertices are those with the bone as their primary influence
+		- maximum distance = radius
+	- capsule gives two equal spheres at the end points
+	- spheres can easily push out the AABB along each axis
+	- store the capsules in the cache with a signature from the res::Model path
+- when frustum culling, store index of frustum plane that last rejected a given AABB and test against that plane first next time for early rejection (see http://www.gamedev.net/community/forums/topic.asp?topic_id=450528).
+
+Rendering features:
+- light rays
+	- these should exist in dusty, sunlit rooms
+- outlines
+	- all objects should be outlined in ink
+	- render the standard shaded representation to the color buffer
+	- also render to a secondary normal buffer and depth buffer
+	- render the normal/depth as a full-screen quad to the color buffer using a pixel shader to generate edges from the normal and depth values
+- depth of field
+	- camera should focus on whatever the mouse is pointing to
+
+-------------------------------------------------------------------------------
+Render Technique Fallthrough (from Rosin's TODO)
+-------------------------------------------------------------------------------
+Static rendering
+	1. vertex buffers
+	2. vertex arrays
+Skinning
+	1. vertex shader; 4 weights per vertex
+	2. ARB_vertex_blend; many, many weights per vertex XXX no nvidia support
+	3. EXT_vertex_weighting; 2 weights per vertex XXX no nvidia support
+	4. OpenGL matrices; 1 weight per vertex XXX too many state changes
+	5. software transformation and interpolation
+Normal mapping
+	1. vertex/pixel shader
+	2. register combiners
+	3. glTexEnv dot3 (see http://www.3dkingdoms.com/tutorial.htm)
+	4. no normal mapping
+Ink outlines
+	1. deferred shading with image space edge detection
+	2. line primitives
+	3. no outlines
+-------------------------------------------------------------------------------
+
+The size of an OpenGL texture can be determined using glGetTexLevelParameter.
+
+Useful links:
+http://www.sjbaker.org/steve/omniv/alpha_sorting.html
+http://bcl.sourceforge.net/ (zlib compression library)
+http://groups.google.ca/group/comp.lang.c++.moderated/browse_thread/thread/b396fedad7dcdc81
+http://www.3dkingdoms.com/weekly/weekly.php?a=37
+http://www.3dkingdoms.com/tutorial.htm
+
+FILE FORMATS:
+	animation: pageanim
+	archive: ar, tar, zip
+	audio: flac, vorbis, wav
+	compression: bzip2, gzip
+	image: apng, avi, bmp, exr, gif, jpeg, mng, pcx, png, ppm
+	material: mtl, pagemat
+	mesh: 3ds, obj, pagemesh
+	model: collada, u3d
+	skeleton: bvh, pageskel
+ARCHIVE FORMATS: ar, tar, zip
+FILTERS: bzip2, gzip
+SOURCES: dir, file, libcurl
+
+Threads will be used here:
+- audio streamer, to stream audio at a constant rate
+- prefetcher, to precache data for expected future access
+Thread locks are required here:
+- cache
+- res
+
+Should we be using GMT or local time?  We're currently using local everywhere:
+- configure: build date/time
+- log: initial execution time
+- log/TimeFilter: time filter output
+- res/type/image/save/png: png creation time
+- util/path: date/time symbols in ExpandPath
+
+Before release:
+- release any patches to LGPL libraries
+- consider flattening recursive functions
+	- res::DirSource::List, res::IndexedSource::Scan, sys::WalkDir
+- deal with FIXME, TEST, and HACK notices
+- verify that no scanners are calling MakeStream unnecessarily
+- profile with gprof (--enable-profile, run, gprof page.exe)
+- ensure command line options are being responded to
+- ensure all log output deals with verbose/quiet appropriately
+- ensure win32 configuration works with -DUNICODE
+- remove loading of unused OpenGL extensions
+- remove cruft, especially unused utilities
+- ensure meaningful error messages are being thrown
+- configure without --enable-debug and --enable-profile
+- optimize branch prediction
+	- build once with -fprofile-generate in CXXFLAGS and LDFLAGS
+	- perform a training run to generate branch statistics
+	- rebuild with -fprofile-use in CXXFLAGS

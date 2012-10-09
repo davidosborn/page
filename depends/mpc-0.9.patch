@@ -1,0 +1,26 @@
+Index: mpc-0.9/configure
+===================================================================
+--- mpc-0.9/configure	2012-03-18 00:52:37 -0600
++++ mpc-0.9/configure	2012-03-18 00:51:09 -0600
+@@ -4498,7 +4498,7 @@
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for DLL/static GMP" >&5
+ $as_echo_n "checking for DLL/static GMP... " >&6; }
+    if test "$enable_shared" = yes; then
+-     LDFLAGS="$LDFLAGS -no-undefined"
++     LDFLAGS="$LDFLAGS -Wl,-no-undefined"
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+
+Index: mpc-0.9/src/mpc.h
+===================================================================
+--- mpc-0.9/src/mpc.h	2011-07-15 17:16:44 -0600
++++ mpc-0.9/src/mpc.h	2011-07-15 17:16:06 -0600
+@@ -134,7 +134,7 @@
+ /* Support for WINDOWS Dll:
+    Check if we are inside a MPC build, and if so export the functions.
+    Otherwise does the same thing as GMP */
+-#if defined(__MPC_WITHIN_MPC) && __GMP_LIBGMP_DLL
++#if __GMP_LIBGMP_DLL
+ # define __MPC_DECLSPEC __GMP_DECLSPEC_EXPORT
+ #else
+ # define __MPC_DECLSPEC __GMP_DECLSPEC

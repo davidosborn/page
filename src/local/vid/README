@@ -1,0 +1,34 @@
+This is the video module.  It handles all of the graphical rendering for the
+program, excluding anything to do with the windowing environment, which is
+handled in @c ::env.
+
+Here are the definitions for some of the terms used in this module:
+
+	Clip
+
+		 An AABB which represents the clipping region, in the space of the
+		 frame.  In the OpenGL implementation of the module, the clip is tied
+		 to glScissor, affecting the scissor region.
+
+	Frame
+
+		 An AABB which represents a sub-region (or the full-region) of the
+		 window (or the current render target), as a target for rendering.
+
+		 You would use the frame, for example, if you only wanted to render
+		 to a portion of the window, such as when letterboxing.
+
+	Logical box
+
+		An AABB which represents a sub-region (or the full-region) of the
+		visible scene, in the space of the camera's field of view.  It is in
+		the range of [0,1], with the origin at the XXX.
+
+		The logical box is used, for example, if you only want to render the
+		top-left quadrant of the scene, as seen from the camera.  In that
+		case, you would use a logical box of XXX.
+
+		One way to use the logical box is when rendering to a high-resolution
+		off-screen buffer using the window as a medium for rendering.  See
+		"Rendering Print Resolution Screenshots" by Alex Vlachos and Evan
+		Hart, Game Programming Gems 2.

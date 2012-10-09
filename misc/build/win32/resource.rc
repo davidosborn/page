@@ -1,0 +1,72 @@
+/**
+ * @section license
+ *
+ * Copyright (c) 2006-2012 David Osborn
+ *
+ * Permission is granted to use and redistribute this software in source and
+ * binary form, with or without modification, subject to the following
+ * conditions:
+ *
+ * 1. Redistributions in source form must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution, and in the same
+ *    place and form as other copyright, license, and disclaimer information.
+ *
+ * As a special exception, distributions of derivative works in binary form may
+ * include an acknowledgement in place of the above copyright notice, this list
+ * of conditions, and the following disclaimer in the documentation and/or other
+ * materials provided with the distribution, and in the same place and form as
+ * other acknowledgements, similar in substance to the following:
+ *
+ *    Portions of this software are based on the work of David Osborn.
+ *
+ * This software is provided "as is", without any express or implied warranty.
+ * In no event will the authors be liable for any damages arising out of the use
+ * of this software.
+ */
+
+#include <winver.h>
+#include "config.h"
+#include STRINGIZE(topdir/src/win32/resource.h)
+
+1 VERSIONINFO
+FILEVERSION VER_MAJOR, VER_MINOR, VER_PATCH, 0
+PRODUCTVERSION VER_MAJOR, VER_MINOR, VER_PATCH, 0
+FILEFLAGSMASK VS_FF_DEBUG | VS_FF_PATCHED | VS_FF_PRERELEASE
+FILEFLAGS 0
+#ifdef DEBUG
+	| VS_FF_DEBUG
+#endif
+#if VER_PATCH
+	| VS_FF_PATCHED
+#endif
+#if !VER_MAJOR
+	| VS_FF_PRERELEASE
+#endif
+FILEOS VOS__WINDOWS32
+FILETYPE VFT_APP
+FILESUBTYPE 0
+{
+	BLOCK "StringFileInfo"
+	{
+		BLOCK "10090000"
+		{
+			VALUE "CompanyName", STRINGIZE(AUTHOR)
+			VALUE "FileDescription", STRINGIZE(LONGNAME)
+			VALUE "FileVersion", STRINGIZE(VERSION)
+			VALUE "InternalName", STRINGIZE(NAME)
+			VALUE "LegalCopyright", STRINGIZE(COPYRIGHT)
+			VALUE "OriginalFilename", STRINGIZE(PACKAGE.exe)
+			VALUE "ProductName", STRINGIZE(NAME)
+			VALUE "ProductVersion", STRINGIZE(VERSION)
+		}
+	}
+	BLOCK "VarFileInfo"
+	{
+		VALUE "Translation", 0x1009, 0
+	}
+}
+IDR_MANIFEST MANIFEST STRINGIZE(topdir/misc/build/win32/PACKAGE.exe.manifest)
+IDI_ICON ICON STRINGIZE(topdir/misc/build/win32/icon.ico)
