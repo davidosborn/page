@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_stats_hpp
-#   define page_log_stats_hpp
+#ifndef    page_local_log_stats_hpp
+#   define page_local_log_stats_hpp
 
 namespace page
 {

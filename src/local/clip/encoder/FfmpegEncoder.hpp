@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_clip_encoder_FfmpegEncoder_hpp
-#   define page_clip_encoder_FfmpegEncoder_hpp
+#ifndef    page_local_clip_encoder_FfmpegEncoder_hpp
+#   define page_local_clip_encoder_FfmpegEncoder_hpp
 
 #	include "../Encoder.hpp"
 

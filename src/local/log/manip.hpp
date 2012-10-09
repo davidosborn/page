@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_manip_hpp
-#   define page_log_manip_hpp
+#ifndef    page_local_log_manip_hpp
+#   define page_local_log_manip_hpp
 
 #	include <iosfwd>
 

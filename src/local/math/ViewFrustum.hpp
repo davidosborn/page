@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_ViewFrustum_hpp
-#   define page_math_ViewFrustum_hpp
+#ifndef    page_local_math_ViewFrustum_hpp
+#   define page_local_math_ViewFrustum_hpp
 
 #	include <iosfwd> // [io]stream
 #	include "float.hpp" // Pi

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_script_lua_lib_Coroutine_hpp
-#   define page_script_lua_lib_Coroutine_hpp
+#ifndef    page_local_script_lua_lib_Coroutine_hpp
+#   define page_local_script_lua_lib_Coroutine_hpp
 
 #	include <lua.hpp> // lua_State
 

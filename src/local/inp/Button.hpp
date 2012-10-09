@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_inp_Button_hpp
-#   define page_inp_Button_hpp
+#ifndef    page_local_inp_Button_hpp
+#   define page_local_inp_Button_hpp
 
 namespace page
 {

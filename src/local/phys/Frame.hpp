@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_Frame_hpp
-#   define page_phys_Frame_hpp
+#ifndef    page_local_phys_Frame_hpp
+#   define page_local_phys_Frame_hpp
 
 #	include <string>
 #	include <unordered_map>

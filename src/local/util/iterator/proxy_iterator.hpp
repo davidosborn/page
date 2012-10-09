@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_iterator_proxy_iterator_hpp
-#   define page_util_iterator_proxy_iterator_hpp
+#ifndef    page_local_util_iterator_proxy_iterator_hpp
+#   define page_local_util_iterator_proxy_iterator_hpp
 
 #	include <functional> // result_of
 #	include <iterator> // iterator_traits

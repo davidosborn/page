@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_filter_GateFilter_hpp
-#   define page_log_filter_GateFilter_hpp
+#ifndef    page_local_log_filter_GateFilter_hpp
+#   define page_local_log_filter_GateFilter_hpp
 
 #	include "../Filter.hpp"
 

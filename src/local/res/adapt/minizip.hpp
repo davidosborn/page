@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_adapt_minizip_hpp
-#   define page_res_adapt_minizip_hpp
+#ifndef    page_local_res_adapt_minizip_hpp
+#   define page_local_res_adapt_minizip_hpp
 
 #	include <minizip/unzip.h> // zlib_filefunc_def
 

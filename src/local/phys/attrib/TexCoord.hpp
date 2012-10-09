@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_attrib_TexCoord_hpp
-#   define page_phys_attrib_TexCoord_hpp
+#ifndef    page_local_phys_attrib_TexCoord_hpp
+#   define page_local_phys_attrib_TexCoord_hpp
 
 #	include "../../math/Vector.hpp"
 #	include "../Frame.hpp"

@@ -27,10 +27,10 @@
  * of this software.
  */
 
-#ifndef    page_util_typelist_hpp
-#   define page_util_typelist_hpp
+#ifndef    page_local_util_typelist_hpp
+#   define page_local_util_typelist_hpp
 
-#	include "../thirdparty/loki/Typelist.h"
+#	include "../../thirdparty/loki/Typelist.h"
 
 namespace page
 {

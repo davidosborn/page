@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_proxy_opengl_Program_hpp
-#   define page_cache_proxy_opengl_Program_hpp
+#ifndef    page_local_cache_proxy_opengl_Program_hpp
+#   define page_local_cache_proxy_opengl_Program_hpp
 
 #	include <type_traits> // enable_if
 #	include <vector>

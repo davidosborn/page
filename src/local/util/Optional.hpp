@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_Optional_hpp
-#   define page_util_Optional_hpp
+#ifndef    page_local_util_Optional_hpp
+#   define page_local_util_Optional_hpp
 
 #	include <cstddef> // nullptr_t
 #	include <type_traits> // aligned_storage, alignment_of

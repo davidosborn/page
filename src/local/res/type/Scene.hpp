@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_Scene_hpp
-#   define page_res_type_Scene_hpp
+#ifndef    page_local_res_type_Scene_hpp
+#   define page_local_res_type_Scene_hpp
 
 #	include <vector>
 #	include "../../cache/proxy/Resource.hpp"

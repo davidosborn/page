@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_err_opengl_hpp
-#   define page_err_opengl_hpp
+#ifndef    page_local_err_opengl_hpp
+#   define page_local_err_opengl_hpp
 
 #	include <string>
 #	include <GL/gl.h> // GLenum

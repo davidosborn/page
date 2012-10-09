@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_hpp
-#   define page_cache_hpp
+#ifndef    page_local_cache_hpp
+#   define page_local_cache_hpp
 
 #	include <functional> // function
 #	include <memory> // shared_ptr

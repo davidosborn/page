@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_adapt_flac_hpp
-#   define page_res_adapt_flac_hpp
+#ifndef    page_local_res_adapt_flac_hpp
+#   define page_local_res_adapt_flac_hpp
 
 #	include <functional> // function
 #	include <FLAC/stream_decoder.h> // FLAC__{Frame,int32,StreamDecoder{,State}}

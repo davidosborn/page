@@ -31,8 +31,8 @@
 // affects top-level position/orientation attributes
 // supports either targeted movement or discrete velocity/rotation forces
 
-#ifndef    page_phys_controller_LocomotionController_hpp
-#   define page_phys_controller_LocomotionController_hpp
+#ifndef    page_local_phys_controller_LocomotionController_hpp
+#   define page_local_phys_controller_LocomotionController_hpp
 
 #	include "../../math/Euler.hpp"
 #	include "../../math/Quat.hpp"

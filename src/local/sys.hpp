@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_sys_hpp
-#   define page_sys_hpp
+#ifndef    page_local_sys_hpp
+#   define page_local_sys_hpp
 
 #	include <string>
 

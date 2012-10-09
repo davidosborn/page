@@ -29,8 +29,8 @@
 
 // program object wrapper
 
-#ifndef    page_vid_opengl_Program_hpp
-#   define page_vid_opengl_Program_hpp
+#ifndef    page_local_vid_opengl_Program_hpp
+#   define page_local_vid_opengl_Program_hpp
 
 #	include <string>
 #	include <unordered_map>

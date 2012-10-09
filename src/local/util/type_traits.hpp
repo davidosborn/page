@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_type_traits_hpp
-#   define page_util_type_traits_hpp
+#ifndef    page_local_util_type_traits_hpp
+#   define page_local_util_type_traits_hpp
 
 #	include <cstddef> // {nullptr,ptrdiff,size}_t
 #	include <iterator> // begin, end, iterator_traits

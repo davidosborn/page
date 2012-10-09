@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_resources_ShaderMaterialResources_hpp
-#   define page_vid_opengl_resources_ShaderMaterialResources_hpp
+#ifndef    page_local_vid_opengl_resources_ShaderMaterialResources_hpp
+#   define page_local_vid_opengl_resources_ShaderMaterialResources_hpp
 
 #	include "../../../cache/proxy/opengl/Program.hpp"
 #	include "../../../res/type/Material.hpp" // Material::Pass

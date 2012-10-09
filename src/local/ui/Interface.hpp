@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_ui_Interface_hpp
-#   define page_ui_Interface_hpp
+#ifndef    page_local_ui_Interface_hpp
+#   define page_local_ui_Interface_hpp
 
 #	include "../math/Aabb.hpp"
 #	include "WidgetContainer.hpp"

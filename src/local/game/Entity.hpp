@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_game_Entity_hpp
-#   define page_game_Entity_hpp
+#ifndef    page_local_game_Entity_hpp
+#   define page_local_game_Entity_hpp
 
 #	include <string>
 #	include "../phys/Body.hpp"

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_intersect_hpp
-#   define page_math_intersect_hpp
+#ifndef    page_local_math_intersect_hpp
+#   define page_local_math_intersect_hpp
 
 #	include <utility> // pair
 #	include "fwd.hpp" // Plane

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_RenderTargetPool_hpp
-#   define page_vid_opengl_RenderTargetPool_hpp
+#ifndef    page_local_vid_opengl_RenderTargetPool_hpp
+#   define page_local_vid_opengl_RenderTargetPool_hpp
 
 #	include <memory> // shared_ptr
 #	include <queue>

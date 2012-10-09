@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_float_hpp
-#   define page_math_float_hpp
+#ifndef    page_local_math_float_hpp
+#   define page_local_math_float_hpp
 
 #	include <functional> // binary_function
 #	include <limits> // numeric_limits

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_ui_DrawContext_hpp
-#   define page_ui_DrawContext_hpp
+#ifndef    page_local_ui_DrawContext_hpp
+#   define page_local_ui_DrawContext_hpp
 
 #	include "../res/type/Font.hpp" // TextAlign
 #	include "../res/type/Theme.hpp"

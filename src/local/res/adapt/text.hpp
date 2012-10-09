@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_adapt_text_hpp
-#   define page_res_adapt_text_hpp
+#ifndef    page_local_res_adapt_text_hpp
+#   define page_local_res_adapt_text_hpp
 
 #	include <string>
 

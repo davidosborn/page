@@ -73,8 +73,8 @@ Z  zee     Z  IY
 ZH seizure S  IY ZH ER
 */
 
-#ifndef    page_util_lang_hpp
-#   define page_util_lang_hpp
+#ifndef    page_local_util_lang_hpp
+#   define page_local_util_lang_hpp
 
 #	include <string>
 

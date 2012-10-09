@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_inp_device_registry_hpp
-#   define page_inp_device_registry_hpp
+#ifndef    page_local_inp_device_registry_hpp
+#   define page_local_inp_device_registry_hpp
 
 #	include <functional> // function
 #	include <memory> // shared_ptr

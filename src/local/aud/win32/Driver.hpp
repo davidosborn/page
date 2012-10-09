@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_win32_Driver_hpp
-#   define page_aud_win32_Driver_hpp
+#ifndef    page_local_aud_win32_Driver_hpp
+#   define page_local_aud_win32_Driver_hpp
 
 #	include <windows.h> // CALLBACK, DWORD_PTR, mmsystem.h, UINT
 #	include <mmsystem.h> // HWAVEOUT

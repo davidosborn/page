@@ -84,11 +84,11 @@ HOST           := @HOST@
 HOST_CPU       := @HOST_CPU@
 HOST_OS        := @HOST_OS@
 
-SRC  := @SRC@
-OBJS := $(SRC:%=src/%$(OBJEXT))
-LIBS := @LIBS@
+SOURCES := @SOURCES@
+OBJS    := $(SOURCES:%=src/%$(OBJEXT))
+LIBS    := @LIBS@
+
 ifeq ($(HOST_OS),win32)
-SRC += win32/boot
 OBJS += $(PACKAGE).res
 endif
 
@@ -150,10 +150,10 @@ FIND_TOP = $(call FIND_IN,$(topdir),$(1),$(2),$(3))
 ################################################################################
 # construct the build system
 
-Makefile: $(top_prefix)Makefile.in config.status
+Makefile: $(top_prefix)misc/build/Makefile.in config.status
 	./config.status Makefile
 
-config.h: $(top_prefix)config.h.in config.status
+config.h: $(top_prefix)misc/build/config.h.in config.status
 	./config.status config.h
 
 doc/doxygen.cfg: $(top_prefix)doc/doxygen.cfg.in config.status
@@ -179,9 +179,9 @@ $(PACKAGE)$(EXEEXT): $(OBJS)
 # NOTE: -MF is redundant but required for distcc
 src/%$(OBJEXT): $(top_prefix)src/%.cpp config.h
 	@install -d $(@D)
-	$(CXX) -c -MMD -MF src/$*.d -MP -MT src/$*$(OBJEXT) -imacros config.h $(CPPFLAGS) $(CXXFLAGS) -I$(top_prefix)src/extern -o $@ $<
+	$(CXX) -c -MMD -MF src/$*.d -MP -MT src/$*$(OBJEXT) $(CPPFLAGS) $(CXXFLAGS) -o $@ $<
 
--include $(SRC:%=src/%.d)
+-include $(SOURCES:%=src/%.d)
 
 ifeq ($(HOST_OS),win32)
 exec: $(PACKAGE).com
@@ -190,7 +190,7 @@ $(PACKAGE).com: src/win32/boot$(OBJEXT)
 	attrib +H $@
 
 $(PACKAGE).res: $(top_prefix)$(PACKAGE).rc $(top_prefix)misc/win32/$(PACKAGE).exe.manifest $(top_prefix)misc/win32/icon.ico config.h
-	windres -Ocoff -I. -Dtopdir=$(topdir) $< $@
+	windres -Ocoff -I. -DTOPDIR=$(topdir) $< $@
 endif
 
 endif
@@ -376,8 +376,8 @@ ifneq ($(findstring clean,$(MAKECMDGOALS)),)
 
 CLEAN_FILES_DISTCLEAN   := Makefile config.cache config.h config.log config.status
 CLEAN_FILES_CLEAN       := $(PACKAGE)$(EXEEXT) $(addprefix doc/$(PACKAGE),.dvi .info .html .pdf .ps .txt)
-CLEAN_FILES_MOSTLYCLEAN := $(SRC:%=src/%$(OBJEXT)) doc/version.texi
-CLEAN_FILES_DEPCLEAN    := $(SRC:%=src/%.d)
+CLEAN_FILES_MOSTLYCLEAN := $(SOURCES:%=src/%$(OBJEXT)) doc/version.texi
+CLEAN_FILES_DEPCLEAN    := $(SOURCES:%=src/%.d)
 
 ifeq ($(HOST_OS),win32)
 CLEANFILES += $(PACKAGE).res

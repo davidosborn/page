@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_env_win32_Window_hpp
-#   define page_env_win32_Window_hpp
+#ifndef    page_local_env_win32_Window_hpp
+#   define page_local_env_win32_Window_hpp
 
 #	include <windows.h> // HWND, LPARAM, LRESULT, UINT, WPARAM
 #	include "../Window.hpp"

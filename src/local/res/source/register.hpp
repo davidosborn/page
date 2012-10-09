@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_source_register_hpp
-#   define page_res_source_register_hpp
+#ifndef    page_local_res_source_register_hpp
+#   define page_local_res_source_register_hpp
 
 #	include "function.hpp" // SourceFactory
 #	include "registry.hpp" // RegisterSource

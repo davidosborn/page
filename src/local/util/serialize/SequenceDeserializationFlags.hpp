@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_serialize_SequenceDeserializationFlags_hpp
-#   define page_util_serialize_SequenceDeserializationFlags_hpp
+#ifndef    page_local_util_serialize_SequenceDeserializationFlags_hpp
+#   define page_local_util_serialize_SequenceDeserializationFlags_hpp
 
 #	include "../Flags.hpp"
 

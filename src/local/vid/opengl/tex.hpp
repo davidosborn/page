@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_tex_hpp
-#   define page_vid_opengl_tex_hpp
+#ifndef    page_local_vid_opengl_tex_hpp
+#   define page_local_vid_opengl_tex_hpp
 
 #	include <GL/gl.h> // GL{enum,{,u}int}
 #	include "../../math/Vector.hpp"

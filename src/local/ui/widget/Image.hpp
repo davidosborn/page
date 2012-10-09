@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_ui_widget_Image_hpp
-#   define page_ui_widget_Image_hpp
+#ifndef    page_local_ui_widget_Image_hpp
+#   define page_local_ui_widget_Image_hpp
 
 #	include "../../cache/fwd.hpp" // Proxy
 #	include "../../util/copy_ptr.hpp"

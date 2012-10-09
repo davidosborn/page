@@ -29,8 +29,8 @@
 
 // shared_ptr compatible deleter
 
-#ifndef    page_util_Deleter_hpp
-#   define page_util_Deleter_hpp
+#ifndef    page_local_util_Deleter_hpp
+#   define page_local_util_Deleter_hpp
 
 #	include <functional> // function
 

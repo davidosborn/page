@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_mixin_Positionable_hpp
-#   define page_phys_mixin_Positionable_hpp
+#ifndef    page_local_phys_mixin_Positionable_hpp
+#   define page_local_phys_mixin_Positionable_hpp
 
 #	include "../../math/fwd.hpp" // Vector
 

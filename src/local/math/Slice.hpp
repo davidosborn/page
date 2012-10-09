@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_Slice_hpp
-#   define page_math_Slice_hpp
+#ifndef    page_local_math_Slice_hpp
+#   define page_local_math_Slice_hpp
 
 #	include <cstddef> // size_t
 #	include <iosfwd> // [io]stream

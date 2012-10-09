@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_Filter_hpp
-#   define page_log_Filter_hpp
+#ifndef    page_local_log_Filter_hpp
+#   define page_local_log_Filter_hpp
 
 #	include <memory>
 #	include <vector>

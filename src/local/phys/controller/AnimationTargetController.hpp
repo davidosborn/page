@@ -31,8 +31,8 @@
 // similar attributes should be controlled in each animation to avoid popping
 // animations should have same duration if synchronizing
 
-#ifndef    page_phys_controller_AnimationTargetController_hpp
-#   define page_phys_controller_AnimationTargetController_hpp
+#ifndef    page_local_phys_controller_AnimationTargetController_hpp
+#   define page_local_phys_controller_AnimationTargetController_hpp
 
 #	include <memory> // shared_ptr
 #	include <vector>

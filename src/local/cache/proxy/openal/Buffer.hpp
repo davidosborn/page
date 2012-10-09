@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_proxy_openal_Buffer_hpp
-#   define page_cache_proxy_openal_Buffer_hpp
+#ifndef    page_local_cache_proxy_openal_Buffer_hpp
+#   define page_local_cache_proxy_openal_Buffer_hpp
 
 #	include <AL/al.h> // ALuint
 #	include "../../../util/copy_ptr.hpp"

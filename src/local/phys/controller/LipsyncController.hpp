@@ -30,8 +30,8 @@
 // lip-sync controller
 // expects bind-pose with closed mouth and neutral expression
 
-#ifndef    page_phys_controller_LipsyncController_hpp
-#   define page_phys_controller_LipsyncController_hpp
+#ifndef    page_local_phys_controller_LipsyncController_hpp
+#   define page_local_phys_controller_LipsyncController_hpp
 
 #	include <string>
 #	include "TargetController.hpp"

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_inp_Device_hpp
-#   define page_inp_Device_hpp
+#ifndef    page_local_inp_Device_hpp
+#   define page_local_inp_Device_hpp
 
 #	include "../util/NonCopyable.hpp"
 #	include "State.hpp"

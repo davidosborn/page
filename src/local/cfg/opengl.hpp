@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cfg_opengl_hpp
-#   define page_cfg_opengl_hpp
+#ifndef    page_local_cfg_opengl_hpp
+#   define page_local_cfg_opengl_hpp
 
 #	include <string>
 #	include "Var.hpp"

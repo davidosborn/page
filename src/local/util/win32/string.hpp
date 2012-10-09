@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_win32_string_hpp
-#   define page_util_win32_string_hpp
+#ifndef    page_local_util_win32_string_hpp
+#   define page_local_util_win32_string_hpp
 
 #	include <string>
 #	include <windows.h> // TCHAR

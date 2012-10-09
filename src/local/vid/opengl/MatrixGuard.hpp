@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_MatrixGuard_hpp
-#   define page_vid_opengl_MatrixGuard_hpp
+#ifndef    page_local_vid_opengl_MatrixGuard_hpp
+#   define page_local_vid_opengl_MatrixGuard_hpp
 
 #	include <stack>
 #	include <GL/gl.h> // GLenum

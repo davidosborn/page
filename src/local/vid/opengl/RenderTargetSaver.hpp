@@ -31,8 +31,8 @@
 // also saves scissor and viewport state
 // NOP for framebuffer if EXT_framebuffer_object not supported
 
-#ifndef    page_vid_opengl_RenderTargetSaver_hpp
-#   define page_vid_opengl_RenderTargetSaver_hpp
+#ifndef    page_local_vid_opengl_RenderTargetSaver_hpp
+#   define page_local_vid_opengl_RenderTargetSaver_hpp
 
 #	include <GL/gl.h> // GL{enum,{,u}int}
 #	include "../../util/StateSaver.hpp"

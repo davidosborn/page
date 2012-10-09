@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_Pipe_hpp
-#   define page_res_Pipe_hpp
+#ifndef    page_local_res_Pipe_hpp
+#   define page_local_res_Pipe_hpp
 
 #	include <vector>
 #	include "../util/StateSaver.hpp"

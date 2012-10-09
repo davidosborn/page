@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_Filter_hpp
-#   define page_vid_Filter_hpp
+#ifndef    page_local_vid_Filter_hpp
+#   define page_local_vid_Filter_hpp
 
 namespace page
 {

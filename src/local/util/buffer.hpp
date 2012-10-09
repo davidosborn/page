@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_buffer_hpp
-#   define page_util_buffer_hpp
+#ifndef    page_local_util_buffer_hpp
+#   define page_local_util_buffer_hpp
 
 #	include <vector>
 

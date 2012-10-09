@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_Color_hpp
-#   define page_math_Color_hpp
+#ifndef    page_local_math_Color_hpp
+#   define page_local_math_Color_hpp
 
 #	include <cstddef> // ptrdiff_t, size_t
 #	include <iosfwd> // [io]stream

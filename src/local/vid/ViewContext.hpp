@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_ViewContext_hpp
-#   define page_vid_ViewContext_hpp
+#ifndef    page_local_vid_ViewContext_hpp
+#   define page_local_vid_ViewContext_hpp
 
 #	include "../math/ViewFrustum.hpp"
 #	include "DrawContext.hpp" // {Frame,Clip}Saver

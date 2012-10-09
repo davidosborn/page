@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_err_openal_hpp
-#   define page_err_openal_hpp
+#ifndef    page_local_err_openal_hpp
+#   define page_local_err_openal_hpp
 
 #	include <string>
 #	include <AL/al.h> // ALenum

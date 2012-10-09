@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_simd_generic_hpp
-#   define page_math_simd_generic_hpp
+#ifndef    page_local_math_simd_generic_hpp
+#   define page_local_math_simd_generic_hpp
 
 #	include "../simd.hpp"
 

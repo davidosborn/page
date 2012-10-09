@@ -1,4 +1,22 @@
-Figure out where to put the build files.  Until now, doxygen.cfg.in has been in the doc directory, but config.h.in wasn't in the src directory, so it wasn't really balanced...
+Use Boost/filesystem.
+
+Use Boost/exception instead of my custom exception system.
+
+Get rid of Loki; use Boost/MPL instead.
+
+Get rid of src/local/win32/boot.cpp and use the better implementation from DCCT.
+
+Take all the good stuff from DCCT and put them back into PAGE.
+
+Change "if test XXX && DO" to "if [ XXX ]; then; DO; fi"
+
+Use X+="{X+ }whatever" instead of X="$X whatever".
+
+Get rid of unnecessary autoconf compatibilities (ie: extraneous variables).
+
+Change topdir to TOPDIR when appropriate.
+
+Switch to Boost, and test for it in configure.
 
 Switch from backticks to parentheses (ie: echo $(dirname $blah)) in Bash.
 

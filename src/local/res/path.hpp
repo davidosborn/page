@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_path_hpp
-#   define page_res_path_hpp
+#ifndef    page_local_res_path_hpp
+#   define page_local_res_path_hpp
 
 #	include <string>
 

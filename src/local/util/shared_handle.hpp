@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_shared_handle_hpp
-#   define page_util_shared_handle_hpp
+#ifndef    page_local_util_shared_handle_hpp
+#   define page_local_util_shared_handle_hpp
 
 #	include <cstddef> // nullptr_t
 #	include <functional> // function

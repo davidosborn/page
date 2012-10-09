@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_serialize_deserialize_hpp
-#   define page_util_serialize_deserialize_hpp
+#ifndef    page_local_util_serialize_deserialize_hpp
+#   define page_local_util_serialize_deserialize_hpp
 
 #	include <iosfwd> // basic_istream
 #	include <limits> // numeric_limits

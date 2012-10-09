@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_adapt_zip_hpp
-#   define page_res_adapt_zip_hpp
+#ifndef    page_local_res_adapt_zip_hpp
+#   define page_local_res_adapt_zip_hpp
 
 #	include <cerrno>
 #	include <zip.h> // zip, zip_file

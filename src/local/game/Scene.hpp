@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_game_Scene_hpp
-#   define page_game_Scene_hpp
+#ifndef    page_local_game_Scene_hpp
+#   define page_local_game_Scene_hpp
 
 #	include <memory> // unique_ptr
 #	include "../aud/Driver.hpp" // SoundProxy

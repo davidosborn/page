@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_game_save_hpp
-#   define page_game_save_hpp
+#ifndef    page_local_game_save_hpp
+#   define page_local_game_save_hpp
 
 namespace page
 {

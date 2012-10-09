@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_env_x11_Console_hpp
-#   define page_env_x11_Console_hpp
+#ifndef    page_local_env_x11_Console_hpp
+#   define page_local_env_x11_Console_hpp
 
 #	include "../Console.hpp"
 

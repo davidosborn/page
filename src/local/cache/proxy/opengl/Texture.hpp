@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_proxy_opengl_Texture_hpp
-#   define page_cache_proxy_opengl_Texture_hpp
+#ifndef    page_local_cache_proxy_opengl_Texture_hpp
+#   define page_local_cache_proxy_opengl_Texture_hpp
 
 #	include "../../../math/Vector.hpp"
 #	include "../../../util/copy_ptr.hpp"

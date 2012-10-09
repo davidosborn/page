@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_load_font_freetype_hpp
-#   define page_res_load_font_freetype_hpp
+#ifndef    page_local_res_load_font_freetype_hpp
+#   define page_local_res_load_font_freetype_hpp
 
 #	include "../../adapt/freetype.hpp" // OpenArgs
 

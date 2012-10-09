@@ -30,8 +30,8 @@
 // pathfinding controller
 // supports targeted locomotion across a track
 
-#ifndef    page_phys_controller_PathfindingController_hpp
-#   define page_phys_controller_PathfindingController_hpp
+#ifndef    page_local_phys_controller_PathfindingController_hpp
+#   define page_local_phys_controller_PathfindingController_hpp
 
 #	include "../../res/type/Track.hpp" // Track::Face, TrackPath
 #	include "LocomotionController.hpp"

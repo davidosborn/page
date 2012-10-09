@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_script_Router_hpp
-#   define page_script_Router_hpp
+#ifndef    page_local_script_Router_hpp
+#   define page_local_script_Router_hpp
 
 #	include <memory> // shared_ptr
 #	include <string>

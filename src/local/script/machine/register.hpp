@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_script_machine_register_hpp
-#   define page_script_machine_register_hpp
+#ifndef    page_local_script_machine_register_hpp
+#   define page_local_script_machine_register_hpp
 
 #	include "../../res/type/script/ScriptFormat.hpp"
 #	include "registry.hpp" // MachineFactory, RegisterMachine

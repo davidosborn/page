@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_load_function_hpp
-#   define page_res_load_function_hpp
+#ifndef    page_local_res_load_function_hpp
+#   define page_local_res_load_function_hpp
 
 #	include <functional> // function
 #	include <memory> // shared_ptr

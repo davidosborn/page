@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_iterator_iterator_facade_hpp
-#   define page_util_iterator_iterator_facade_hpp
+#ifndef    page_local_util_iterator_iterator_facade_hpp
+#   define page_local_util_iterator_iterator_facade_hpp
 
 #	include <cstddef> // ptrdiff_t
 #	include <iterator> // iterator

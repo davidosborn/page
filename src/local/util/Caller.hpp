@@ -29,8 +29,8 @@
 
 // delegation function object with bound arguments
 
-#ifndef    page_util_Caller_hpp
-#   define page_util_Caller_hpp
+#ifndef    page_local_util_Caller_hpp
+#   define page_local_util_Caller_hpp
 
 #	include <functional> // function
 

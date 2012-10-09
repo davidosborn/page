@@ -30,8 +30,8 @@
 // proxy adapter for non-cached objects
 // uses local storage to avoid collisions and redundant hash lookups
 
-#ifndef    page_cache_proxy_Reference_hpp
-#   define page_cache_proxy_Reference_hpp
+#ifndef    page_local_cache_proxy_Reference_hpp
+#   define page_local_cache_proxy_Reference_hpp
 
 #	include "../Proxy.hpp"
 

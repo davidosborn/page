@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_Proxy_hpp
-#   define page_cache_Proxy_hpp
+#ifndef    page_local_cache_Proxy_hpp
+#   define page_local_cache_Proxy_hpp
 
 #	include <functional> // binary_function, function, hash
 #	include <ios> // ostream

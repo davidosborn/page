@@ -31,8 +31,8 @@
 // sub-byte channels use MSB to LSB order
 // multi-byte channels use native byte order
 
-#ifndef    page_res_type_Image_hpp
-#   define page_res_type_Image_hpp
+#ifndef    page_local_res_type_Image_hpp
+#   define page_local_res_type_Image_hpp
 
 #	include <vector>
 #	include "../../math/Vector.hpp"

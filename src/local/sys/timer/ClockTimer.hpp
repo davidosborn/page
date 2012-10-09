@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_sys_timer_ClockTimer_hpp
-#   define page_sys_timer_ClockTimer_hpp
+#ifndef    page_local_sys_timer_ClockTimer_hpp
+#   define page_local_sys_timer_ClockTimer_hpp
 
 #	include <ctime> // clock_t
 #	include "../Timer.hpp"

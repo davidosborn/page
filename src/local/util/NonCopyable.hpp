@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_NonCopyable_hpp
-#   define page_util_NonCopyable_hpp
+#ifndef    page_local_util_NonCopyable_hpp
+#   define page_local_util_NonCopyable_hpp
 
 namespace page
 {

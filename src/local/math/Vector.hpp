@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_Vector_hpp
-#   define page_math_Vector_hpp
+#ifndef    page_local_math_Vector_hpp
+#   define page_local_math_Vector_hpp
 
 #	include <cstddef> // ptrdiff_t, size_t
 #	include <functional> // hash

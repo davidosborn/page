@@ -30,8 +30,8 @@
 // scene database
 // provides multiple views of contained objects
 
-#ifndef    page_phys_Scene_hpp
-#   define page_phys_Scene_hpp
+#ifndef    page_local_phys_Scene_hpp
+#   define page_local_phys_Scene_hpp
 
 #	include <functional> // unary_function
 #	include <memory> // shared_ptr

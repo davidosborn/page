@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_clip_Stream_hpp
-#   define page_clip_Stream_hpp
+#ifndef    page_local_clip_Stream_hpp
+#   define page_local_clip_Stream_hpp
 
 #	include <fstream>
 #	include <memory> // unique_ptr

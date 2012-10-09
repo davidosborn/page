@@ -29,8 +29,8 @@
 
 // cooperative virtual machine base class
 
-#ifndef    page_script_Machine_hpp
-#   define page_script_Machine_hpp
+#ifndef    page_local_script_Machine_hpp
+#   define page_local_script_Machine_hpp
 
 #	include "../util/NonCopyable.hpp"
 

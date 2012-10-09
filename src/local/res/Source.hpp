@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_Source_hpp
-#   define page_res_Source_hpp
+#ifndef    page_local_res_Source_hpp
+#   define page_local_res_Source_hpp
 
 #	include <memory> // {weak,shared}_ptr
 #	include <string>

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_controller_HeroCamController_hpp
-#   define page_phys_controller_HeroCamController_hpp
+#ifndef    page_local_phys_controller_HeroCamController_hpp
+#   define page_local_phys_controller_HeroCamController_hpp
 
 #	include "../../cache/proxy/Aabb.hpp"
 #	include "../../math/Euler.hpp"

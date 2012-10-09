@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_RenderTarget_hpp
-#   define page_vid_opengl_RenderTarget_hpp
+#ifndef    page_local_vid_opengl_RenderTarget_hpp
+#   define page_local_vid_opengl_RenderTarget_hpp
 
 #	include <GL/gl.h> // GL{enum,uint}
 #	include "../../util/NonCopyable.hpp"

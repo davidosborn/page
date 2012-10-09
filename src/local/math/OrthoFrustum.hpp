@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_OrthoFrustum_hpp
-#   define page_math_OrthoFrustum_hpp
+#ifndef    page_local_math_OrthoFrustum_hpp
+#   define page_local_math_OrthoFrustum_hpp
 
 #	include <iosfwd> // [io]stream
 #	include "Frustum.hpp"

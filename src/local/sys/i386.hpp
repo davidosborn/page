@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_sys_i386_hpp
-#   define page_sys_i386_hpp
+#ifndef    page_local_sys_i386_hpp
+#   define page_local_sys_i386_hpp
 
 #	include <array>
 #	include <cstdint>

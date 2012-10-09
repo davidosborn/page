@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_proxy_win32_Cursor_hpp
-#   define page_cache_proxy_win32_Cursor_hpp
+#ifndef    page_local_cache_proxy_win32_Cursor_hpp
+#   define page_local_cache_proxy_win32_Cursor_hpp
 
 #	include <windows.h> // HCURSOR
 #	include "../../../util/copy_ptr.hpp"

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_get_hpp
-#   define page_vid_opengl_get_hpp
+#ifndef    page_local_vid_opengl_get_hpp
+#   define page_local_vid_opengl_get_hpp
 
 #	include <GL/gl.h> // GL{boolean,double,enum,float,int}
 

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_iterator_iterator_adapter_hpp
-#   define page_util_iterator_iterator_adapter_hpp
+#ifndef    page_local_util_iterator_iterator_adapter_hpp
+#   define page_local_util_iterator_iterator_adapter_hpp
 
 #	include "iterator_facade.hpp"
 

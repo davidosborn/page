@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_save_hpp
-#   define page_res_save_hpp
+#ifndef    page_local_res_save_hpp
+#   define page_local_res_save_hpp
 
 #	include <string>
 #	include "../util/typeinfo.hpp" // GetTypeId, std::type_info

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_channel_SpacialChannel_hpp
-#   define page_aud_channel_SpacialChannel_hpp
+#ifndef    page_local_aud_channel_SpacialChannel_hpp
+#   define page_local_aud_channel_SpacialChannel_hpp
 
 #	include "../../util/Identifiable.hpp" // Identifiable::Id
 #	include "../Channel.hpp"

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_sink_ConSink_hpp
-#   define page_log_sink_ConSink_hpp
+#ifndef    page_local_log_sink_ConSink_hpp
+#   define page_local_log_sink_ConSink_hpp
 
 #	include <memory> // shared_ptr
 #	include <string>

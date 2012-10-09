@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_ui_widget_Array_hpp
-#   define page_ui_widget_Array_hpp
+#ifndef    page_local_ui_widget_Array_hpp
+#   define page_local_ui_widget_Array_hpp
 
 #	include "../Widget.hpp"
 #	include "../WidgetContainer.hpp"

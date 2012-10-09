@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_sound_openal_hpp
-#   define page_res_type_sound_openal_hpp
+#ifndef    page_local_res_type_sound_openal_hpp
+#   define page_local_res_type_sound_openal_hpp
 
 #	include <AL/al.h> // ALenum
 

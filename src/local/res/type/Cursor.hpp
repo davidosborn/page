@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_Cursor_hpp
-#   define page_res_type_Cursor_hpp
+#ifndef    page_local_res_type_Cursor_hpp
+#   define page_local_res_type_Cursor_hpp
 
 #	include "../../cache/proxy/Resource.hpp"
 #	include "../../math/Vector.hpp"

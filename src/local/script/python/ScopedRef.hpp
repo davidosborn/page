@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_script_python_ScopedRef_hpp
-#   define page_script_python_ScopedRef_hpp
+#ifndef    page_local_script_python_ScopedRef_hpp
+#   define page_local_script_python_ScopedRef_hpp
 
 #	include <Python.h> // PyObject
 #	include "../../util/NonCopyable.hpp"

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_Skeleton_hpp
-#   define page_res_type_Skeleton_hpp
+#ifndef    page_local_res_type_Skeleton_hpp
+#   define page_local_res_type_Skeleton_hpp
 
 #	include <string>
 #	include <vector>

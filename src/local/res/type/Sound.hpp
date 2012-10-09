@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_Sound_hpp
-#   define page_res_type_Sound_hpp
+#ifndef    page_local_res_type_Sound_hpp
+#   define page_local_res_type_Sound_hpp
 
 #	include <memory> // shared_ptr
 

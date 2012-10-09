@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_attrib_PositionNormal_hpp
-#   define page_phys_attrib_PositionNormal_hpp
+#ifndef    page_local_phys_attrib_PositionNormal_hpp
+#   define page_local_phys_attrib_PositionNormal_hpp
 
 #	include "Normal.hpp"
 #	include "Position.hpp"

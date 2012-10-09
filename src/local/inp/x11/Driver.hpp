@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_inp_x11_Driver_hpp
-#   define page_inp_x11_Driver_hpp
+#ifndef    page_local_inp_x11_Driver_hpp
+#   define page_local_inp_x11_Driver_hpp
 
 #	include <X11/Xlib.h> // KeySym, Time, XEvent
 #	include "../Driver.hpp"

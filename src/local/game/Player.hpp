@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_game_Player_hpp
-#   define page_game_Player_hpp
+#ifndef    page_local_game_Player_hpp
+#   define page_local_game_Player_hpp
 
 #	include <memory> // shared_ptr
 

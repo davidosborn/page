@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_Light_hpp
-#   define page_phys_Light_hpp
+#ifndef    page_local_phys_Light_hpp
+#   define page_local_phys_Light_hpp
 
 #	include "attrib/Ambient.hpp"
 #	include "attrib/Attenuation.hpp"

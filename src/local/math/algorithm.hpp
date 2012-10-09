@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_algorithm_hpp
-#   define page_math_algorithm_hpp
+#ifndef    page_local_math_algorithm_hpp
+#   define page_local_math_algorithm_hpp
 
 #	include "fwd.hpp" // Vector
 

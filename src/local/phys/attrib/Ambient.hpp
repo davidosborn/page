@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_attrib_Ambient_hpp
-#   define page_phys_attrib_Ambient_hpp
+#ifndef    page_local_phys_attrib_Ambient_hpp
+#   define page_local_phys_attrib_Ambient_hpp
 
 #	include "../../math/Color.hpp" // RgbColor
 #	include "../Frame.hpp"

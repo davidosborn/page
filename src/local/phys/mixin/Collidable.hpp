@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_mixin_Collidable_hpp
-#   define page_phys_mixin_Collidable_hpp
+#ifndef    page_local_phys_mixin_Collidable_hpp
+#   define page_local_phys_mixin_Collidable_hpp
 
 #	include "Trackable.hpp"
 

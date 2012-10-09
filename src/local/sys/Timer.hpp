@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_sys_Timer_hpp
-#   define page_sys_Timer_hpp
+#ifndef    page_local_sys_Timer_hpp
+#   define page_local_sys_Timer_hpp
 
 namespace page
 {

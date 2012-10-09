@@ -31,8 +31,8 @@
 // dereferences the iterator twice
 // inspired by Boost's indirect_iterator
 
-#ifndef    page_util_iterator_indirect_iterator_hpp
-#   define page_util_iterator_indirect_iterator_hpp
+#ifndef    page_local_util_iterator_indirect_iterator_hpp
+#   define page_local_util_iterator_indirect_iterator_hpp
 
 #	include <iterator> // iterator_traits
 #	include <type_traits> // remove_cv

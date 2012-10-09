@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cfg_Source_hpp
-#   define page_cfg_Source_hpp
+#ifndef    page_local_cfg_Source_hpp
+#   define page_local_cfg_Source_hpp
 
 #	include <string>
 #	include <vector>

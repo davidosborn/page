@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_ViewContext_hpp
-#   define page_vid_opengl_ViewContext_hpp
+#ifndef    page_local_vid_opengl_ViewContext_hpp
+#   define page_local_vid_opengl_ViewContext_hpp
 
 #	include <functional> // function
 #	include "../../math/fwd.hpp" // OrthoFrustum

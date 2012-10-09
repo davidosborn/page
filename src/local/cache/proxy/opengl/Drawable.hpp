@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_proxy_opengl_Drawable_hpp
-#   define page_cache_proxy_opengl_Drawable_hpp
+#ifndef    page_local_cache_proxy_opengl_Drawable_hpp
+#   define page_local_cache_proxy_opengl_Drawable_hpp
 
 #	include "../../../phys/Form.hpp" // Form::Part
 #	include "../../../util/copy_ptr.hpp"

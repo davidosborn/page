@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_source_DirSource_hpp
-#   define page_res_source_DirSource_hpp
+#ifndef    page_local_res_source_DirSource_hpp
+#   define page_local_res_source_DirSource_hpp
 
 #	include <unordered_map>
 #	include "../Source.hpp"

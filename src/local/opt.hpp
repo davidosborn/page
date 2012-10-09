@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_opt_hpp
-#   define page_opt_hpp
+#ifndef    page_local_opt_hpp
+#   define page_local_opt_hpp
 
 #	include <string>
 #	include <unordered_map>

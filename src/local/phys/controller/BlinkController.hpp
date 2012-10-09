@@ -30,8 +30,8 @@
 // blink controller
 // expects bind-pose with eyes closed
 
-#ifndef    page_phys_controller_BlinkController_hpp
-#   define page_phys_controller_BlinkController_hpp
+#ifndef    page_local_phys_controller_BlinkController_hpp
+#   define page_local_phys_controller_BlinkController_hpp
 
 #	include <random> // mt19937
 #	include "../../math/Quat.hpp"

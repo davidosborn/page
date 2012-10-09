@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_Body_hpp
-#   define page_phys_Body_hpp
+#ifndef    page_local_phys_Body_hpp
+#   define page_local_phys_Body_hpp
 
 #	include "Form.hpp"
 #	include "mixin/Collidable.hpp"

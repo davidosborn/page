@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_Script_hpp
-#   define page_res_type_Script_hpp
+#ifndef    page_local_res_type_Script_hpp
+#   define page_local_res_type_Script_hpp
 
 #	include <string>
 #	include "script/ScriptFormat.hpp"

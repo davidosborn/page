@@ -29,10 +29,10 @@
 
 #include <winver.h>
 #include "config.h"
-#include STRINGIZE(topdir/src/win32/resource.h)
+#include STRINGIZE(TOPDIR/src/local/win32/resource.h)
 
 1 VERSIONINFO
-FILEVERSION VER_MAJOR, VER_MINOR, VER_PATCH, 0
+FILEVERSION    VER_MAJOR, VER_MINOR, VER_PATCH, 0
 PRODUCTVERSION VER_MAJOR, VER_MINOR, VER_PATCH, 0
 FILEFLAGSMASK VS_FF_DEBUG | VS_FF_PATCHED | VS_FF_PRERELEASE
 FILEFLAGS 0
@@ -53,14 +53,14 @@ FILESUBTYPE 0
 	{
 		BLOCK "10090000"
 		{
-			VALUE "CompanyName", STRINGIZE(AUTHOR)
-			VALUE "FileDescription", STRINGIZE(LONGNAME)
-			VALUE "FileVersion", STRINGIZE(VERSION)
-			VALUE "InternalName", STRINGIZE(NAME)
-			VALUE "LegalCopyright", STRINGIZE(COPYRIGHT)
+			VALUE "CompanyName",      STRINGIZE(AUTHOR)
+			VALUE "FileDescription",  STRINGIZE(LONGNAME)
+			VALUE "FileVersion",      STRINGIZE(VERSION)
+			VALUE "InternalName",     STRINGIZE(NAME)
+			VALUE "LegalCopyright",   STRINGIZE(COPYRIGHT)
 			VALUE "OriginalFilename", STRINGIZE(PACKAGE.exe)
-			VALUE "ProductName", STRINGIZE(NAME)
-			VALUE "ProductVersion", STRINGIZE(VERSION)
+			VALUE "ProductName",      STRINGIZE(NAME)
+			VALUE "ProductVersion",   STRINGIZE(VERSION)
 		}
 	}
 	BLOCK "VarFileInfo"
@@ -68,5 +68,6 @@ FILESUBTYPE 0
 		VALUE "Translation", 0x1009, 0
 	}
 }
-IDR_MANIFEST MANIFEST STRINGIZE(topdir/misc/build/win32/PACKAGE.exe.manifest)
-IDI_ICON ICON STRINGIZE(topdir/misc/build/win32/icon.ico)
+
+IDR_MANIFEST MANIFEST STRINGIZE(TOPDIR/misc/build/win32/PACKAGE.exe.manifest)
+IDI_ICON     ICON     STRINGIZE(TOPDIR/misc/build/win32/icon.ico)

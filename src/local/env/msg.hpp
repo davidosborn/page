@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_env_msg_hpp
-#   define page_env_msg_hpp
+#ifndef    page_local_env_msg_hpp
+#   define page_local_env_msg_hpp
 
 #	include <string>
 

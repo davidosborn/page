@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_Matrix_hpp
-#   define page_math_Matrix_hpp
+#ifndef    page_local_math_Matrix_hpp
+#   define page_local_math_Matrix_hpp
 
 #	include <cstddef> // ptrdiff_t, size_t
 #	include <iosfwd> // [io]stream

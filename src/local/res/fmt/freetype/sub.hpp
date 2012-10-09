@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_fmt_freetype_sub_hpp
-#   define page_res_fmt_freetype_sub_hpp
+#ifndef    page_local_res_fmt_freetype_sub_hpp
+#   define page_local_res_fmt_freetype_sub_hpp
 
 #	include <string>
 #	include <cstdint> // uint32_t

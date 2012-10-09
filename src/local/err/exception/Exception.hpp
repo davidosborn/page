@@ -27,10 +27,10 @@
  * of this software.
  */
 
-#ifndef    page_err_exception_Exception_hpp
-#   define page_err_exception_Exception_hpp
+#ifndef    page_local_err_exception_Exception_hpp
+#   define page_local_err_exception_Exception_hpp
 
-#	include "../../thirdparty/loki/Typelist.h" // NoDuplicates
+#	include "../../../thirdparty/loki/Typelist.h" // NoDuplicates
 #	include "../../util/typelist.hpp" // MakeLokiTypelist
 #	include "CatchableException.hpp"
 

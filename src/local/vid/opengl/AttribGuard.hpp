@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_AttribGuard_hpp
-#   define page_vid_opengl_AttribGuard_hpp
+#ifndef    page_local_vid_opengl_AttribGuard_hpp
+#   define page_local_vid_opengl_AttribGuard_hpp
 
 #	include "../../util/StateSaver.hpp"
 

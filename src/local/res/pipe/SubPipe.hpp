@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_pipe_SubPipe_hpp
-#   define page_res_pipe_SubPipe_hpp
+#ifndef    page_local_res_pipe_SubPipe_hpp
+#   define page_local_res_pipe_SubPipe_hpp
 
 #	include <memory> // shared_ptr
 #	include "../Pipe.hpp"

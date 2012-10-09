@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_ui_Widget_hpp
-#   define page_ui_Widget_hpp
+#ifndef    page_local_ui_Widget_hpp
+#   define page_local_ui_Widget_hpp
 
 #	include "../math/Vector.hpp"
 #	include "../util/Cloneable.hpp"

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_ui_widget_Button_hpp
-#   define page_ui_widget_Button_hpp
+#ifndef    page_local_ui_widget_Button_hpp
+#   define page_local_ui_widget_Button_hpp
 
 #	include "../../util/Signal.hpp"
 #	include "../Widget.hpp"

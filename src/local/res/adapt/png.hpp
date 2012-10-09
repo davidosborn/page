@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_adapt_png_hpp
-#   define page_res_adapt_png_hpp
+#ifndef    page_local_res_adapt_png_hpp
+#   define page_local_res_adapt_png_hpp
 
 #	include <iosfwd> // ostream
 #	include <png.h> // png_bytep, png_infop, png_size_t, png_structp

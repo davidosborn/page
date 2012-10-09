@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_opengl_Shader_hpp
-#   define page_res_type_opengl_Shader_hpp
+#ifndef    page_local_res_type_opengl_Shader_hpp
+#   define page_local_res_type_opengl_Shader_hpp
 
 #	include <string>
 #	include <GL/gl.h> // GLenum

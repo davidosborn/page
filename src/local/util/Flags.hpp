@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_Flags_hpp
-#   define page_util_Flags_hpp
+#ifndef    page_local_util_Flags_hpp
+#   define page_local_util_Flags_hpp
 
 namespace page
 {

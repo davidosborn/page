@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_clip_encoder_function_hpp
-#   define page_clip_encoder_function_hpp
+#ifndef    page_local_clip_encoder_function_hpp
+#   define page_local_clip_encoder_function_hpp
 
 #	include <functional> // function
 #	include "../../math/fwd.hpp" // Vector

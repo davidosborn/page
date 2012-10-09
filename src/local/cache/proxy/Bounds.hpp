@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_proxy_Bounds_hpp
-#   define page_cache_proxy_Bounds_hpp
+#ifndef    page_local_cache_proxy_Bounds_hpp
+#   define page_local_cache_proxy_Bounds_hpp
 
 #	include <vector>
 #	include "../../util/copy_ptr.hpp"

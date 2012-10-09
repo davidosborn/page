@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_attrib_Material_hpp
-#   define page_phys_attrib_Material_hpp
+#ifndef    page_local_phys_attrib_Material_hpp
+#   define page_local_phys_attrib_Material_hpp
 
 #	include "../../cache/fwd.hpp" // Proxy
 #	include "../../util/copy_ptr.hpp"

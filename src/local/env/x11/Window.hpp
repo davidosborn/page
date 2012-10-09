@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_env_x11_Window_hpp
-#   define page_env_x11_Window_hpp
+#ifndef    page_local_env_x11_Window_hpp
+#   define page_local_env_x11_Window_hpp
 
 #	include <X11/Xlib.h> // Atom, Display, Window, XEvent
 #	include "../Window.hpp"

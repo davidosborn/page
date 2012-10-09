@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_functional_hpp
-#   define page_util_functional_hpp
+#ifndef    page_local_util_functional_hpp
+#   define page_local_util_functional_hpp
 
 #	include <cmath> // fmod
 #	include <locale> // isspace, locale, to{lower,upper}

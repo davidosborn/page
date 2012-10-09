@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_Indenter_hpp
-#   define page_log_Indenter_hpp
+#ifndef    page_local_log_Indenter_hpp
+#   define page_local_log_Indenter_hpp
 
 #	include "../util/NonCopyable.hpp"
 

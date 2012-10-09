@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_iterator_repeat_iterator_hpp
-#   define page_util_iterator_repeat_iterator_hpp
+#ifndef    page_local_util_iterator_repeat_iterator_hpp
+#   define page_local_util_iterator_repeat_iterator_hpp
 
 #	include <iterator> // random_access_iterator_tag
 #	include <limits> // numeric_limits

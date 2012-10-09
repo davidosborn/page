@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_TextureFlags_hpp
-#   define page_vid_opengl_TextureFlags_hpp
+#ifndef    page_local_vid_opengl_TextureFlags_hpp
+#   define page_local_vid_opengl_TextureFlags_hpp
 
 namespace page
 {

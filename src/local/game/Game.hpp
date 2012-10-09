@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_game_Game_hpp
-#   define page_game_Game_hpp
+#ifndef    page_local_game_Game_hpp
+#   define page_local_game_Game_hpp
 
 #	include <memory> // unique_ptr
 #	include "../inp/Key.hpp"

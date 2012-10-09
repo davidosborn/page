@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_inp_device_register_hpp
-#   define page_inp_device_register_hpp
+#ifndef    page_local_inp_device_register_hpp
+#   define page_local_inp_device_register_hpp
 
 #	include "registry.hpp" // RegisterDevice
 

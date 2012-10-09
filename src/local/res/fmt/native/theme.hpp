@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_fmt_native_theme_hpp
-#   define page_res_fmt_native_theme_hpp
+#ifndef    page_local_res_fmt_native_theme_hpp
+#   define page_local_res_fmt_native_theme_hpp
 
 #	include <string>
 

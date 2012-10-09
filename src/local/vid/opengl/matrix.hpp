@@ -29,8 +29,8 @@
 
 // matrix stack wrapper with unlimited depth
 
-#ifndef    page_vid_opengl_matrix_hpp
-#   define page_vid_opengl_matrix_hpp
+#ifndef    page_local_vid_opengl_matrix_hpp
+#   define page_local_vid_opengl_matrix_hpp
 
 namespace page
 {

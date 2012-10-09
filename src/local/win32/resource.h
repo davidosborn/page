@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_win32_resource_hpp
-#   define page_win32_resource_hpp
+#ifndef    page_local_win32_resource_hpp
+#   define page_local_win32_resource_hpp
 
 #	define IDR_MANIFEST 101
 #	define IDI_ICON     102

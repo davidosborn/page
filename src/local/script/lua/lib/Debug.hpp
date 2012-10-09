@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_script_lua_lib_Debug_hpp
-#   define page_script_lua_lib_Debug_hpp
+#ifndef    page_local_script_lua_lib_Debug_hpp
+#   define page_local_script_lua_lib_Debug_hpp
 
 #	include <functional> // function
 #	include <memory> // shared_ptr

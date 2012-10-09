@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_win32_hpp
-#   define page_math_win32_hpp
+#ifndef    page_local_math_win32_hpp
+#   define page_local_math_win32_hpp
 
 #	include <windows.h> // LONG, POINT, RECT
 #	include "Aabb.hpp"

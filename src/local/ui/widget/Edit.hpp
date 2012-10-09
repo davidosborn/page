@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_ui_widget_Edit_hpp
-#   define page_ui_widget_Edit_hpp
+#ifndef    page_local_ui_widget_Edit_hpp
+#   define page_local_ui_widget_Edit_hpp
 
 #	include <string>
 #	include "../../util/Signal.hpp"

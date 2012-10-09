@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_game_Object_hpp
-#   define page_game_Object_hpp
+#ifndef    page_local_game_Object_hpp
+#   define page_local_game_Object_hpp
 
 #	include "Entity.hpp"
 

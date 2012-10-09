@@ -30,8 +30,8 @@
 // active texture state saver
 // NOP if ARB_multitexture not supported
 
-#ifndef    page_vid_opengl_ActiveTextureSaver_hpp
-#   define page_vid_opengl_ActiveTextureSaver_hpp
+#ifndef    page_local_vid_opengl_ActiveTextureSaver_hpp
+#   define page_local_vid_opengl_ActiveTextureSaver_hpp
 
 #	include <GL/gl.h> // GLenum
 #	include "../../util/StateSaver.hpp"

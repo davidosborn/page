@@ -30,8 +30,8 @@
 // key frame interpolator
 // inspired by CatMother's anim::Interpolator
 
-#ifndef    page_phys_controller_animation_Interpolator_hpp
-#   define page_phys_controller_animation_Interpolator_hpp
+#ifndef    page_local_phys_controller_animation_Interpolator_hpp
+#   define page_local_phys_controller_animation_Interpolator_hpp
 
 #	include "../../../res/type/Animation.hpp" // Animation::Channel
 

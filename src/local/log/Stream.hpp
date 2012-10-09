@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_Stream_hpp
-#   define page_log_Stream_hpp
+#ifndef    page_local_log_Stream_hpp
+#   define page_local_log_Stream_hpp
 
 #	include <streambuf>
 

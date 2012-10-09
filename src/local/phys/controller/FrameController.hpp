@@ -30,8 +30,8 @@
 // constant frame controller
 // can provide a persistent bind frame for other controllers to build on
 
-#ifndef    page_phys_controller_FrameController_hpp
-#   define page_phys_controller_FrameController_hpp
+#ifndef    page_local_phys_controller_FrameController_hpp
+#   define page_local_phys_controller_FrameController_hpp
 
 #	include "../Controller.hpp"
 

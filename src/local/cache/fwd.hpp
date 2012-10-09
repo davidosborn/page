@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_fwd_hpp
-#   define page_cache_fwd_hpp
+#ifndef    page_local_cache_fwd_hpp
+#   define page_local_cache_fwd_hpp
 
 namespace page
 {

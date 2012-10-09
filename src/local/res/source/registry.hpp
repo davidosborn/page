@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_source_registry_hpp
-#   define page_res_source_registry_hpp
+#ifndef    page_local_res_source_registry_hpp
+#   define page_local_res_source_registry_hpp
 
 #	include <functional> // function
 #	include <string>

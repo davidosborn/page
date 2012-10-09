@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_script_lua_Library_hpp
-#   define page_script_lua_Library_hpp
+#ifndef    page_local_script_lua_Library_hpp
+#   define page_local_script_lua_Library_hpp
 
 #	include <lua.hpp> // lua_State
 #	include "../../util/NonCopyable.hpp"

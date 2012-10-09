@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_resources_ShaderOutlineResources_hpp
-#   define page_vid_opengl_resources_ShaderOutlineResources_hpp
+#ifndef    page_local_vid_opengl_resources_ShaderOutlineResources_hpp
+#   define page_local_vid_opengl_resources_ShaderOutlineResources_hpp
 
 #	include <memory> // unique_ptr
 #	include "../../../math/fwd.hpp" // Vector

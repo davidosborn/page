@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_iterator_range_hpp
-#   define page_util_iterator_range_hpp
+#ifndef    page_local_util_iterator_range_hpp
+#   define page_local_util_iterator_range_hpp
 
 #	include <utility> // declval, pair
 #	include "../type_traits.hpp" // ENABLE_IF, is_range

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_Sound_hpp
-#   define page_aud_Sound_hpp
+#ifndef    page_local_aud_Sound_hpp
+#   define page_local_aud_Sound_hpp
 
 #	include "../cache/fwd.hpp" // Proxy
 #	include "../util/copy_ptr.hpp"

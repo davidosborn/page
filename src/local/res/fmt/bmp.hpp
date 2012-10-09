@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_fmt_bmp_hpp
-#   define page_res_fmt_bmp_hpp
+#ifndef    page_local_res_fmt_bmp_hpp
+#   define page_local_res_fmt_bmp_hpp
 
 #	include <cstdint> // int32_t, uint{16,32}_t
 

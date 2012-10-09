@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_Aabb_hpp
-#   define page_math_Aabb_hpp
+#ifndef    page_local_math_Aabb_hpp
+#   define page_local_math_Aabb_hpp
 
 #	include <iosfwd> // [io]stream
 #	include "ArithmeticConversion.hpp"

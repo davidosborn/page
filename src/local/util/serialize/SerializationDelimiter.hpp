@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_serialize_SerializationDelimiter_hpp
-#   define page_util_serialize_SerializationDelimiter_hpp
+#ifndef    page_local_util_serialize_SerializationDelimiter_hpp
+#   define page_local_util_serialize_SerializationDelimiter_hpp
 
 #	include <string> // basic_string, char_traits
 #	include <type_traits> // is_{,explicitly_}convertible

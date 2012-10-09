@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_string_convert_hpp
-#   define page_util_string_convert_hpp
+#ifndef    page_local_util_string_convert_hpp
+#   define page_local_util_string_convert_hpp
 
 #	include <string> // allocator, basic_string, char_traits
 #	include "Flags.hpp"

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_scan_callback_hpp
-#   define page_res_scan_callback_hpp
+#ifndef    page_local_res_scan_callback_hpp
+#   define page_local_res_scan_callback_hpp
 
 #	include <functional> // function
 

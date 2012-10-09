@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_Texture_hpp
-#   define page_vid_opengl_Texture_hpp
+#ifndef    page_local_vid_opengl_Texture_hpp
+#   define page_local_vid_opengl_Texture_hpp
 
 #	include <GL/gl.h> // GLuint
 #	include "../../math/fwd.hpp" // RgbaColor

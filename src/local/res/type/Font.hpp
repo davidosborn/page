@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_Font_hpp
-#   define page_res_type_Font_hpp
+#ifndef    page_local_res_type_Font_hpp
+#   define page_local_res_type_Font_hpp
 
 #	include <string>
 #	include <unordered_map>

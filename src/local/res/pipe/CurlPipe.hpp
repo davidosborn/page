@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_pipe_CurlPipe_hpp
-#   define page_res_pipe_CurlPipe_hpp
+#ifndef    page_local_res_pipe_CurlPipe_hpp
+#   define page_local_res_pipe_CurlPipe_hpp
 
 #	include <string>
 #	include <curl/curl.h>

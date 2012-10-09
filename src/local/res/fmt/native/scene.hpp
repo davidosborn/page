@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_fmt_native_scene_hpp
-#   define page_res_fmt_native_scene_hpp
+#ifndef    page_local_res_fmt_native_scene_hpp
+#   define page_local_res_fmt_native_scene_hpp
 
 #	include <string>
 

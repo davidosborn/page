@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_controller_IdleController_hpp
-#   define page_phys_controller_IdleController_hpp
+#ifndef    page_local_phys_controller_IdleController_hpp
+#   define page_local_phys_controller_IdleController_hpp
 
 #	include "AnimationTargetController.hpp"
 

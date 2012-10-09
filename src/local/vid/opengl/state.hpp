@@ -30,8 +30,8 @@
 // OpenGL state shadowing
 // avoids driver read-back stalls
 
-#ifndef    page_vid_opengl_state_hpp
-#   define page_vid_opengl_state_hpp
+#ifndef    page_local_vid_opengl_state_hpp
+#   define page_local_vid_opengl_state_hpp
 
 #	include <GL/gl.h> // GL{boolean,double,enum,float,{,u}int,sizei}, glext.h
 #	include <GL/glext.h> // GLhandleARB

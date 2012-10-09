@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_channel_AmbientChannel_hpp
-#   define page_aud_channel_AmbientChannel_hpp
+#ifndef    page_local_aud_channel_AmbientChannel_hpp
+#   define page_local_aud_channel_AmbientChannel_hpp
 
 #	include "../Channel.hpp"
 

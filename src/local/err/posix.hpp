@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_err_posix_hpp
-#   define page_err_posix_hpp
+#ifndef    page_local_err_posix_hpp
+#   define page_local_err_posix_hpp
 
 namespace page
 {

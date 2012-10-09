@@ -31,8 +31,8 @@
 // when EndOfStream is thrown, the stream position should be set to the end
 // when InStream is thrown, the stream position should not change
 
-#ifndef    page_res_Stream_hpp
-#   define page_res_Stream_hpp
+#ifndef    page_local_res_Stream_hpp
+#   define page_local_res_Stream_hpp
 
 #	include <string>
 #	include <vector>

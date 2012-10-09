@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_regex_hpp
-#   define page_util_regex_hpp
+#ifndef    page_local_util_regex_hpp
+#   define page_local_util_regex_hpp
 
 #	include <istream>
 #	include <ostream>

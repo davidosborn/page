@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_resources_ShadowResources_hpp
-#   define page_vid_opengl_resources_ShadowResources_hpp
+#ifndef    page_local_vid_opengl_resources_ShadowResources_hpp
+#   define page_local_vid_opengl_resources_ShadowResources_hpp
 
 #	include <memory> // unique_ptr
 #	include "../../../cfg/opengl.hpp" // {packed,variance}ShadowType

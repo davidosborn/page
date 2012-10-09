@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_serialize_DeserializationDelimiter_hpp
-#   define page_util_serialize_DeserializationDelimiter_hpp
+#ifndef    page_local_util_serialize_DeserializationDelimiter_hpp
+#   define page_local_util_serialize_DeserializationDelimiter_hpp
 
 #	include <functional> // function
 #	include <string> // char_traits

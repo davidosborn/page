@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_x11_event_hpp
-#   define page_util_x11_event_hpp
+#ifndef    page_local_util_x11_event_hpp
+#   define page_local_util_x11_event_hpp
 
 #	include <string>
 #	include <X11/X.h> // XEvent

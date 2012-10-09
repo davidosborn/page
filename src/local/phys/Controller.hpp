@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_Controller_hpp
-#   define page_phys_Controller_hpp
+#ifndef    page_local_phys_Controller_hpp
+#   define page_local_phys_Controller_hpp
 
 #	include <vector>
 #	include "../util/Cloneable.hpp"

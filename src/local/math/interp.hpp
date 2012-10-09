@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_interp_hpp
-#   define page_math_interp_hpp
+#ifndef    page_local_math_interp_hpp
+#   define page_local_math_interp_hpp
 
 #	include <array>
 #	include "Quat.hpp"

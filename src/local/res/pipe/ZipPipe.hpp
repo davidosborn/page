@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_pipe_ZipPipe_hpp
-#   define page_res_pipe_ZipPipe_hpp
+#ifndef    page_local_res_pipe_ZipPipe_hpp
+#   define page_local_res_pipe_ZipPipe_hpp
 
 #	include <string>
 #	include "../Pipe.hpp"

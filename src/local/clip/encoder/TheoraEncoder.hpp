@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_clip_encoder_TheoraEncoder_hpp
-#   define page_clip_encoder_TheoraEncoder_hpp
+#ifndef    page_local_clip_encoder_TheoraEncoder_hpp
+#   define page_local_clip_encoder_TheoraEncoder_hpp
 
 #	include <theora/theora.h>
 #	include "../../math/Vector.hpp"

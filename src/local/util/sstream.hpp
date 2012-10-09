@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_sstream_hpp
-#   define page_util_sstream_hpp
+#ifndef    page_local_util_sstream_hpp
+#   define page_local_util_sstream_hpp
 
 #	include <sstream>
 #	include "ios.hpp" // InitIos

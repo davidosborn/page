@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_openal_channel_SpacialChannel_hpp
-#   define page_aud_openal_channel_SpacialChannel_hpp
+#ifndef    page_local_aud_openal_channel_SpacialChannel_hpp
+#   define page_local_aud_openal_channel_SpacialChannel_hpp
 
 #	include "../../channel/SpacialChannel.hpp"
 #	include "../Channel.hpp"

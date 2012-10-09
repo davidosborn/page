@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_Resources_hpp
-#   define page_vid_opengl_Resources_hpp
+#ifndef    page_local_vid_opengl_Resources_hpp
+#   define page_local_vid_opengl_Resources_hpp
 
 #	include <array>
 #	include <memory> // {unique,shared}_ptr

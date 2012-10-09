@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_iterator_chain_iterator_hpp
-#   define page_util_iterator_chain_iterator_hpp
+#ifndef    page_local_util_iterator_chain_iterator_hpp
+#   define page_local_util_iterator_chain_iterator_hpp
 
 #	include <initializer_list>
 #	include <iterator> // iterator_traits

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_simd_i386_sse3_hpp
-#   define page_math_simd_i386_sse3_hpp
+#ifndef    page_local_math_simd_i386_sse3_hpp
+#   define page_local_math_simd_i386_sse3_hpp
 
 #	include "../simd.hpp"
 

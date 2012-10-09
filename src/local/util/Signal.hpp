@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_Signal_hpp
-#   define page_util_Signal_hpp
+#ifndef    page_local_util_Signal_hpp
+#   define page_local_util_Signal_hpp
 
 #	include <functional> // function
 #	include <memory> // {shared,weak}_ptr

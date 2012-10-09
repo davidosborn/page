@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_sink_BufferSink_hpp
-#   define page_log_sink_BufferSink_hpp
+#ifndef    page_local_log_sink_BufferSink_hpp
+#   define page_local_log_sink_BufferSink_hpp
 
 #	include "../Sink.hpp"
 

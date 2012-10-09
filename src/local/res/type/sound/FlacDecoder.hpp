@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_type_sound_FlacDecoder_hpp
-#   define page_res_type_sound_FlacDecoder_hpp
+#ifndef    page_local_res_type_sound_FlacDecoder_hpp
+#   define page_local_res_type_sound_FlacDecoder_hpp
 
 #	include <memory> // shared_ptr
 #	include "AudioDecoder.hpp"

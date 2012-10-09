@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_clientActiveTexture_hpp
-#   define page_vid_opengl_clientActiveTexture_hpp
+#ifndef    page_local_vid_opengl_clientActiveTexture_hpp
+#   define page_local_vid_opengl_clientActiveTexture_hpp
 
 #	include <GL/gl.h> // GLenum, glext.h
 #	include <GL/glext.h> // GL_TEXTURE0_ARB

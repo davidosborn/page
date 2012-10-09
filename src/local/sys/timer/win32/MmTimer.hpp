@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_sys_timer_win32_MmTimer_hpp
-#   define page_sys_timer_win32_MmTimer_hpp
+#ifndef    page_local_sys_timer_win32_MmTimer_hpp
+#   define page_local_sys_timer_win32_MmTimer_hpp
 
 #	include <windows.h> // DWORD
 #	include "../../Timer.hpp"

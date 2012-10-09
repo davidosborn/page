@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_pipe_MinizipPipe_hpp
-#   define page_res_pipe_MinizipPipe_hpp
+#ifndef    page_local_res_pipe_MinizipPipe_hpp
+#   define page_local_res_pipe_MinizipPipe_hpp
 
 #	include <memory> // shared_ptr
 #	include <minizip/unzip.h> // unz_file_pos

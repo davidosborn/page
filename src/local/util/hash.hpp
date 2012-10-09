@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_hash_hpp
-#   define page_util_hash_hpp
+#ifndef    page_local_util_hash_hpp
+#   define page_local_util_hash_hpp
 
 #	include <cstddef> // size_t
 #	include <functional> // binary_function

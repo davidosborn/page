@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_sys_file_hpp
-#   define page_sys_file_hpp
+#ifndef    page_local_sys_file_hpp
+#   define page_local_sys_file_hpp
 
 #	include <functional> // function
 #	include <string>

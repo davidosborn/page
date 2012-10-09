@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_clip_encoder_register_hpp
-#   define page_clip_encoder_register_hpp
+#ifndef    page_local_clip_encoder_register_hpp
+#   define page_local_clip_encoder_register_hpp
 
 #	include "registry.hpp" // RegisterEncoder
 

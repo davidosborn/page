@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_inp_Driver_hpp
-#   define page_inp_Driver_hpp
+#ifndef    page_local_inp_Driver_hpp
+#   define page_local_inp_Driver_hpp
 
 #	include <memory> // shared_ptr
 #	include <vector>

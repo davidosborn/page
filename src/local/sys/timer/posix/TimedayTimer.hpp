@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_sys_timer_posix_TimedayTimer_hpp
-#   define page_sys_timer_posix_TimedayTimer_hpp
+#ifndef    page_local_sys_timer_posix_TimedayTimer_hpp
+#   define page_local_sys_timer_posix_TimedayTimer_hpp
 
 #	include <sys/time.h> // timeval
 #	include "../../Timer.hpp"

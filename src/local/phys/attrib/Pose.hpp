@@ -29,8 +29,8 @@
 
 // skeletal deformation
 
-#ifndef    page_phys_attrib_Pose_hpp
-#   define page_phys_attrib_Pose_hpp
+#ifndef    page_local_phys_attrib_Pose_hpp
+#   define page_local_phys_attrib_Pose_hpp
 
 #	include <string>
 #	include <unordered_map>

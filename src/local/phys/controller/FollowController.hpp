@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_controller_FollowController_hpp
-#   define page_phys_controller_FollowController_hpp
+#ifndef    page_local_phys_controller_FollowController_hpp
+#   define page_local_phys_controller_FollowController_hpp
 
 #	include "../../cache/proxy/Aabb.hpp"
 #	include "../../math/Quat.hpp"

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_openal_buffer_StaticBuffer_hpp
-#   define page_aud_openal_buffer_StaticBuffer_hpp
+#ifndef    page_local_aud_openal_buffer_StaticBuffer_hpp
+#   define page_local_aud_openal_buffer_StaticBuffer_hpp
 
 #	include "../../../util/copy_ptr.hpp"
 #	include "../Buffer.hpp"

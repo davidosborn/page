@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_opengl_filter_AlphaFilter_hpp
-#   define page_vid_opengl_filter_AlphaFilter_hpp
+#ifndef    page_local_vid_opengl_filter_AlphaFilter_hpp
+#   define page_local_vid_opengl_filter_AlphaFilter_hpp
 
 #	include "../Filter.hpp"
 

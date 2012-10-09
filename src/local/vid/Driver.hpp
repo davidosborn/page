@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_vid_Driver_hpp
-#   define page_vid_Driver_hpp
+#ifndef    page_local_vid_Driver_hpp
+#   define page_local_vid_Driver_hpp
 
 #	include "../math/Aabb.hpp"
 #	include "../math/fwd.hpp" // Vector

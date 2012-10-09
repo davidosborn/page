@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_math_fwd_hpp
-#   define page_math_fwd_hpp
+#ifndef    page_local_math_fwd_hpp
+#   define page_local_math_fwd_hpp
 
 namespace page
 {

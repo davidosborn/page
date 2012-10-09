@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_openal_Buffer_hpp
-#   define page_aud_openal_Buffer_hpp
+#ifndef    page_local_aud_openal_Buffer_hpp
+#   define page_local_aud_openal_Buffer_hpp
 
 #	include <AL/al.h> // ALuint
 #	include "../../cache/fwd.hpp" // Proxy

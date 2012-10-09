@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_Index_hpp
-#   define page_res_Index_hpp
+#ifndef    page_local_res_Index_hpp
+#   define page_local_res_Index_hpp
 
 #	include <array>
 #	include <deque>

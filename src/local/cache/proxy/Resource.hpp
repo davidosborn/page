@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_proxy_Resource_hpp
-#   define page_cache_proxy_Resource_hpp
+#ifndef    page_local_cache_proxy_Resource_hpp
+#   define page_local_cache_proxy_Resource_hpp
 
 #	include "../Proxy.hpp"
 

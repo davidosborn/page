@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_adapt_freetype_hpp
-#   define page_res_adapt_freetype_hpp
+#ifndef    page_local_res_adapt_freetype_hpp
+#   define page_local_res_adapt_freetype_hpp
 
 #	include <memory> // unique_ptr
 #	include <ft2build.h>

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_openal_Channel_hpp
-#   define page_aud_openal_Channel_hpp
+#ifndef    page_local_aud_openal_Channel_hpp
+#   define page_local_aud_openal_Channel_hpp
 
 #	include <memory> // shared_ptr
 #	include <AL/al.h> // ALuint

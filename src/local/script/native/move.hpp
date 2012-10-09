@@ -29,8 +29,8 @@
 
 // FIXME: should probably make this module more general
 
-#ifndef    page_script_native_move_hpp
-#   define page_script_native_move_hpp
+#ifndef    page_local_script_native_move_hpp
+#   define page_local_script_native_move_hpp
 
 #	include <string>
 #	include "../../game/Character.hpp"

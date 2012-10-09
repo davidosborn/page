@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_script_Process_hpp
-#   define page_script_Process_hpp
+#ifndef    page_local_script_Process_hpp
+#   define page_local_script_Process_hpp
 
 #	include "../util/NonCopyable.hpp"
 

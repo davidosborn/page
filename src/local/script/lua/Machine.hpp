@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_script_lua_Machine_hpp
-#   define page_script_lua_Machine_hpp
+#ifndef    page_local_script_lua_Machine_hpp
+#   define page_local_script_lua_Machine_hpp
 
 #	include <memory> // unique_ptr
 #	include <lua.hpp> // luaState

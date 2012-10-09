@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_clip_Encoder_hpp
-#   define page_clip_Encoder_hpp
+#ifndef    page_local_clip_Encoder_hpp
+#   define page_local_clip_Encoder_hpp
 
 #	include <functional> // function
 #	include <vector>

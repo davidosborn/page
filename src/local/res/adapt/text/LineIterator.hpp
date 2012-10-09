@@ -31,8 +31,8 @@
 // counts lines and tracks indentation
 // points to empty string at end of stream
 
-#ifndef    page_res_adapt_text_LineIterator_hpp
-#   define page_res_adapt_text_LineIterator_hpp
+#ifndef    page_local_res_adapt_text_LineIterator_hpp
+#   define page_local_res_adapt_text_LineIterator_hpp
 
 #	include <string>
 

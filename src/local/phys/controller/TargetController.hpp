@@ -30,8 +30,8 @@
 // interpolated frame matching controller
 // similar attributes should be defined in each frame to avoid popping
 
-#ifndef    page_phys_controller_TargetController_hpp
-#   define page_phys_controller_TargetController_hpp
+#ifndef    page_local_phys_controller_TargetController_hpp
+#   define page_local_phys_controller_TargetController_hpp
 
 #	include <vector>
 #	include "../Controller.hpp"

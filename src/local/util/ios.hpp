@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_ios_hpp
-#   define page_util_ios_hpp
+#ifndef    page_local_util_ios_hpp
+#   define page_local_util_ios_hpp
 
 #	include <ios>
 #	include "StateSaver.hpp"

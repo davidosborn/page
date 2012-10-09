@@ -29,8 +29,8 @@
 
 // geometry object
 
-#ifndef    page_phys_Form_hpp
-#   define page_phys_Form_hpp
+#ifndef    page_local_phys_Form_hpp
+#   define page_local_phys_Form_hpp
 
 #	include "../cache/fwd.hpp" // Proxy
 #	include "../res/type/Model.hpp" // Model::Part

@@ -29,8 +29,8 @@
 
 // function call iterator adapter
 
-#ifndef    page_util_iterator_call_iterator_hpp
-#   define page_util_iterator_call_iterator_hpp
+#ifndef    page_local_util_iterator_call_iterator_hpp
+#   define page_local_util_iterator_call_iterator_hpp
 
 #	include <functional> // result_of
 #	include <iterator> // input_iterator_tag, iterator_traits

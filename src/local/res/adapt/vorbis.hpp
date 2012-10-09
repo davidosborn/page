@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_adapt_vorbis_hpp
-#   define page_res_adapt_vorbis_hpp
+#ifndef    page_local_res_adapt_vorbis_hpp
+#   define page_local_res_adapt_vorbis_hpp
 
 #	include <functional> // function
 #	include <vorbis/vorbisfile.h> // OggVorbis_File

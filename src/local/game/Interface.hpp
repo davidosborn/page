@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_game_Interface_hpp
-#   define page_game_Interface_hpp
+#ifndef    page_local_game_Interface_hpp
+#   define page_local_game_Interface_hpp
 
 #	include <memory> // shared_ptr
 #	include "../ui/Interface.hpp"

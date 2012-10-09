@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_ui_widget_Window_hpp
-#   define page_ui_widget_Window_hpp
+#ifndef    page_local_ui_widget_Window_hpp
+#   define page_local_ui_widget_Window_hpp
 
 #	include <memory> // shared_ptr
 #	include <string>

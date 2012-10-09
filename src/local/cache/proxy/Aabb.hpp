@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cache_proxy_Aabb_hpp
-#   define page_cache_proxy_Aabb_hpp
+#ifndef    page_local_cache_proxy_Aabb_hpp
+#   define page_local_cache_proxy_Aabb_hpp
 
 #	include "../../math/fwd.hpp" // Aabb
 #	include "../../util/copy_ptr.hpp"

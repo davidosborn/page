@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_err_exception_catch_hpp
-#   define page_err_exception_catch_hpp
+#ifndef    page_local_err_exception_catch_hpp
+#   define page_local_err_exception_catch_hpp
 
 #	include <exception> // exception
 #	include <iostream> // clog

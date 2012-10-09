@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cfg_source_OptSource_hpp
-#   define page_cfg_source_OptSource_hpp
+#ifndef    page_local_cfg_source_OptSource_hpp
+#   define page_local_cfg_source_OptSource_hpp
 
 #	include "../Source.hpp"
 

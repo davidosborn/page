@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_cfg_source_win32_RegSource_hpp
-#   define page_cfg_source_win32_RegSource_hpp
+#ifndef    page_local_cfg_source_win32_RegSource_hpp
+#   define page_local_cfg_source_win32_RegSource_hpp
 
 #	include <windows.h>
 #	include "../../Source.hpp"

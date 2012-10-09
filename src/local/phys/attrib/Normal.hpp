@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_attrib_Normal_hpp
-#   define page_phys_attrib_Normal_hpp
+#ifndef    page_local_phys_attrib_Normal_hpp
+#   define page_local_phys_attrib_Normal_hpp
 
 #	include "../../math/Matrix.hpp"
 #	include "../../math/Quat.hpp"

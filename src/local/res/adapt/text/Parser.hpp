@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_res_adapt_text_Parser_hpp
-#   define page_res_adapt_text_Parser_hpp
+#ifndef    page_local_res_adapt_text_Parser_hpp
+#   define page_local_res_adapt_text_Parser_hpp
 
 #	include <functional> // bind, function, ref
 #	include <string>

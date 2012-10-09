@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_util_algorithm_hpp
-#   define page_util_algorithm_hpp
+#ifndef    page_local_util_algorithm_hpp
+#   define page_local_util_algorithm_hpp
 
 #	include <type_traits> // enable_if, is_convertible
 

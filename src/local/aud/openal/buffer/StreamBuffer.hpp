@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_openal_buffer_StreamBuffer_hpp
-#   define page_aud_openal_buffer_StreamBuffer_hpp
+#ifndef    page_local_aud_openal_buffer_StreamBuffer_hpp
+#   define page_local_aud_openal_buffer_StreamBuffer_hpp
 
 #	include <array>
 #	include <memory> // unique_ptr

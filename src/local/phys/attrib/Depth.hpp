@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_phys_attrib_Depth_hpp
-#   define page_phys_attrib_Depth_hpp
+#ifndef    page_local_phys_attrib_Depth_hpp
+#   define page_local_phys_attrib_Depth_hpp
 
 #	include "../../math/float.hpp" // Inf
 #	include "../Frame.hpp"

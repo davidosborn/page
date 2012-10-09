@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_err_exception_throw_hpp
-#   define page_err_exception_throw_hpp
+#ifndef    page_local_err_exception_throw_hpp
+#   define page_local_err_exception_throw_hpp
 
 #	include <string>
 #	include "../../util/sstream.hpp" // make_ostringstream

@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_log_Sink_hpp
-#   define page_log_Sink_hpp
+#ifndef    page_local_log_Sink_hpp
+#   define page_local_log_Sink_hpp
 
 #	include "Stream.hpp"
 

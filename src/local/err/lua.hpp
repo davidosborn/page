@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_err_lua_hpp
-#   define page_err_lua_hpp
+#ifndef    page_local_err_lua_hpp
+#   define page_local_err_lua_hpp
 
 #	include <lua.hpp> // lua_State, luaL_error
 #	include "exception/catch.hpp" // CATCH_ALL_AND

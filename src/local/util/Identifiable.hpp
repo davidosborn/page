@@ -33,8 +33,8 @@
 // similar in purpose to weak_ptr, but serializable and storage-independent
 // NOTE: polymorphic with dynamic_cast to support multiple inheritance
 
-#ifndef    page_util_Identifiable_hpp
-#   define page_util_Identifiable_hpp
+#ifndef    page_local_util_Identifiable_hpp
+#   define page_local_util_Identifiable_hpp
 
 #	include <unordered_map>
 

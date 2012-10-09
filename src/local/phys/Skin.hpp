@@ -29,8 +29,8 @@
 
 // binding between mesh and pose
 
-#ifndef    page_phys_Skin_hpp
-#   define page_phys_Skin_hpp
+#ifndef    page_local_phys_Skin_hpp
+#   define page_local_phys_Skin_hpp
 
 #	include <vector>
 #	include "../math/Vector.hpp"

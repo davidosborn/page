@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_aud_NullDriver_hpp
-#   define page_aud_NullDriver_hpp
+#ifndef    page_local_aud_NullDriver_hpp
+#   define page_local_aud_NullDriver_hpp
 
 #	include "Driver.hpp"
 
