@@ -1577,7 +1577,7 @@ fi
 # initialize compiler flags for selected platform, features, and packages
 
 CPPFLAGS="-imacros config.h -iquote . -isystem $topdir/src/system/c++"
-CXXFLAGS="$CXXFLAGS -std=gnu++0x -pedantic-errors -pipe -Werror"
+CXXFLAGS="$CXXFLAGS -std=gnu++11 -pedantic-errors -pipe -Werror"
 
 if [ "$enable_debug" = yes ]; then
 	CPPFLAGS="$CPPFLAGS" #-D_GLIBCXX_DEBUG
