@@ -27,20 +27,23 @@
  * of this software.
  */
 
-#ifndef    page_local_log_Sink_hpp
-#   define page_local_log_Sink_hpp
-
-#	include "Stream.hpp"
+#include <cassert>
+#include <utility> // forward
 
 namespace page
 {
 	namespace log
 	{
-		struct Sink : Stream
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		template <typename... Branches>
+			BranchableStream::BranchableStream(Branches &&... branches) :
+				branches{std::forward<Branches>(branches)...}
 		{
-			// NOTE: derived for consistency with Filter
-		};
+			for (const auto &branch : this->branches)
+				assert(branch);
+		}
 	}
 }
-
-#endif

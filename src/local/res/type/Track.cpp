@@ -33,7 +33,7 @@
 #include <functional> // bind, less
 #include <iostream> // clog
 #include "../../err/exception/throw.hpp" // THROW
-#include "../../log/manip.hpp" // Warn
+#include "../../log/manip.hpp" // Warning
 #include "../../math/float.hpp" // Near
 #include "../../math/interp.hpp" // Bilerp
 #include "../../math/intersect.hpp" // ClosestPointOnLine, LineIntersectSecondWeight, PointInTriangle{,Edges}
@@ -301,9 +301,9 @@ namespace page
 			}
 			switch (slope)
 			{
-				case steepSlope: std::clog << log::Warn << "contains steep faces" << std::endl; break;
-				case verticalSlope: std::clog << log::Warn << "contains vertical faces" << std::endl; break;
-				case backSlope: std::clog << log::Warn << "contains back-faces" << std::endl; break;
+				case steepSlope: std::clog << log::Warning << "contains steep faces" << std::endl; break;
+				case verticalSlope: std::clog << log::Warning << "contains vertical faces" << std::endl; break;
+				case backSlope: std::clog << log::Warning << "contains back-faces" << std::endl; break;
 			}
 		}
 

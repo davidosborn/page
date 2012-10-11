@@ -27,31 +27,38 @@
  * of this software.
  */
 
-#ifndef    page_local_log_filter_BufferFilter_hpp
-#   define page_local_log_filter_BufferFilter_hpp
+#ifndef    page_local_log_sink_StdoutSink_hpp
+#   define page_local_log_sink_StdoutSink_hpp
 
-#	include "../Filter.hpp"
+#	include "Sink.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct BufferFilter : Filter
+		class StdoutSink final : public Sink
 		{
-			BufferFilter();
-			explicit BufferFilter(const std::shared_ptr<Stream> &);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			void Put(char);
-			void Put(const char *, unsigned);
+			public:
+			StdoutSink();
 
-			void Sync();
-
-			protected:
-			std::streamsize xsputn(const char *, std::streamsize);
-			std::streambuf::int_type overflow(std::streambuf::int_type);
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
 
 			private:
-			char data[80];
+			void DoWrite(const std::string &) override final;
+			void DoFlush() override final;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
+
+			private:
+			std::streambuf &streambuf;
 		};
 	}
 }

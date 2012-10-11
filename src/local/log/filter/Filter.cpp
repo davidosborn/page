@@ -27,38 +27,23 @@
  * of this software.
  */
 
-#ifndef    page_local_log_Filter_hpp
-#   define page_local_log_Filter_hpp
+#include <cassert>
 
-#	include <memory>
-#	include <vector>
-#	include "Stream.hpp"
+#include "Filter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct Filter : Stream
+		/*----------------------+
+		| Stream implementation |
+		+----------------------*/
+
+		void Filter::DoWrite(const std::string &s)
 		{
-			Filter();
-			explicit Filter(const std::shared_ptr<Stream> &);
-
-			void Attach(const std::shared_ptr<Stream> &);
-			void Detach();
-			void Extend(Filter &);
-
-			void Put(char);
-			void Put(const char *, unsigned);
-
-			void Sync();
-
-			void Clear();
-			void Reset();
-
-			private:
-			std::vector<std::shared_ptr<Stream>> links;
-		};
+			auto f = DoFilter(s);
+			if (!f.empty())
+				BranchableStream::DoWrite(f);
+		}
 	}
 }
-
-#endif

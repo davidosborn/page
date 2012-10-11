@@ -31,7 +31,7 @@
 #include "cfg.hpp" // Commit, Init
 #include "err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_ERROR_AND
 #include "game/Game.hpp" // Game::{{,~}Game,Run}
-#include "log.hpp" // Deinit, Init, Preinit
+#include "log/print.hpp" // Print{Info,Stats}
 #include "opt.hpp" // Parse
 #include "sys.hpp" // PrintInfo
 
@@ -44,22 +44,13 @@ namespace page
 			Initer(int argc, char *argv[])
 			{
 				opt::Parse(argc, argv);
-				log::Preinit();
-				try
-				{
-					sys::PrintInfo();
-					cfg::Init();
-					log::Init();
-				}
-				catch (...)
-				{
-					log::Deinit();
-					throw;
-				}
+				sys::PrintInfo();
+				cfg::Init();
+				log::PrintInfo();
 			}
 			~Initer()
 			{
-				log::Deinit();
+				log::PrintStats();
 			}
 		};
 	}

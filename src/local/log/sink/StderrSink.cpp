@@ -27,55 +27,36 @@
  * of this software.
  */
 
-#include "../err/exception/catch.hpp" // CATCH_TAGS
-#include "Stream.hpp"
+#include <iostream> // c{err,out}
+
+#include "../../cfg/State.hpp" // State::{GetGlobalInstance,logSync}
+#include "../../err/Exception.hpp"
+#include "StderrSink.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		void Stream::Sync() {}
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-		void Stream::Clear() {}
-		void Stream::Reset() {}
+		StderrSink::StderrSink() :
+			streambuf(*(*cfg::State::GetGlobalInstance().logSync ? std::cout.rdbuf() : std::cerr.rdbuf())) {}
 
-		int Stream::sync()
+		/*----------------------+
+		| Stream implementation |
+		+----------------------*/
+
+		void StderrSink::DoWrite(const std::string &s)
 		{
-			try
-			{
-				Sync();
-			}
-			CATCH_TAGS(err::StreamTag, err::WriteTag)
-			{
-				return -1;
-			}
-			return 0;
+			if (streambuf.sputn(s.data(), s.size()) < s.size())
+				BOOST_THROW_EXCEPTION(err::Exception("stream write error"));
 		}
-		std::streamsize Stream::xsputn(const char *s, std::streamsize n)
+
+		void StderrSink::DoFlush()
 		{
-			try
-			{
-				Put(s, n);
-				return n;
-			}
-			CATCH_TAGS(err::StreamTag, err::WriteTag)
-			{
-				return 0;
-			}
-		}
-		std::streambuf::int_type Stream::overflow(std::streambuf::int_type c)
-		{
-			if (traits_type::eq_int_type(c, traits_type::eof()))
-				return traits_type::not_eof(c);
-			try
-			{
-				Put(traits_type::to_char_type(c));
-				return c;
-			}
-			CATCH_TAGS(err::StreamTag, err::WriteTag)
-			{
-				return traits_type::eof();
-			}
+			streambuf.pubsync();
 		}
 	}
 }

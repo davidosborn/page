@@ -33,7 +33,7 @@
 #	include <exception> // exception
 #	include <iostream> // clog
 #	include <string>
-#	include "../../log/manip.hpp" // Warn
+#	include "../../log/manip.hpp" // Warning
 #	include "../msg.hpp" // Message
 #	include "BasicException.hpp"
 #	include "CatchableException.hpp"
@@ -42,7 +42,7 @@
 #	define CAUGHT_EXCEPTION_WHAT CAUGHT_EXCEPTION.what()
 
 #	define PRINT_ERROR ::page::err::Message(CAUGHT_EXCEPTION_WHAT);
-#	define PRINT_WARNING ::std::clog << ::page::log::Warn << CAUGHT_EXCEPTION_WHAT << ::std::endl;
+#	define PRINT_WARNING ::std::clog << ::page::log::Warning << CAUGHT_EXCEPTION_WHAT << ::std::endl;
 
 #	define CATCH_ALL_AND_PRINT_ERROR           CATCH_ALL_AND_PRINT_ERROR_AND(;)
 #	define CATCH_ALL_AND_PRINT_ERROR_AND(DO)   CATCH_ALL_AND(PRINT_ERROR DO)

@@ -30,6 +30,9 @@
 #include <functional> // bind
 #include <iostream> // cout
 #include <regex>
+
+#include <boost/optional.hpp>
+
 #include "../cache.hpp" // PurgeResource
 #include "../cfg.hpp" // logVerbose
 #include "../err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_WARNING
@@ -173,11 +176,11 @@ namespace page
 					return;
 			}
 			// print path
-			log::Indenter indenter(false);
+			boost::optional<log::Indenter> indenter;
 			if (*cfg::logVerbose)
 			{
 				std::cout << (!node.path.empty() ? path : std::string(".")) << std::endl;
-				indenter.Reset(true);
+				indenter = boost::in_place();
 			}
 			// add node to index
 			std::pair<Paths::iterator, bool> result(paths.insert(std::make_pair(path, Path())));

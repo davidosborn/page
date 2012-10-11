@@ -27,40 +27,46 @@
  * of this software.
  */
 
-#include <iostream> // c{err,out}
-#include "../../cfg.hpp" // logSync
-#include "../../err/exception/throw.hpp" // THROW
-#include "ErrSink.hpp"
+#include "../../err/Exception.hpp"
+#include "IndentFilterState.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		namespace
+		/*----------------+
+		| global instance |
+		+----------------*/
+
+		IndentFilterState &IndentFilterState::GetGlobalInstance()
 		{
-			std::streambuf
-				&outBuf(*std::cout.rdbuf()),
-				&errBuf(*std::cerr.rdbuf());
+			static IndentFilterState instance;
+			return instance;
 		}
 
-		ErrSink::ErrSink() : buf(*cfg::logSync ? outBuf : errBuf) {}
+		/*----------+
+		| observers |
+		+----------*/
 
-		void ErrSink::Put(char c)
+		unsigned IndentFilterState::GetLevel() const
 		{
-			typedef std::streambuf::traits_type traits_type;
-			if (traits_type::eq_int_type(buf.sputc(c), traits_type::eof()))
-				THROW err::StreamWriteException<>();
-		}
-		void ErrSink::Put(const char *s, unsigned n)
-		{
-			typedef std::streambuf::traits_type traits_type;
-			if (traits_type::eq_int_type(buf.sputn(s, n), traits_type::eof()))
-				THROW err::StreamWriteException<>();
+			return level;
 		}
 
-		void ErrSink::Sync()
+		/*----------+
+		| modifiers |
+		+----------*/
+
+		void IndentFilterState::Indent()
 		{
-			buf.pubsync();
+			++level;
+		}
+
+		void IndentFilterState::Dedent()
+		{
+			if (!level)
+				BOOST_THROW_EXCEPTION(err::Exception("indentation level out of range"));
+			--level;
 		}
 	}
 }

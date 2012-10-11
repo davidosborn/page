@@ -33,6 +33,9 @@
 #include <iostream> // cout
 #include <memory> // shared_ptr
 #include <string>
+
+#include <boost/optional.hpp>
+
 #include "../../../cache/proxy/Resource.hpp"
 #include "../../../cfg.hpp" // logVerbose
 #include "../../../cfg/opengl.hpp" // vidShadow{,Down,Filter,Type}
@@ -240,11 +243,11 @@ namespace page
 					try
 					{
 						// create program
-						log::Indenter indenter(false);
+						boost::optional<log::Indenter> indenter;
 						if (*cfg::logVerbose)
 						{
 							std::cout << "creating program" << std::endl;
-							indenter.Reset(true);
+							indenter = boost::in_place();
 						}
 						try
 						{
@@ -254,9 +257,9 @@ namespace page
 						// create render-target pool
 						if (*cfg::logVerbose)
 						{
-							indenter.Reset();
+							indenter = boost::none_t;
 							std::cout << "creating render-target pool" << std::endl;
-							indenter.Reset(true);
+							indenter = boost::in_place();
 						}
 						try
 						{

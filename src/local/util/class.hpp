@@ -25,54 +25,49 @@
  * This software is provided "as is", without any express or implied warranty.
  * In no event will the authors be liable for any damages arising out of the use
  * of this software.
+ *
+ * @file
+ *
+ * Utilities for declaring classes.
  */
 
-#include <ctime> // {,local}time
-#include <locale> // use_facet, time_put
-#include <sstream> // ostringstream
+#ifndef    page_local_util_class_hpp
+#   define page_local_util_class_hpp
 
-#include "../../cfg/State.hpp" // State::{GetGlobalInstance,logTimeChange}
-#include "TimeFilter.hpp"
+#	include <utility> // forward
 
-namespace page
-{
-	namespace log
-	{
-		/*----------------------------+
-		| PrefixFilter implementation |
-		+----------------------------*/
+	/**
+	 * Defines the copy-constructor and copy-assignment-operator of the
+	 * specified class.  The value should be either "default" or "delete".
+	 */
+#	define DEFINE_COPY(CLASS, VALUE) \
+		CLASS(const CLASS &)             = VALUE; \
+		CLASS &operator =(const CLASS &) = VALUE;
 
-		std::string TimeFilter::GetPrefix() const
-		{
-			static std::time_t lastTime = 0;
-			static std::string lastTimeString;
+	/**
+	 * Defines the move-constructor and move-assignment-operator of the
+	 * specified class.  The value should be either "default" or "delete".
+	 */
+#	define DEFINE_MOVE(CLASS, VALUE) \
+		CLASS(CLASS &&)             = VALUE; \
+		CLASS &operator =(CLASS &&) = VALUE;
+		
+	/**
+	 * Makes the specified class "uncopyable" (ISO/IEC n3242 8.4.3.3).
+	 */
+#	define MAKE_UNCOPYABLE(CLASS) \
+		DEFINE_COPY(CLASS, delete) \
+		DEFINE_MOVE(CLASS, default)
 
-			// update time string if time has changed
-			bool timeChanged = false;
-			std::time_t newTime = std::time(0);
-			if (newTime != lastTime)
-			{
-				std::ostringstream ss;
-				const char timePattern[] = "%X";
-				std::use_facet<std::time_put<char>>(ss.getloc()).put(
-					ss, ss, ss.fill(), std::localtime(&newTime),
-					timePattern, timePattern + sizeof timePattern - 1);
+	/**
+	 * Causes the specified class to inherit the constructors of one of its base
+	 * classes.
+	 *
+	 * @see ISO/IEC n1898, Forwarding and Inherited Constructors
+	 */
+#	define INHERIT_CONSTRUCTORS(CLASS, BASE) \
+		template <typename... Args> \
+			explicit CLASS(Args &&... args) : \
+				BASE(std::forward<Args>(args)...) {}
 
-				lastTime = newTime;
-				lastTimeString = ss.str();
-				timeChanged = true;
-			}
-
-			// generate prefix using time string
-			if (*cfg::State::GetGlobalInstance().logTimeChange)
-			{
-				std::string r;
-				if (timeChanged)
-					r += lastTimeString + ":\n";
-				r += std::string(2, ' ');
-				return r;
-			}
-			return lastTimeString + ": ";
-		}
-	}
-}
+#endif

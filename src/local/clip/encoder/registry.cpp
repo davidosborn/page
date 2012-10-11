@@ -34,7 +34,7 @@
 #include <unordered_map>
 #include <vector>
 #include "../../err/exception/throw.hpp" // THROW
-#include "../../log/manip.hpp" // Warn
+#include "../../log/manip.hpp" // Warning
 #include "../../util/path.hpp" // {Get,With}Ext
 #include "../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "function.hpp" // EncoderFactory
@@ -84,7 +84,7 @@ namespace page
 							encoder.exts.begin(),
 							encoder.exts.end()));
 				}
-				std::clog << log::Warn << "unknown clip encoding format: " << fmt << std::endl;
+				std::clog << log::Warning << "unknown clip encoding format: " << fmt << std::endl;
 			}
 			// check extension
 			std::string ext(util::GetExt(path));

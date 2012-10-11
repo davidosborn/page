@@ -27,16 +27,45 @@
  * of this software.
  */
 
-#ifndef    page_local_log_hpp
-#   define page_local_log_hpp
+#ifndef    page_local_log_sink_ConsoleSink_hpp
+#   define page_local_log_sink_ConsoleSink_hpp
+
+#	include <memory> // shared_ptr
+
+#	include "Sink.hpp"
 
 namespace page
 {
+	namespace gui
+	{
+		class Console;
+	}
+
 	namespace log
 	{
-		void Preinit();
-		void Init();
-		void Deinit();
+		class ConsoleSink final : public Sink
+		{
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
+			explicit ConsoleSink(const std::string &title);
+
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
+
+			private:
+			void DoWrite(const std::string &) override final;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
+
+			private:
+			std::shared_ptr<gui::Console> console;
+		};
 	}
 }
 

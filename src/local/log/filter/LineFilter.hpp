@@ -27,52 +27,62 @@
  * of this software.
  */
 
-#include <vector>
-#include "BufferSink.hpp"
+#ifndef    page_local_log_filter_LineFilter_hpp
+#   define page_local_log_filter_LineFilter_hpp
+
+#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
+#	include "Filter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		namespace
+		/**
+		 * The base class for filters which process newline-terminated lines,
+		 * rather than individual characters.
+		 */
+		class LineFilter : public Filter
 		{
-			typedef std::vector<char> Buffer;
-			Buffer buffer;
-		}
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-		BufferSink::BufferSink(bool err) : err(err) {}
+			public:
+			INHERIT_CONSTRUCTORS(LineFilter, Filter)
 
-		void BufferSink::Put(char c)
-		{
-			buffer.push_back(c & 0x7f | err << 7);
-		}
-		void BufferSink::Put(const char *s, unsigned n)
-		{
-			for (const char *c = s; c != s + n; c++)
-				buffer.push_back(*c & 0x7f | err << 7);
-		}
+			/*------------------+
+			| virtual functions |
+			+------------------*/
 
-		void BufferSink::Sync()
-		{
-			buffer.push_back(err << 7);
-		}
+			private:
+			virtual std::string FilterLine(const std::string &) const = 0;
 
-		void BufferSink::Flush(Stream &out, Stream &err)
-		{
-			Stream *lastStream = 0;
-			for (Buffer::const_iterator c(buffer.begin()); c != buffer.end(); ++c)
-			{
-				Stream &stream(*c & 0x80 ? err : out);
-				if (&stream != lastStream)
-				{
-					if (lastStream) lastStream->Sync();
-					lastStream = &stream;
-				}
-				char a = *c & 0x7f;
-				if (a) stream.Put(a);
-				else stream.Sync();
-			}
-			Buffer().swap(buffer);
-		}
+			/*----------------------+
+			| Filter implementation |
+			+----------------------*/
+
+			private:
+			std::string DoFilter(const std::string &) const override final;
+
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
+
+			private:
+			void DoClear() override;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
+
+			private:
+			/**
+			 * A buffer holding the last incomplete line.  A line is complete
+			 * when it is terminated by a newline character.
+			 */
+			mutable std::string buffer;
+		};
 	}
 }
+
+#endif

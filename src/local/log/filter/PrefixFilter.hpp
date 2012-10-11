@@ -30,23 +30,35 @@
 #ifndef    page_local_log_filter_PrefixFilter_hpp
 #   define page_local_log_filter_PrefixFilter_hpp
 
-#	include "GateFilter.hpp"
+#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
+#	include "LineFilter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct PrefixFilter : GateFilter
+		class PrefixFilter : public LineFilter
 		{
-			PrefixFilter();
-			explicit PrefixFilter(const std::shared_ptr<Stream> &);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			protected:
-			virtual void PutPrefix() = 0;
+			public:
+			INHERIT_CONSTRUCTORS(PrefixFilter, LineFilter)
+
+			/*------------------+
+			| virtual functions |
+			+------------------*/
 
 			private:
-			void Put(char);
-			void Put(const char *, unsigned);
+			virtual std::string GetPrefix() const = 0;
+
+			/*--------------------------+
+			| LineFilter implementation |
+			+--------------------------*/
+
+			private:
+			std::string FilterLine(const std::string &) const override final;
 		};
 	}
 }

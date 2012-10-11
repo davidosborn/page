@@ -28,10 +28,13 @@
  */
 
 #include <iostream>
+
+#include <boost/optional.hpp>
+
 #include "../aud/Driver.hpp" // Driver::Play
 #include "../cfg.hpp" // logVerbose
 #include "../log/Indenter.hpp"
-#include "../log/manip.hpp" // Warn
+#include "../log/manip.hpp" // Warning
 #include "../res/type/Scene.hpp" // Scene::music
 #include "Character.hpp"
 #include "Object.hpp"
@@ -113,11 +116,11 @@ namespace page
 		{
 			if (scene.music)
 			{
-				log::Indenter indenter(false);
+				boost::optional<log::Indenter> indenter;
 				if (*cfg::logVerbose)
 				{
 					std::cout << "playing music: " << scene.music.GetSource() << std::endl;
-					indenter.Reset(true);
+					indenter = boost::in_place();
 				}
 				try
 				{
@@ -125,7 +128,7 @@ namespace page
 				}
 				catch (...)
 				{
-					std::clog << log::Warn << "failed to play music" << std::endl;
+					std::clog << log::Warning << "failed to play music" << std::endl;
 				}
 			}
 			// create player

@@ -34,6 +34,9 @@
 #include <string>
 #include <typeinfo> // type_info
 #include <unordered_map>
+
+#include <boost/optional.hpp>
+
 #include "cfg.hpp" // log{Cache{,Update},Verbose}
 #include "err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_WARNING_AND
 #include "log/Indenter.hpp"
@@ -101,11 +104,11 @@ namespace page
 				if (datum.dirty)
 				{
 					assert(datum.repair);
-					log::Indenter indenter(false);
+					boost::optional<log::Indenter> indenter;
 					if (*cfg::logCache && *cfg::logCacheUpdate)
 					{
 						std::cout << "updating cached " << name << std::endl;
-						indenter.Reset(true);
+						indenter = boost::in_place();
 					}
 					try
 					{
@@ -130,11 +133,11 @@ namespace page
 		// store
 		void StoreRaw(const std::string &sig, const std::string &name, const std::shared_ptr<const void> &data, const std::type_info &type, const std::function<void ()> &repair)
 		{
-			log::Indenter indenter(false);
+			boost::optional<log::Indenter> indenter;
 			if (*cfg::logCache)
 			{
 				std::cout << "caching " << name << std::endl;
-				indenter.Reset(true);
+				indenter = boost::in_place();
 			}
 			Datum datum = {name, data, &type, repair, count};
 			GetCache().insert(std::make_pair(sig, datum));
@@ -143,11 +146,11 @@ namespace page
 		// invalidation
 		void Invalidate(const std::string &sig, const std::string &name)
 		{
-			log::Indenter indenter(false);
+			boost::optional<log::Indenter> indenter;
 			if (*cfg::logCache && *cfg::logCacheUpdate && *cfg::logVerbose)
 			{
 				std::cout << "invalidating cached " << name << std::endl;
-				indenter.Reset(true);
+				indenter = boost::in_place();
 			}
 			Cache::iterator iter(GetCache().find(sig));
 			if (iter != GetCache().end())
@@ -161,22 +164,22 @@ namespace page
 		// purge
 		void Purge()
 		{
-			log::Indenter indenter(false);
+			boost::optional<log::Indenter> indenter;
 			if (*cfg::logCache)
 			{
 				std::cout << "purging cache" << std::endl;
-				indenter.Reset(true);
+				indenter = boost::in_place();
 			}
 			GetCache().clear();
 			count = Count();
 		}
 		void Purge(const std::string &sig, const std::string &name)
 		{
-			log::Indenter indenter(false);
+			boost::optional<log::Indenter> indenter;
 			if (*cfg::logCache)
 			{
 				std::cout << "purging cached " << name << std::endl;
-				indenter.Reset(true);
+				indenter = boost::in_place();
 			}
 			GetCache().erase(sig);
 		}
@@ -197,11 +200,11 @@ namespace page
 				Datum &datum(iter->second);
 				if (duration < count - datum.atime && datum.data.unique())
 				{
-					log::Indenter indenter(false);
+					boost::optional<log::Indenter> indenter;
 					if (*cfg::logCache && *cfg::logVerbose)
 					{
 						std::cout << "cached " << datum.name << " timed out" << std::endl;
-						indenter.Reset(true);
+						indenter = boost::in_place();
 					}
 					GetCache().erase(iter++);
 				}

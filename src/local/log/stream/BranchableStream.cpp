@@ -27,30 +27,54 @@
  * of this software.
  */
 
-#ifndef    page_local_log_sink_BufferSink_hpp
-#   define page_local_log_sink_BufferSink_hpp
+#include <cassert>
 
-#	include "../Sink.hpp"
+#include "BranchableStream.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct BufferSink : Sink
+		/*---------+
+		| chaining |
+		+---------*/
+
+		void BranchableStream::Attach(const std::shared_ptr<Stream> &branch)
 		{
-			explicit BufferSink(bool err);
+			assert(branch);
+			branches.push_back(branch);
+		}
 
-			void Put(char);
-			void Put(const char *, unsigned);
+		void BranchableStream::Detach()
+		{
+			branches.clear();
+		}
 
-			void Sync();
+		void BranchableStream::Extend(const BranchableStream &other)
+		{
+			branches.insert(branches.end(), other.branches.begin(), other.branches.end());
+		}
 
-			static void Flush(Stream &out, Stream &err);
+		/*----------------------+
+		| Stream implementation |
+		+----------------------*/
 
-			private:
-			const bool err;
-		};
+		void BranchableStream::DoWrite(const std::string &s)
+		{
+			for (auto &branch : branches)
+				branch->Write(s);
+		}
+
+		void BranchableStream::DoFlush()
+		{
+			for (auto &branch : branches)
+				branch->Flush();
+		}
+
+		void BranchableStream::DoClear()
+		{
+			for (auto &branch : branches)
+				branch->Clear();
+		}
 	}
 }
-
-#endif

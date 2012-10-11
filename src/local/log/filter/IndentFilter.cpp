@@ -27,40 +27,19 @@
  * of this software.
  */
 
-#include <cassert>
-#include <string>
 #include "IndentFilter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		unsigned IndentFilter::level(0);
+		/*----------------------------+
+		| PrefixFilter implementation |
+		+----------------------------*/
 
-		IndentFilter::IndentFilter() {}
-		IndentFilter::IndentFilter(const std::shared_ptr<Stream> &link) :
-			PrefixFilter(link) {}
-
-		void IndentFilter::Reset()
+		std::string IndentFilter::GetPrefix() const
 		{
-			level = 0;
-			PrefixFilter::Reset();
-		}
-
-		void IndentFilter::Indent()
-		{
-			++level;
-		}
-		void IndentFilter::Dedent()
-		{
-			assert(level);
-			--level;
-		}
-
-		void IndentFilter::PutPrefix()
-		{
-			std::string prefix(level * 2, ' ');
-			GateFilter::Put(prefix.data(), prefix.size());
+			return std::string(state->GetLevel() * 2, ' ');
 		}
 	}
 }

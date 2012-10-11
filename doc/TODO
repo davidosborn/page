@@ -1,3 +1,17 @@
+Merge log/print.[ch]pp, sys.[ch]pp/PrintInfo, and log/stats.[ch]pp.
+
+Make sure cfg is being used consistently with the rest of the program.
+
+We now have a dependency on Boost, so it needs to be checked for in configure.
+
+There should be a space between the C++ includes, the system includes, and the local includes.
+
+Some of the code from dcct uses the new cfg::State::GetGlobalInstance variable access technique.  Not sure if we are going to stick with this or not...
+
+Replace "util::unique_ptr" with "std::unique_ptr".
+
+Replace "util::scoped_ptr" with "const std::unique_ptr".
+
 Use Boost/filesystem.
 
 Use Boost/exception instead of my custom exception system.
@@ -15,8 +29,6 @@ Use X+="{X+ }whatever" instead of X="$X whatever".
 Get rid of unnecessary autoconf compatibilities (ie: extraneous variables).
 
 Change topdir to TOPDIR when appropriate.
-
-Switch to Boost, and test for it in configure.
 
 Switch from backticks to parentheses (ie: echo $(dirname $blah)) in Bash.
 

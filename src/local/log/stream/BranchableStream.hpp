@@ -27,30 +27,74 @@
  * of this software.
  */
 
-#ifndef    page_local_log_sink_ConSink_hpp
-#   define page_local_log_sink_ConSink_hpp
+#ifndef    page_local_log_stream_BranchableStream_hpp
+#   define page_local_log_stream_BranchableStream_hpp
 
 #	include <memory> // shared_ptr
-#	include <string>
-#	include "../Sink.hpp"
+#	include <vector>
+
+#	include "Stream.hpp"
 
 namespace page
 {
-	namespace env { class Console; }
-
 	namespace log
 	{
-		struct ConSink : Sink
+		/**
+		 * A stream which can have other streams attached (referred to as
+		 * branches), and which will pass any data written to it onto those
+		 * streams.
+		 */
+		class BranchableStream : public Stream
 		{
-			explicit ConSink(const std::string &title);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			void Put(char);
-			void Put(const char *, unsigned);
+			public:
+			/**
+			 * Constructs an instance with any number of branches.
+			 */
+			template <typename... Branches>
+				explicit BranchableStream(Branches &&...);
+
+			/*----------+
+			| branching |
+			+----------*/
+
+			public:
+			/**
+			 * Attaches a stream as a new branch.
+			 */
+			void Attach(const std::shared_ptr<Stream> &);
+
+			/**
+			 * Removes all branches.
+			 */
+			void Detach();
+
+			/**
+			 * Attaches all of the branches from another @c BranchableStream.
+			 */
+			void Extend(const BranchableStream &);
+
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
+
+			protected:
+			void DoWrite(const std::string &) override;
+			void DoFlush() override;
+			void DoClear() override;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
 
 			private:
-			std::shared_ptr<env::Console> con;
+			std::vector<std::shared_ptr<Stream>> branches;
 		};
 	}
 }
 
+#	include "BranchableStream.tpp"
 #endif

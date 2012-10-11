@@ -27,29 +27,44 @@
  * of this software.
  */
 
-#ifndef    page_local_log_Stream_hpp
-#   define page_local_log_Stream_hpp
+#ifndef    page_local_log_sink_ConsoleSink_hpp
+#   define page_local_log_sink_ConsoleSink_hpp
 
-#	include <streambuf>
+#	include <memory> // shared_ptr
+
+#	include "Sink.hpp"
 
 namespace page
 {
+	namespace gui
+	{
+		class Console;
+	}
+
 	namespace log
 	{
-		struct Stream : std::streambuf
+		class ConsoleSink final : public Sink
 		{
-			virtual void Put(char) = 0;
-			virtual void Put(const char *, unsigned) = 0;
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			virtual void Sync();
+			public:
+			explicit ConsoleSink(const std::string &title);
 
-			virtual void Clear();
-			virtual void Reset();
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
 
-			protected:
-			int sync();
-			std::streamsize xsputn(const char *, std::streamsize);
-			std::streambuf::int_type overflow(std::streambuf::int_type);
+			private:
+			void DoWrite(const std::string &) override final;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
+
+			private:
+			std::shared_ptr<gui::Console> console;
 		};
 	}
 }

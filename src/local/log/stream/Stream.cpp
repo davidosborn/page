@@ -27,74 +27,111 @@
  * of this software.
  */
 
-#include <algorithm> // min
-#include <cstring> // memcpy
-#include "../../err/exception/catch.hpp" // CATCH_TAGS
-#include "../../err/exception/throw.hpp" // THROW
-#include "BufferFilter.hpp"
+#include <cstring> // strlen
+
+#include "Stream.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		BufferFilter::BufferFilter()
+		/*----------+
+		| interface |
+		+----------*/
+
+		void Stream::Write(char c)
 		{
-			setp(data, data + sizeof data);
-		}
-		BufferFilter::BufferFilter(const std::shared_ptr<Stream> &link) :
-			Filter(link)
-		{
-			setp(data, data + sizeof data);
+			DoWrite(std::string(1, c));
 		}
 
-		void BufferFilter::Put(char c)
+		void Stream::Write(const char *s, unsigned n)
 		{
-			if (traits_type::eq_int_type(sputc(c), traits_type::eof()))
-				THROW err::EndOfStreamException<>();
-		}
-		void BufferFilter::Put(const char *s, unsigned n)
-		{
-			if (sputn(s, n) < n) THROW err::StreamWriteException<>();
+			DoWrite(std::string(s, s + n));
 		}
 
-		void BufferFilter::Sync()
+		void Stream::Write(const std::string &s)
 		{
-			Filter::Put(pbase(), pptr() - pbase());
-			setp(pbase(), epptr());
-			Filter::Sync();
+			DoWrite(s);
 		}
 
-		std::streamsize BufferFilter::xsputn(const char *s, std::streamsize n)
+		void Stream::Write(const char *s)
 		{
-			std::streamsize w = n;
+			DoWrite(s);
+		}
+
+		void Stream::Flush()
+		{
+			DoFlush();
+		}
+
+		void Stream::Clear()
+		{
+			DoClear();
+		}
+
+		/*------------------+
+		| virtual functions |
+		+------------------*/
+
+		void Stream::DoFlush() {}
+		void Stream::DoClear() {}
+
+		////////////////////////////////////////////////////////////////////////
+
+		/*--------------------------+
+		| std::streambuf conversion |
+		+--------------------------*/
+
+		std::streambuf &Stream::streambuf()
+		{
+			return *this;
+		}
+
+		const std::streambuf &Stream::streambuf() const
+		{
+			return *this;
+		}
+
+		/*------------------------------+
+		| std::streambuf implementation |
+		+------------------------------*/
+
+		int Stream::sync()
+		{
 			try
 			{
-				while (n)
-				{
-					std::streamsize w = std::min(epptr() - pptr(), n);
-					std::memcpy(pptr(), s, w);
-					pbump(w); s += w; n -= w;
-					if (pptr() == epptr())
-					{
-						Filter::Put(pbase(), pptr() - pbase());
-						setp(pbase(), epptr());
-					}
-				}
+				Flush();
 			}
-			CATCH_TAGS(err::StreamTag, err::WriteTag) {}
-			return w - n;
+			catch (...)
+			{
+				return -1;
+			}
+			return 0;
 		}
-		std::streambuf::int_type BufferFilter::overflow(std::streambuf::int_type c)
+
+		std::streamsize Stream::xsputn(const char *s, std::streamsize n)
 		{
 			try
 			{
-				Filter::Put(pbase(), pptr() - pbase());
-				setp(pbase(), epptr());
-				if (traits_type::eq_int_type(c, traits_type::eof()))
-					return traits_type::not_eof(c);
-				Filter::Put(traits_type::to_char_type(c));
+				Write(s, n);
 			}
-			CATCH_TAGS(err::StreamTag, err::WriteTag)
+			catch (...)
+			{
+				return 0;
+			}
+			return n;
+		}
+
+		std::streambuf::int_type Stream::overflow(std::streambuf::int_type c)
+		{
+			if (traits_type::eq_int_type(c, traits_type::eof()))
+				return traits_type::not_eof(c);
+
+			try
+			{
+				Write(traits_type::to_char_type(c));
+			}
+			catch (...)
 			{
 				return traits_type::eof();
 			}

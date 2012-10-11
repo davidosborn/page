@@ -39,7 +39,7 @@
 #include "cfg/Var.hpp"
 #include "err/exception/catch.hpp" // CATCH_TAGS
 #include "log/Indenter.hpp"
-#include "log/manip.hpp" // Warn
+#include "log/manip.hpp" // Warning
 #include "math/Vector.hpp"
 #include "opt.hpp" // cfgSources
 #include "util/ios.hpp" // BasicIosFormatSaver
@@ -122,12 +122,12 @@ namespace page
 				}
 				CATCH_TAGS(err::DeserializationTag)
 				{
-					std::clog << log::Warn << "failed to deserialize " <<
+					std::clog << log::Warning << "failed to deserialize " <<
 						var.GetName() << " from " << reader.source.GetName() << std::endl;
 				}
 				catch (...)
 				{
-					std::clog << log::Warn << "failed to read " <<
+					std::clog << log::Warning << "failed to read " <<
 						var.GetName() << " from " << reader.source.GetName() << std::endl;
 				}
 				return false;
@@ -140,12 +140,12 @@ namespace page
 				}
 				CATCH_TAGS(err::SerializationTag)
 				{
-					std::clog << log::Warn << "failed to serialize " <<
+					std::clog << log::Warning << "failed to serialize " <<
 						var.GetName() << " to " << writer.source.GetName() << std::endl;
 				}
 				catch (...)
 				{
-					std::clog << log::Warn << "failed to write " <<
+					std::clog << log::Warning << "failed to write " <<
 						var.GetName() << " to " << writer.source.GetName() << std::endl;
 				}
 			}
@@ -161,7 +161,7 @@ namespace page
 			}
 			catch (...)
 			{
-				std::clog << log::Warn << "failed to initialize site configuration" << std::endl;
+				std::clog << log::Warning << "failed to initialize site configuration" << std::endl;
 			}
 			try
 			{
@@ -169,7 +169,7 @@ namespace page
 			}
 			catch (...)
 			{
-				std::clog << log::Warn << "failed to initialize user configuration" << std::endl;
+				std::clog << log::Warning << "failed to initialize user configuration" << std::endl;
 			}
 			for (opt::CfgSources::const_iterator source(opt::cfgSources.begin()); source != opt::cfgSources.end(); ++source)
 			{
@@ -179,7 +179,7 @@ namespace page
 				}
 				catch (...)
 				{
-					std::clog << log::Warn << "failed to load source: " << *source << std::endl;
+					std::clog << log::Warning << "failed to load source: " << *source << std::endl;
 				}
 			}
 			auxSources.push_back(std::shared_ptr<Source>(new OptSource));
@@ -212,7 +212,7 @@ namespace page
 				}
 				catch (...)
 				{
-					std::clog << log::Warn << "failed to read site configuration" << std::endl;
+					std::clog << log::Warning << "failed to read site configuration" << std::endl;
 				}
 			}
 			if (userSource)
@@ -223,7 +223,7 @@ namespace page
 				}
 				catch (...)
 				{
-					std::clog << log::Warn << "failed to read user configuration" << std::endl;
+					std::clog << log::Warning << "failed to read user configuration" << std::endl;
 				}
 			}
 			// read cvars
@@ -254,7 +254,7 @@ namespace page
 				}
 				catch (...)
 				{
-					std::clog << log::Warn << "failed to write site configuration" << std::endl;
+					std::clog << log::Warning << "failed to write site configuration" << std::endl;
 				}
 			}
 			if (userSource)
@@ -265,7 +265,7 @@ namespace page
 				}
 				catch (...)
 				{
-					std::clog << log::Warn << "failed to write user configuration" << std::endl;
+					std::clog << log::Warning << "failed to write user configuration" << std::endl;
 				}
 			}
 			for (const auto &var : BasicVar::GetGlobalRange())

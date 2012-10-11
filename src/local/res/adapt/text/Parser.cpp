@@ -30,7 +30,7 @@
 #include <algorithm> // transform
 #include <iostream> // clog
 #include "../../../err/exception/throw.hpp" // THROW
-#include "../../../log/manip.hpp" // Warn
+#include "../../../log/manip.hpp" // Warning
 #include "../../../util/functional.hpp" // tolower_function
 #include "../../../util/string.hpp" // Join
 #include "Parser.hpp"
@@ -67,7 +67,7 @@ namespace page
 						THROW err::FormatException<err::ResourceTag>("missing value");
 				}
 				else if (!handler.callback || handler.constraint == noValue)
-					std::clog << log::Warn << "unexpected value" << std::endl;
+					std::clog << log::Warning << "unexpected value" << std::endl;
 				if (handler.callback) handler.callback(node.value);
 				Parse(node.children, key);
 			}

@@ -27,25 +27,40 @@
  * of this software.
  */
 
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../cfg/State.hpp" // State::{GetGlobalInstance,installPath}
+#include "../../err/Exception.hpp"
 #include "FileSink.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		FileSink::FileSink(const std::string &path) : fs(path.c_str())
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		FileSink::FileSink(const boost::filesystem::path &path)
 		{
-			if (!fs) THROW err::FileAccessException<>();
+			auto absPath = absolute(path, *cfg::State::GetGlobalInstance().installPath);
+			fs.open(absPath.string());
+			if (!fs)
+			{
+				BOOST_THROW_EXCEPTION(
+					err::FileException("failed to open file stream") <<
+					boost::errinfo_api_function("std::ofstream::open") <<
+					boost::errinfo_file_name(absPath.string()) <<
+					boost::errinfo_file_open_mode("w"));
+			}
 		}
 
-		void FileSink::Put(char c)
+		/*----------------------+
+		| Stream implementation |
+		+----------------------*/
+
+		void FileSink::DoWrite(const std::string &s)
 		{
-			if (!fs.put(c)) THROW err::FileWriteException<>();
-		}
-		void FileSink::Put(const char *s, unsigned n)
-		{
-			if (!fs.write(s, n)) THROW err::FileWriteException<>();
+			if (!fs.write(s.data(), s.size()))
+				BOOST_THROW_EXCEPTION(err::FileException("file write error"));
 		}
 	}
 }

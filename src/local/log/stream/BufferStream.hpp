@@ -27,52 +27,49 @@
  * of this software.
  */
 
-#include <ctime> // {,local}time
-#include <locale> // use_facet, time_put
-#include <sstream> // ostringstream
+#ifndef    page_local_log_stream_BufferStream_hpp
+#   define page_local_log_stream_BufferStream_hpp
 
-#include "../../cfg/State.hpp" // State::{GetGlobalInstance,logTimeChange}
-#include "TimeFilter.hpp"
+#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
+#	include "BranchableStream.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		/*----------------------------+
-		| PrefixFilter implementation |
-		+----------------------------*/
-
-		std::string TimeFilter::GetPrefix() const
+		/**
+		 * This stream stores all data written to it until it is flushed.
+		 *
+		 * @note Be careful not to insert this stream too early in the chain
+		 *       because it will prevent data from reaching time-sensitive
+		 *       filters like @c IndentFilter and @c TimeFilter until it is
+		 *       flushed.
+		 */
+		class BufferStream : public BranchableStream
 		{
-			static std::time_t lastTime = 0;
-			static std::string lastTimeString;
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			// update time string if time has changed
-			bool timeChanged = false;
-			std::time_t newTime = std::time(0);
-			if (newTime != lastTime)
-			{
-				std::ostringstream ss;
-				const char timePattern[] = "%X";
-				std::use_facet<std::time_put<char>>(ss.getloc()).put(
-					ss, ss, ss.fill(), std::localtime(&newTime),
-					timePattern, timePattern + sizeof timePattern - 1);
+			public:
+			INHERIT_CONSTRUCTORS(BufferStream, BranchableStream)
 
-				lastTime = newTime;
-				lastTimeString = ss.str();
-				timeChanged = true;
-			}
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
 
-			// generate prefix using time string
-			if (*cfg::State::GetGlobalInstance().logTimeChange)
-			{
-				std::string r;
-				if (timeChanged)
-					r += lastTimeString + ":\n";
-				r += std::string(2, ' ');
-				return r;
-			}
-			return lastTimeString + ": ";
-		}
+			private:
+			void DoWrite(const std::string &) override;
+			void DoFlush() override;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
+
+			private:
+			std::string buffer;
+		};
 	}
 }
+
+#endif

@@ -27,39 +27,35 @@
  * of this software.
  */
 
-#include "../../env/Console.hpp"
-#include "../../err/exception/catch.hpp" // CATCH_TAGS
-#include "../../err/exception/throw.hpp" // THROW
-#include "ConSink.hpp"
+#include <iostream> // cout
+
+#include "../../err/Exception.hpp"
+#include "StdoutSink.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		ConSink::ConSink(const std::string &title) :
-			con(env::MakeConsole(title)) {}
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-		void ConSink::Put(char c)
+		StdoutSink::StdoutSink() :
+			streambuf(*std::cout.rdbuf()) {}
+
+		/*----------------------+
+		| Stream implementation |
+		+----------------------*/
+
+		void StdoutSink::DoWrite(const std::string &s)
 		{
-			try
-			{
-				con->Put(c);
-			}
-			CATCH_TAGS(err::PlatformTag)
-			{
-				THROW err::StreamWriteException<>("failed to write to console");
-			}
+			if (streambuf.sputn(s.data(), s.size()) < s.size())
+				BOOST_THROW_EXCEPTION(err::Exception("stream write error"));
 		}
-		void ConSink::Put(const char *s, unsigned n)
+
+		void StdoutSink::DoFlush()
 		{
-			try
-			{
-				con->Put(std::string(s, n));
-			}
-			CATCH_TAGS(err::PlatformTag)
-			{
-				THROW err::StreamWriteException<>("failed to write to console");
-			}
+			streambuf.pubsync();
 		}
 	}
 }

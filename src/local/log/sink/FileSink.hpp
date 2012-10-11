@@ -30,20 +30,35 @@
 #ifndef    page_local_log_sink_FileSink_hpp
 #   define page_local_log_sink_FileSink_hpp
 
-#	include <fstream>
-#	include "../Sink.hpp"
+#	include <fstream> // ofstream
+
+#	include <boost/filesystem.hpp> // path
+
+#	include "Sink.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct FileSink : Sink
+		class FileSink final : public Sink
 		{
-			explicit FileSink(const std::string &path);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			protected:
-			void Put(char);
-			void Put(const char *, unsigned);
+			public:
+			explicit FileSink(const boost::filesystem::path &);
+
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
+
+			private:
+			void DoWrite(const std::string &) override final;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
 
 			private:
 			std::ofstream fs;

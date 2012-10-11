@@ -30,7 +30,7 @@
 #include <algorithm> // remove_if
 #include <functional> // bind, logical_not
 #include <iostream> // clog
-#include "../../log/manip.hpp" // Warn
+#include "../../log/manip.hpp" // Warning
 #include "../../util/functional.hpp" // make_member_of
 #include "Model.hpp"
 #include "register.hpp" // REGISTER_TYPE
@@ -51,7 +51,7 @@ namespace page
 			if (iter != model.parts.end())
 			{
 				model.parts.erase(iter, model.parts.end());
-				std::clog << log::Warn << "contains invisible parts" << std::endl;
+				std::clog << log::Warning << "contains invisible parts" << std::endl;
 			}
 		}
 

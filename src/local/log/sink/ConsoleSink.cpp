@@ -27,28 +27,27 @@
  * of this software.
  */
 
-#ifndef    page_local_log_sink_ErrSink_hpp
-#   define page_local_log_sink_ErrSink_hpp
-
-#	include "../Sink.hpp"
+#include "../../gui/Console.hpp" // Console::{Factory::{GetGlobalInstance,Make},Write}
+#include "ConsoleSink.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct ErrSink : Sink
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		ConsoleSink::ConsoleSink(const std::string &title) :
+			console(gui::Console::Factory::GetGlobalInstance().Make(title)) {}
+
+		/*----------------------+
+		| Stream implementation |
+		+----------------------*/
+
+		void ConsoleSink::DoWrite(const std::string &s)
 		{
-			ErrSink();
-
-			void Put(char);
-			void Put(const char *, unsigned);
-
-			void Sync();
-
-			private:
-			std::streambuf &buf;
-		};
+			console->Write(s);
+		}
 	}
 }
-
-#endif

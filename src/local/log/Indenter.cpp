@@ -27,36 +27,30 @@
  * of this software.
  */
 
-#include "filter/IndentFilter.hpp" // IndentFilter::{Dedent,Indent}
+#include "../util/memory.hpp" // Share
+#include "filter/IndentFilterState.hpp" // IndentFilterState::{{De,In}dent,GetGlobalInstance}
 #include "Indenter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		// construct/destroy
-		Indenter::Indenter(bool enabled) : enabled(false)
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		Indenter::Indenter() :
+			Indenter(util::Share(IndentFilterState::GetGlobalInstance())) {}
+
+		Indenter::Indenter(const std::shared_ptr<IndentFilterState> &state) :
+			state(state)
 		{
-			Reset(enabled);
-		}
-		Indenter::~Indenter()
-		{
-			Reset();
+			state->Indent();
 		}
 
-		// modifiers
-		void Indenter::Release()
+		Indenter::~Indenter()
 		{
-			enabled = false;
-		}
-		void Indenter::Reset(bool enabled)
-		{
-			if (enabled != this->enabled)
-			{
-				if (enabled) IndentFilter::Indent();
-				else IndentFilter::Dedent();
-			}
-			this->enabled = enabled;
+			state->Dedent();
 		}
 	}
 }

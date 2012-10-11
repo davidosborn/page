@@ -28,31 +28,20 @@
  */
 
 #include <cstring> // memchr
+
 #include "PrefixFilter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		PrefixFilter::PrefixFilter() {}
-		PrefixFilter::PrefixFilter(const std::shared_ptr<Stream> &link) :
-			GateFilter(link) {}
+		/*--------------------------+
+		| LineFilter implementation |
+		+--------------------------*/
 
-		void PrefixFilter::Put(char c)
+		std::string PrefixFilter::FilterLine(const std::string &line) const
 		{
-			if (!Open() && c != '\n') PutPrefix();
-			GateFilter::Put(c);
-		}
-		void PrefixFilter::Put(const char *s, unsigned n)
-		{
-			for (const char *c = s; c != s + n;)
-			{
-				if (!Open() && *c != '\n') PutPrefix();
-				const char *end = static_cast<char *>(std::memchr(c, '\n', s + n - c));
-				if (!end++) end = s + n;
-				GateFilter::Put(c, end - c);
-				c = end;
-			}
+			return GetPrefix() + line;
 		}
 	}
 }

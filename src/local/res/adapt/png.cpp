@@ -29,7 +29,7 @@
 
 #include <iostream> // clog
 #include "../../err/exception/throw.hpp" // THROW
-#include "../../log/manip.hpp" // Warn
+#include "../../log/manip.hpp" // Warning
 #include "../Stream.hpp"
 #include "png.hpp"
 
@@ -47,7 +47,7 @@ namespace page
 				}
 				void Warning(png_structp png, png_const_charp s)
 				{
-					std::clog << log::Warn << "png error: " << s << std::endl;
+					std::clog << log::Warning << "png error: " << s << std::endl;
 				}
 			}
 

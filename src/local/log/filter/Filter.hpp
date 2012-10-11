@@ -27,27 +27,41 @@
  * of this software.
  */
 
-#ifndef    page_local_log_filter_GateFilter_hpp
-#   define page_local_log_filter_GateFilter_hpp
+#ifndef    page_local_log_filter_Filter_hpp
+#   define page_local_log_filter_Filter_hpp
 
-#	include "../Filter.hpp"
+#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
+#	include "../stream/BranchableStream.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct GateFilter : Filter
+		/**
+		 * This is the base class for filters.
+		 */
+		class Filter : public BranchableStream
 		{
-			GateFilter();
-			explicit GateFilter(const std::shared_ptr<Stream> &);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			void Put(char);
-			void Put(const char *, unsigned);
+			public:
+			INHERIT_CONSTRUCTORS(Filter, BranchableStream)
 
-			bool Open() const;
+			/*------------------+
+			| virtual functions |
+			+------------------*/
 
 			private:
-			bool open;
+			virtual std::string DoFilter(const std::string &) const = 0;
+
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
+
+			private:
+			void DoWrite(const std::string &) override final;
 		};
 	}
 }

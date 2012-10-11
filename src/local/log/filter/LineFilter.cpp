@@ -27,52 +27,43 @@
  * of this software.
  */
 
-#include <ctime> // {,local}time
-#include <locale> // use_facet, time_put
-#include <sstream> // ostringstream
+#include <sstream> // [io]stringstream
 
-#include "../../cfg/State.hpp" // State::{GetGlobalInstance,logTimeChange}
-#include "TimeFilter.hpp"
+#include "../../err/Exception.hpp"
+#include "LineFilter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		/*----------------------------+
-		| PrefixFilter implementation |
-		+----------------------------*/
+		/*----------------------+
+		| Filter implementation |
+		+----------------------*/
 
-		std::string TimeFilter::GetPrefix() const
+		std::string LineFilter::DoFilter(const std::string &s) const
 		{
-			static std::time_t lastTime = 0;
-			static std::string lastTimeString;
+			std::istringstream is(buffer + s);
+			std::ostringstream os;
+			std::string str;
+			while (std::getline(is, str).good())
+				os << FilterLine(str) << std::endl;
+			buffer = str;
+			if (is.fail() && !is.eof() || os.fail())
+				BOOST_THROW_EXCEPTION(err::Exception("stream error"));
+			return os.str();
+		}
 
-			// update time string if time has changed
-			bool timeChanged = false;
-			std::time_t newTime = std::time(0);
-			if (newTime != lastTime)
+		/*----------------------+
+		| Stream implementation |
+		+----------------------*/
+
+		void LineFilter::DoClear()
+		{
+			if (!buffer.empty())
 			{
-				std::ostringstream ss;
-				const char timePattern[] = "%X";
-				std::use_facet<std::time_put<char>>(ss.getloc()).put(
-					ss, ss, ss.fill(), std::localtime(&newTime),
-					timePattern, timePattern + sizeof timePattern - 1);
-
-				lastTime = newTime;
-				lastTimeString = ss.str();
-				timeChanged = true;
+				Write('\n');
+				buffer.clear();
 			}
-
-			// generate prefix using time string
-			if (*cfg::State::GetGlobalInstance().logTimeChange)
-			{
-				std::string r;
-				if (timeChanged)
-					r += lastTimeString + ":\n";
-				r += std::string(2, ' ');
-				return r;
-			}
-			return lastTimeString + ": ";
 		}
 	}
 }

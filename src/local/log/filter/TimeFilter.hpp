@@ -30,19 +30,31 @@
 #ifndef    page_local_log_filter_TimeFilter_hpp
 #   define page_local_log_filter_TimeFilter_hpp
 
+#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
 #	include "PrefixFilter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct TimeFilter : PrefixFilter
+		/**
+		 * This filter prefixes each line with the current time.
+		 */
+		class TimeFilter final : public PrefixFilter
 		{
-			TimeFilter();
-			explicit TimeFilter(const std::shared_ptr<Stream> &);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			protected:
-			void PutPrefix();
+			public:
+			INHERIT_CONSTRUCTORS(TimeFilter, PrefixFilter)
+
+			/*----------------------------+
+			| PrefixFilter implementation |
+			+----------------------------*/
+
+			private:
+			std::string GetPrefix() const override final;
 		};
 	}
 }

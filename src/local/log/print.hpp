@@ -27,59 +27,16 @@
  * of this software.
  */
 
-#include <cassert>
-#include "Filter.hpp"
+#ifndef    page_local_log_print_hpp
+#   define page_local_log_print_hpp
 
 namespace page
 {
 	namespace log
 	{
-		Filter::Filter() {}
-		Filter::Filter(const std::shared_ptr<Stream> &link) : links(1, link)
-		{
-			assert(link);
-		}
-
-		void Filter::Attach(const std::shared_ptr<Stream> &link)
-		{
-			assert(link);
-			links.push_back(link);
-		}
-		void Filter::Detach()
-		{
-			links.clear();
-		}
-		void Filter::Extend(Filter &other)
-		{
-			links.insert(links.end(), other.links.begin(), other.links.end());
-		}
-
-		void Filter::Put(char c)
-		{
-			for (std::vector<std::shared_ptr<Stream>>::iterator link = links.begin(); link != links.end(); ++link)
-				(*link)->Put(c);
-		}
-		void Filter::Put(const char *s, unsigned n)
-		{
-			for (std::vector<std::shared_ptr<Stream>>::iterator link = links.begin(); link != links.end(); ++link)
-				(*link)->Put(s, n);
-		}
-
-		void Filter::Sync()
-		{
-			for (std::vector<std::shared_ptr<Stream>>::iterator link = links.begin(); link != links.end(); ++link)
-				(*link)->Sync();
-		}
-
-		void Filter::Clear()
-		{
-			for (std::vector<std::shared_ptr<Stream>>::iterator link = links.begin(); link != links.end(); ++link)
-				(*link)->Clear();
-		}
-		void Filter::Reset()
-		{
-			for (std::vector<std::shared_ptr<Stream>>::iterator link = links.begin(); link != links.end(); ++link)
-				(*link)->Reset();
-		}
+		void PrintInfo();
+		void PrintStats();
 	}
 }
+
+#endif

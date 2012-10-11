@@ -30,25 +30,40 @@
 #ifndef    page_local_log_Indenter_hpp
 #   define page_local_log_Indenter_hpp
 
-#	include "../util/NonCopyable.hpp"
+#	include <memory> // shared_ptr
+
+#	include "../util/class.hpp" // DEFINE_{COPY,MOVE}
 
 namespace page
 {
 	namespace log
 	{
-		// scoped indentation
-		struct Indenter : util::NonCopyable
+		class IndentFilterState;
+
+		/**
+		 * This class acts as a scope guard for indentation, providing a single
+		 * level of indentation for the duration of the object.
+		 */
+		class Indenter
 		{
-			// construct/destroy
-			explicit Indenter(bool enabled = true);
+			DEFINE_COPY(Indenter, delete)
+			DEFINE_MOVE(Indenter, delete)
+
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
+			Indenter();
+			explicit Indenter(const std::shared_ptr<IndentFilterState> &);
 			~Indenter();
 
-			// modifiers
-			void Release();
-			void Reset(bool enabled = false);
+			/*-----------------+
+			| member variables |
+			+-----------------*/
 
 			private:
-			bool enabled;
+			std::shared_ptr<IndentFilterState> state;
 		};
 	}
 }

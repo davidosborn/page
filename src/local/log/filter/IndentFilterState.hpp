@@ -27,35 +27,43 @@
  * of this software.
  */
 
-#include <iostream> // cout
-#include "../../err/exception/throw.hpp" // THROW
-#include "OutSink.hpp"
+#ifndef    page_local_log_filter_IndentFilterState_hpp
+#   define page_local_log_filter_IndentFilterState_hpp
 
 namespace page
 {
 	namespace log
 	{
-		namespace
+		class IndentFilterState
 		{
-			std::streambuf &buf(*std::cout.rdbuf());
-		}
+			/*----------------+
+			| global instance |
+			+----------------*/
 
-		void OutSink::Put(char c)
-		{
-			typedef std::streambuf::traits_type traits_type;
-			if (traits_type::eq_int_type(buf.sputc(c), traits_type::eof()))
-				THROW err::StreamWriteException<>();
-		}
-		void OutSink::Put(const char *s, unsigned n)
-		{
-			typedef std::streambuf::traits_type traits_type;
-			if (traits_type::eq_int_type(buf.sputn(s, n), traits_type::eof()))
-				THROW err::StreamWriteException<>();
-		}
+			public:
+			static IndentFilterState &GetGlobalInstance();
 
-		void OutSink::Sync()
-		{
-			buf.pubsync();
-		}
+			/*----------+
+			| observers |
+			+----------*/
+
+			unsigned GetLevel() const;
+
+			/*----------+
+			| modifiers |
+			+----------*/
+
+			void Indent();
+			void Dedent();
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
+
+			private:
+			unsigned level = 0;
+		};
 	}
 }
+
+#endif

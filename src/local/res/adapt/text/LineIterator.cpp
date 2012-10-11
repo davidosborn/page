@@ -29,7 +29,7 @@
 
 #include <algorithm> // equal, find_if_not
 #include <iostream> // clog
-#include "../../../log/manip.hpp" // Warn
+#include "../../../log/manip.hpp" // Warning
 #include "../../../util/functional.hpp" // isspace_function
 #include "../../../util/string.hpp" // Partition, Trim{Leading,Trailing}
 #include "../../Stream.hpp" // Stream::GetLine
@@ -94,7 +94,7 @@ namespace page
 					// verify indentation
 					if (!warned && std::isspace(line[indentation * space.size()]))
 					{
-						std::clog << log::Warn << "inconsistent indentation" << std::endl;
+						std::clog << log::Warning << "inconsistent indentation" << std::endl;
 						warned = true;
 					}
 					line = util::TrimLeading(line);

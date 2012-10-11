@@ -28,6 +28,9 @@
  */
 
 #include <iostream> // cout
+
+#include <boost/optional.hpp>
+
 #include "../../../cache/proxy/Resource.hpp"
 #include "../../../cfg.hpp" // logVerbose
 #include "../../../cfg/opengl.hpp" // vid{Outline,Shader}
@@ -52,11 +55,11 @@ namespace page
 			{
 				// create program
 				{
-					log::Indenter indenter(false);
+					boost::optional<log::Indenter> indenter;
 					if (*cfg::logVerbose)
 					{
 						std::cout << "creating program" << std::endl;
-						indenter.Reset(true);
+						indenter = boost::in_place();
 					}
 					try
 					{
@@ -69,11 +72,11 @@ namespace page
 				}
 				// create render-target pool
 				{
-					log::Indenter indenter(false);
+					boost::optional<log::Indenter> indenter;
 					if (*cfg::logVerbose)
 					{
 						std::cout << "creating render-target pool" << std::endl;
-						indenter.Reset(true);
+						indenter = boost::in_place();
 					}
 					try
 					{

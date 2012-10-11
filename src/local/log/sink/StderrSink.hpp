@@ -27,21 +27,38 @@
  * of this software.
  */
 
-#ifndef    page_local_log_sink_OutSink_hpp
-#   define page_local_log_sink_OutSink_hpp
+#ifndef    page_local_log_sink_StderrSink_hpp
+#   define page_local_log_sink_StderrSink_hpp
 
-#	include "../Sink.hpp"
+#	include "Sink.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct OutSink : Sink
+		class StderrSink final : public Sink
 		{
-			void Put(char);
-			void Put(const char *, unsigned);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			void Sync();
+			public:
+			StderrSink();
+
+			/*----------------------+
+			| Stream implementation |
+			+----------------------*/
+
+			private:
+			void DoWrite(const std::string &) override final;
+			void DoFlush() override final;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
+
+			private:
+			std::streambuf &streambuf;
 		};
 	}
 }

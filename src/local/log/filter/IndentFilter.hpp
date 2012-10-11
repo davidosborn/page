@@ -30,29 +30,46 @@
 #ifndef    page_local_log_filter_IndentFilter_hpp
 #   define page_local_log_filter_IndentFilter_hpp
 
+#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
+#	include "../../util/memory.hpp" // Share
+#	include "IndentFilterState.hpp" // IndentFilterState::GetGlobalInstance
 #	include "PrefixFilter.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct IndentFilter : PrefixFilter
+		class IndentFilter final : public PrefixFilter
 		{
-			IndentFilter();
-			explicit IndentFilter(const std::shared_ptr<Stream> &);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			void Reset();
+			public:
+			INHERIT_CONSTRUCTORS(IndentFilter, PrefixFilter)
 
-			static void Indent();
-			static void Dedent();
+			template <typename... Branches>
+				explicit IndentFilter(
+					const std::shared_ptr<IndentFilterState> &state,
+					Branches &&...);
 
-			protected:
-			void PutPrefix();
+			/*----------------------------+
+			| PrefixFilter implementation |
+			+----------------------------*/
 
 			private:
-			static unsigned level;
+			std::string GetPrefix() const override final;
+
+			/*-----------------+
+			| member variables |
+			+-----------------*/
+
+			private:
+			std::shared_ptr<IndentFilterState> state =
+				util::Share(IndentFilterState::GetGlobalInstance());
 		};
 	}
 }
 
+#	include "IndentFilter.tpp"
 #endif

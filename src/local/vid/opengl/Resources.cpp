@@ -29,6 +29,9 @@
 
 #include <cassert>
 #include <iostream> // cout
+
+#include <boost/optional.hpp>
+
 #include "../../cache/proxy/Resource.hpp"
 #include "../../cfg.hpp" // logVerbose
 #include "../../cfg/opengl.hpp" // vid{Composite{,Down}}
@@ -691,11 +694,11 @@ namespace page
 						const ProgramIniter &initer(**iter);
 						if (initer.Check())
 						{
-							log::Indenter indenter(false);
+							boost::optional<log::Indenter> indenter;
 							if (*cfg::logVerbose)
 							{
 								std::cout << "creating " << initer.name << " program" << std::endl;
-								indenter.Reset(true);
+								indenter = boost::in_place();
 							}
 							try
 							{
@@ -715,11 +718,11 @@ namespace page
 					const TextureIniter &initer(**iter);
 					if (initer.Check())
 					{
-						log::Indenter indenter(false);
+						boost::optional<log::Indenter> indenter;
 						if (*cfg::logVerbose)
 						{
 							std::cout << "creating " << initer.name << " texture" << std::endl;
-							indenter.Reset(true);
+							indenter = boost::in_place();
 						}
 						try
 						{
@@ -777,11 +780,11 @@ namespace page
 						const RenderTargetPoolIniter &initer(**iter);
 						if (initer.Check())
 						{
-							log::Indenter indenter(false);
+							boost::optional<log::Indenter> indenter;
 							if (*cfg::logVerbose)
 							{
 								std::cout << "creating " << initer.name << " render-target pool" << std::endl;
-								indenter.Reset(true);
+								indenter = boost::in_place();
 							}
 							try
 							{

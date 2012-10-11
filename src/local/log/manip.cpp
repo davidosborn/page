@@ -27,52 +27,56 @@
  * of this software.
  */
 
-#include <iostream>
+#include <ostream>
 #include <typeinfo> // bad_cast
-#include "filter/IndentFilter.hpp"
-#include "Stream.hpp"
+
+#include "filter/IndentFilterState.hpp" // IndentFilterState::{{De,In}dent,GetGlobalInstance}
+#include "stream/Stream.hpp" // Stream::Clear
 
 namespace page
 {
 	namespace log
 	{
-		std::ostream &Indent(std::ostream &os)
-		{
-			IndentFilter::Indent();
-			return os;
-		}
-		std::ostream &Dedent(std::ostream &os)
-		{
-			IndentFilter::Dedent();
-			return os;
-		}
+		/*------+
+		| lines |
+		+------*/
 
 		std::ostream &Clear(std::ostream &os)
 		{
 			try
 			{
-				dynamic_cast<Stream &>(*std::cout.rdbuf()).Clear();
-				dynamic_cast<Stream &>(*std::cerr.rdbuf()).Clear();
-			}
-			catch (const std::bad_cast &) {}
-			return os;
-		}
-		std::ostream &Reset(std::ostream &os)
-		{
-			try
-			{
-				dynamic_cast<Stream &>(*std::cout.rdbuf()).Reset();
-				dynamic_cast<Stream &>(*std::cerr.rdbuf()).Reset();
+				dynamic_cast<Stream &>(*os.rdbuf()).Clear();
 			}
 			catch (const std::bad_cast &) {}
 			return os;
 		}
 
+		/*------------+
+		| indentation |
+		+------------*/
+
+		std::ostream &Indent(std::ostream &os)
+		{
+			IndentFilterState::GetGlobalInstance().Indent();
+			return os;
+		}
+
+		std::ostream &Dedent(std::ostream &os)
+		{
+			IndentFilterState::GetGlobalInstance().Dedent();
+			return os;
+		}
+
+		/*---------------+
+		| classification |
+		+---------------*/
+
 		std::ostream &Error(std::ostream &os)
 		{
 			return os << Clear << "error: ";
 		}
-		std::ostream &Warn(std::ostream &os)
+
+		std::ostream &Warning(std::ostream &os)
 		{
 			return os << Clear << "warning: ";
 		}

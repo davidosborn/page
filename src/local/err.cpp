@@ -31,7 +31,7 @@
 #include <exception> // set_terminate, set_unexpected
 #include <iostream> // cerr
 #include "err/msg.hpp" // Message
-#include "log/manip.hpp" // Reset
+#include "log/manip.hpp" // Clear
 
 namespace page
 {
@@ -41,13 +41,13 @@ namespace page
 		{
 			void unexpected()
 			{
-				std::cerr << log::Reset;
+				std::cerr << log::Clear;
 				err::Message("unexpected exception");
 				std::abort();
 			}
 			void terminate()
 			{
-				std::cerr << log::Reset;
+				std::cerr << log::Clear;
 				err::Message("abnormal termination");
 				std::abort();
 			}
