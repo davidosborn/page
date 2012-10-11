@@ -56,9 +56,9 @@ namespace page
 			private:
 			void DoWrite(const std::string &) override final;
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			std::ofstream fs;

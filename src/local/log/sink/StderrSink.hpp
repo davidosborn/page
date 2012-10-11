@@ -53,9 +53,9 @@ namespace page
 			void DoWrite(const std::string &) override final;
 			void DoFlush() override final;
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			std::streambuf &streambuf;

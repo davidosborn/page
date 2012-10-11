@@ -71,9 +71,9 @@ namespace page
 			private:
 			void DoClear() override;
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			/**

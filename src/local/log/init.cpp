@@ -139,9 +139,9 @@ namespace page
 					std::clog.rdbuf(origClogBuf);
 				}
 
-				/*-----------------+
-				| member variables |
-				+-----------------*/
+				/*-------------+
+				| data members |
+				+-------------*/
 
 				private:
 				std::shared_ptr<Stream>

@@ -56,9 +56,9 @@ namespace page
 			void Indent();
 			void Dedent();
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			unsigned level = 0;

@@ -62,9 +62,9 @@ namespace page
 			void DoWrite(const std::string &) override;
 			void DoFlush() override;
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			std::string buffer;

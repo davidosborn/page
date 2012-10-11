@@ -60,9 +60,9 @@ namespace page
 			private:
 			std::string GetPrefix() const override final;
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			std::shared_ptr<IndentFilterState> state =

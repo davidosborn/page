@@ -59,9 +59,9 @@ namespace page
 			private:
 			void DoWrite(const std::string &) override final;
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			std::shared_ptr<gui::Console> console;

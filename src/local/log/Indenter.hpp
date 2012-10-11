@@ -58,9 +58,9 @@ namespace page
 			explicit Indenter(const std::shared_ptr<IndentFilterState> &);
 			~Indenter();
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			std::shared_ptr<IndentFilterState> state;

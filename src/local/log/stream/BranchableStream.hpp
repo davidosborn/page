@@ -86,9 +86,9 @@ namespace page
 			void DoFlush() override;
 			void DoClear() override;
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			std::vector<std::shared_ptr<Stream>> branches;
