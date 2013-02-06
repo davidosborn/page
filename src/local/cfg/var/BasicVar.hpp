@@ -27,8 +27,8 @@
  * of this software.
  */
 
-#ifndef    page_local_cfg_BasicVar_hpp
-#   define page_local_cfg_BasicVar_hpp
+#ifndef    page_local_cfg_var_BasicVar_hpp
+#   define page_local_cfg_var_BasicVar_hpp
 
 	// C++
 #	include <iosfwd> // {,w}[io]stream

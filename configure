@@ -1666,7 +1666,6 @@ local/cfg/state/BasicState
 local/cfg/state/CommonState
 local/cfg/state/State
 local/clip/encoder/Encoder
-local/clip/encoder/EncoderFactory
 local/clip/Stream
 local/env/Console
 local/env/msg

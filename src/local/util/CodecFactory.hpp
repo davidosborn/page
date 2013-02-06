@@ -9,7 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
-
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +29,7 @@
  */
 
 #ifndef    page_local_util_CodecFactory_hpp
-#	define page_local_util_CodecFactory_hpp
+#   define page_local_util_CodecFactory_hpp
 
 	// C++
 #	include <functional> // function
@@ -49,7 +49,7 @@ namespace page
 		/**
 		 * An factory for producing concrete instances of an abstract codec
 		 * type, where the concrete type is selected from a pool of registered
-		 * codecs according to some standard criteria.
+		 * codecs according to a standard criteria.
 		 *
 		 * @note Based in part on "Conversations: Abstract Factory, Template
 		 *       Style" by Jim Hyslop and Herb Sutter.
@@ -181,12 +181,6 @@ namespace page
 
 			private:
 			/**
-			 * Resets @c ConcreteCodec::tried for all @c codecs.  Should be
-			 * called just before returning from @c Make.
-			 */
-			void ResetTried();
-
-			/**
 			 * A structure containing information about a registered codec.
 			 */
 			struct ConcreteCodec
@@ -233,6 +227,12 @@ namespace page
 			 * A list of registered codecs, ordered by descending priority.
 			 */
 			std::list<ConcreteCodec> codecs;
+
+			/**
+			 * Resets @c ConcreteCodec::tried for all @c codecs.  Should be
+			 * called just before returning from @c Make.
+			 */
+			void ResetTried() const;
 
 			/**
 			 * An associative array mapping all registered formats to their

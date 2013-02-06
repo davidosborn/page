@@ -1,3 +1,5 @@
+Replace includes of "util/functional.hpp" with the proper subdivided headers.
+
 Consider whether EncoderFactory can be back-ported into util/Factory, with Key and Args parameterized via typelists.
 
 Get rid of util/lexical_cast, replace with Boost's lexical_cast.

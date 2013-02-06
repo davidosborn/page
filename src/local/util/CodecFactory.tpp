@@ -9,7 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
-
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -31,6 +31,7 @@
 // C++
 #include <algorithm> // copy, transform, upper_bound
 #include <functional> // greater
+#include <iostream> // clog
 #include <iterator> // back_inserter
 #include <utility> // forward
 
@@ -41,6 +42,8 @@
 
 // local
 #include "../err/Exception.hpp"
+#include "../log/manip.hpp" // Warning
+#include "functional/compare.hpp" // indirect_less
 #include "io/separated_istream_iterator.hpp"
 #include "path.hpp" // {Get,With}Extension
 
@@ -180,10 +183,7 @@ namespace page
 						codecs.begin(),
 						codecs.end(),
 						iter,
-						[](const decltype(iter) &a, const decltype(iter) &b)
-						{
-							return *a > *b;
-						}),
+						util::indirect_less<decltype(iter)>()),
 					iter);
 			}
 
@@ -263,7 +263,7 @@ namespace page
 						{
 							r.path = util::WithExtension(path,
 								codec.extensions.begin(),
-								codec.extensions.end())
+								codec.extensions.end());
 							ResetTried();
 							return r;
 						}
@@ -282,7 +282,6 @@ namespace page
 					const boost::filesystem::path &path,
 					const std::string &format,
 					const std::string &mimeType,
-					const std::string &extension,
 					ConstructorArgs &&... args) const
 		{
 			// try codecs with matching format
@@ -301,13 +300,14 @@ namespace page
 							{
 								r.path = util::WithExtension(path,
 									codec.extensions.begin(),
-									codec.extensions.end())
+									codec.extensions.end());
 								ResetTried();
 								return r;
 							}
+							codec.tried = true;
 						}
 						catch (const std::exception &) {}
-				
+
 				std::clog << log::Warning << "unrecognized format: " << format << std::endl;
 			}
 
@@ -327,13 +327,14 @@ namespace page
 							{
 								r.path = util::WithExtension(path,
 									codec.extensions.begin(),
-									codec.extensions.end())
+									codec.extensions.end());
 								ResetTried();
 								return r;
 							}
+							codec.tried = true;
 						}
 						catch (const std::exception &) {}
-				
+
 				std::clog << log::Warning << "unrecognized mime type: " << mimeType << std::endl;
 			}
 
@@ -356,9 +357,10 @@ namespace page
 								ResetTried();
 								return r;
 							}
+							codec.tried = true;
 						}
 						catch (const std::exception &) {}
-						
+
 				std::clog << log::Warning << "unrecognized extension: " << extension << std::endl;
 			}
 
@@ -371,9 +373,16 @@ namespace page
 		+-------------*/
 
 		template <typename T, typename... A>
-			CodecFactory<T, A>::ConcreteCodec::ConcreteCodec(const Function &function, int priority) :
+			CodecFactory<T, A...>::ConcreteCodec::ConcreteCodec(const Function &function, int priority) :
 				function(function), priority(priority) {}
-		
+
+		template <typename T, typename... A>
+			void CodecFactory<T, A...>::ResetTried() const
+		{
+			for (const auto &codec : codecs)
+				codec.tried = false;
+		}
+
 		template <typename T, typename... A>
 			bool operator ==(
 				const typename CodecFactory<T, A...>::ConcreteCodec &a,
