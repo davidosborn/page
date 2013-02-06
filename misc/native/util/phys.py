@@ -1,0 +1,183 @@
+"""
+Copyright (c) 2006-2012 David Osborn
+
+Permission is granted to use and redistribute this software in source and binary
+form, with or without modification, subject to the following conditions:
+
+1. Redistributions in source form must retain the above copyright notice, this
+   list of conditions, and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions, and the following disclaimer in the documentation
+   and/or other materials provided with the distribution, and in the same place
+   and form as other copyright, license, and disclaimer information.
+
+As a special exception, distributions of derivative works in binary form may
+include an acknowledgement in place of the above copyright notice, this list of
+conditions, and the following disclaimer in the documentation and/or other
+materials provided with the distribution, and in the same place and form as
+other acknowledgements, similar in substance to the following:
+
+	Portions of this software are based on the work of David Osborn.
+
+This software is provided "as is", without any express or implied warranty. In
+no event will the authors be liable for any damages arising out of the use of
+this software.
+"""
+
+from __future__ import absolute_import
+
+import math # tan
+from .config import prefs # camera.fov
+from .math import DegToRad, Euler, Matrix, ProjMatrix, RotationMatrix, ScaleMatrix, TranslationMatrix, Vector3f
+
+################################################################################
+# attributes
+
+class Transformable(object):
+	matrix               = property(lambda self: self.GetMatrix())
+	invMatrix            = property(lambda self: self.GetInvMatrix())
+	transformedMatrix    = property(lambda self: self.GetTransformedMatrix())
+	invTransformedMatrix = property(lambda self: self.GetInvTransformedMatrix())
+
+class Position(Transformable):
+	transformedPosition = property(lambda self: self.position + self.translation)
+
+	def __init__(self, position = None):
+		if position is None: self.position = Vector3f()
+		else: self.position = Vector3f(position)
+		Position.ResetTransformation(self)
+
+	def GetMatrix(self):
+		return TranslationMatrix(self.position)
+	def GetInvMatrix(self):
+		return TranslationMatrix(-self.position)
+	def GetTransformedMatrix(self):
+		return TranslationMatrix(self.transformedPosition)
+	def GetInvTransformedMatrix(self):
+		return TranslationMatrix(-self.transformedPosition)
+
+	def ResetTransformation(self):
+		self.translation = Vector3f()
+	def BakeTransformation(self):
+		self.position = self.transformedPosition
+		Position.ResetTransformation(self)
+
+class Orientation(object):
+	transformedOrientation = property(lambda self: self.orientation * self.rotation)
+
+	def __init__(self, orientation = None):
+		if orientation is None: self.orientation = Euler()
+		else: self.orientation = Euler(orientation)
+		Orientation.ResetTransformation(self)
+
+	def GetMatrix(self):
+		return RotationMatrix(self.orientation)
+	def GetInvMatrix(self):
+		return RotationMatrix(self.orientation).Tpos()
+	def GetTransformedMatrix(self):
+		return RotationMatrix(self.transformedOrientation)
+	def GetInvTransformedMatrix(self):
+		return RotationMatrix(self.transformedOrientation).Tpos()
+
+	def ResetTransformation(self):
+		self.rotation = Euler()
+	def BakeTransformation(self):
+		self.orientation = self.transformedOrientation
+		Orientation.ResetTransformation(self)
+
+class Scale(object):
+	transformedScale = property(lambda self: self.scale * self.rescale)
+
+	def __init__(self, scale = None):
+		if scale is None: self.scale = Vector3f(1)
+		else: self.scale = Vector3f(scale)
+		Scale.ResetTransformation(self)
+
+	def GetMatrix(self):
+		return ScaleMatrix(self.scale)
+	def GetInvMatrix(self):
+		return ScaleMatrix(1 / self.scale)
+	def GetTransformedMatrix(self):
+		return ScaleMatrix(self.transformedScale)
+	def GetInvTransformedMatrix(self):
+		return ScaleMatrix(1 / self.transformedScale)
+
+	def ResetTransformation(self):
+		self.rescale = Vector3f(1)
+	def BakeTransformation(self):
+		self.scale = self.transformedScale
+		Scale.ResetTransformation(self)
+
+class PositionOrientation(Position, Orientation):
+	def __init__(self, position = None, orientation = None):
+		Position.__init__(self, position)
+		Orientation.__init__(self, orientation)
+
+	def GetMatrix(self):
+		return (
+			Position.GetMatrix(self) *
+			Orientation.GetMatrix(self))
+	def GetInvMatrix(self):
+		return (
+			Orientation.GetInvMatrix(self) *
+			Position.GetInvMatrix(self))
+	def GetTransformedMatrix(self):
+		return (
+			Position.GetTransformedMatrix(self) *
+			Orientation.GetTransformedMatrix(self))
+	def GetInvTransformedMatrix(self):
+		return (
+			Orientation.GetInvTransformedMatrix(self) *
+			Position.GetInvTransformedMatrix(self))
+
+	def ResetTransformation(self):
+		Position.ResetTransformation(self)
+		Orientation.ResetTransformation(self)
+	def BakeTransformation(self):
+		Position.BakeTransformation(self)
+		Orientation.BakeTransformation(self)
+
+class PositionOrientationScale(PositionOrientation, Scale):
+	def __init__(self, position = None, orientation = None, scale = None):
+		PositionOrientation.__init__(self, position, orientation)
+		Scale.__init__(self, scale)
+
+	def GetMatrix(self):
+		return (
+			PositionOrientation.GetMatrix(self) *
+			Scale.GetMatrix(self))
+	def GetInvMatrix(self):
+		return (
+			Scale.GetInvMatrix(self) *
+			PositionOrientation.GetInvMatrix(self))
+	def GetTransformedMatrix(self):
+		return (
+			PositionOrientation.GetTransformedMatrix(self) *
+			Scale.GetTransformedMatrix(self))
+	def GetInvTransformedMatrix(self):
+		return (
+			Scale.GetInvTransformedMatrix(self) *
+			PositionOrientation.GetInvTransformedMatrix(self))
+
+	def ResetTransformation(self):
+		PositionOrientation.ResetTransformation(self)
+		Scale.ResetTransformation(self)
+	def BakeTransformation(self):
+		PositionOrientation.BakeTransformation(self)
+		Scale.BakeTransformation(self)
+
+################################################################################
+# camera
+
+class Camera(PositionOrientation):
+	viewMatrix = property(lambda self: self.GetViewMatrix())
+
+	def __init__(self, position = None, orientation = None):
+		PositionOrientation.__init__(self, position, orientation)
+		self.fov = prefs['camera.fov']
+
+	def GetProjMatrix(self, aspect):
+		return ProjMatrix(aspect, DegToRad(self.fov))
+	def GetViewMatrix(self):
+		return self.invMatrix

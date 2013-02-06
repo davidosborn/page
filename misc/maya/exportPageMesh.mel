@@ -1,0 +1,5 @@
+global proc exportPageMesh(string $path)
+{
+	int file = fopen($path);
+	fclose(file);
+}
