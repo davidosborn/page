@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <algorithm> // copy
 #include <windows.h>
-#include "../../../err/exception/throw.hpp" // THROW
+#include "../../../err/Exception.hpp"
 #include "../../../math/Vector.hpp"
 #include "../Cursor.hpp"
 #include "../Image.hpp"
@@ -67,7 +68,8 @@ namespace page
 				// otherwise, use bitwise-masked DDB cursors
 				HBITMAP colorBitmap, maskBitmap;
 				OSVERSIONINFO vi = {sizeof vi};
-				if (!GetVersionEx(&vi)) THROW err::PlatformException<err::Win32PlatformTag, err::ResourceTag>("failed to get Windows version");
+				if (!GetVersionEx(&vi))
+					THROW((err::Exception<err::ResModuleTag, err::Win32PlatformTag>("failed to get Windows version")))
 				if (vi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
 					vi.dwMajorVersion >= 5 && vi.dwMinorVersion >= 1)
 				{
@@ -88,7 +90,8 @@ namespace page
 					HDC hdc = GetDC(NULL);
 					colorBitmap = CreateDIBSection(hdc, reinterpret_cast<LPBITMAPINFO>(&bmv5h), DIB_RGB_COLORS, &colorBits, NULL, 0);
 					ReleaseDC(NULL, hdc);
-					if (!colorBitmap) THROW err::PlatformException<err::Win32PlatformTag, err::ResourceTag>("failed to create bitmap");
+					if (!colorBitmap)
+						THROW((err::Exception<err::ResModuleTag, err::Win32PlatformTag>("failed to create bitmap")))
 					// copy image data to color bitmap
 					std::copy(img.data.begin(), img.data.end(),
 						reinterpret_cast<Image::Data::pointer>(colorBits));
@@ -97,7 +100,7 @@ namespace page
 					if (!maskBitmap)
 					{
 						DeleteObject(colorBitmap);
-						THROW err::PlatformException<err::Win32PlatformTag, err::ResourceTag>("failed to create bitmap");
+						THROW((err::Exception<err::ResModuleTag, err::Win32PlatformTag>("failed to create bitmap")))
 					}
 				}
 				else
@@ -114,7 +117,7 @@ namespace page
 					if (!(colorBitmap = CreateCompatibleBitmap(hdc, cursorSize.x, cursorSize.y)))
 					{
 						ReleaseDC(NULL, hdc);
-						THROW err::PlatformException<err::Win32PlatformTag, err::ResourceTag>("failed to create bitmap");
+						THROW((err::Exception<err::ResModuleTag, err::Win32PlatformTag>("failed to create bitmap")))
 					}
 					// set color and alpha for masking
 					for (Image::Data::iterator iter(img.data.begin()); iter != img.data.end(); iter += img.channels.size())
@@ -125,14 +128,14 @@ namespace page
 					{
 						DeleteObject(colorBitmap);
 						ReleaseDC(NULL, hdc);
-						THROW err::PlatformException<err::Win32PlatformTag, err::ResourceTag>("failed to initialize bitmap");
+						THROW((err::Exception<err::ResModuleTag, err::Win32PlatformTag>("failed to initialize bitmap")))
 					}
 					// create mask bitmap
 					if (!(maskBitmap = CreateCompatibleBitmap(hdc, cursorSize.x, cursorSize.y)))
 					{
 						DeleteObject(colorBitmap);
 						ReleaseDC(NULL, hdc);
-						THROW err::PlatformException<err::Win32PlatformTag, err::ResourceTag>("failed to create bitmap");
+						THROW((err::Exception<err::ResModuleTag, err::Win32PlatformTag>("failed to create bitmap")))
 					}
 					// replace color with alpha
 					for (Image::Data::iterator iter(img.data.begin()); iter != img.data.end(); iter += img.channels.size())
@@ -143,7 +146,7 @@ namespace page
 						DeleteObject(maskBitmap);
 						DeleteObject(colorBitmap);
 						ReleaseDC(NULL, hdc);
-						THROW err::PlatformException<err::Win32PlatformTag, err::ResourceTag>("failed to initialize bitmap");
+						THROW((err::Exception<err::ResModuleTag, err::Win32PlatformTag>("failed to initialize bitmap")))
 					}
 					ReleaseDC(NULL, hdc);
 				}
@@ -158,7 +161,8 @@ namespace page
 				HCURSOR win32Cursor = CreateIconIndirect(&ii);
 				DeleteObject(maskBitmap);
 				DeleteObject(colorBitmap);
-				if (!win32Cursor) THROW err::PlatformException<err::Win32PlatformTag, err::ResourceTag>("failed to create cursor");
+				if (!win32Cursor)
+					THROW((err::Exception<err::ResModuleTag, err::Win32PlatformTag>("failed to create cursor")))
 				return win32Cursor;
 			}
 		}

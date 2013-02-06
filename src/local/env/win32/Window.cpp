@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,8 +31,8 @@
 #include <unordered_map>
 #include <windowsx.h> // GET_[XY]_LPARAM
 #include "../../aud/Driver.hpp" // MakeDriver
-#include "../../cfg.hpp" // vidResolution, wndFull, wndMax, wndPosition, wndSize
-#include "../../err/exception/catch.hpp" // CATCH_TAGS
+#include "../../cfg/vars.hpp"
+#include "../../err/Exception.hpp"
 #include "../../inp/Driver.hpp" // MakeDriver
 #include "../../res/type/image/win32.hpp" // MakeBitmap
 #include "../../util/pp.hpp" // STRINGIZE
@@ -83,7 +84,7 @@ namespace page
 
 			// construct/destroy
 			Window::Window(const std::string &title) :
-				alive(false), min(false), full(*cfg::wndFull),
+				alive(false), min(false), full(CVAR(windowFullscreen)),
 				waitFocus(false), moving(false), sizing(false),
 				muteFocus(false), muteMove(false), muteSize(false),
 				clientBitmap(NULL)
@@ -96,22 +97,22 @@ namespace page
 					{
 						SetFull(true);
 					}
-					CATCH_TAGS(err::Win32PlatformTag)
+					catch (const err::Exception<err::Win32PlatformTag>::Permutation &)
 					{
-						cfg::wndFull = full = false;
+						cfg::State::GetGlobalInstance().windowFullscreen = full = false;
 						goto InitWindowed;
 					}
 					style = WS_POPUP;
 					rect.left = rect.top = 0;
-					rect.right  = cfg::vidResolution->x;
-					rect.bottom = cfg::vidResolution->y;
+					rect.right  = cfg::State::GetGlobalInstance().videoResolution->x;
+					rect.bottom = cfg::State::GetGlobalInstance().videoResolution->y;
 				}
 				else
 				{
 					InitWindowed:
 					style = WS_OVERLAPPEDWINDOW;
-					rect.right  = (rect.left = cfg::wndPosition->x) + cfg::wndSize->x;
-					rect.bottom = (rect.top  = cfg::wndPosition->y) + cfg::wndSize->y;
+					rect.right  = (rect.left = cfg::State::GetGlobalInstance().windowPosition->x) + cfg::State::GetGlobalInstance().windowSize->x;
+					rect.bottom = (rect.top  = cfg::State::GetGlobalInstance().windowPosition->y) + cfg::State::GetGlobalInstance().windowSize->y;
 					AdjustWindowRectEx(&rect, style, FALSE, WS_EX_APPWINDOW);
 				}
 				// create window
@@ -124,13 +125,14 @@ namespace page
 				{
 					LeaveCriticalSection(&GetCriticalSection());
 					if (full) SetFull(false);
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to create window");
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to create window") <<
+						boost::errinfo_api_function("CreateWindowEx")))
 				}
 				GetWindowMap().insert(std::make_pair(hwnd, this));
 				LeaveCriticalSection(&GetCriticalSection());
 				// show window
 				SetForegroundWindow(hwnd);
-				ShowWindow(hwnd, *cfg::wndMax ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL);
+				ShowWindow(hwnd, CVAR(windowMaximized) ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL);
 				if (GetForegroundWindow() != hwnd) waitFocus = true;
 				// process immediate messages
 				MSG msg;
@@ -180,7 +182,9 @@ namespace page
 				// FIXME: it would be best to use the device context of the
 				// screen that contains the window
 				HDC hdc = GetDC(NULL);
-				if (!hdc) THROW err::PlatformException<err::Win32PlatformTag>("failed to get device context");
+				if (!hdc)
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to get device context") <<
+						boost::errinfo_api_function("GetDC")))
 				math::Vector<2, unsigned> size(
 					GetDeviceCaps(hdc, HORZRES),
 					GetDeviceCaps(hdc, VERTRES));
@@ -208,15 +212,16 @@ namespace page
 				if (full)
 				{
 					DEVMODE dm = {};
-					dm.dmSize = sizeof dm;
-					dm.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
-					dm.dmPelsWidth = cfg::vidResolution->x;
-					dm.dmPelsHeight = cfg::vidResolution->y;
+					dm.dmSize       = sizeof dm;
+					dm.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT;
+					dm.dmPelsWidth  = cfg::State::GetGlobalInstance().videoResolution->x;
+					dm.dmPelsHeight = cfg::State::GetGlobalInstance().videoResolution->y;
+
 					// maintain refresh rate
 					if (HDC hdc = GetDC(NULL))
 					{
-						if (GetDeviceCaps(hdc, HORZRES) == cfg::vidResolution->x &&
-							GetDeviceCaps(hdc, VERTRES) == cfg::vidResolution->y)
+						if (GetDeviceCaps(hdc, HORZRES) == cfg::State::GetGlobalInstance().vidResolution->x &&
+							GetDeviceCaps(hdc, VERTRES) == cfg::State::GetGlobalInstance().vidResolution->y)
 						{
 							dm.dmFields |= DM_DISPLAYFREQUENCY;
 							dm.dmDisplayFrequency = GetDeviceCaps(hdc, VREFRESH);
@@ -224,10 +229,12 @@ namespace page
 						ReleaseDC(NULL, hdc);
 					}
 					if (ChangeDisplaySettings(&dm, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL)
-						THROW err::PlatformException<err::Win32PlatformTag>("failed to change display mode");
+						THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to change display mode") <<
+							boost::errinfo_api_function("ChangeDisplaySettings")))
 				}
 				else if (ChangeDisplaySettings(0, 0) != DISP_CHANGE_SUCCESSFUL)
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to change display mode");
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to change display mode") <<
+						boost::errinfo_api_function("ChangeDisplaySettings")))
 			}
 			void Window::SwitchFull()
 			{
@@ -246,7 +253,7 @@ namespace page
 					}
 					SetWindowLongPtr(hwnd, GWL_STYLE, WS_POPUP);
 					muteMove = muteSize = false;
-					SetWindowPos(hwnd, 0, 0, 0, cfg::vidResolution->x, cfg::vidResolution->y, SWP_SHOWWINDOW | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
+					SetWindowPos(hwnd, 0, 0, 0, cfg::State::GetGlobalInstance().videoResolution->x, cfg::State::GetGlobalInstance().videoResolution->y, SWP_SHOWWINDOW | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
 					SetForegroundWindow(hwnd);
 				}
 				else
@@ -263,17 +270,17 @@ namespace page
 						throw;
 					}
 					RECT rect;
-					rect.right  = (rect.left = cfg::wndPosition->x) + cfg::wndSize->x;
-					rect.bottom = (rect.top  = cfg::wndPosition->y) + cfg::wndSize->y;
+					rect.right  = (rect.left = cfg::State::GetGlobalInstance().windowPosition->x) + cfg::State::GetGlobalInstance().windowSize->x;
+					rect.bottom = (rect.top  = cfg::State::GetGlobalInstance().windowPosition->y) + cfg::State::GetGlobalInstance().windowSize->y;
 					AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_APPWINDOW);
 					SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 					muteMove = muteSize = false;
 					SetWindowPos(hwnd, 0, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
-					ShowWindow(hwnd, *cfg::wndMax ? SW_SHOWMAXIMIZED : SW_SHOW);
+					ShowWindow(hwnd, CVAR(windowMaximized) ? SW_SHOWMAXIMIZED : SW_SHOW);
 					SetForegroundWindow(hwnd);
 				}
 				muteFocus = muteMove = muteSize = false;
-				cfg::wndFull = full;
+				cfg::State::GetGlobalInstance().windowFullscreen = full;
 			}
 
 			// message handling
@@ -294,11 +301,11 @@ namespace page
 						break;
 						case SC_MAXIMIZE:
 						case SC_MAXIMIZE + 2:
-						cfg::wndMax = true;
+						cfg::State::GetGlobalInstance().windowMaximized = true;
 						break;
 						case SC_RESTORE:
 						case SC_RESTORE + 2:
-						if (!min) cfg::wndMax = false;
+						if (!min) cfg::State::GetGlobalInstance().windowMaximized = false;
 						break;
 					}
 					break;
@@ -346,7 +353,7 @@ namespace page
 					if (alive && !min && !muteMove && !moving && wparam != 0x83008300)
 					{
 						math::Vector<2, int> newPos(GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
-						if (!*cfg::wndMax && !full) cfg::wndPosition = newPos;
+						if (!CVAR(windowMaximized) && !full) cfg::State::GetGlobalInstance().windowPosition = newPos;
 						moveSig(newPos);
 					}
 					break;
@@ -357,7 +364,7 @@ namespace page
 					if (alive && !min && !muteSize && !sizing && wparam != SIZE_MINIMIZED)
 					{
 						math::Vector<2, unsigned> newSize(LOWORD(lparam), HIWORD(lparam));
-						if (!*cfg::wndMax && !full) cfg::wndSize = newSize;
+						if (!CVAR(windowMaximized) && !full) cfg::State::GetGlobalInstance().windowSize = newSize;
 						sizeSig(newSize);
 					}
 					break;
@@ -369,14 +376,14 @@ namespace page
 							RECT rect;
 							GetClientRect(hwnd, &rect);
 							MapWindowPoints(hwnd, 0, reinterpret_cast<LPPOINT>(&rect), 1);
-							moveSig(*(cfg::wndPosition = math::Vector<2, int>(rect.left, rect.top)));
+							moveSig(*(cfg::State::GetGlobalInstance().windowPosition = math::Vector<2, int>(rect.left, rect.top)));
 							moving = false;
 						}
 						if (sizing)
 						{
 							RECT rect;
 							GetClientRect(hwnd, &rect);
-							sizeSig(*(cfg::wndSize = math::Vector<2, unsigned>(rect.right, rect.bottom)));
+							sizeSig(*(cfg::State::GetGlobalInstance().windowSize = math::Vector<2, unsigned>(rect.right, rect.bottom)));
 							sizing = false;
 						}
 					}
@@ -435,7 +442,9 @@ namespace page
 				wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE(IDI_ICON));
 				wc.lpszClassName = TEXT(STRINGIZE(NAME));
 				ATOM atom = RegisterClassEx(&wc);
-				if (!atom) THROW err::PlatformException<err::Win32PlatformTag>("failed to register window class");
+				if (!atom)
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to register window class") <<
+						boost::errinfo_api_function("RegisterClassEx")))
 				return reinterpret_cast<LPTSTR>(MAKEINTATOM(atom));
 			}
 			LPCTSTR Window::GetClass()

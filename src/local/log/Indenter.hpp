@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -41,14 +42,11 @@ namespace page
 		class IndentFilterState;
 
 		/**
-		 * This class acts as a scope guard for indentation, providing a single
-		 * level of indentation for the duration of the object.
+		 * Acts as a scope guard for indentation, providing a single level of
+		 * indentation for the duration of the object.
 		 */
 		class Indenter
 		{
-			DEFINE_COPY(Indenter, delete)
-			DEFINE_MOVE(Indenter, delete)
-
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
@@ -57,6 +55,13 @@ namespace page
 			Indenter();
 			explicit Indenter(const std::shared_ptr<IndentFilterState> &);
 			~Indenter();
+
+			/*----------------------+
+			| copy & move semantics |
+			+----------------------*/
+
+			DEFINE_COPY(Indenter, delete)
+			DEFINE_MOVE(Indenter, delete)
 
 			/*-------------+
 			| data members |

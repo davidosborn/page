@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,49 +29,19 @@
  */
 
 #include <cassert>
-#include <memory> // unique_ptr
-#include "../../Pipe.hpp" // Pipe::Open
+
 #include "../../pipe/EndianPipe.hpp"
-#include "../../Stream.hpp" // Stream::{~Stream,ReadSome,Seek}
-#include "AudioStream.hpp"
 #include "PcmDecoder.hpp"
+#include "PcmStream.hpp"
 
 namespace page
 {
 	namespace res
 	{
-		namespace
-		{
-			struct PcmStream : AudioStream
-			{
-				// construct
-				PcmStream(const Pipe &, unsigned sampleSize);
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-				// operations
-				unsigned Read(void *, unsigned);
-				void Seek(unsigned sample);
-
-				private:
-				std::unique_ptr<Stream> super;
-				unsigned sampleSize;
-			};
-
-			// construct
-			PcmStream::PcmStream(const Pipe &pipe, unsigned sampleSize) :
-				super(pipe.Open()), sampleSize(sampleSize) {}
-
-			// operations
-			unsigned PcmStream::Read(void *s, unsigned n)
-			{
-				return super->ReadSome(s, n);
-			}
-			void PcmStream::Seek(unsigned sample)
-			{
-				super->Seek(sample * sampleSize);
-			}
-		}
-
-		// construct
 		PcmDecoder::PcmDecoder(const std::shared_ptr<const Pipe> &pipe, unsigned channels, unsigned bitDepth, util::Endian endian) :
 			pipe(pipe), sampleSize(channels * bitDepth / 8)
 		{
@@ -88,10 +59,13 @@ namespace page
 				}
 		}
 
-		// operations
-		AudioStream *PcmDecoder::Open() const
+		/*-----------+
+		| operations |
+		+-----------*/
+
+		std::unique_ptr<AudioStream> PcmDecoder::Open() const
 		{
-			return new PcmStream(*pipe, sampleSize);
+			return std::unique_ptr<AudioStream>(new PcmStream(*pipe, sampleSize));
 		}
 	}
 }

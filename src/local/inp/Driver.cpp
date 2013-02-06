@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -33,10 +34,12 @@
 #include <iomanip> // setw
 #include <iostream> // cout
 #include <string>
+
+#include <boost/io/ios_state.hpp> // ios_all_saver
+
 #include "../env/Window.hpp"
 #include "../math/Aabb.hpp"
 #include "../math/float.hpp" // Near
-#include "../util/ios.hpp" // BasicIosFormatSaver
 #include "Device.hpp" // Device::Update
 #include "device/registry.hpp" // MakeDevices
 #include "Driver.hpp"
@@ -317,13 +320,14 @@ namespace page
 		void Driver::OnChar(char c)
 		{
 			// print hexadecimal representation
-			util::BasicIosFormatSaver<char> iosFormatSaver(std::cout);
+			boost::io::ios_all_saver iosFormatSaver(std::cout);
 			std::cout.setf(std::ios_base::hex, std::ios_base::basefield);
 			std::cout.setf(std::ios_base::showbase);
 			std::cout.setf(std::ios_base::internal, std::ios_base::adjustfield);
 			std::cout.fill('0');
 			std::cout << "character " << std::setw(4) << static_cast<unsigned>(c);
-			iosFormatSaver.Reset();
+			iosFormatSaver.restore();
+			
 			// print friendly representation if available
 			std::string repr(Repr(c));
 			if (!repr.empty()) std::cout << " (" << repr << ')';

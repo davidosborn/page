@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,8 +29,9 @@
  */
 
 #include <utility> // forward
-#include "../../err/exception/throw.hpp" // THROW
-#include "../sstream.hpp" // make_istringstream
+#include <sstream> // basic_istringstream
+
+#include "../../err/Exception.hpp"
 #include "deserialize.hpp" // Deserialize
 
 namespace page
@@ -42,16 +44,16 @@ namespace page
 		 */
 		template <typename Char, typename CharTraits, typename Allocator, typename... Args> const std::basic_string<Char, CharTraits, Allocator> &Deserialize(const std::basic_string<Char, CharTraits, Allocator> &s, Args &&... args)
 		{
-			MAKE_ISTRINGSTREAM_3(Char, CharTraits, Allocator, s)//auto ss(make_istringstream(s));
+			std::basic_istringstream<Char, CharTraits, Allocator> ss(s);
 			if (Deserialize(ss, std::forward<Args>(args)...).fail())
-				THROW err::Exception<err::DeserializationTag>();
+				THROW((err::Exception<err::UtilModuleTag, err::SerializationTag>()))
 			return s;
 		}
 		template <typename Char, typename... Args> const Char *Deserialize(const Char *s, Args &&... args)
 		{
-			MAKE_ISTRINGSTREAM_1(Char, s)//auto ss(make_istringstream(s));
+			std::basic_istringstream<Char> ss(s);
 			if (Deserialize(ss, std::forward<Args>(args)...).fail())
-				THROW err::Exception<err::DeserializationTag>();
+				THROW((err::Exception<err::UtilModuleTag, err::SerializationTag>()))
 			return s;
 		}
 		///@}

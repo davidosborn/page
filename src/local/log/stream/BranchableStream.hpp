@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -52,7 +53,7 @@ namespace page
 
 			public:
 			/**
-			 * Constructs an instance with any number of branches.
+			 * Construct an instance with any number of branches.
 			 */
 			template <typename... Branches>
 				explicit BranchableStream(Branches &&...);
@@ -63,17 +64,17 @@ namespace page
 
 			public:
 			/**
-			 * Attaches a stream as a new branch.
+			 * Attach a stream as a new branch.
 			 */
 			void Attach(const std::shared_ptr<Stream> &);
 
 			/**
-			 * Removes all branches.
+			 * Remove all branches.
 			 */
 			void Detach();
 
 			/**
-			 * Attaches all of the branches from another @c BranchableStream.
+			 * Attach all of the branches from another @c BranchableStream.
 			 */
 			void Extend(const BranchableStream &);
 

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,11 +31,12 @@
 #include <algorithm> // copy_n, min
 #include <istream>
 #include <iterator> // {,back_}inserter, begin, end, istreambuf_iterator
+#include <sstream> // basic_istringstream
 #include <utility> // forward, move
+
 #include "../algorithm.hpp" // copy_while_not
 #include "../iterator/range.hpp"
 #include "../iterator/repeat_iterator.hpp"
-#include "../sstream.hpp" // make_istringstream
 #include "../string_convert.hpp" // Convert
 #include "../tuple.hpp" // tuple_{,pop_}front
 #include "../type_traits.hpp" // output_iterator_value_type
@@ -47,7 +49,7 @@ namespace page
 		namespace detail
 		{
 			/**
-			 * Deserializes a sequence element from a stream.
+			 * Deserialize a sequence element from a stream.
 			 *
 			 * @return @c true if a terminating character was read.
 			 */
@@ -75,7 +77,8 @@ namespace page
 				}
 				if (!is.fail())
 				{
-					MAKE_ISTRINGSTREAM_2_COPY(Char, CharTraits, is, s);//auto ss(make_istringstream(is, s));
+					std::basic_istringstream<Char, CharTraits> ss(s);
+					ss.copyfmt(is);
 					Deserialize(ss, element);
 					if (ss.fail()) is.setstate(std::ios_base::failbit);
 				}
@@ -83,7 +86,7 @@ namespace page
 			}
 
 			/**
-			 * Deserializes a sequence from a stream, writing the elements to an
+			 * Deserialize a sequence from a stream, writing the elements to an
 			 * output iterator.
 			 *
 			 * @return The number of sequence elements that were deserialized.

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -73,12 +74,12 @@ namespace page
 
 			// modifiers
 			/**
-			 * Releases the guarded resource from state-saver control without
+			 * Release the guarded resource from state-saver control without
 			 * restoring its state.
 			 */
 			void Release();
 			/**
-			 * Restores the guarded resource to its saved state.
+			 * Restore the guarded resource to its saved state.
 			 *
 			 * @note The resource remains under state-saver control after this
 			 *       function is called, which means that this function can be
@@ -87,7 +88,7 @@ namespace page
 			 */
 			void Restore();
 			/**
-			 * Resets the guarding state of the state saver.
+			 * Reset the guarding state of the state saver.
 			 */
 			void Reset(bool enabled = false);
 

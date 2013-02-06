@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,7 +29,7 @@
  */
 
 #include <iostream> // clog
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../log/manip.hpp" // Warning
 #include "../Stream.hpp"
 #include "png.hpp"
@@ -43,7 +44,7 @@ namespace page
 			{
 				void Error(png_structp png, png_const_charp s)
 				{
-					THROW err::PlatformException<err::PngPlatformTag, err::ResourceTag>(s);
+					THROW((err::Exception<err::ResModuleTag, err::PngPlatformTag>(s)))
 				}
 				void Warning(png_structp png, png_const_charp s)
 				{
@@ -55,11 +56,13 @@ namespace page
 			ReadInfo::ReadInfo(Stream &stream)
 			{
 				if (!(png = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, Error, Warning)))
-					THROW err::PlatformException<err::PngPlatformTag, err::ResourceTag>("failed to initialize");
+					THROW((err::Exception<err::ResModuleTag, err::PngPlatformTag>("failed to initialize") <<
+						boost::errinfo_api_function("png_create_read_struct")))
 				if (!(info = png_create_info_struct(png)))
 				{
 					png_destroy_read_struct(&png, 0, 0);
-					THROW err::PlatformException<err::PngPlatformTag, err::ResourceTag>("failed to initialize");
+					THROW((err::Exception<err::ResModuleTag, err::PngPlatformTag>("failed to initialize") <<
+						boost::errinfo_api_function("png_create_info_struct")))
 				}
 				png_set_read_fn(png, &stream, &ReadInfo::Read);
 			}
@@ -77,11 +80,13 @@ namespace page
 			WriteInfo::WriteInfo(std::ostream &os)
 			{
 				if (!(png = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, Error, Warning)))
-					THROW err::PlatformException<err::PngPlatformTag, err::ResourceTag>("failed to initialize");
+					THROW((err::Exception<err::ResModuleTag, err::PngPlatformTag>("failed to initialize") <<
+						boost::errinfo_api_function("png_create_write_struct")))
 				if (!(info = png_create_info_struct(png)))
 				{
 					png_destroy_write_struct(&png, 0);
-					THROW err::PlatformException<err::PngPlatformTag, err::ResourceTag>("failed to initialize");
+					THROW((err::Exception<err::ResModuleTag, err::PngPlatformTag>("failed to initialize") <<
+						boost::errinfo_api_function("png_create_info_struct")))
 				}
 				png_set_write_fn(png, &os, &WriteInfo::Write, &WriteInfo::Flush);
 			}
@@ -93,13 +98,15 @@ namespace page
 			{
 				std::ostream *os = reinterpret_cast<std::ostream *>(png_get_io_ptr(png));
 				if (!os->write(reinterpret_cast<const char *>(s), n))
-					THROW err::StreamWriteException<err::ResourceTag>();
+					THROW((err::Exception<err::ResModuleTag, err::PngPlatformTag, err::StreamWriteTag>() <<
+						boost::errinfo_api_function("std::ostream::write")))
 			}
 			void WriteInfo::Flush(png_structp png)
 			{
 				std::ostream *os = reinterpret_cast<std::ostream *>(png_get_io_ptr(png));
 				if (!os->flush())
-					THROW err::StreamWriteException<err::ResourceTag>("stream flush error");
+					THROW((err::Exception<err::ResModuleTag, err::PngPlatformTag, err::StreamWriteTag>("stream flush error") <<
+						boost::errinfo_api_function("std::ostream::flush")))
 			}
 		}
 	}

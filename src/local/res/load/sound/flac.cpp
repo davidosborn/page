@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,9 +29,10 @@
  */
 
 #include <cassert>
-#include <memory> // shared_ptr
+#include <memory> // {shared,unique}_ptr
+
 #include <FLAC/stream_decoder.h> // FLAC__StreamDecoder
-#include "../../../util/scoped_ptr.hpp"
+
 #include "../../adapt/flac.hpp" // Check, Open
 #include "../../type/Sound.hpp"
 #include "../../type/sound/FlacDecoder.hpp"
@@ -43,9 +45,9 @@ namespace page
 		Sound *LoadFlacSound(const std::shared_ptr<const Pipe> &pipe)
 		{
 			assert(pipe);
-			util::scoped_ptr<FLAC__StreamDecoder> sd(Open(*pipe, 0));
+			const std::unique_ptr<FLAC__StreamDecoder> sd(Open(*pipe, 0));
 			if (!sd) return 0;
-			util::scoped_ptr<Sound> sound(new Sound);
+			const std::unique_ptr<Sound> sound(new Sound);
 			sound->channels = FlacDecoder::LimitChannels(FLAC__stream_decoder_get_channels(sd.get()));
 			sound->bitDepth = FlacDecoder::LimitBitDepth(FLAC__stream_decoder_get_bits_per_sample(sd.get()));
 			sound->frequency = FLAC__stream_decoder_get_sample_rate(sd.get());

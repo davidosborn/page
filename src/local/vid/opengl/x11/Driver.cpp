@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <X11/Xlib.h>
 #include "../../../env/x11/Window.hpp" // Window::Get{Display,Screen}
-#include "../../../err/exception/throw.hpp" // THROW
+#include "../../../err/Exception.hpp"
 #include "Driver.hpp"
 #include "ext.hpp" // InitExt
 
@@ -57,11 +58,12 @@ namespace page
 						None
 					};
 					XVisualInfo *vi = glXChooseVisual(display, wnd.GetScreen(), attribs);
-					if (!vi) THROW err::PlatformException<err::X11PlatformTag>("failed to choose visual");
+					if (!vi)
+						THROW((err::Exception<err::VidModuleTag, err::X11PlatformTag>("failed to choose visual")))
 					if (!(context = glXCreateContext(display, vi, 0, True)))
-						THROW err::PlatformException<err::X11PlatformTag>("failed to create context");
+						THROW((err::Exception<err::VidModuleTag, err::X11PlatformTag>("failed to create context")))
 					if (!glXMakeCurrent(display, wnd.GetWindow(), context))
-						THROW err::PlatformException<err::X11PlatformTag>("failed to make context current");
+						THROW((err::Exception<err::VidModuleTag, err::X11PlatformTag>("failed to make context current")))
 					Init();
 				}
 				Driver::~Driver()

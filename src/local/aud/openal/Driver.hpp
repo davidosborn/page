@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -58,12 +59,12 @@ namespace page
 				private:
 				// limits
 				unsigned MaxAmbientChannels() const;
-				unsigned MaxSpacialChannels() const;
-				unsigned MaxPersistentSpacialChannels() const;
+				unsigned MaxSpatialChannels() const;
+				unsigned MaxPersistentSpatialChannels() const;
 
 				// channel factory functions
 				AmbientChannel *MakeAmbientChannel(const Sound &) const;
-				SpacialChannel *MakeSpacialChannel(const phys::Sound &) const;
+				SpatialChannel *MakeSpatialChannel(const phys::Sound &) const;
 
 				ALCdevice *device;
 				ALCcontext *context;

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -42,14 +43,14 @@ namespace page
 	
 		// access
 		/**
-		 * Searches for a registered scanner that is compatible with the given
-		 * node, and calls it with the provided callback.
+		 * Search for a registered scanner that is compatible with the given
+		 * node, and call it with the provided callback.
 		 */
 		bool CallRegisteredScanner(const Node &, const ScanCallback &);
 		
 		// registration
 		/**
-		 * Registers a scanner with the system.
+		 * Register a scanner with the system.
 		 */
 		void RegisterScanner(
 			const ScanFunction &,

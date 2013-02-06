@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,7 +28,7 @@
  * of this software.
  */
 
-#include "../../cfg/opengl.hpp" // vidVbo
+#include "../../cfg/vars.hpp"
 #include "ext.hpp" // ARB_vertex_buffer_object
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
@@ -41,7 +42,7 @@ namespace page
 			Drawable *MakeDrawable(const res::Mesh &mesh, bool dynamic)
 			{
 				return
-					*cfg::opengl::vidVbo && haveArbVertexBufferObject ?
+					CVAR(opengl)::renderVbo && haveArbVertexBufferObject ?
 					static_cast<Drawable *>(new VertexBuffer(mesh,
 						dynamic ? GL_DYNAMIC_DRAW_ARB : GL_STATIC_DRAW_ARB)) :
 					static_cast<Drawable *>(new VertexArray(mesh));

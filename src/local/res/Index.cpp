@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,17 +28,18 @@
  * of this software.
  */
 
+#include <memory> // unique_ptr
 #include <iostream> // cout
-#include "../cfg.hpp" // resSources
-#include "../err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_ERROR_AND
-#include "../err/exception/throw.hpp" // THROW
+
+#include "../cfg/vars.hpp"
+#include "../err/Exception.hpp"
+#include "../err/report.hpp" // ReportError, std::exception
 #include "../log/Indenter.hpp"
-#include "../opt.hpp" // resSources
-#include "../util/scoped_ptr.hpp"
+#include "../opt.hpp" // resourceSources
 #include "Index.hpp"
 #include "path.hpp" // NormPath
-#include "Source.hpp" // Source::{~Source,Open,Refresh}
 #include "source/registry.hpp" // MakeSource
+#include "source/Source.hpp" // Source::{~Source,Open,Refresh}
 #include "Stream.hpp" // Stream::GetText
 #include "type/registry.hpp" // GetRegisteredTypeName
 
@@ -48,10 +50,10 @@ namespace page
 		// constructors
 		Index::Index()
 		{
-			for (const auto &source : *cfg::resSources) AddSource(source);
-			for (const auto &source :  opt::resSources) AddSource(source);
+			for (const auto &source : CVAR(resourceSources)) AddSource(source);
+			for (const auto &source :  opt::resourceSources) AddSource(source);
 		}
-		
+
 		// modifiers
 		void Index::AddSource(const std::string &path)
 		{
@@ -68,7 +70,7 @@ namespace page
 			for (const auto &source : sources)
 				source->Refresh();
 		}
-		
+
 		// resource access
 		Stream *Index::Open(const std::string &path) const
 		{
@@ -78,7 +80,7 @@ namespace page
 				Stream *stream = source->Open(normPath);
 				if (stream) return stream;
 			}
-			THROW err::Exception<err::NotFoundTag, err::ResourceTag>("resource not found");
+			THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("resource not found")))
 		}
 		std::shared_ptr<const void> Index::Load(const std::type_info &type, const std::string &path) const
 		{
@@ -92,16 +94,20 @@ namespace page
 					std::shared_ptr<const void> resource(source->Load(type, normPath));
 					if (resource) return resource;
 				}
-				THROW err::Exception<err::NotFoundTag, err::ResourceTag>("resource not found");
+				THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("resource not found")))
 			}
-			CATCH_ALL_AND_PRINT_ERROR_AND(throw;)
+			catch (const std::exception &e)
+			{
+				err::ReportError(e);
+				throw;
+			}
 		}
 		std::string Index::LoadString(const std::string &path) const
 		{
-			util::scoped_ptr<Stream> stream(Open(path));
+			const std::unique_ptr<Stream> stream(Open(path));
 			return stream->GetText();
 		}
-		
+
 		// global state
 		Index &GetIndex()
 		{

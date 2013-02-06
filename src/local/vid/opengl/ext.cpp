@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -34,9 +35,11 @@
 #include <iterator> // inserter
 #include <unordered_set>
 #include <vector>
-#include "../../cfg.hpp" // logVerbose
+
+#include <boost/io/ios_state.hpp> // ios_all_saver
+
+#include "../../cfg/vars.hpp"
 #include "../../log/Indenter.hpp"
-#include "../../util/ios.hpp" // BasicIosFormatSaver
 #include "../../util/pp.hpp" // STRINGIZE
 #include "../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "ext.hpp" // GetProcAddress, ProcAddress
@@ -88,91 +91,91 @@ namespace page
 				haveSgisTextureEdgeClamp;
 
 			// ARB_color_buffer_float
-			PFNGLCLAMPCOLORARBPROC glClampColorARB;
+			PFNGLCLAMPCOLORARBPROC                          glClampColorARB;
 			// ARB_depth_texture
 			// ARB_draw_buffers
-			PFNGLDRAWBUFFERSARBPROC glDrawBuffersARB;
+			PFNGLDRAWBUFFERSARBPROC                         glDrawBuffersARB;
 			// ARB_fragment_shader
 			// ARB_half_float_pixel
 			// ARB_multitexture
-			PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
-			PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB;
-			PFNGLMULTITEXCOORD1DARBPROC glMultiTexCoord1dARB;
-			PFNGLMULTITEXCOORD1DVARBPROC glMultiTexCoord1dvARB;
-			PFNGLMULTITEXCOORD1FARBPROC glMultiTexCoord1fARB;
-			PFNGLMULTITEXCOORD1FVARBPROC glMultiTexCoord1fvARB;
-			PFNGLMULTITEXCOORD1IARBPROC glMultiTexCoord1iARB;
-			PFNGLMULTITEXCOORD1IVARBPROC glMultiTexCoord1ivARB;
-			PFNGLMULTITEXCOORD1SARBPROC glMultiTexCoord1sARB;
-			PFNGLMULTITEXCOORD1SVARBPROC glMultiTexCoord1svARB;
-			PFNGLMULTITEXCOORD2DARBPROC glMultiTexCoord2dARB;
-			PFNGLMULTITEXCOORD2DVARBPROC glMultiTexCoord2dvARB;
-			PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB;
-			PFNGLMULTITEXCOORD2FVARBPROC glMultiTexCoord2fvARB;
-			PFNGLMULTITEXCOORD2IARBPROC glMultiTexCoord2iARB;
-			PFNGLMULTITEXCOORD2IVARBPROC glMultiTexCoord2ivARB;
-			PFNGLMULTITEXCOORD2SARBPROC glMultiTexCoord2sARB;
-			PFNGLMULTITEXCOORD2SVARBPROC glMultiTexCoord2svARB;
-			PFNGLMULTITEXCOORD3DARBPROC glMultiTexCoord3dARB;
-			PFNGLMULTITEXCOORD3DVARBPROC glMultiTexCoord3dvARB;
-			PFNGLMULTITEXCOORD3FARBPROC glMultiTexCoord3fARB;
-			PFNGLMULTITEXCOORD3FVARBPROC glMultiTexCoord3fvARB;
-			PFNGLMULTITEXCOORD3IARBPROC glMultiTexCoord3iARB;
-			PFNGLMULTITEXCOORD3IVARBPROC glMultiTexCoord3ivARB;
-			PFNGLMULTITEXCOORD3SARBPROC glMultiTexCoord3sARB;
-			PFNGLMULTITEXCOORD3SVARBPROC glMultiTexCoord3svARB;
-			PFNGLMULTITEXCOORD4DARBPROC glMultiTexCoord4dARB;
-			PFNGLMULTITEXCOORD4DVARBPROC glMultiTexCoord4dvARB;
-			PFNGLMULTITEXCOORD4FARBPROC glMultiTexCoord4fARB;
-			PFNGLMULTITEXCOORD4FVARBPROC glMultiTexCoord4fvARB;
-			PFNGLMULTITEXCOORD4IARBPROC glMultiTexCoord4iARB;
-			PFNGLMULTITEXCOORD4IVARBPROC glMultiTexCoord4ivARB;
-			PFNGLMULTITEXCOORD4SARBPROC glMultiTexCoord4sARB;
-			PFNGLMULTITEXCOORD4SVARBPROC glMultiTexCoord4svARB;
+			PFNGLACTIVETEXTUREARBPROC                       glActiveTextureARB;
+			PFNGLCLIENTACTIVETEXTUREARBPROC                 glClientActiveTextureARB;
+			PFNGLMULTITEXCOORD1DARBPROC                     glMultiTexCoord1dARB;
+			PFNGLMULTITEXCOORD1DVARBPROC                    glMultiTexCoord1dvARB;
+			PFNGLMULTITEXCOORD1FARBPROC                     glMultiTexCoord1fARB;
+			PFNGLMULTITEXCOORD1FVARBPROC                    glMultiTexCoord1fvARB;
+			PFNGLMULTITEXCOORD1IARBPROC                     glMultiTexCoord1iARB;
+			PFNGLMULTITEXCOORD1IVARBPROC                    glMultiTexCoord1ivARB;
+			PFNGLMULTITEXCOORD1SARBPROC                     glMultiTexCoord1sARB;
+			PFNGLMULTITEXCOORD1SVARBPROC                    glMultiTexCoord1svARB;
+			PFNGLMULTITEXCOORD2DARBPROC                     glMultiTexCoord2dARB;
+			PFNGLMULTITEXCOORD2DVARBPROC                    glMultiTexCoord2dvARB;
+			PFNGLMULTITEXCOORD2FARBPROC                     glMultiTexCoord2fARB;
+			PFNGLMULTITEXCOORD2FVARBPROC                    glMultiTexCoord2fvARB;
+			PFNGLMULTITEXCOORD2IARBPROC                     glMultiTexCoord2iARB;
+			PFNGLMULTITEXCOORD2IVARBPROC                    glMultiTexCoord2ivARB;
+			PFNGLMULTITEXCOORD2SARBPROC                     glMultiTexCoord2sARB;
+			PFNGLMULTITEXCOORD2SVARBPROC                    glMultiTexCoord2svARB;
+			PFNGLMULTITEXCOORD3DARBPROC                     glMultiTexCoord3dARB;
+			PFNGLMULTITEXCOORD3DVARBPROC                    glMultiTexCoord3dvARB;
+			PFNGLMULTITEXCOORD3FARBPROC                     glMultiTexCoord3fARB;
+			PFNGLMULTITEXCOORD3FVARBPROC                    glMultiTexCoord3fvARB;
+			PFNGLMULTITEXCOORD3IARBPROC                     glMultiTexCoord3iARB;
+			PFNGLMULTITEXCOORD3IVARBPROC                    glMultiTexCoord3ivARB;
+			PFNGLMULTITEXCOORD3SARBPROC                     glMultiTexCoord3sARB;
+			PFNGLMULTITEXCOORD3SVARBPROC                    glMultiTexCoord3svARB;
+			PFNGLMULTITEXCOORD4DARBPROC                     glMultiTexCoord4dARB;
+			PFNGLMULTITEXCOORD4DVARBPROC                    glMultiTexCoord4dvARB;
+			PFNGLMULTITEXCOORD4FARBPROC                     glMultiTexCoord4fARB;
+			PFNGLMULTITEXCOORD4FVARBPROC                    glMultiTexCoord4fvARB;
+			PFNGLMULTITEXCOORD4IARBPROC                     glMultiTexCoord4iARB;
+			PFNGLMULTITEXCOORD4IVARBPROC                    glMultiTexCoord4ivARB;
+			PFNGLMULTITEXCOORD4SARBPROC                     glMultiTexCoord4sARB;
+			PFNGLMULTITEXCOORD4SVARBPROC                    glMultiTexCoord4svARB;
 			// ARB_point_sprite
 			// ARB_point_parameters
-			PFNGLPOINTPARAMETERFARBPROC glPointParameterfARB;
-			PFNGLPOINTPARAMETERFVARBPROC glPointParameterfvARB;
+			PFNGLPOINTPARAMETERFARBPROC                     glPointParameterfARB;
+			PFNGLPOINTPARAMETERFVARBPROC                    glPointParameterfvARB;
 			// ARB_shader_objects
-			PFNGLDELETEOBJECTARBPROC glDeleteObjectARB;
-			PFNGLGETHANDLEARBPROC glGetHandleARB;
-			PFNGLDETACHOBJECTARBPROC glDetachObjectARB;
-			PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB;
-			PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
-			PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
-			PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
-			PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
-			PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
-			PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
-			PFNGLVALIDATEPROGRAMARBPROC glValidateProgramARB;
-			PFNGLUNIFORM1FARBPROC glUniform1fARB;
-			PFNGLUNIFORM2FARBPROC glUniform2fARB;
-			PFNGLUNIFORM3FARBPROC glUniform3fARB;
-			PFNGLUNIFORM4FARBPROC glUniform4fARB;
-			PFNGLUNIFORM1IARBPROC glUniform1iARB;
-			PFNGLUNIFORM2IARBPROC glUniform2iARB;
-			PFNGLUNIFORM3IARBPROC glUniform3iARB;
-			PFNGLUNIFORM4IARBPROC glUniform4iARB;
-			PFNGLUNIFORM1FVARBPROC glUniform1fvARB;
-			PFNGLUNIFORM2FVARBPROC glUniform2fvARB;
-			PFNGLUNIFORM3FVARBPROC glUniform3fvARB;
-			PFNGLUNIFORM4FVARBPROC glUniform4fvARB;
-			PFNGLUNIFORM1IVARBPROC glUniform1ivARB;
-			PFNGLUNIFORM2IVARBPROC glUniform2ivARB;
-			PFNGLUNIFORM3IVARBPROC glUniform3ivARB;
-			PFNGLUNIFORM4IVARBPROC glUniform4ivARB;
-			PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fvARB;
-			PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fvARB;
-			PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fvARB;
-			PFNGLGETOBJECTPARAMETERFVARBPROC glGetObjectParameterfvARB;
-			PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameterivARB;
-			PFNGLGETINFOLOGARBPROC glGetInfoLogARB;
-			PFNGLGETATTACHEDOBJECTSARBPROC glGetAttachedObjectsARB;
-			PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
-			PFNGLGETACTIVEUNIFORMARBPROC glGetActiveUniformARB;
-			PFNGLGETUNIFORMFVARBPROC glGetUniformfvARB;
-			PFNGLGETUNIFORMIVARBPROC glGetUniformivARB;
-			PFNGLGETSHADERSOURCEARBPROC glGetShaderSourceARB;
+			PFNGLDELETEOBJECTARBPROC                        glDeleteObjectARB;
+			PFNGLGETHANDLEARBPROC                           glGetHandleARB;
+			PFNGLDETACHOBJECTARBPROC                        glDetachObjectARB;
+			PFNGLCREATESHADEROBJECTARBPROC                  glCreateShaderObjectARB;
+			PFNGLSHADERSOURCEARBPROC                        glShaderSourceARB;
+			PFNGLCOMPILESHADERARBPROC                       glCompileShaderARB;
+			PFNGLCREATEPROGRAMOBJECTARBPROC                 glCreateProgramObjectARB;
+			PFNGLATTACHOBJECTARBPROC                        glAttachObjectARB;
+			PFNGLLINKPROGRAMARBPROC                         glLinkProgramARB;
+			PFNGLUSEPROGRAMOBJECTARBPROC                    glUseProgramObjectARB;
+			PFNGLVALIDATEPROGRAMARBPROC                     glValidateProgramARB;
+			PFNGLUNIFORM1FARBPROC                           glUniform1fARB;
+			PFNGLUNIFORM2FARBPROC                           glUniform2fARB;
+			PFNGLUNIFORM3FARBPROC                           glUniform3fARB;
+			PFNGLUNIFORM4FARBPROC                           glUniform4fARB;
+			PFNGLUNIFORM1IARBPROC                           glUniform1iARB;
+			PFNGLUNIFORM2IARBPROC                           glUniform2iARB;
+			PFNGLUNIFORM3IARBPROC                           glUniform3iARB;
+			PFNGLUNIFORM4IARBPROC                           glUniform4iARB;
+			PFNGLUNIFORM1FVARBPROC                          glUniform1fvARB;
+			PFNGLUNIFORM2FVARBPROC                          glUniform2fvARB;
+			PFNGLUNIFORM3FVARBPROC                          glUniform3fvARB;
+			PFNGLUNIFORM4FVARBPROC                          glUniform4fvARB;
+			PFNGLUNIFORM1IVARBPROC                          glUniform1ivARB;
+			PFNGLUNIFORM2IVARBPROC                          glUniform2ivARB;
+			PFNGLUNIFORM3IVARBPROC                          glUniform3ivARB;
+			PFNGLUNIFORM4IVARBPROC                          glUniform4ivARB;
+			PFNGLUNIFORMMATRIX2FVARBPROC                    glUniformMatrix2fvARB;
+			PFNGLUNIFORMMATRIX3FVARBPROC                    glUniformMatrix3fvARB;
+			PFNGLUNIFORMMATRIX4FVARBPROC                    glUniformMatrix4fvARB;
+			PFNGLGETOBJECTPARAMETERFVARBPROC                glGetObjectParameterfvARB;
+			PFNGLGETOBJECTPARAMETERIVARBPROC                glGetObjectParameterivARB;
+			PFNGLGETINFOLOGARBPROC                          glGetInfoLogARB;
+			PFNGLGETATTACHEDOBJECTSARBPROC                  glGetAttachedObjectsARB;
+			PFNGLGETUNIFORMLOCATIONARBPROC                  glGetUniformLocationARB;
+			PFNGLGETACTIVEUNIFORMARBPROC                    glGetActiveUniformARB;
+			PFNGLGETUNIFORMFVARBPROC                        glGetUniformfvARB;
+			PFNGLGETUNIFORMIVARBPROC                        glGetUniformivARB;
+			PFNGLGETSHADERSOURCEARBPROC                     glGetShaderSourceARB;
 			// ARB_shading_language_100
 			// ARB_shadow
 			// ARB_texture_border_clamp
@@ -184,108 +187,108 @@ namespace page
 			// ARB_texture_non_power_of_two
 			// ARB_texture_rectangle
 			// ARB_vertex_buffer_object
-			PFNGLBINDBUFFERARBPROC glBindBufferARB;
-			PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB;
-			PFNGLGENBUFFERSARBPROC glGenBuffersARB;
-			PFNGLISBUFFERARBPROC glIsBufferARB;
-			PFNGLBUFFERDATAARBPROC glBufferDataARB;
-			PFNGLBUFFERSUBDATAARBPROC glBufferSubDataARB;
-			PFNGLGETBUFFERSUBDATAARBPROC glGetBufferSubDataARB;
-			PFNGLMAPBUFFERARBPROC glMapBufferARB;
-			PFNGLUNMAPBUFFERARBPROC glUnmapBufferARB;
-			PFNGLGETBUFFERPARAMETERIVARBPROC glGetBufferParameterivARB;
-			PFNGLGETBUFFERPOINTERVARBPROC glGetBufferPointervARB;
+			PFNGLBINDBUFFERARBPROC                          glBindBufferARB;
+			PFNGLDELETEBUFFERSARBPROC                       glDeleteBuffersARB;
+			PFNGLGENBUFFERSARBPROC                          glGenBuffersARB;
+			PFNGLISBUFFERARBPROC                            glIsBufferARB;
+			PFNGLBUFFERDATAARBPROC                          glBufferDataARB;
+			PFNGLBUFFERSUBDATAARBPROC                       glBufferSubDataARB;
+			PFNGLGETBUFFERSUBDATAARBPROC                    glGetBufferSubDataARB;
+			PFNGLMAPBUFFERARBPROC                           glMapBufferARB;
+			PFNGLUNMAPBUFFERARBPROC                         glUnmapBufferARB;
+			PFNGLGETBUFFERPARAMETERIVARBPROC                glGetBufferParameterivARB;
+			PFNGLGETBUFFERPOINTERVARBPROC                   glGetBufferPointervARB;
 			// ARB_vertex_shader
-			PFNGLVERTEXATTRIB1FARBPROC glVertexAttrib1fARB;
-			PFNGLVERTEXATTRIB1SARBPROC glVertexAttrib1sARB;
-			PFNGLVERTEXATTRIB1DARBPROC glVertexAttrib1dARB;
-			PFNGLVERTEXATTRIB2FARBPROC glVertexAttrib2fARB;
-			PFNGLVERTEXATTRIB2SARBPROC glVertexAttrib2sARB;
-			PFNGLVERTEXATTRIB2DARBPROC glVertexAttrib2dARB;
-			PFNGLVERTEXATTRIB3FARBPROC glVertexAttrib3fARB;
-			PFNGLVERTEXATTRIB3SARBPROC glVertexAttrib3sARB;
-			PFNGLVERTEXATTRIB3DARBPROC glVertexAttrib3dARB;
-			PFNGLVERTEXATTRIB4FARBPROC glVertexAttrib4fARB;
-			PFNGLVERTEXATTRIB4SARBPROC glVertexAttrib4sARB;
-			PFNGLVERTEXATTRIB4DARBPROC glVertexAttrib4dARB;
-			PFNGLVERTEXATTRIB4NUBARBPROC glVertexAttrib4NubARB;
-			PFNGLVERTEXATTRIB1FVARBPROC glVertexAttrib1fvARB;
-			PFNGLVERTEXATTRIB1SVARBPROC glVertexAttrib1svARB;
-			PFNGLVERTEXATTRIB1DVARBPROC glVertexAttrib1dvARB;
-			PFNGLVERTEXATTRIB2FVARBPROC glVertexAttrib2fvARB;
-			PFNGLVERTEXATTRIB2SVARBPROC glVertexAttrib2svARB;
-			PFNGLVERTEXATTRIB2DVARBPROC glVertexAttrib2dvARB;
-			PFNGLVERTEXATTRIB3FVARBPROC glVertexAttrib3fvARB;
-			PFNGLVERTEXATTRIB3SVARBPROC glVertexAttrib3svARB;
-			PFNGLVERTEXATTRIB3DVARBPROC glVertexAttrib3dvARB;
-			PFNGLVERTEXATTRIB4FVARBPROC glVertexAttrib4fvARB;
-			PFNGLVERTEXATTRIB4SVARBPROC glVertexAttrib4svARB;
-			PFNGLVERTEXATTRIB4DVARBPROC glVertexAttrib4dvARB;
-			PFNGLVERTEXATTRIB4IVARBPROC glVertexAttrib4ivARB;
-			PFNGLVERTEXATTRIB4BVARBPROC glVertexAttrib4bvARB;
-			PFNGLVERTEXATTRIB4UBVARBPROC glVertexAttrib4ubvARB;
-			PFNGLVERTEXATTRIB4USVARBPROC glVertexAttrib4usvARB;
-			PFNGLVERTEXATTRIB4UIVARBPROC glVertexAttrib4uivARB;
-			PFNGLVERTEXATTRIB4NBVARBPROC glVertexAttrib4NbvARB;
-			PFNGLVERTEXATTRIB4NSVARBPROC glVertexAttrib4NsvARB;
-			PFNGLVERTEXATTRIB4NIVARBPROC glVertexAttrib4NivARB;
-			PFNGLVERTEXATTRIB4NUBVARBPROC glVertexAttrib4NubvARB;
-			PFNGLVERTEXATTRIB4NUSVARBPROC glVertexAttrib4NusvARB;
-			PFNGLVERTEXATTRIB4NUIVARBPROC glVertexAttrib4NuivARB;
-			PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointerARB;
-			PFNGLENABLEVERTEXATTRIBARRAYARBPROC glEnableVertexAttribArrayARB;
-			PFNGLDISABLEVERTEXATTRIBARRAYARBPROC glDisableVertexAttribArrayARB;
-			PFNGLBINDATTRIBLOCATIONARBPROC glBindAttribLocationARB;
-			PFNGLGETACTIVEATTRIBARBPROC glGetActiveAttribARB;
-			PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocationARB;
-			PFNGLGETVERTEXATTRIBDVARBPROC glGetVertexAttribdvARB;
-			PFNGLGETVERTEXATTRIBFVARBPROC glGetVertexAttribfvARB;
-			PFNGLGETVERTEXATTRIBIVARBPROC glGetVertexAttribivARB;
-			PFNGLGETVERTEXATTRIBPOINTERVARBPROC glGetVertexAttribPointervARB;
+			PFNGLVERTEXATTRIB1FARBPROC                      glVertexAttrib1fARB;
+			PFNGLVERTEXATTRIB1SARBPROC                      glVertexAttrib1sARB;
+			PFNGLVERTEXATTRIB1DARBPROC                      glVertexAttrib1dARB;
+			PFNGLVERTEXATTRIB2FARBPROC                      glVertexAttrib2fARB;
+			PFNGLVERTEXATTRIB2SARBPROC                      glVertexAttrib2sARB;
+			PFNGLVERTEXATTRIB2DARBPROC                      glVertexAttrib2dARB;
+			PFNGLVERTEXATTRIB3FARBPROC                      glVertexAttrib3fARB;
+			PFNGLVERTEXATTRIB3SARBPROC                      glVertexAttrib3sARB;
+			PFNGLVERTEXATTRIB3DARBPROC                      glVertexAttrib3dARB;
+			PFNGLVERTEXATTRIB4FARBPROC                      glVertexAttrib4fARB;
+			PFNGLVERTEXATTRIB4SARBPROC                      glVertexAttrib4sARB;
+			PFNGLVERTEXATTRIB4DARBPROC                      glVertexAttrib4dARB;
+			PFNGLVERTEXATTRIB4NUBARBPROC                    glVertexAttrib4NubARB;
+			PFNGLVERTEXATTRIB1FVARBPROC                     glVertexAttrib1fvARB;
+			PFNGLVERTEXATTRIB1SVARBPROC                     glVertexAttrib1svARB;
+			PFNGLVERTEXATTRIB1DVARBPROC                     glVertexAttrib1dvARB;
+			PFNGLVERTEXATTRIB2FVARBPROC                     glVertexAttrib2fvARB;
+			PFNGLVERTEXATTRIB2SVARBPROC                     glVertexAttrib2svARB;
+			PFNGLVERTEXATTRIB2DVARBPROC                     glVertexAttrib2dvARB;
+			PFNGLVERTEXATTRIB3FVARBPROC                     glVertexAttrib3fvARB;
+			PFNGLVERTEXATTRIB3SVARBPROC                     glVertexAttrib3svARB;
+			PFNGLVERTEXATTRIB3DVARBPROC                     glVertexAttrib3dvARB;
+			PFNGLVERTEXATTRIB4FVARBPROC                     glVertexAttrib4fvARB;
+			PFNGLVERTEXATTRIB4SVARBPROC                     glVertexAttrib4svARB;
+			PFNGLVERTEXATTRIB4DVARBPROC                     glVertexAttrib4dvARB;
+			PFNGLVERTEXATTRIB4IVARBPROC                     glVertexAttrib4ivARB;
+			PFNGLVERTEXATTRIB4BVARBPROC                     glVertexAttrib4bvARB;
+			PFNGLVERTEXATTRIB4UBVARBPROC                    glVertexAttrib4ubvARB;
+			PFNGLVERTEXATTRIB4USVARBPROC                    glVertexAttrib4usvARB;
+			PFNGLVERTEXATTRIB4UIVARBPROC                    glVertexAttrib4uivARB;
+			PFNGLVERTEXATTRIB4NBVARBPROC                    glVertexAttrib4NbvARB;
+			PFNGLVERTEXATTRIB4NSVARBPROC                    glVertexAttrib4NsvARB;
+			PFNGLVERTEXATTRIB4NIVARBPROC                    glVertexAttrib4NivARB;
+			PFNGLVERTEXATTRIB4NUBVARBPROC                   glVertexAttrib4NubvARB;
+			PFNGLVERTEXATTRIB4NUSVARBPROC                   glVertexAttrib4NusvARB;
+			PFNGLVERTEXATTRIB4NUIVARBPROC                   glVertexAttrib4NuivARB;
+			PFNGLVERTEXATTRIBPOINTERARBPROC                 glVertexAttribPointerARB;
+			PFNGLENABLEVERTEXATTRIBARRAYARBPROC             glEnableVertexAttribArrayARB;
+			PFNGLDISABLEVERTEXATTRIBARRAYARBPROC            glDisableVertexAttribArrayARB;
+			PFNGLBINDATTRIBLOCATIONARBPROC                  glBindAttribLocationARB;
+			PFNGLGETACTIVEATTRIBARBPROC                     glGetActiveAttribARB;
+			PFNGLGETATTRIBLOCATIONARBPROC                   glGetAttribLocationARB;
+			PFNGLGETVERTEXATTRIBDVARBPROC                   glGetVertexAttribdvARB;
+			PFNGLGETVERTEXATTRIBFVARBPROC                   glGetVertexAttribfvARB;
+			PFNGLGETVERTEXATTRIBIVARBPROC                   glGetVertexAttribivARB;
+			PFNGLGETVERTEXATTRIBPOINTERVARBPROC             glGetVertexAttribPointervARB;
 			// ATI_texture_float
 			// EXT_abgr
 			// EXT_bgra
 			// EXT_blend_func_separate
-			PFNGLBLENDFUNCSEPARATEEXTPROC glBlendFuncSeparateEXT;
+			PFNGLBLENDFUNCSEPARATEEXTPROC                   glBlendFuncSeparateEXT;
 			// EXT_blend_minmax
-			PFNGLBLENDEQUATIONEXTPROC glBlendEquationEXT;
+			PFNGLBLENDEQUATIONEXTPROC                       glBlendEquationEXT;
 			// EXT_blend_subtract
 			// EXT_framebuffer_object
-			PFNGLISRENDERBUFFEREXTPROC glIsRenderbufferEXT;
-			PFNGLBINDRENDERBUFFEREXTPROC glBindRenderbufferEXT;
-			PFNGLDELETERENDERBUFFERSEXTPROC glDeleteRenderbuffersEXT;
-			PFNGLGENRENDERBUFFERSEXTPROC glGenRenderbuffersEXT;
-			PFNGLRENDERBUFFERSTORAGEEXTPROC glRenderbufferStorageEXT;
-			PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC glGetRenderbufferParameterivEXT;
-			PFNGLISFRAMEBUFFEREXTPROC glIsFramebufferEXT;
-			PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebufferEXT;
-			PFNGLDELETEFRAMEBUFFERSEXTPROC glDeleteFramebuffersEXT;
-			PFNGLGENFRAMEBUFFERSEXTPROC glGenFramebuffersEXT;
-			PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatusEXT;
-			PFNGLFRAMEBUFFERTEXTURE1DEXTPROC glFramebufferTexture1DEXT;
-			PFNGLFRAMEBUFFERTEXTURE2DEXTPROC glFramebufferTexture2DEXT;
-			PFNGLFRAMEBUFFERTEXTURE3DEXTPROC glFramebufferTexture3DEXT;
-			PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbufferEXT;
+			PFNGLISRENDERBUFFEREXTPROC                      glIsRenderbufferEXT;
+			PFNGLBINDRENDERBUFFEREXTPROC                    glBindRenderbufferEXT;
+			PFNGLDELETERENDERBUFFERSEXTPROC                 glDeleteRenderbuffersEXT;
+			PFNGLGENRENDERBUFFERSEXTPROC                    glGenRenderbuffersEXT;
+			PFNGLRENDERBUFFERSTORAGEEXTPROC                 glRenderbufferStorageEXT;
+			PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC          glGetRenderbufferParameterivEXT;
+			PFNGLISFRAMEBUFFEREXTPROC                       glIsFramebufferEXT;
+			PFNGLBINDFRAMEBUFFEREXTPROC                     glBindFramebufferEXT;
+			PFNGLDELETEFRAMEBUFFERSEXTPROC                  glDeleteFramebuffersEXT;
+			PFNGLGENFRAMEBUFFERSEXTPROC                     glGenFramebuffersEXT;
+			PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC              glCheckFramebufferStatusEXT;
+			PFNGLFRAMEBUFFERTEXTURE1DEXTPROC                glFramebufferTexture1DEXT;
+			PFNGLFRAMEBUFFERTEXTURE2DEXTPROC                glFramebufferTexture2DEXT;
+			PFNGLFRAMEBUFFERTEXTURE3DEXTPROC                glFramebufferTexture3DEXT;
+			PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC             glFramebufferRenderbufferEXT;
 			PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC glGetFramebufferAttachmentParameterivEXT;
-			PFNGLGENERATEMIPMAPEXTPROC glGenerateMipmapEXT;
+			PFNGLGENERATEMIPMAPEXTPROC                      glGenerateMipmapEXT;
 			// EXT_texture3D
-			PFNGLTEXIMAGE3DEXTPROC glTexImage3DEXT;
+			PFNGLTEXIMAGE3DEXTPROC                          glTexImage3DEXT;
 			// EXT_texture_edge_clamp
 			// NV_float_buffer
 			// NV_register_combiners
-			PFNGLCOMBINERPARAMETERFVNVPROC glCombinerParameterfvNV;
-			PFNGLCOMBINERPARAMETERIVNVPROC glCombinerParameterivNV;
-			PFNGLCOMBINERPARAMETERFNVPROC glCombinerParameterfNV;
-			PFNGLCOMBINERPARAMETERINVPROC glCombinerParameteriNV;
-			PFNGLCOMBINERINPUTNVPROC glCombinerInputNV;
-			PFNGLCOMBINEROUTPUTNVPROC glCombinerOutputNV;
-			PFNGLFINALCOMBINERINPUTNVPROC glFinalCombinerInputNV;
-			PFNGLGETCOMBINERINPUTPARAMETERFVNVPROC glGetCombinerInputParameterfvNV;
-			PFNGLGETCOMBINERINPUTPARAMETERIVNVPROC glGetCombinerInputParameterivNV;
-			PFNGLGETCOMBINEROUTPUTPARAMETERFVNVPROC glGetCombinerOutputParameterfvNV;
-			PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC glGetCombinerOutputParameterivNV;
-			PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC glGetFinalCombinerInputParameterfvNV;
-			PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC glGetFinalCombinerInputParameterivNV;
+			PFNGLCOMBINERPARAMETERFVNVPROC                  glCombinerParameterfvNV;
+			PFNGLCOMBINERPARAMETERIVNVPROC                  glCombinerParameterivNV;
+			PFNGLCOMBINERPARAMETERFNVPROC                   glCombinerParameterfNV;
+			PFNGLCOMBINERPARAMETERINVPROC                   glCombinerParameteriNV;
+			PFNGLCOMBINERINPUTNVPROC                        glCombinerInputNV;
+			PFNGLCOMBINEROUTPUTNVPROC                       glCombinerOutputNV;
+			PFNGLFINALCOMBINERINPUTNVPROC                   glFinalCombinerInputNV;
+			PFNGLGETCOMBINERINPUTPARAMETERFVNVPROC          glGetCombinerInputParameterfvNV;
+			PFNGLGETCOMBINERINPUTPARAMETERIVNVPROC          glGetCombinerInputParameterivNV;
+			PFNGLGETCOMBINEROUTPUTPARAMETERFVNVPROC         glGetCombinerOutputParameterfvNV;
+			PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC         glGetCombinerOutputParameterivNV;
+			PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC     glGetFinalCombinerInputParameterfvNV;
+			PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC     glGetFinalCombinerInputParameterivNV;
 			// NV_texture_shader
 			// SGIS_generate_mipmap
 			// SGIS_texture_edge_clamp
@@ -552,18 +555,22 @@ namespace page
 			{
 				std::cout << "loading OpenGL extensions" << std::endl;
 				log::Indenter indenter;
+
 				// build supported extension set
 				std::string extString(reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS)));
 				std::unordered_set<std::string> supportedExts;
 				util::Deserialize(extString, std::inserter(supportedExts, supportedExts.end()));
+
 				// calculate extension alignment width
-				std::streamsize width = 0;
-				for (Exts::const_iterator ext(exts.begin()); ext != exts.end(); ++ext)
-					width = std::max(static_cast<std::streamsize>(ext->name.size()), width);
+				unsigned width = 0;
+				for (const auto &ext : exts)
+					width = std::max<decltype(width)>(ext.name.size(), width);
+
 				// set flags for trailing alignment
-				util::BasicIosFormatSaver<char> iosFormatSaver(std::cout);
+				boost::io::ios_all_saver iosFormatSaver(std::cout);
 				std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 				std::cout.fill(' ');
+
 				// check relevant extensions
 				for (Exts::iterator ext(exts.begin()); ext != exts.end(); ++ext)
 				{
@@ -582,7 +589,7 @@ namespace page
 									broken = true;
 									ext->have = false;
 								}
-								if (*cfg::logVerbose)
+								if (CVAR(logVerbose))
 								{
 									log::Indenter indenter;
 									std::cout << "missing function " << proc->name << std::endl;
@@ -594,7 +601,7 @@ namespace page
 					{
 						// reset function pointers
 						for (Ext::Procs::const_iterator proc(ext->procs.begin()); proc != ext->procs.end(); ++proc)
-							*proc->address = 0;
+							*proc->address = nullptr;
 					}
 					if (!broken) std::cout << (ext->have ? "good" : "missing") << std::endl;
 				}

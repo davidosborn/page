@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,15 +29,15 @@
  */
 
 #include <cassert>
-#include <memory> // shared_ptr
+#include <memory> // {shared,unique}_ptr
+
 #include "../../../util/lexical_cast.hpp"
-#include "../../../util/scoped_ptr.hpp"
 #include "../../../util/string.hpp" // Partition
 #include "../../adapt/text.hpp" // CheckSig
 #include "../../adapt/text/extract.hpp" // Extract
 #include "../../adapt/text/Parser.hpp"
 #include "../../fmt/native/theme.hpp"
-#include "../../Pipe.hpp" // Pipe::Open
+#include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../Stream.hpp" // Stream::~Stream
 #include "../../type/Theme.hpp"
 #include "../register.hpp" // LoadFunction, REGISTER_LOADER
@@ -546,16 +547,16 @@ namespace page
 		Theme *LoadNativeTheme(const std::shared_ptr<const Pipe> &pipe)
 		{
 			assert(pipe);
-			util::scoped_ptr<Stream> stream(pipe->Open());
+			const std::unique_ptr<Stream> stream(pipe->Open());
 			if (!CheckSig(*stream, fmt::shebang)) return 0;
-			util::scoped_ptr<Theme> theme(new Theme);
+			const std::unique_ptr<Theme> theme(new Theme);
 			GetParser(*theme).Parse(*stream);
 			return theme.release();
 		}
 
 		LoadFunction GetNativeThemeLoader(const Pipe &pipe)
 		{
-			util::scoped_ptr<Stream> stream(pipe.Open());
+			const std::unique_ptr<Stream> stream(pipe.Open());
 			return CheckSig(*stream, fmt::shebang) ? LoadNativeTheme : LoadFunction();
 		}
 

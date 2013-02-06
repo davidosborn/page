@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,18 +29,21 @@
  */
 
 #include <array>
+
+// X11
 #include <X11/Xatom.h> // XA_STRING
 #include <X11/Xutil.h> // XSetWMName, XTextProperty
+
+// local
 #include "../../aud/Driver.hpp" // MakeDriver
-#include "../../cfg.hpp" // vidResolution, wnd{Full,Max,Pos,Size}
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../cfg/vars.hpp"
+#include "../../err/Exception.hpp"
 #include "../../inp/Driver.hpp" // MakeDriver
 #include "../../vid/Driver.hpp" // MakeDriver
 #include "Window.hpp"
 
 #ifdef DEBUG
 #	include <iostream> // cout
-#	include "../../cfg.hpp" // logVerbose
 #	include "../../log/Indenter.hpp"
 #	include "../../util/x11/event.hpp" // GetEvent{Info,TypeName}
 #endif
@@ -62,21 +66,23 @@ namespace page
 			{
 				// open display
 				if (!(display = XOpenDisplay(0)))
-					THROW err::PlatformException<err::X11PlatformTag>("failed to open display");
+					THROW((err::Exception<err::EnvModuleTag, err::X11PlatformTag>("failed to open display") <<
+						boost::errinfo_api_function("XOpenDisplay")))
 				// create window
 				// FIXME: XCreateWindow expects the position of the window frame
-				// while cfg::wndPosition is the position of the window client area
+				// while cfg::State::GetGlobalInstance().windowPosition is the position of the window client area
 				screen = DefaultScreen(display);
 				if (!(w = XCreateWindow(display, RootWindow(display, screen),
-					cfg::wndPosition->x, cfg::wndPosition->y,
-					cfg::wndSize->x, cfg::wndSize->y, 0,
+					cfg::State::GetGlobalInstance().windowPosition->x, cfg::State::GetGlobalInstance().windowPosition->y,
+					cfg::State::GetGlobalInstance().windowSize->x, cfg::State::GetGlobalInstance().windowSize->y, 0,
 					CopyFromParent, // depth
 					InputOutput,    // class
 					CopyFromParent, // visual
 					0, 0)))
 				{
 					XCloseDisplay(display);
-					THROW err::PlatformException<err::X11PlatformTag>("failed to create window");
+					THROW((err::Exception<err::EnvModuleTag, err::X11PlatformTag>("failed to create window") <<
+						boost::errinfo_api_function("XCreateWindow")))
 				}
 				// initialize atoms
 				_NET_WM_STATE            = XInternAtom(display, "_NET_WM_STATE",            False);
@@ -104,7 +110,7 @@ namespace page
 				XSetWMName(display, w, &name);
 				XFlush(display);
 				// initialize fullscreen mode
-				if (*cfg::wndFull)
+				if (CVAR(windowFullscreen))
 				{
 					try
 					{
@@ -112,7 +118,7 @@ namespace page
 					}
 					catch (...)
 					{
-						cfg::wndFull = false;
+						cfg::State::GetGlobalInstance().windowFullscreen = false;
 					}
 				}
 				// show window
@@ -120,7 +126,8 @@ namespace page
 				// set initial state
 				XWindowAttributes attrib;
 				if (!XGetWindowAttributes(display, w, &attrib))
-					THROW err::PlatformException<err::X11PlatformTag>("failed to get window attributes");
+					THROW((err::Exception<err::EnvModuleTag, err::X11PlatformTag>("failed to get window attributes") <<
+						boost::errinfo_api_function("XGetWindowAttributes")))
 				// FIXME: XWindowAttributes provides the position of the window
 				// frame while InitState expects the position of the window
 				// client area
@@ -143,7 +150,7 @@ namespace page
 					XEvent event;
 					XNextEvent(display, &event);
 #ifdef DEBUG
-					if (*cfg::logVerbose)
+					if (CVAR(logVerbose))
 					{
 						std::cout << "X11 event: " << util::x11::GetEventTypeName(event.type) << std::endl;
 						log::Indenter indenter;
@@ -162,14 +169,14 @@ namespace page
 							math::Vector<2, int> pos(event.xconfigure.x, event.xconfigure.y);
 							if (Any(pos != GetPosition()))
 							{
-								cfg::wndPosition = pos;
+								cfg::State::GetGlobalInstance().windowPosition = pos;
 								moveSig(pos);
 							}
 							// generate size event
 							math::Vector<2, unsigned> size(event.xconfigure.width, event.xconfigure.height);
 							if (Any(size != GetSize()))
 							{
-								cfg::wndSize = size;
+								cfg::State::GetGlobalInstance().windowSize = size;
 								sizeSig(size);
 							}
 						}
@@ -232,7 +239,8 @@ namespace page
 				event.xclient.data.l[1] = _NET_WM_STATE_FULLSCREEN;
 				event.xclient.data.l[3] = 1;
 				if (!XSendEvent(display, w, False, SubstructureNotifyMask | SubstructureRedirectMask, &event))
-					THROW err::PlatformException<err::X11PlatformTag>("failed to send event");
+					THROW((err::Exception<err::EnvModuleTag, err::X11PlatformTag>("failed to send event") <<
+						boost::errinfo_api_function("XSendEvent")))
 			}
 			void Window::SwitchFull()
 			{

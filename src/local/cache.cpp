@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,6 +28,7 @@
  * of this software.
  */
 
+// C++
 #include <cassert>
 #include <functional> // function
 #include <iostream> // cout
@@ -35,10 +37,12 @@
 #include <typeinfo> // type_info
 #include <unordered_map>
 
+// Boost
 #include <boost/optional.hpp>
 
-#include "cfg.hpp" // log{Cache{,Update},Verbose}
-#include "err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_WARNING_AND
+// local
+#include "cfg/vars.hpp"
+#include "err/report.hpp" // ReportWarning, std::exception
 #include "log/Indenter.hpp"
 #include "log/stats.hpp" // GetStats, Stats::Inc{Misses,Tries}
 
@@ -105,7 +109,7 @@ namespace page
 				{
 					assert(datum.repair);
 					boost::optional<log::Indenter> indenter;
-					if (*cfg::logCache && *cfg::logCacheUpdate)
+					if (CVAR(logCache) && CVAR(logCacheUpdate))
 					{
 						std::cout << "updating cached " << name << std::endl;
 						indenter = boost::in_place();
@@ -114,18 +118,19 @@ namespace page
 					{
 						datum.repair();
 					}
-					CATCH_ALL_AND_PRINT_WARNING_AND(
+					catch (const std::exception &e)
 					{
+						err::ReportWarning(e);
 						GetCache().erase(iter);
 						return std::shared_ptr<const void>();
-					})
+					}
 					datum.dirty = false;
 				}
 				datum.atime = count;
 				return datum.data;
 			}
 			log::GetStats().IncCacheMisses();
-			if (*cfg::logCache && *cfg::logVerbose)
+			if (CVAR(logCache) && CVAR(logVerbose))
 				std::cout << "cache missing " << name << std::endl;
 			return std::shared_ptr<const void>();
 		}
@@ -134,7 +139,7 @@ namespace page
 		void StoreRaw(const std::string &sig, const std::string &name, const std::shared_ptr<const void> &data, const std::type_info &type, const std::function<void ()> &repair)
 		{
 			boost::optional<log::Indenter> indenter;
-			if (*cfg::logCache)
+			if (CVAR(logCache))
 			{
 				std::cout << "caching " << name << std::endl;
 				indenter = boost::in_place();
@@ -147,7 +152,7 @@ namespace page
 		void Invalidate(const std::string &sig, const std::string &name)
 		{
 			boost::optional<log::Indenter> indenter;
-			if (*cfg::logCache && *cfg::logCacheUpdate && *cfg::logVerbose)
+			if (CVAR(logCache) && CVAR(logCacheUpdate) && CVAR(logVerbose))
 			{
 				std::cout << "invalidating cached " << name << std::endl;
 				indenter = boost::in_place();
@@ -165,7 +170,7 @@ namespace page
 		void Purge()
 		{
 			boost::optional<log::Indenter> indenter;
-			if (*cfg::logCache)
+			if (CVAR(logCache))
 			{
 				std::cout << "purging cache" << std::endl;
 				indenter = boost::in_place();
@@ -176,7 +181,7 @@ namespace page
 		void Purge(const std::string &sig, const std::string &name)
 		{
 			boost::optional<log::Indenter> indenter;
-			if (*cfg::logCache)
+			if (CVAR(logCache))
 			{
 				std::cout << "purging cached " << name << std::endl;
 				indenter = boost::in_place();
@@ -201,7 +206,7 @@ namespace page
 				if (duration < count - datum.atime && datum.data.unique())
 				{
 					boost::optional<log::Indenter> indenter;
-					if (*cfg::logCache && *cfg::logVerbose)
+					if (CVAR(logCache) && CVAR(logVerbose))
 					{
 						std::cout << "cached " << datum.name << " timed out" << std::endl;
 						indenter = boost::in_place();

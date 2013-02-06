@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -33,9 +34,9 @@
 #include <unordered_map>
 #include <utility> // pair
 #include <vector>
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../log/manip.hpp" // Warning
-#include "../../util/path.hpp" // {Get,With}Ext
+#include "../../util/path.hpp" // {Get,With}Extension
 #include "../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "../type/registry.hpp" // GetRegisteredTypeName
 #include "function.hpp" // SaveFunction
@@ -87,14 +88,14 @@ namespace page
 					{
 						const Registry::Saver &saver(iter->second);
 						return std::make_pair(saver.save,
-							util::WithExt(path,
+							util::WithExtension(path,
 								saver.exts.begin(),
 								saver.exts.end()));
 					}
 					std::clog << log::Warning << "unknown " << GetRegisteredTypeName(id) << " format: " << fmt << std::endl;
 				}
 				// check extension
-				std::string ext(util::GetExt(path));
+				std::string ext(util::GetExtension(path));
 				if (!ext.empty())
 				{
 					Registry::Associations::const_iterator iter(type.exts.find(ext));
@@ -107,11 +108,11 @@ namespace page
 				// use default saver
 				// NOTE: given a matching type, there must be a default saver
 				return std::make_pair(type.defaultSaver.save,
-					util::WithExt(path,
+					util::WithExtension(path,
 						type.defaultSaver.exts.begin(),
 						type.defaultSaver.exts.end()));
 			}
-			THROW err::Exception<err::NotAvailableTag, err::ResourceTag>("no " + GetRegisteredTypeName(id) + " savers available");
+			THROW((err::Exception<err::ResModuleTag, err::NotAvailableTag>("no " + GetRegisteredTypeName(id) + " savers available")))
 		}
 
 		// registration

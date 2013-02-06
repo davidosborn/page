@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,10 +29,10 @@
  */
 
 #include <cassert>
-#include "../cfg.hpp" // audVolume
 #include "../cache/Proxy.hpp"
+#include "../cfg/vars.hpp"
 #include "channel/AmbientChannel.hpp"
-#include "channel/SpacialChannel.hpp"
+#include "channel/SpatialChannel.hpp"
 #include "Driver.hpp"
 #include "Sound.hpp"
 
@@ -156,7 +157,7 @@ namespace page
 				++iter;
 			}
 			// update spacial channels
-			if (MaxPersistentSpacialChannels())
+			if (MaxPersistentSpatialChannels())
 			{
 				// update channels to represent closest sources
 				// FIXME: build list of n closest phys::Sounds
@@ -175,9 +176,9 @@ namespace page
 				// FIXME: update state of all channels, whether alive or dying,
 				// to match phys::Sound, including volume and paused state, and
 				// ensure that the playing position is reasonably close
-				for (SpacialChannels::iterator iter(spacialChannels.begin()); iter != spacialChannels.end(); ++iter)
+				for (SpatialChannels::iterator iter(spacialChannels.begin()); iter != spacialChannels.end(); ++iter)
 				{
-					SpacialChannel &channel(**iter);
+					SpatialChannel &channel(**iter);
 					channel.Update(deltaTime);
 					if (!channel.IsAudible()) iter = spacialChannels.erase(iter);
 				}
@@ -218,9 +219,9 @@ namespace page
 				// FIXME: waiting for implementation
 //				channel.Pause();
 			}
-			for (SpacialChannels::iterator iter(spacialChannels.begin()); iter != spacialChannels.end(); ++iter)
+			for (SpatialChannels::iterator iter(spacialChannels.begin()); iter != spacialChannels.end(); ++iter)
 			{
-				SpacialChannel &channel(**iter);
+				SpatialChannel &channel(**iter);
 				// FIXME: waiting for implementation
 //				channel.Pause();
 			}
@@ -234,9 +235,9 @@ namespace page
 				// FIXME: waiting for implementation
 //				channel.Resume();
 			}
-			for (SpacialChannels::iterator iter(spacialChannels.begin()); iter != spacialChannels.end(); ++iter)
+			for (SpatialChannels::iterator iter(spacialChannels.begin()); iter != spacialChannels.end(); ++iter)
 			{
-				SpacialChannel &channel(**iter);
+				SpatialChannel &channel(**iter);
 				// FIXME: waiting for implementation
 //				channel.Resume();
 			}
@@ -261,7 +262,7 @@ namespace page
 		// deferred initialization
 		void Driver::Init()
 		{
-			SetVolume(*cfg::audVolume);
+			SetVolume(CVAR(audioVolume));
 		}
 
 		// inspiration access

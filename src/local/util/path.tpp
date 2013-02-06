@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -33,13 +34,20 @@ namespace page
 {
 	namespace util
 	{
-		// extension insertion
-		template <typename InputIterator> std::string WithExt(const std::string &path, InputIterator firstExt, InputIterator lastExt)
+		/*-----------------------+
+		| extension manipulation |
+		+-----------------------*/
+
+		template <typename InputIterator>
+			boost::filesystem::path WithExtension(
+				const boost::filesystem::path &path,
+				InputIterator firstExtension,
+				InputIterator lastExtension)
 		{
-			return
-				firstExt != lastExt &&
-				std::find(firstExt, lastExt, GetExt(path)) == lastExt ?
-				path + '.' + *firstExt : path;
+			if (firstExtension != lastExtension &&
+				std::find(firstExtension, lastExtension, GetExtension(path)) == lastExtension)
+					return AddExtension(path, *firstExtension);
+			return path;
 		}
 	}
 }

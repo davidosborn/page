@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -32,10 +33,10 @@
 
 #	include <cstddef> // {nullptr,ptrdiff,size}_t
 #	include <iterator> // begin, end, iterator_traits
+#	include <sstream> // basic_ostringstream
 #	include <tuple>
 #	include <type_traits>
 #	include <utility> // declval
-#	include "sstream.hpp" // make_ostringstream
 
 namespace page
 {
@@ -59,19 +60,19 @@ namespace page
 	 * @{
 	 */
 	/**
-	 * Applies SFINAE in the declaration of a function.
+	 * Apply SFINAE in the declaration of a function.
 	 */
 #	define ENABLE_IF(PREDICATE) \
 		typename std::enable_if<PREDICATE>::type * = nullptr
 
 	/**
-	 * Applies SFINAE in the definition of a function.
+	 * Apply SFINAE in the definition of a function.
 	 */
 #	define ENABLE_IF_IMPL(PREDICATE) \
 		typename std::enable_if<PREDICATE>::type *
 
 	/**
-	 * Applies SFINAE in the return value of a function (whether it is a
+	 * Apply SFINAE in the return value of a function (whether it is a
 	 * declaration or definition).
 	 */
 #	define ENABLE_IF_RETURN(PREDICATE, RESULT) \
@@ -88,7 +89,7 @@ namespace page
 	 * @{
 	 */
 	/**
-	 * Defines a one-parameter type-trait using SFINAE.
+	 * Define a one-parameter type-trait using SFINAE.
 	 */
 #	define DEFINE_SFINAE_TYPE_TRAIT_1(NAME, TEST) \
 		template <typename> class NAME; \
@@ -106,7 +107,7 @@ namespace page
 			std::integral_constant<bool, detail::NAME##_impl<T>::value> {};
 
 	/**
-	 * Defines a two-parameter type-trait using SFINAE.
+	 * Define a two-parameter type-trait using SFINAE.
 	 */
 #	define DEFINE_SFINAE_TYPE_TRAIT_2(NAME, TEST) \
 		template <typename, typename> class NAME; \
@@ -124,7 +125,7 @@ namespace page
 			std::integral_constant<bool, detail::NAME##_impl<T, U>::value> {};
 
 	/**
-	 * Defines a three-parameter type-trait using SFINAE.
+	 * Define a three-parameter type-trait using SFINAE.
 	 */
 #	define DEFINE_SFINAE_TYPE_TRAIT_3(NAME, TEST) \
 		template <typename, typename, typename> class NAME; \
@@ -142,7 +143,7 @@ namespace page
 			std::integral_constant<bool, detail::NAME##_impl<T, U, V>::value> {};
 
 	/**
-	 * Defines a four-parameter type-trait using SFINAE.
+	 * Define a four-parameter type-trait using SFINAE.
 	 */
 #	define DEFINE_SFINAE_TYPE_TRAIT_4(NAME, TEST) \
 		template <typename, typename, typename, typename> class NAME; \
@@ -170,7 +171,7 @@ namespace page
 	 *
 	 * @{
 	/**
-	 * Defines a variadic one-parameter type-trait using SFINAE.
+	 * Define a variadic one-parameter type-trait using SFINAE.
 	 */
 #	define DEFINE_VARIADIC_SFINAE_TYPE_TRAIT_1(NAME, TEST) \
 		template <typename, typename...> class NAME; \
@@ -188,7 +189,7 @@ namespace page
 			std::integral_constant<bool, detail::NAME##_impl<T, U...>::value> {};
 
 	/**
-	 * Defines a variadic two-parameter type-trait using SFINAE.
+	 * Define a variadic two-parameter type-trait using SFINAE.
 	 */
 #	define DEFINE_VARIADIC_SFINAE_TYPE_TRAIT_2(NAME, TEST) \
 		template <typename, typename, typename...> class NAME; \
@@ -213,14 +214,14 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Detects whether a type is a range, which includes any type for which
+		 * Detect whether a type is a range, which includes any type for which
 		 * @c std::begin(x) and @c std::end(x) are valid function calls.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_1(is_range,
 			decltype(
 				std::begin(std::declval<T>()),
 				std::end  (std::declval<T>()), std::declval<void>()))
-		
+
 		/**
 		 * Determines the element type of a range.
 		 */
@@ -234,7 +235,7 @@ namespace page
 		};
 
 		/**
-		 * Detects whether const is propogated to the elements of a range.
+		 * Detect whether const is propogated to the elements of a range.
 		 *
 		 * @note This type trait will only produce the correct result when the
 		 *       elements are non-const.
@@ -253,7 +254,7 @@ namespace page
 				>::type)
 
 		/**
-		 * Detects whether a type is compatible with @c std::insert_iterator.
+		 * Detect whether a type is compatible with @c std::insert_iterator.
 		 *
 		 * Compatibility depends on whether the expression @c a.insert(p,t) is
 		 * valid, which is one of the requirements for sequence and associative
@@ -275,7 +276,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Detects whether a type is character.
+		 * Detect whether a type is character.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_1(is_character,
 			typename std::enable_if<(
@@ -283,9 +284,9 @@ namespace page
 				std::is_same<typename std::remove_cv<T>::type, wchar_t >::value ||
 				std::is_same<typename std::remove_cv<T>::type, char16_t>::value ||
 				std::is_same<typename std::remove_cv<T>::type, char32_t>::value)>::type)
-		
+
 		/**
-		 * Determines the character type of a string literal.
+		 * Determine the character type of a string literal.
 		 */
 		template <typename T>
 			struct string_literal_char_type
@@ -303,27 +304,27 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Detects whether a type is an instantiation of @c std::basic_string.
+		 * Detect whether a type is an instantiation of @c std::basic_string.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_1(is_string,
 			typename std::enable_if<(std::is_same<T, std::basic_string<typename T::value_type, typename T::traits_type, typename T::allocator_type>>::value)>::type)
 
 		/**
-		 * Detects whether a type is an instantiation of @c std::basic_string,
+		 * Detect whether a type is an instantiation of @c std::basic_string,
 		 * where the first template parameter matches the given parameter.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_2(is_string_1,
 			typename std::enable_if<(std::is_same<T, std::basic_string<U, typename T::traits_type, typename T::allocator_type>>::value)>::type)
 
 		/**
-		 * Detects whether a type is an instantiation of @c std::basic_string,
+		 * Detect whether a type is an instantiation of @c std::basic_string,
 		 * where the first two template parameters match the given parameters.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_3(is_string_2,
 			typename std::enable_if<(std::is_same<T, std::basic_string<U, V, typename T::allocator_type>>::value)>::type)
 
 		/**
-		 * Detects whether a type is an instantiation of @c std::basic_string,
+		 * Detect whether a type is an instantiation of @c std::basic_string,
 		 * where all three template parameters match the given parameters.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_4(is_string_3,
@@ -335,7 +336,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Detects whether a type is a string literal, where the element type is
+		 * Detect whether a type is a string literal, where the element type is
 		 * a character.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_1(is_string_literal,
@@ -344,7 +345,7 @@ namespace page
 				is_character<typename string_literal_char_type<T>::type>::value)>::type)
 
 		/**
-		 * Detects whether a type is a string literal, where the element type
+		 * Detect whether a type is a string literal, where the element type
 		 * matches the second template parameter.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_2(is_string_literal_1,
@@ -358,7 +359,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Detects whether a type is implicitly convertible to an instantiation
+		 * Detect whether a type is implicitly convertible to an instantiation
 		 * of @c std::basic_string.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_1(is_convertible_to_string,
@@ -367,7 +368,7 @@ namespace page
 				is_string_literal<T>::value>::type)
 
 		/**
-		 * Detects whether a type is implicitly convertible to an instantiation
+		 * Detect whether a type is implicitly convertible to an instantiation
 		 * of @c std::basic_string, where the first template parameter matches
 		 * the given parameter.
 		 */
@@ -385,14 +386,14 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Detects whether a type can be inserted into another type, such as an
+		 * Detect whether a type can be inserted into another type, such as an
 		 * output stream.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_2(is_insertable,
 			decltype(std::declval<U>() << std::declval<T>(), std::declval<void>()))
 
 		/**
-		 * Detects whether a type can be extracted from another type, such as an
+		 * Detect whether a type can be extracted from another type, such as an
 		 * input stream.
 		 */
 		DEFINE_SFINAE_TYPE_TRAIT_2(is_extractable,
@@ -402,7 +403,7 @@ namespace page
 ////////////////////////////////////////////////////////////////////////////////
 
 		/**
-		 * Removes one level of indirection from a type.
+		 * Remove one level of indirection from a type.
 		 */
 		template <typename T> struct remove_indirection
 		{
@@ -429,8 +430,8 @@ namespace page
 			};
 		}
 		/**
-		 * Removes the member pointer from a type, leaving the type of the
-		 * member pointed to.
+		 * Remove the member pointer from a type, leaving the type of the member
+		 * pointed to.
 		 */
 		template <typename T>
 			struct remove_member_pointer :
@@ -454,7 +455,7 @@ namespace page
 					std::is_integral<T> {};
 		}
 		/**
-		 * Identifies types belonging to the "integer types" category
+		 * Identify types belonging to the "integer types" category
 		 * (ISO/IEC N3242 3.9.1.7).
 		 */
 		template <typename T>
@@ -487,7 +488,7 @@ namespace page
 						typename std::remove_cv<T>::type> {};
 		}
 		/**
-		 * Identifies types belonging to the "standard integer types" category
+		 * Identify types belonging to the "standard integer types" category
 		 * (ISO/IEC N3242 3.9.1.3).
 		 */
 		template <typename T>
@@ -623,7 +624,7 @@ namespace page
 			};
 		}
 		/**
-		 * Copies const qualifiers from one type to another.
+		 * Copy const qualifiers from one type to another.
 		 */
 		template <typename To, typename From>
 			struct copy_const
@@ -650,7 +651,7 @@ namespace page
 			};
 		}
 		/**
-		 * Copies volatile qualifiers from one type to another.
+		 * Copy volatile qualifiers from one type to another.
 		 */
 		template <typename To, typename From>
 			struct copy_volatile
@@ -664,7 +665,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Copies const/volatile qualifiers from one type to another.
+		 * Copy const/volatile qualifiers from one type to another.
 		 */
 		template <typename To, typename From>
 			struct copy_cv
@@ -687,7 +688,7 @@ namespace page
 		DEFINE_SFINAE_TYPE_TRAIT_1(has_value_type,        typename T::value_type)
 
 		/**
-		 * Detects whether a type is an iterator (including a raw pointer).
+		 * Detect whether a type is an iterator (including a raw pointer).
 		 */
 		template <typename T>
 			struct is_iterator :
@@ -727,7 +728,7 @@ namespace page
 		}
 		/**
 		 * Like @c std::iterator_traits::value_type, but for output iterators.
-		 * Determines the @b natural @c value_type of the output iterator.
+		 * Determine the @b natural @c value_type of the output iterator.
 		 *
 		 * @note If the iterator is not an output iterator, this class will
 		 *       return the same type as @c std::iterator_traits<T>::value_type.
@@ -757,7 +758,7 @@ namespace page
 					std::false_type {};
 		}
 		/**
-		 * Detects whether a type is both an iterator and an iterator over a
+		 * Detect whether a type is both an iterator and an iterator over a
 		 * specific type.
 		 *
 		 * @deprecated
@@ -770,7 +771,7 @@ namespace page
 ////////////////////////////////////////////////////////////////////////////////
 
 		/**
-		 * Generates a string containing a valid type-specifier
+		 * Generate a string containing a valid type-specifier
 		 * (ISO/IEC N3242 7.1.6) for the given type.
 		 *
 		 * @todo This could be rewritten as a constexpr using Boost MPL for
@@ -781,7 +782,7 @@ namespace page
 			template <typename Char = char, typename CharTraits = std::char_traits<Char>>
 				static std::basic_string<Char, CharTraits> value()
 			{
-				MAKE_OSTRINGSTREAM_2(Char, CharTraits)//auto ss(make_ostringstream<Char, CharTraits>());
+				std::basic_ostringstream<Char, CharTraits> ss;
 
 				// pointers and references
 				if (std::is_member_pointer<T>::value ||

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,8 +30,9 @@
 
 #include <algorithm> // ceil
 #include <cassert>
+#include <memory> // unique_ptr
+
 #include "../math/Vector.hpp"
-#include "../util/scoped_ptr.hpp"
 #include "draw.hpp" // Draw
 #include "DrawContext.hpp" // DrawContext::{~DrawContext,FilterSaver,GetFilterCaps,PushSaturationFilter,saturationFilter,ScaleBias}
 #include "Driver.hpp"
@@ -56,7 +58,7 @@ namespace page
 		void Driver::Render(const math::Aabb<2> &logicalBox)
 		{
 			if (!(All(Size(logicalBox)) && (scene || interface))) return;
-			util::scoped_ptr<DrawContext> context(MakeDrawContext(logicalBox));
+			const std::unique_ptr<DrawContext> context(MakeDrawContext(logicalBox));
 			if (scene)
 			{
 				DrawContext::FilterSaver filterSaver(*context);

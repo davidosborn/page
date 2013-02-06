@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,19 +31,29 @@
 #ifndef    page_local_res_type_sound_AudioDecoder_hpp
 #   define page_local_res_type_sound_AudioDecoder_hpp
 
+#	include <memory> // unique_ptr
+
 namespace page
 {
 	namespace res
 	{
 		class AudioStream;
 
-		struct AudioDecoder
+		class AudioDecoder
 		{
-			// destroy
-			virtual ~AudioDecoder();
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+			
+			public:
+			virtual ~AudioDecoder() = default;
 
-			// operations
-			virtual AudioStream *Open() const = 0;
+			/*-----------+
+			| operations |
+			+-----------*/
+			
+			public:
+			virtual std::unique_ptr<AudioStream> Open() const = 0;
 		};
 	}
 }

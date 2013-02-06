@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,7 +29,7 @@
  */
 
 #include <zip.h>
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp
 
 namespace page
 {
@@ -38,14 +39,14 @@ namespace page
 		{
 			switch (ze)
 			{
-				case ZIP_ER_NOENT: THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::FileNotFoundException<>::Tags>(err::FileNotFoundException<>().What());
-				case ZIP_ER_OPEN:  THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::FileAccessException<>::Tags>(err::FileAccessException<>().What());
-				case ZIP_ER_READ:  THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>(err::StreamReadException<>().What());
-				case ZIP_ER_SEEK:  THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>("stream seek error");
+				case ZIP_ER_NOENT: THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::FileNotFoundTag>()))
+				case ZIP_ER_OPEN:  THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::FileAccessTag>()))
+				case ZIP_ER_READ:  THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::StreamReadTag>()))
+				case ZIP_ER_SEEK:  THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::StreamSeekTag>()))
 			}
 			std::string s(zip_error_to_str(0, 0, ze, se), '\0');
 			zip_error_to_str(&*s.begin(), s.size(), ze, se);
-			THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag>(s));
+			THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag>(s))))
 		}
 		void ZipError(zip *archive)
 		{

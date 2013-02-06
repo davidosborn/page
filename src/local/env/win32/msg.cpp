@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,8 +29,12 @@
  */
 
 #include <cassert>
+
+// Win32
 #include <windows.h>
-#include "../../err/exception/throw.hpp" // THROW
+
+// local
+#include "../../err/Exception.hpp"
 #include "../../util/win32/string.hpp" // Native
 #include "../msg.hpp" // MessageType
 
@@ -49,7 +54,8 @@ namespace page
 			}
 			if (!MessageBox(NULL, util::win32::Native(msg).c_str(),
 				util::win32::Native(title).c_str(), icon | MB_OK | MB_TASKMODAL))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to create message box");
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to create message box") <<
+						boost::errinfo_api_function("MessageBox")))
 		}
 	}
 }

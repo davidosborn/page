@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -53,41 +54,41 @@ namespace page
 		{
 			// constructors
 			/**
-			 * Builds the initial index by scanning the configured sources.
+			 * Build the initial index by scanning the configured sources.
 			 */
 			Index();
 			
 			// modifiers
 			/**
-			 * Adds a new source to the index.
+			 * Add a new source to the index.
 			 *
 			 * The source is scanned and any resources found will take
 			 * precedence over the existing ones if they share the same path.
 			 */
 			void AddSource(const std::string &path);
 			/**
-			 * Updates the index to match any changes that may have occurred on
+			 * Update the index to match any changes that may have occurred on
 			 * disk.
 			 */
 			void Refresh();
 			
 			// resource access
 			/**
-			 * Provides stream-level access to the indexed resources.
+			 * Provide stream-level access to the indexed resources.
 			 */
 			Stream *Open(const std::string &path) const;
 			/**
-			 * Attempts to load a resource of the specified type at the given
+			 * Attempt to load a resource of the specified type at the given
 			 * path.
 			 */
 			std::shared_ptr<const void> Load(const std::type_info &, const std::string &path) const;
 			/**
-			 * Attempts to load a resource of the specified type at the given
+			 * Attempt to load a resource of the specified type at the given
 			 * path.
 			 */
 			template <typename T> std::shared_ptr<const T> Load(const std::string &path) const;
 			/**
-			 * Returns the raw content of a resource as a string.
+			 * Return the raw content of a resource as a string.
 			 */
 			std::string LoadString(const std::string &path) const;
 
@@ -98,7 +99,7 @@ namespace page
 
 		// global state
 		/**
-		 * Returns the global index.
+		 * Return the global index.
 		 */
 		Index &GetIndex();
 	}

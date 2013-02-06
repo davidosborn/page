@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -32,9 +33,9 @@
 #include <boost/optional.hpp>
 
 #include "../../../cache/proxy/Resource.hpp"
-#include "../../../cfg.hpp" // logVerbose
-#include "../../../cfg/opengl.hpp" // vid{Outline,Shader}
-#include "../../../err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_WARNING_AND
+#include "../../../cfg/vars.hpp"
+#include "../../../cfg/vars.hpp"
+#include "../../../err/report.hpp" // ReportWarning, std::exception
 #include "../../../log/Indenter.hpp"
 #include "../../../math/Vector.hpp"
 #include "../ext.hpp" // ARB_{{fragment,vertex}_shader,shader_objects}, EXT_framebuffer_object
@@ -56,7 +57,7 @@ namespace page
 				// create program
 				{
 					boost::optional<log::Indenter> indenter;
-					if (*cfg::logVerbose)
+					if (CVAR(logVerbose))
 					{
 						std::cout << "creating program" << std::endl;
 						indenter = boost::in_place();
@@ -68,12 +69,16 @@ namespace page
 							*cache::Resource<res::opengl::Shader>("shader/glsl/outline.vs")));
 						program->GetUniform("texSize");
 					}
-					CATCH_ALL_AND_PRINT_WARNING_AND(throw;)
+					catch (const std::exception &e)
+					{
+						err::ReportWarning(e);
+						throw;
+					}
 				}
 				// create render-target pool
 				{
 					boost::optional<log::Indenter> indenter;
-					if (*cfg::logVerbose)
+					if (CVAR(logVerbose))
 					{
 						std::cout << "creating render-target pool" << std::endl;
 						indenter = boost::in_place();
@@ -84,7 +89,11 @@ namespace page
 							Ceil(renderTargetSize * math::Vector<2>(Aspect(size), 1)),
 							GL_RGB, 1, depthFramebufferFlag));
 					}
-					CATCH_ALL_AND_PRINT_WARNING_AND(throw;)
+					catch (const std::exception &e)
+					{
+						err::ReportWarning(e);
+						throw;
+					}
 				}
 			}
 
@@ -102,8 +111,8 @@ namespace page
 			bool ShaderOutlineResources::Check()
 			{
 				return
-					*cfg::opengl::vidOutline &&
-					*cfg::opengl::vidShader &&
+					CVAR(opengl)::renderOutline &&
+					CVAR(opengl)::renderShader &&
 					haveArbFragmentShader &&
 					haveArbShaderObjects &&
 					haveArbVertexShader &&

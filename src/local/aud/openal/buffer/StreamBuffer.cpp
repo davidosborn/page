@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,7 +29,7 @@
  */
 
 #include <cassert>
-#include "../../../err/exception/throw.hpp" // THROW
+#include "../../../err/Exception.hpp"
 #include "../../../res/type/Sound.hpp" // Sound::{decoder,frequency}, GetDuration
 #include "../../../res/type/sound/AudioDecoder.hpp" // AudioDecoder::Open
 #include "../../../res/type/sound/AudioStream.hpp" // AudioStream::{~AudioStream,Read,Seek}
@@ -51,7 +52,9 @@ namespace page
 				bufferData(bufferSize)
 			{
 				alGenBuffers(buffers.size(), &*buffers.begin());
-				if (alGetError()) THROW err::PlatformException<err::OpenalPlatformTag>("failed to create buffer");
+				if (alGetError())
+					THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to create buffer") <<
+						boost::errinfo_api_function("alGenBuffers")))
 				if (playPosition)
 				{
 					assert(playPosition <= GetDuration(sound));
@@ -77,7 +80,9 @@ namespace page
 				{
 					std::vector<ALuint> buffers(processed);
 					alSourceUnqueueBuffers(source, processed, &*buffers.begin());
-					if (alGetError()) THROW err::PlatformException<err::OpenalPlatformTag>("failed to unqueue buffer");
+					if (alGetError())
+						THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to unqueue buffer") <<
+							boost::errinfo_api_function("alSourceUnqueueBuffers")))
 					Queue(&*buffers.begin(), buffers.size());
 				}
 				// restart starved source
@@ -117,10 +122,14 @@ namespace page
 							break;
 						}
 					}
-					if (alGetError()) THROW err::PlatformException<err::OpenalPlatformTag>("failed to initialize buffer");
+					if (alGetError())
+						THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to initialize buffer") <<
+							boost::errinfo_api_function("alBufferData")))
 				}
 				alSourceQueueBuffers(source, n, buffers);
-				if (alGetError()) THROW err::PlatformException<err::OpenalPlatformTag>("failed to queue buffer");
+				if (alGetError())
+					THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to queue buffer") <<
+						boost::errinfo_api_function("alSourceQueueBuffers")))
 			}
 		}
 	}

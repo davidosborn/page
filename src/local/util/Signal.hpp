@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -25,6 +26,10 @@
  * This software is provided "as is", without any express or implied warranty.
  * In no event will the authors be liable for any damages arising out of the use
  * of this software.
+ *
+ * @file
+ *
+ * Inspired by the boost/signals library.
  */
 
 #ifndef    page_local_util_Signal_hpp

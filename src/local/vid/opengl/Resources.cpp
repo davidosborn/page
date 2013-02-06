@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,16 +30,16 @@
 
 #include <cassert>
 #include <iostream> // cout
+#include <memory> // unique_ptr
 
 #include <boost/optional.hpp>
 
 #include "../../cache/proxy/Resource.hpp"
-#include "../../cfg.hpp" // logVerbose
-#include "../../cfg/opengl.hpp" // vid{Composite{,Down}}
-#include "../../err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_WARNING
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../cfg/vars.hpp"
+#include "../../cfg/vars.hpp"
+#include "../../err/Exception.hpp"
+#include "../../err/report.hpp" // ReportWarning, std::exception
 #include "../../math/Color.hpp" // {{,Black,White}Rgba,LuminanceCoefficientRgb}Color
-#include "../../util/scoped_ptr.hpp"
 #include "ext.hpp" // ARB_{{fragment,vertex}_shader,shader_objects}, EXT_framebuffer_object
 #include "Program.hpp"
 #include "ProgramSaver.hpp"
@@ -81,7 +82,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/color2alpha.fs")));
 						// initialize color weights
 						ProgramSaver programSaver;
@@ -89,7 +90,7 @@ namespace page
 						glUniform3fvARB(program->GetUniform("weight").location, 1,
 							&*(math::LuminanceCoefficientRgbColor<GLfloat>()).begin());
 						if (glGetError())
-							THROW err::PlatformException<err::OpenglPlatformTag>("failed to initialize uniform");
+							THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to initialize uniform")))
 						return program.release();
 					}
 				};
@@ -104,7 +105,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/color2gray.fs")));
 						program->GetUniform("grayness");
 						// initialize color weights
@@ -113,7 +114,7 @@ namespace page
 						glUniform3fvARB(program->GetUniform("weight").location, 1,
 							&*(math::LuminanceCoefficientRgbColor<GLfloat>()).begin());
 						if (glGetError())
-							THROW err::PlatformException<err::OpenglPlatformTag>("failed to initialize uniform");
+							THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to initialize uniform")))
 						return program.release();
 					}
 				};
@@ -130,7 +131,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/convolution-3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
 						program->GetUniform("kernel");
@@ -151,7 +152,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/convolution-3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
 						program->GetUniform("kernel");
@@ -172,7 +173,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/convolution-5.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
 						program->GetUniform("kernel");
@@ -193,7 +194,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/convolution-5.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
 						program->GetUniform("kernel");
@@ -214,7 +215,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-convolution-3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
 						program->GetUniform("kernel");
@@ -235,7 +236,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-convolution-3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
 						program->GetUniform("kernel");
@@ -256,7 +257,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-convolution-5.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
 						program->GetUniform("kernel");
@@ -277,7 +278,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-convolution-5.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
 						program->GetUniform("kernel");
@@ -298,7 +299,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-mean-3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
 						program->GetUniform("texSize");
@@ -318,7 +319,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-mean-3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
 						program->GetUniform("texSize");
@@ -338,7 +339,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-mean-5.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
 						program->GetUniform("texSize");
@@ -358,7 +359,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-mean-5.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
 						program->GetUniform("texSize");
@@ -378,7 +379,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/mean-3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
 						program->GetUniform("texSize");
@@ -398,7 +399,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/mean-3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
 						program->GetUniform("texSize");
@@ -418,7 +419,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/mean-5.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
 						program->GetUniform("texSize");
@@ -438,7 +439,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/mean-5.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
 						program->GetUniform("texSize");
@@ -458,7 +459,7 @@ namespace page
 					}
 					Program *Make() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/median-3x3.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/median-3x3.vs")));
 						program->GetUniform("texSize");
@@ -641,12 +642,12 @@ namespace page
 
 					bool Check() const
 					{
-						return *cfg::opengl::vidComposite;
+						return CVAR(opengl)::renderComposite;
 					}
 					RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const
 					{
 						return new RenderTargetPool(
-							size >> *cfg::opengl::vidCompositeDown,
+							size >> CVAR(opengl)::renderCompositeDown,
 							GL_RGB, 1, depthFramebufferFlag);
 					}
 				};
@@ -657,12 +658,12 @@ namespace page
 
 					bool Check() const
 					{
-						return *cfg::opengl::vidComposite;
+						return CVAR(opengl)::renderComposite;
 					}
 					RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const
 					{
 						return new RenderTargetPool(
-							size >> *cfg::opengl::vidCompositeDown,
+							size >> CVAR(opengl)::renderCompositeDown,
 							GL_RGBA, 1, depthFramebufferFlag);
 					}
 				};
@@ -695,7 +696,7 @@ namespace page
 						if (initer.Check())
 						{
 							boost::optional<log::Indenter> indenter;
-							if (*cfg::logVerbose)
+							if (CVAR(logVerbose))
 							{
 								std::cout << "creating " << initer.name << " program" << std::endl;
 								indenter = boost::in_place();
@@ -704,7 +705,10 @@ namespace page
 							{
 								program->reset(initer.Make());
 							}
-							CATCH_ALL_AND_PRINT_WARNING
+							catch (const std::exception &e)
+							{
+								err::ReportWarning(e);
+							}
 							// HACK: must increment here to avoid GCC bug #35182
 							program++;
 						}
@@ -719,7 +723,7 @@ namespace page
 					if (initer.Check())
 					{
 						boost::optional<log::Indenter> indenter;
-						if (*cfg::logVerbose)
+						if (CVAR(logVerbose))
 						{
 							std::cout << "creating " << initer.name << " texture" << std::endl;
 							indenter = boost::in_place();
@@ -728,7 +732,10 @@ namespace page
 						{
 							texture->reset(initer.Make());
 						}
-						CATCH_ALL_AND_PRINT_WARNING
+						catch (const std::exception &e)
+						{
+							err::ReportWarning(e);
+						}
 						// HACK: must increment here to avoid GCC bug #35182
 						++texture;
 					}
@@ -744,7 +751,10 @@ namespace page
 					{
 						shaderMaterial.reset(new ShaderMaterialResources(*this));
 					}
-					CATCH_ALL_AND_PRINT_WARNING
+					catch (const std::exception &e)
+					{
+						err::ReportWarning(e);
+					}
 				}
 				// initialize shadow resources
 				if (Shadow::Check())
@@ -755,12 +765,17 @@ namespace page
 					{
 						shadow.reset(new ShadowResources);
 					}
-					CATCH_ALL_AND_PRINT_WARNING
+					catch (const std::exception &e)
+					{
+						err::ReportWarning(e);
+					}
 				}
 				// check for required resources
 				// FIXME: consider falling back on lower quality/correctness
-				if (!HasTexture(blackTexture)) THROW err::PlatformException<err::OpenglPlatformTag>("missing black texture");
-				if (!HasTexture(whiteTexture)) THROW err::PlatformException<err::OpenglPlatformTag>("missing white texture");
+				if (!HasTexture(blackTexture))
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("missing black texture")))
+				if (!HasTexture(whiteTexture))
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("missing white texture")))
 			}
 
 			// modifiers
@@ -781,7 +796,7 @@ namespace page
 						if (initer.Check())
 						{
 							boost::optional<log::Indenter> indenter;
-							if (*cfg::logVerbose)
+							if (CVAR(logVerbose))
 							{
 								std::cout << "creating " << initer.name << " render-target pool" << std::endl;
 								indenter = boost::in_place();
@@ -790,7 +805,10 @@ namespace page
 							{
 								renderTargetPool->reset(initer.Make(size));
 							}
-							CATCH_ALL_AND_PRINT_WARNING
+							catch (const std::exception &e)
+							{
+								err::ReportWarning(e);
+							}
 							// HACK: must increment here to avoid GCC bug #35182
 							renderTargetPool++;
 						}
@@ -805,7 +823,10 @@ namespace page
 					{
 						shaderOutline.reset(new ShaderOutlineResources(size));
 					}
-					CATCH_ALL_AND_PRINT_WARNING
+					catch (const std::exception &e)
+					{
+						err::ReportWarning(e);
+					}
 				}
 			}
 

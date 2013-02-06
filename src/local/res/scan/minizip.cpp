@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,12 +29,14 @@
  */
 
 #include <cstring> // memcmp
+#include <memory> // unique_ptr
+
 #include <minizip/unzip.h>
-#include "../../util/scoped_ptr.hpp"
+
 #include "../adapt/minizip.hpp" // MakeZlibFileFuncDef
 #include "../fmt/zip.hpp" // sig
 #include "../Node.hpp"
-#include "../Pipe.hpp" // Pipe::Open
+#include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../pipe/MinizipPipe.hpp"
 #include "../Stream.hpp"
 #include "register.hpp" // REGISTER_SCANNER
@@ -47,7 +50,7 @@ namespace page
 			// check signature; minizip throws if not enough data is available
 			// to contain the header, whether or not the signature is correct
 			{
-				util::scoped_ptr<Stream> stream(pipe->Open());
+				const std::unique_ptr<Stream> stream(pipe->Open());
 				char sig[sizeof fmt::sig];
 				if (stream->ReadSome(sig, sizeof sig) != sizeof sig ||
 					std::memcmp(sig, fmt::sig, sizeof sig)) return false;

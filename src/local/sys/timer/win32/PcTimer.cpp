@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,7 +28,7 @@
  * of this software.
  */
 
-#include "../../../err/exception/throw.hpp" // THROW
+#include "../../../err/Exception.hpp"
 #include "PcTimer.hpp"
 
 namespace page
@@ -40,9 +41,9 @@ namespace page
 			PcTimer::PcTimer()
 			{
 				if (!QueryPerformanceFrequency(&freq))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to initialize performance counter");
+					THROW((err::Exception<err::SysModuleTag, err::Win32PlatformTag>("failed to initialize performance counter")))
 				if (!QueryPerformanceCounter(&time))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to query performance counter");
+					THROW((err::Exception<err::SysModuleTag, err::Win32PlatformTag>("failed to query performance counter")))
 			}
 
 			// update
@@ -50,7 +51,7 @@ namespace page
 			{
 				LARGE_INTEGER newTime;
 				if (!QueryPerformanceCounter(&newTime))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to query performance counter");
+					THROW((err::Exception<err::SysModuleTag, err::Win32PlatformTag>("failed to query performance counter")))
 				float delta = static_cast<long double>(newTime.QuadPart - time.QuadPart) / freq.QuadPart;
 				time = newTime;
 				return delta;

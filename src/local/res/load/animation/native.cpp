@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,12 +30,12 @@
 
 #include <cassert>
 #include <cstring> // memcmp
-#include <memory> // shared_ptr
+#include <memory> // {shared,unique}_ptr
 #include <vector>
+
 #include "../../../util/endian.hpp" // TransformEndian
-#include "../../../util/scoped_ptr.hpp"
 #include "../../fmt/native/animation.hpp"
-#include "../../Pipe.hpp" // Pipe::Open
+#include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../Stream.hpp"
 #include "../../type/Animation.hpp"
 #include "../register.hpp" // LoadFunction, REGISTER_LOADER
@@ -46,7 +47,7 @@ namespace page
 		Animation *LoadNativeAnimation(const std::shared_ptr<const Pipe> &pipe)
 		{
 			assert(pipe);
-			util::scoped_ptr<Stream> stream(pipe->Open());
+			const std::unique_ptr<Stream> stream(pipe->Open());
 			// check signature
 			char sig[sizeof fmt::sig];
 			if (stream->ReadSome(sig, sizeof sig) != sizeof sig ||
@@ -56,7 +57,7 @@ namespace page
 			stream->Read(&header, sizeof header);
 			util::TransformEndian(&header, fmt::headerFormat, util::littleEndian);
 			// create animation
-			util::scoped_ptr<Animation> anim(new Animation);
+			const std::unique_ptr<Animation> anim(new Animation);
 			anim->duration = header.duration;
 			// read bones
 			for (unsigned i = 0; i < header.bones; ++i)
@@ -107,7 +108,7 @@ namespace page
 
 		LoadFunction GetNativeAnimationLoader(const Pipe &pipe)
 		{
-			util::scoped_ptr<Stream> stream(pipe.Open());
+			const std::unique_ptr<Stream> stream(pipe.Open());
 			char sig[sizeof fmt::sig];
 			return stream->ReadSome(sig, sizeof sig) == sizeof sig &&
 				!std::memcmp(sig, fmt::sig, sizeof sig) ? LoadNativeAnimation : LoadFunction();

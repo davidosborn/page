@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -32,10 +33,10 @@
 #include <iostream> // cout
 #include "../aud/Driver.hpp"
 #include "../cache.hpp" // Purge, Update
-#include "../cfg.hpp" // clip{Format,FrameRate,Name,Quality,Size}, shot{Format,Name,Size}
+#include "../cfg/vars.hpp"
 #include "../clip/Stream.hpp"
 #include "../env/Window.hpp"
-#include "../err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_WARNING
+#include "../err/report.hpp" // ReportWarning, std::exception
 #include "../inp/Driver.hpp"
 #include "../log/Indenter.hpp"
 #include "../math/interp.hpp" // HermiteScale
@@ -232,14 +233,14 @@ namespace page
 			if (clipStream)
 			{
 				deltaTime += clipDeltaTime;
-				if (deltaTime < 1.f / *cfg::clipFrameRate)
+				if (deltaTime < 1.f / CVAR(clipFrameRate))
 				{
 					clipDeltaTime = deltaTime;
 					deltaTime = 0;
 				}
 				else
 				{
-					deltaTime = 1.f / *cfg::clipFrameRate;
+					deltaTime = 1.f / CVAR(clipFrameRate);
 					clipDeltaTime = 0;
 				}
 			}
@@ -293,14 +294,17 @@ namespace page
 					try
 					{
 						timer->Pause();
-						std::string path(util::ExpandPath(*cfg::shotName + '*'));
+						std::string path(util::ExpandPath(CVAR(screenshotFilePath) + '*'));
 						path.erase(path.size() - 1);
 						Save(
-							wnd->GetVideoDriver().RenderImage(*cfg::shotSize),
-							path, *cfg::shotFormat);
+							wnd->GetVideoDriver().RenderImage(CVAR(screenshotSize)),
+							path, CVAR(screenshotFormat));
 						timer->Resume();
 					}
-					CATCH_ALL_AND_PRINT_WARNING
+					catch (const std::exception &e)
+					{
+						err::ReportWarning(e);
+					}
 				}
 				break;
 				case inp::recordKey: // record video
@@ -308,13 +312,13 @@ namespace page
 				{
 					std::cout << "recording clip" << std::endl;
 					log::Indenter indenter;
-					std::string path(util::ExpandPath(*cfg::clipName + '*'));
+					std::string path(util::ExpandPath(CVAR(clipFilePath) + '*'));
 					path.erase(path.size() - 1);
 					clipStream.reset(new clip::Stream(path,
-						*cfg::clipFormat,
-						*cfg::clipSize,
-						*cfg::clipFrameRate,
-						clipQuality = *cfg::clipQuality));
+						CVAR(clipFormat),
+						CVAR(clipSize),
+						CVAR(clipFrameRate),
+						clipQuality = CVAR(clipQuality)));
 					clipDeltaTime = 0;
 				}
 				else

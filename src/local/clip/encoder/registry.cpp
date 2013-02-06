@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -33,9 +34,11 @@
 #include <list>
 #include <unordered_map>
 #include <vector>
-#include "../../err/exception/throw.hpp" // THROW
+
+// local
+#include "../../err/Exception.hpp"
 #include "../../log/manip.hpp" // Warning
-#include "../../util/path.hpp" // {Get,With}Ext
+#include "../../util/path.hpp" // {Get,With}Extension
 #include "../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "function.hpp" // EncoderFactory
 
@@ -67,8 +70,14 @@ namespace page
 			}
 		}
 
-		// access
-		std::pair<EncoderFactory, std::string> GetRegisteredEncoder(const std::string &path, const std::string &fmt)
+		/*-------+
+		| access |
+		+-------*/
+
+		std::pair<EncoderFactory, boost::filesystem::path>
+			GetRegisteredEncoder(
+				const boost::filesystem::path &path,
+				const std::string &fmt)
 		{
 			const Registry &reg(GetRegistry());
 			// check format
@@ -80,14 +89,14 @@ namespace page
 					assert(!iter->second.empty());
 					const Registry::Encoder &encoder(*iter->second.front());
 					return std::make_pair(encoder.factory,
-						util::WithExt(path,
+						util::WithExtension(path,
 							encoder.exts.begin(),
 							encoder.exts.end()));
 				}
 				std::clog << log::Warning << "unknown clip encoding format: " << fmt << std::endl;
 			}
 			// check extension
-			std::string ext(util::GetExt(path));
+			std::string ext(util::GetExtension(path));
 			if (!ext.empty())
 			{
 				auto iter(reg.exts.find(ext));
@@ -103,15 +112,22 @@ namespace page
 			{
 				const Registry::Encoder &encoder(reg.encoders.front());
 				return std::make_pair(encoder.factory,
-					util::WithExt(path,
+					util::WithExtension(path,
 						encoder.exts.begin(),
 						encoder.exts.end()));
 			}
-			THROW err::Exception<err::NotAvailableTag>("no clip encoders available");
+			THROW((err::Exception<err::ClipModuleTag, err::NotAvailableTag>("no clip encoders available")))
 		}
 
-		// registration
-		void RegisterEncoder(const EncoderFactory &factory, const std::string &ext, const std::string &fmt, unsigned rank)
+		/*-------------+
+		| registration |
+		+-------------*/
+
+		void RegisterEncoder(
+			const EncoderFactory &factory,
+			const std::string &ext,
+			const std::string &fmt,
+			unsigned rank)
 		{
 			assert(factory);
 			Registry &reg(GetRegistry());

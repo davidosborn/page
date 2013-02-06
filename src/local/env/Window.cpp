@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,14 +30,17 @@
 
 #include <functional> // bind
 #include <iostream> // cout
+
+// local
 #include "../aud/Driver.hpp" // Driver::~Driver
 #include "../aud/NullDriver.hpp" // NullDriver::NullDriver
-#ifdef HAVE_AUDIO
-#	include "../err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_WARNING
-#endif
 #include "../inp/Driver.hpp" // Driver::~Driver
 #include "../vid/Driver.hpp" // Driver::~Driver
 #include "Window.hpp"
+
+#ifdef HAVE_AUDIO
+#	include "../err/report.hpp" // ReportWarning, std::exception
+#endif
 
 namespace page
 {
@@ -78,7 +82,10 @@ namespace page
 					audioDriver.reset(MakeAudioDriver());
 					goto Ready;
 				}
-				CATCH_ALL_AND_PRINT_WARNING
+				catch (const std::exception &e)
+				{
+					err::ReportWarning(e);
+				}
 #endif
 				audioDriver.reset(new aud::NullDriver(*this));
 			}

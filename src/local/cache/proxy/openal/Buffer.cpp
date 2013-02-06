@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,13 +28,14 @@
  * of this software.
  */
 
+#include <memory> // unique_ptr
 #include <vector>
-#include "../../../err/exception/throw.hpp" // THROW
+
+#include "../../../err/Exception.hpp"
 #include "../../../res/type/Sound.hpp" // GetSize, Sound::{decoder,frequency}
 #include "../../../res/type/sound/AudioDecoder.hpp" // AudioDecoder::Open
 #include "../../../res/type/sound/AudioStream.hpp" // AudioStream::{~AudioStream,Read}
 #include "../../../res/type/sound/openal.hpp" // GetFormat
-#include "../../../util/scoped_ptr.hpp"
 #include "Buffer.hpp"
 
 namespace page
@@ -84,16 +86,20 @@ namespace page
 			{
 				ALuint buffer;
 				alGenBuffers(1, &buffer);
-				if (alGetError()) THROW err::PlatformException<err::OpenalPlatformTag>("failed to create buffer");
+				if (alGetError())
+					THROW((err::Exception<err::CacheModuleTag, err::OpenalPlatformTag>("failed to create buffer") <<
+						boost::errinfo_api_function("alGenBuffers")))
 				try
 				{
 					const res::Sound &sound(**this->sound);
-					util::scoped_ptr<res::AudioStream> stream(sound.decoder->Open());
+					const std::unique_ptr<res::AudioStream> stream(sound.decoder->Open());
 					std::vector<char> data(GetSize(sound));
 					data.resize(stream->Read(&*data.begin(), data.size()));
 					alBufferData(buffer, res::openal::GetFormat(sound),
 						&*data.begin(), data.size(), sound.frequency);
-					if (alGetError()) THROW err::PlatformException<err::OpenalPlatformTag>("failed to initialize buffer");
+					if (alGetError())
+						THROW((err::Exception<err::CacheModuleTag, err::OpenalPlatformTag>("failed to initialize buffer") <<
+							boost::errinfo_api_function("alBufferData")))
 					return Instance(new ALuint(buffer), Deleter);
 				}
 				catch (...)

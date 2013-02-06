@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,11 +28,12 @@
  * of this software.
  */
 
-#include "../cfg/opengl.hpp" // vidMedian{,Level}
+#include <memory> // unique_ptr
+
+#include "../cfg/vars.hpp"
 #include "../phys/Camera.hpp" // Camera::GetOpacity, GetViewFrustum
 #include "../phys/Scene.hpp" // Scene::GetCameras
 #include "../ui/Interface.hpp" // Interface::Draw
-#include "../util/scoped_ptr.hpp"
 #include "DrawContext.hpp" // DrawContext::{{alpha,median}Filter,GetFilterCaps,MakeViewContext,Push{Alpha,Median}Filter,ScaleBias}
 #include "ViewContext.hpp" // ViewContext::Draw
 
@@ -96,10 +98,10 @@ namespace page
 			DrawContext::FilterSaver filterSaver(context);
 			// FIXME: scale/bias for exposure
 			// FIXME: post-processing effects, such as rain on camera lens
-			if (*cfg::opengl::vidMedian &&
+			if (CVAR(opengl)::renderMedian &&
 				context.GetFilterCaps() & DrawContext::medianFilter)
-				context.PushMedianFilter(*cfg::opengl::vidMedianLevel, true);
-			util::scoped_ptr<ViewContext> viewContext(context.MakeViewContext(GetViewFrustum(camera)));
+				context.PushMedianFilter(CVAR(opengl)::renderMedianLevel, true);
+			const std::unique_ptr<ViewContext> viewContext(context.MakeViewContext(GetViewFrustum(camera)));
 			viewContext->Draw(scene);
 		}
 	}

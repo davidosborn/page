@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <windows.h>
 #include "../../../env/win32/Window.hpp" // Window::GetHwnd
-#include "../../../err/exception/throw.hpp" // THROW
+#include "../../../err/Exception.hpp"
 #include "Driver.hpp"
 #include "ext.hpp" // InitExt
 
@@ -46,7 +47,7 @@ namespace page
 					opengl::Driver(wnd), hwnd(wnd.GetHwnd())
 				{
 					if (!(hdc = GetDC(hwnd)))
-						THROW err::PlatformException<err::Win32PlatformTag>("failed to get device context");
+						THROW((err::Exception<err::VidModuleTag, err::Win32PlatformTag>("failed to get device context")))
 					PIXELFORMATDESCRIPTOR pfd = {sizeof pfd, 1};
 					pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL;
 					pfd.iPixelType = PFD_TYPE_RGBA;
@@ -56,23 +57,23 @@ namespace page
 					if (!pf)
 					{
 						ReleaseDC(hwnd, hdc);
-						THROW err::PlatformException<err::Win32PlatformTag>("failed to choose pixel format");
+						THROW((err::Exception<err::VidModuleTag, err::Win32PlatformTag>("failed to choose pixel format")))
 					}
 					if (!SetPixelFormat(hdc, pf, &pfd))
 					{
 						ReleaseDC(hwnd, hdc);
-						THROW err::PlatformException<err::Win32PlatformTag>("failed to set pixel format");
+						THROW((err::Exception<err::VidModuleTag, err::Win32PlatformTag>("failed to set pixel format")))
 					}
 					if (!(hglrc = wglCreateContext(hdc)))
 					{
 						ReleaseDC(hwnd, hdc);
-						THROW err::PlatformException<err::Win32PlatformTag>("failed to create context");
+						THROW((err::Exception<err::VidModuleTag, err::Win32PlatformTag>("failed to create context")))
 					}
 					if (!wglMakeCurrent(hdc, hglrc))
 					{
 						wglDeleteContext(hglrc);
 						ReleaseDC(hwnd, hdc);
-						THROW err::PlatformException<err::Win32PlatformTag>("failed to make context current");
+						THROW((err::Exception<err::VidModuleTag, err::Win32PlatformTag>("failed to make context current")))
 					}
 					Init();
 				}

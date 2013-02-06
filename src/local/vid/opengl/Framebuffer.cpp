@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,7 +31,7 @@
 #include <algorithm> // transform
 #include <cassert>
 #include "../../env/Window.hpp" // Window::GetSize
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../math/pow2.hpp" // Pow2Ceil
 #include "AttribGuard.hpp"
 #include "DrawContext.hpp" // DrawContext::GetDriver
@@ -60,7 +61,7 @@ namespace page
 				if (glGetError())
 				{
 					glDeleteFramebuffersEXT(1, &framebuffer);
-					THROW err::PlatformException<err::OpenglPlatformTag>("failed to create framebuffer");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to create framebuffer")))
 				}
 				// attach renderbuffer
 				if (flags & depthFramebufferFlag)
@@ -72,7 +73,7 @@ namespace page
 					{
 						glDeleteRenderbuffersEXT(1, &renderbuffer);
 						glDeleteFramebuffersEXT(1, &framebuffer);
-						THROW err::PlatformException<err::OpenglPlatformTag>("failed to create renderbuffer");
+						THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to create renderbuffer")))
 					}
 					glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 					glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, renderbuffer);
@@ -80,7 +81,7 @@ namespace page
 					{
 						glDeleteRenderbuffersEXT(1, &renderbuffer);
 						glDeleteFramebuffersEXT(1, &framebuffer);
-						THROW err::PlatformException<err::OpenglPlatformTag>("failed to attach renderbuffer");
+						THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to attach renderbuffer")))
 					}
 				}
 				// verify framebuffer
@@ -136,7 +137,7 @@ namespace page
 				GLuint texture;
 				glGenTextures(1, &texture);
 				if (glGetError())
-					THROW err::PlatformException<err::OpenglPlatformTag>("failed to generate texture");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to generate texture")))
 				glBindTexture(GL_TEXTURE_2D, texture);
 				glTexImage2D(GL_TEXTURE_2D, 0, colorFormat, pow2Size.x, pow2Size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 				// set texture parameters
@@ -164,7 +165,7 @@ namespace page
 				if (glGetError())
 				{
 					glDeleteTextures(1, &texture);
-					THROW err::PlatformException<err::OpenglPlatformTag>("failed to initialize texture");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to initialize texture")))
 				}
 				// attach texture to framebuffer
 				glBindTexture(GL_TEXTURE_2D, 0);
@@ -176,7 +177,7 @@ namespace page
 				{
 					glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferBinding);
 					glDeleteTextures(1, &texture);
-					THROW err::PlatformException<err::OpenglPlatformTag>("failed to attach texture");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to attach texture")))
 				}
 				try
 				{
@@ -216,7 +217,7 @@ namespace page
 				if (flags & depthFramebufferFlag) glEnable(GL_DEPTH_TEST);
 				else glDisable(GL_DEPTH_TEST);
 				if (!CheckStatus())
-					THROW err::PlatformException<err::OpenglPlatformTag>("framebuffer format unsupported");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("framebuffer format unsupported")))
 			}
 			bool Framebuffer::CheckStatus()
 			{
@@ -225,19 +226,19 @@ namespace page
 					case GL_FRAMEBUFFER_COMPLETE_EXT: return true;
 					case GL_FRAMEBUFFER_UNSUPPORTED_EXT: return false;
 					case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-					THROW err::PlatformException<err::OpenglPlatformTag>("incomplete framebuffer attachment");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("incomplete framebuffer attachment")))
 					case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-					THROW err::PlatformException<err::OpenglPlatformTag>("missing framebuffer attachment");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("missing framebuffer attachment")))
 					case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-					THROW err::PlatformException<err::OpenglPlatformTag>("framebuffer size mismatch");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("framebuffer size mismatch")))
 					case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-					THROW err::PlatformException<err::OpenglPlatformTag>("framebuffer format mismatch");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("framebuffer format mismatch")))
 					case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-					THROW err::PlatformException<err::OpenglPlatformTag>("framebuffer not drawable");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("framebuffer not drawable")))
 					case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-					THROW err::PlatformException<err::OpenglPlatformTag>("framebuffer not readable");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("framebuffer not readable")))
 				}
-				THROW err::PlatformException<err::OpenglPlatformTag>("framebuffer error");
+				THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("framebuffer error")))
 			}
 
 			// binding

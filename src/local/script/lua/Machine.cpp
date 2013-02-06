@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,7 +28,7 @@
  * of this software.
  */
 
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../util/functional.hpp" // new_function
 #include "../machine/register.hpp" // REGISTER_MACHINE
 #include "Library.hpp"
@@ -43,7 +44,7 @@ namespace page
 			Machine::Machine(Router &router)
 			{
 				if (!(state = luaL_newstate()))
-					THROW err::PlatformException<err::LuaPlatformTag>("failed to initialize interpreter");
+					THROW((err::Exception<err::ScriptModuleTag, err::LuaPlatformTag>("failed to initialize interpreter")))
 				lib.reset(new Library(state, router));
 			}
 			Machine::~Machine()

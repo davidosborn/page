@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,29 +31,55 @@
 #ifndef    page_local_clip_encoder_TheoraEncoder_hpp
 #   define page_local_clip_encoder_TheoraEncoder_hpp
 
-#	include <theora/theora.h>
-#	include "../../math/Vector.hpp"
-#	include "../Encoder.hpp"
+	// C++
 #	include <vector>
+
+	// Theora
+#	include <theora/theora.h>
+
+	// local
+#	include "../../math/Vector.hpp"
+#	include "Encoder.hpp"
 
 namespace page
 {
 	namespace clip
 	{
-		struct TheoraEncoder : Encoder
+		/**
+		 * An encoder for the Theora format.
+		 */
+		class TheoraEncoder : public Encoder
 		{
-			// construct/destroy
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
 			TheoraEncoder(
 				const Callback &,
 				const math::Vector<2, unsigned> &size,
-				float frameRate, float quality);
+				float frameRate,
+				float quality);
+
 			~TheoraEncoder();
 
+			/*---------+
+			| encoding |
+			+---------*/
+
 			private:
-			// encoding
-			void Encode(const void *);
+			void Encode(const void *) override;
+
+			/**
+			 *
+			 */
 			void EncodeBuffer(bool lastFrame = false);
 
+			/*-------------+
+			| data members |
+			+-------------*/
+
+			private:
 			theora_state ts;
 			ogg_stream_state os;
 			yuv_buffer tb;

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,87 +29,31 @@
  */
 
 #include <cassert>
-#include <memory> // unique_ptr
-#include <vorbis/vorbisfile.h>
-#include "../../../err/exception/throw.hpp" // THROW
-#include "../../../util/scoped_ptr.hpp"
-#include "../../adapt/vorbis.hpp" // CheckError, File, Open
-#include "AudioStream.hpp"
+
 #include "VorbisDecoder.hpp"
+#include "VorbisStream.hpp"
 
 namespace page
 {
 	namespace res
 	{
-		namespace
-		{
-			struct VorbisStream : AudioStream
-			{
-				// construct
-				VorbisStream(const Pipe &);
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-				// attributes
-				unsigned Channels() const;
-				unsigned BitDepth() const;
-				unsigned Frequency() const;
-				unsigned Samples() const;
-
-				// operations
-				unsigned Read(void *, unsigned);
-				void Seek(unsigned sample);
-
-				private:
-				vorbis::File vf;
-				vorbis_info *vi;
-			};
-
-			// construct
-			VorbisStream::VorbisStream(const Pipe &pipe) : vf(Open(pipe))
-			{
-				if (!vf) THROW err::PlatformException<err::VorbisPlatformTag, err::ResourceTag, typename err::FormatException<>::Tags>(err::FormatException<>().What());
-				if (!(vi = ov_info(vf.get(), -1)))
-					THROW err::PlatformException<err::VorbisPlatformTag, err::ResourceTag>();
-			}
-
-			// operations
-			unsigned VorbisStream::Read(void *s, unsigned n)
-			{
-				unsigned i = 0;
-				while (i != n)
-				{
-					int bitstream;
-					long result = ov_read(vf.get(),
-						reinterpret_cast<char *>(s), n - i,
-#ifdef WORDS_BIG_ENDIAN
-						1,
-#else
-						0,
-#endif
-						2, 1, &bitstream);
-					CheckError(result);
-					if (!result) break;
-					s = reinterpret_cast<char *>(s) + result;
-					i += result;
-				}
-				return i;
-			}
-			void VorbisStream::Seek(unsigned sample)
-			{
-				CheckError(ov_pcm_seek(vf.get(), sample));
-			}
-		}
-
-		// construct
 		VorbisDecoder::VorbisDecoder(const std::shared_ptr<const Pipe> &pipe) :
 			pipe(pipe)
 		{
 			assert(pipe);
 		}
 
-		// operations
-		AudioStream *VorbisDecoder::Open() const
+		/*-----------+
+		| operations |
+		+-----------*/
+
+		std::unique_ptr<AudioStream> VorbisDecoder::Open() const
 		{
-			return new VorbisStream(*pipe);
+			return std::unique_ptr<AudioStream>(new VorbisStream(*pipe));
 		}
 	}
 }

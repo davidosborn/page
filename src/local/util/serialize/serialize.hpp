@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -47,7 +48,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Serializes a value to a stream.
+		 * Serialize a value to a stream.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
 		 */
@@ -58,7 +59,7 @@ namespace page
 				ENABLE_IF((is_insertable<const T &, std::basic_ostream<Char, CharTraits> &>::value)));
 		
 		/**
-		 * Serializes a string to a stream, where the character encoding of
+		 * Serialize a string to a stream, where the character encoding of
 		 * the string is different from that of the stream.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
@@ -78,7 +79,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Serializes a range of values to a stream.
+		 * Serialize a range of values to a stream.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
 		 */
@@ -94,9 +95,9 @@ namespace page
 					!is_insertable<const Range &, std::basic_ostream<Char, CharTraits> &>::value)));
 
 		/**
-		 * Serializes a range of values to a stream, where the range is
-		 * specified by the @c first and @c last iterators, and where @c last
-		 * points to one element past the end of the range.
+		 * Serialize a range of values to a stream, where the range is specified
+		 * by the @c first and @c last iterators, and where @c last points to
+		 * one element past the end of the range.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
 		 */
@@ -110,7 +111,7 @@ namespace page
 				ENABLE_IF(is_iterator<Iterator>::value));
 		
 		/**
-		 * Serializes @c std::tuple to a stream.
+		 * Serialize @c std::tuple to a stream.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
 		 */
@@ -122,7 +123,7 @@ namespace page
 				const Delimiter & = SerializationDelimiter<Char, CharTraits>::Space());
 
 		/**
-		 * Serializes @c std::pair to a stream.
+		 * Serialize @c std::pair to a stream.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
 		 */
@@ -139,7 +140,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Serializes to a stream rvalue.  This is useful for working with
+		 * Serialize to a stream rvalue.  This is useful for working with
 		 * @c std::basic_ostringstream.
 		 */
 		template <typename Char, typename CharTraits, typename... Args>

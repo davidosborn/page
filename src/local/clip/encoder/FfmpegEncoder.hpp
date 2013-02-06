@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,24 +31,40 @@
 #ifndef    page_local_clip_encoder_FfmpegEncoder_hpp
 #   define page_local_clip_encoder_FfmpegEncoder_hpp
 
-#	include "../Encoder.hpp"
+#	include "Encoder.hpp"
 
 namespace page
 {
 	namespace clip
 	{
-		struct FfmpegEncoder : Encoder
+		/**
+		 * An encoder for the formats supported by FFmpeg.
+		 */
+		class FfmpegEncoder : public Encoder
 		{
-			// construct/destroy
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
 			FfmpegEncoder(
 				const Callback &,
 				const math::Vector<2, unsigned> &size,
-				float frameRate, float quality);
+				float frameRate,
+				float quality);
+
 			~FfmpegEncoder();
 
+			/*---------+
+			| encoding |
+			+---------*/
+
 			private:
-			// encoding
-			void Encode(const void *);
+			void Encode(const void *) override;
+
+			/**
+			 *
+			 */
 			void EncodeBuffer(bool lastFrame = false);
 		};
 	}

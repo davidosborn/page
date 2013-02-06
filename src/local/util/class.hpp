@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -37,30 +38,35 @@
 #	include <utility> // forward
 
 	/**
-	 * Defines the copy-constructor and copy-assignment-operator of the
-	 * specified class.  The value should be either "default" or "delete".
+	 * Define the copy-constructor and copy-assignment-operator of the specified
+	 * class.  The value should be either "default" or "delete".
 	 */
 #	define DEFINE_COPY(CLASS, VALUE) \
 		CLASS(const CLASS &)             = VALUE; \
 		CLASS &operator =(const CLASS &) = VALUE;
 
 	/**
-	 * Defines the move-constructor and move-assignment-operator of the
-	 * specified class.  The value should be either "default" or "delete".
+	 * Define the move-constructor and move-assignment-operator of the specified
+	 * class.  The value should be either "default" or "delete".
 	 */
 #	define DEFINE_MOVE(CLASS, VALUE) \
 		CLASS(CLASS &&)             = VALUE; \
 		CLASS &operator =(CLASS &&) = VALUE;
-		
+
 	/**
-	 * Makes the specified class "uncopyable" (ISO/IEC n3242 8.4.3.3).
+	 * Make the specified class "uncopyable" (ISO/IEC n3242 8.4.3.3).  The class
+	 * will not be copyable, but it will be movable.  This behaviour is
+	 * inherited, as long as the compiler is able to implicitly generate the
+	 * move-constructor and move-assignment-operator of the derived class (in
+	 * particular, it can't in the case of an user-defined destructor).
 	 */
 #	define MAKE_UNCOPYABLE(CLASS) \
+		public: \
 		DEFINE_COPY(CLASS, delete) \
 		DEFINE_MOVE(CLASS, default)
 
 	/**
-	 * Causes the specified class to inherit the constructors of one of its base
+	 * Cause the specified class to inherit the constructors of one of its base
 	 * classes.
 	 *
 	 * @see ISO/IEC n1898, Forwarding and Inherited Constructors
@@ -69,5 +75,19 @@
 		template <typename... Args> \
 			explicit CLASS(Args &&... args) : \
 				BASE(std::forward<Args>(args)...) {}
+
+namespace page
+{
+	namespace util
+	{
+		/**
+		 * An intermediate class-template which inherits from the base classes
+		 * specified as template arguments.
+		 */
+		template <typename... Bases>
+			class PublicVirtualInheritor :
+				public virtual Bases... {};
+	}
+}
 
 #endif

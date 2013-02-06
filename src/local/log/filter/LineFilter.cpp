@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -48,8 +49,10 @@ namespace page
 			while (std::getline(is, str).good())
 				os << FilterLine(str) << std::endl;
 			buffer = str;
-			if (is.fail() && !is.eof() || os.fail())
-				BOOST_THROW_EXCEPTION(err::Exception("stream error"));
+			if (is.fail() && !is.eof())
+				THROW((err::Exception<err::LogModuleTag, err::StreamReadTag>()))
+			if (os.fail())
+				THROW((err::Exception<err::LogModuleTag, err::StreamWriteTag>()))
 			return os.str();
 		}
 

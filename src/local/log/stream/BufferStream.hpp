@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -38,7 +39,7 @@ namespace page
 	namespace log
 	{
 		/**
-		 * This stream stores all data written to it until it is flushed.
+		 * Stores all data written to it until it is flushed.
 		 *
 		 * @note Be careful not to insert this stream too early in the chain
 		 *       because it will prevent data from reaching time-sensitive

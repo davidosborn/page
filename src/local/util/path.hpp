@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,40 +31,77 @@
 #ifndef    page_local_util_path_hpp
 #   define page_local_util_path_hpp
 
-#	include <string>
+	// C++
 #	include <utility> // pair
+
+	// Boost
+#	include <boost/filesystem/path.hpp>
 
 namespace page
 {
 	namespace util
 	{
-		// symbolic path expansion
-		// Parse and expand special symbols in a given path.  Supports strftime
-		// and incremental symbols.  Incremental symbols are denoted by %i with
-		// an optional width modifier after the percent sign.  The width
-		// modifier must be an unsigned decimal integer.  Multiple incremental
-		// symbols are permitted; they will form an overflow cascade.  If no
-		// unique incremental filename is found, an err::Range is thrown.  Null
-		// characters will be thrown away.
-		std::string ExpandPath(const std::string &);
+		/*------------------+
+		| path manipulation |
+		+------------------*/
 
-		// extension extraction
-		typedef std::pair<std::string, std::string> ExtPart;
-		ExtPart PartitionExt(const std::string &path);
-		std::string GetExt(const std::string &path, unsigned index = 0);
-
-		// extension insertion
 		/**
-		 * Ensures that the filename pointed to by @c path ends with the given
-		 * extension.
+		 * Parse and expand the special symbols in a path.
+		 *
+		 * Supports strftime and incremental symbols.  Incremental symbols are
+		 * denoted by %i with an optional width modifier after the percent sign.
+		 * The width modifier must be an unsigned decimal integer.  Multiple
+		 * incremental symbols are permitted; they will form an overflow
+		 * cascade.  If no unique incremental filename is found, an err::Range
+		 * is thrown.  Null characters will be thrown away.
 		 */
-		std::string WithExt(const std::string &path, const std::string &extension);
+		boost::filesystem::path ExpandPath(const boost::filesystem::path &);
+
+		/*-----------------------+
+		| extension manipulation |
+		+-----------------------*/
+
 		/**
-		 * Ensures that the filename pointed to by @c path ends with one of the
-		 * given extensions.
+		 * Return the path's extension, without the leading dot character.  If
+		 * the path has multiple extensions, return the one at the specified
+		 * index, counting back from the right.  The extension is converted to
+		 * lowercase.
+		 */
+		boost::filesystem::path GetExtension(
+			const boost::filesystem::path &path,
+			unsigned index = 0);
+
+		/**
+		 * Return the two path segments resulting from splitting the path at the
+		 * last dot character.
+		 */
+		std::pair<boost::filesystem::path, boost::filesystem::path>
+			PartitionExtension(const boost::filesystem::path &path);
+
+		/**
+		 * Add the extension to the end of the path.  If the path does not end
+		 * with a dot character, add one before the extension.
+		 */
+		boost::filesystem::path AddExtension(
+			const boost::filesystem::path &path,
+			const boost::filesystem::path &extension);
+
+		/**
+		 * Ensure the path ends with the specified extension.
+		 */
+		boost::filesystem::path WithExtension(
+			const boost::filesystem::path &path,
+			const boost::filesystem::path &extension);
+
+		/**
+		 * Ensure the path ends with one of the specified extensions.  If it
+		 * does not, the first extension is used.
 		 */
 		template <typename InputIterator>
-			std::string WithExt(const std::string &path, InputIterator firstExtension, InputIterator lastExtension);
+			boost::filesystem::path WithExtension(
+				const boost::filesystem::path &path,
+				InputIterator firstExtension,
+				InputIterator lastExtension);
 	}
 }
 

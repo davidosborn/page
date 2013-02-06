@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,8 +29,10 @@
  */
 
 #include <cassert>
+
 #include <AL/al.h> // ALenum
-#include "../../../err/exception/throw.hpp" // THROW
+
+#include "../../../err/Exception.hpp"
 #include "../Sound.hpp" // Sound::{bitDepth,channels}
 
 namespace page
@@ -47,7 +50,7 @@ namespace page
 					{
 						case 8:  return AL_FORMAT_MONO8;
 						case 16: return AL_FORMAT_MONO16;
-						default: THROW err::PlatformException<err::OpenalPlatformTag, err::ResourceTag>("unsupported bit depth");
+						default: THROW((err::Exception<err::ResModuleTag, err::OpenalPlatformTag>("unsupported bit depth")))
 					}
 					break;
 					case 2:
@@ -55,10 +58,10 @@ namespace page
 					{
 						case 8:  return AL_FORMAT_STEREO8;
 						case 16: return AL_FORMAT_STEREO16;
-						default: THROW err::PlatformException<err::OpenalPlatformTag, err::ResourceTag>("unsupported bit depth");
+						default: THROW((err::Exception<err::ResModuleTag, err::OpenalPlatformTag>("unsupported bit depth")))
 					}
 					break;
-					default: THROW err::PlatformException<err::OpenalPlatformTag, err::ResourceTag>("unsupported channel structure");
+					default: THROW((err::Exception<err::ResModuleTag, err::OpenalPlatformTag>("unsupported channel structure")))
 				}
 				assert(!"logic error");
 			}

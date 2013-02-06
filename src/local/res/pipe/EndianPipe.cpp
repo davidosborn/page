@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,8 +29,6 @@
  */
 
 #include <cassert>
-#include "../../err/exception/catch.hpp" // CATCH_TAGS
-#include "../../err/exception/throw.hpp" // THROW
 #include "../../util/unique_ptr.hpp"
 #include "../Stream.hpp"
 #include "EndianPipe.hpp"
@@ -76,19 +75,19 @@ namespace page
 					{
 						super->Read(s, size - pos);
 					}
-					CATCH_TAGS(err::EndOfStreamTag)
+					catch (const err::Exception<err::EndOfStreamTag>::Permutation &)
 					{
 						pos = super->Tell() - off;
 						throw;
 					}
 					pos = size;
-					THROW err::EndOfStreamException<err::ResourceTag>();
+					THROW((err::Exception<err::ResModuleTag, err::EndOfStreamTag>()))
 				}
 				try
 				{
 					super->Read(s, n);
 				}
-				CATCH_TAGS(err::EndOfStreamTag)
+				catch (const err::Exception<err::EndOfStreamTag>::Permutation &)
 				{
 					pos = super->Tell() - off;
 					throw;
@@ -126,19 +125,19 @@ namespace page
 					{
 						super->Seek(off + size);
 					}
-					CATCH_TAGS(err::EndOfStreamTag)
+					catch (const err::Exception<err::EndOfStreamTag>::Permutation &)
 					{
 						pos = super->Tell() - off;
 						throw;
 					}
 					pos = size;
-					THROW err::EndOfStreamException<err::ResourceTag>();
+					THROW((err::Exception<err::ResModuleTag, err::EndOfStreamTag>()))
 				}
 				try
 				{
 					super->Seek(off + n);
 				}
-				CATCH_TAGS(err::EndOfStreamTag)
+				catch (const err::Exception<err::EndOfStreamTag>::Permutation &)
 				{
 					pos = super->Tell() - off;
 					throw;

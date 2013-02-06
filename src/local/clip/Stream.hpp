@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,9 +31,15 @@
 #ifndef    page_local_clip_Stream_hpp
 #   define page_local_clip_Stream_hpp
 
-#	include <fstream>
+	// C++
 #	include <memory> // unique_ptr
 #	include <string>
+
+	// Boost
+#	include <boost/filesystem/fstream.hpp> // ofstream
+#	include <boost/filesystem/path.hpp>
+
+	// local
 #	include "../math/Vector.hpp"
 #	include "../util/NonCopyable.hpp"
 
@@ -48,7 +55,7 @@ namespace page
 		{
 			// construct/destroy
 			Stream(
-				const std::string &path,
+				const boost::filesystem::path &path,
 				const std::string &format,
 				const math::Vector<2, unsigned> &size,
 				float frameRate, float quality);
@@ -65,7 +72,7 @@ namespace page
 			void WriteEncoded(const void *, unsigned);
 
 			math::Vector<2, unsigned> size;
-			std::ofstream fs;
+			boost::filesystem::ofstream fs;
 			std::unique_ptr<Encoder> encoder;
 		};
 	}

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -32,7 +33,7 @@
 #include <deque>
 #include <functional> // bind, less
 #include <iostream> // clog
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../log/manip.hpp" // Warning
 #include "../../math/float.hpp" // Near
 #include "../../math/interp.hpp" // Bilerp
@@ -279,7 +280,8 @@ namespace page
 							if (All(Swizzle(*neighbourVertex, 0, 2) == vertices[0]) ||
 								All(Swizzle(*neighbourVertex, 0, 2) == vertices[1])) ++matches;
 						}
-						if (matches < 2) THROW err::FormatException<err::ResourceTag>("mismatched vertex in neighbouring face");
+						if (matches < 2)
+							THROW((err::Exception<err::ResModuleTag, err::FormatTag>("mismatched vertex in neighbouring face")))
 					}
 		}
 		void CheckSlope(const Track &track)

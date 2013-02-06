@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -50,7 +51,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Concatenates the variadic arguments into a string.
+		 * Concatenate the variadic arguments into a string.
 		 */
 		template <
 			typename Char       = char,
@@ -64,7 +65,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Splits a string at each occurance of a delimiter, writing the
+		 * Split a string at each occurance of a delimiter, writing the
 		 * resulting sub-strings to an output iterator.
 		 *
 		 * @note This is an overload for @c std::basic_string.
@@ -79,7 +80,7 @@ namespace page
 				unsigned limit = std::numeric_limits<unsigned>());
 
 		/**
-		 * Splits a string at each occurance of a delimiter, writing the
+		 * Split a string at each occurance of a delimiter, writing the
 		 * resulting sub-strings to an output iterator.
 		 *
 		 * @note This is an overload for C strings.
@@ -94,7 +95,7 @@ namespace page
 				unsigned limit = std::numeric_limits<unsigned>());
 
 		/**
-		 * Splits a string at the first occurance of a delimiter.
+		 * Split a string at the first occurance of a delimiter.
 		 *
 		 * @return @c std::pair containing the two sub-strings.
 		 *
@@ -111,7 +112,7 @@ namespace page
 				const Delimiter & = DeserializationDelimiter<Char, CharTraits>::Space());
 
 		/**
-		 * Splits a string at the first occurance of a delimiter.
+		 * Split a string at the first occurance of a delimiter.
 		 *
 		 * @return @c std::pair containing the two sub-strings.
 		 *
@@ -133,7 +134,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Removes leading and trailing delimiters from a string.
+		 * Remove leading and trailing delimiters from a string.
 		 */
 		template <typename Char, typename CharTraits,
 			typename Delimiter = typename DeserializationDelimiter<Char, CharTraits>::Type>
@@ -142,7 +143,7 @@ namespace page
 				const Delimiter & = DeserializationDelimiter<Char, CharTraits>::Space());
 
 		/**
-		 * Removes leading delimiters from a string.
+		 * Remove leading delimiters from a string.
 		 */
 		template <typename Char, typename CharTraits,
 			typename Delimiter = typename DeserializationDelimiter<Char, CharTraits>::Type>
@@ -151,7 +152,7 @@ namespace page
 				const Delimiter & = DeserializationDelimiter<Char, CharTraits>::Space());
 
 		/**
-		 * Removes trailing delimiters from a string.
+		 * Remove trailing delimiters from a string.
 		 */
 		template <typename Char, typename CharTraits,
 			typename Delimiter = typename DeserializationDelimiter<Char, CharTraits>::Type>
@@ -165,7 +166,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Converts various newline formats into the standard format, with each
+		 * Convert various newline formats into the standard format, with each
 		 * newline indicated by '\n'.
 		 */
 		template <typename Char, typename CharTraits>
@@ -210,7 +211,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Compares the leading portion of a string with another string.
+		 * Compare the leading portion of a string with another string.
 		 *
 		 * @return @c true if the first string starts with the second string.
 		 */
@@ -219,7 +220,7 @@ namespace page
 				const std::basic_string<Char, CharTraits> &,
 				const std::basic_string<Char, CharTraits> &);
 		/**
-		 * Compares the trailing portion of a string with another string.
+		 * Compare the trailing portion of a string with another string.
 		 *
 		 * @return @c true if the first string ends with the second string.
 		 */

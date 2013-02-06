@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -31,7 +32,7 @@
 #include <string>
 #include <GL/gl.h> // glGetString
 #include "../../cfg/domain.hpp" // ScopedDomain
-#include "../../cfg/opengl.hpp" // vid*
+#include "../../cfg/vars.hpp"
 #include "../../log/Indenter.hpp"
 #include "ext.hpp" // ARB_{fragment_shader,shader_objects,shadow,vertex_buffer_object}, EXT_framebuffer_object, NV_register_combiners
 
@@ -57,38 +58,38 @@ namespace page
 					// FIXME: implement
 					float vboTime = 1;
 					// determine optimal solution
-					cfg::opengl::vidVbo = vboTime <= varTime;
+					cfg::opengl::renderVbo = vboTime <= varTime;
 				}
-				std::cout << "vertex buffering = " << (*cfg::opengl::vidVbo ? "enabled" : "disabled") << std::endl;
+				std::cout << "vertex buffering = " << (CVAR(opengl)::renderVbo ? "enabled" : "disabled") << std::endl;
 				if (haveExtFramebufferObject && haveArbShadow)
 				{
 					// FIXME: implement
-					cfg::opengl::vidShadow = true;
+					cfg::opengl::renderShadow = true;
 				}
-				std::cout << "shadowing        = " << (*cfg::opengl::vidBump ? "enabled" : "disabled") << std::endl;
+				std::cout << "shadowing        = " << (CVAR(opengl)::renderBump ? "enabled" : "disabled") << std::endl;
 				if (haveArbFragmentShader && haveArbShaderObjects ||
 					haveNvRegisterCombiners)
 				{
 					// FIXME: implement
-					cfg::opengl::vidBump = true;
+					cfg::opengl::renderBump = true;
 				}
-				std::cout << "bump mapping     = " << (*cfg::opengl::vidBump ? "enabled" : "disabled") << std::endl;
+				std::cout << "bump mapping     = " << (CVAR(opengl)::renderBump ? "enabled" : "disabled") << std::endl;
 			}
 			void InitProfile()
 			{
-				if (!*cfg::opengl::vidTuneAuto) return;
+				if (!CVAR(opengl)::renderTuneAuto) return;
 				cfg::ScopedDomain domain(cfg::siteDomain);
 				std::string
 					deviceProfile(std::string(reinterpret_cast<const char *>(glGetString(GL_VENDOR))) + ' ' + reinterpret_cast<const char *>(glGetString(GL_RENDERER))),
 					profile(deviceProfile + ' ' + reinterpret_cast<const char *>(glGetString(GL_VERSION)));
-				if (profile != *cfg::opengl::vidTuneProfile)
+				if (profile != CVAR(opengl)::renderTuneProfile)
 				{
 					std::cout << "tuning new " <<
-						(deviceProfile == cfg::opengl::vidTuneProfile->substr(0, deviceProfile.size()) ?
+						(deviceProfile == cfg::opengl::renderTuneProfile->substr(0, deviceProfile.size()) ?
 						"driver" : "device") << std::endl;
 					log::Indenter indenter;
 					Tune();
-					cfg::opengl::vidTuneProfile = profile;
+					cfg::opengl::renderTuneProfile = profile;
 				}
 			}
 		}

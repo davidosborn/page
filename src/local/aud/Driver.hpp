@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -49,7 +50,7 @@ namespace page
 	{
 		class AmbientChannel;
 		class Sound;
-		class SpacialChannel;
+		class SpatialChannel;
 
 		struct SoundProxy
 		{
@@ -115,20 +116,20 @@ namespace page
 			private:
 			// limits
 			virtual unsigned MaxAmbientChannels() const = 0;
-			virtual unsigned MaxSpacialChannels() const = 0;
-			virtual unsigned MaxPersistentSpacialChannels() const = 0;
+			virtual unsigned MaxSpatialChannels() const = 0;
+			virtual unsigned MaxPersistentSpatialChannels() const = 0;
 
 			// channel factory functions
 			virtual AmbientChannel *MakeAmbientChannel(const Sound &) const = 0;
-			virtual SpacialChannel *MakeSpacialChannel(const phys::Sound &) const = 0;
+			virtual SpatialChannel *MakeSpatialChannel(const phys::Sound &) const = 0;
 
 			env::Window &wnd;
 			typedef std::vector<std::shared_ptr<Sound>> Sounds;
 			Sounds sounds;
 			typedef std::vector<std::shared_ptr<AmbientChannel>> AmbientChannels;
 			AmbientChannels ambientChannels;
-			typedef std::vector<std::shared_ptr<SpacialChannel>> SpacialChannels;
-			SpacialChannels spacialChannels;
+			typedef std::vector<std::shared_ptr<SpatialChannel>> SpatialChannels;
+			SpatialChannels spacialChannels;
 			const phys::Scene *scene;
 		};
 

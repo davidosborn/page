@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <algorithm> // transform
 #include <iostream> // clog
-#include "../../../err/exception/throw.hpp" // THROW
+#include "../../../err/Exception.hpp"
 #include "../../../log/manip.hpp" // Warning
 #include "../../../util/functional.hpp" // tolower_function
 #include "../../../util/string.hpp" // Join
@@ -59,12 +60,13 @@ namespace page
 				if (!parent.empty()) key.insert(0, parent + '.');
 				Handlers::const_iterator iter(handlers.find(key));
 				if (iter == handlers.end())
-					THROW err::FormatException<err::ResourceTag>(util::Join("bad token: ", key));
+					THROW((err::Exception<err::ResModuleTag, err::TokenTag, err::FormatTag>() <<
+						err::errinfo_token(key)))
 				const Handler &handler(iter->second);
 				if (node.value.empty())
 				{
 					if (handler.constraint == needValue)
-						THROW err::FormatException<err::ResourceTag>("missing value");
+						THROW((err::Exception<err::ResModuleTag, err::ParserTag, err::FormatTag>("missing value")))
 				}
 				else if (!handler.callback || handler.constraint == noValue)
 					std::clog << log::Warning << "unexpected value" << std::endl;

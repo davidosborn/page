@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,15 +28,17 @@
  * of this software.
  */
 
+// C++
 #include <cassert>
 #include <cstdio> // remove
 #include <functional> // bind
 #include <iostream> // cout
 #include <utility> // tie
-#include "../cfg.hpp" // logVerbose
-#include "../err/exception/throw.hpp" // THROW
+
+// local
+#include "../cfg/vars.hpp"
+#include "../err/Exception.hpp"
 #include "../res/type/Image.hpp"
-#include "../sys/file.hpp" // AbsPath, NormPath
 #include "Encoder.hpp" // Encoder::{~Encoder,Write}
 #include "encoder/registry.hpp" // EncoderFactory, GetRegisteredEncoder
 #include "Stream.hpp"
@@ -45,18 +48,18 @@ namespace page
 	namespace clip
 	{
 		// construct/destroy
-		Stream::Stream(const std::string &path, const std::string &format, const math::Vector<2, unsigned> &size, float frameRate, float quality) :
+		Stream::Stream(const boost::filesystem::path &path, const std::string &format, const math::Vector<2, unsigned> &size, float frameRate, float quality) :
 			size(size)
 		{
 			EncoderFactory encoderFactory; std::string encoderPath;
 			std::tie(encoderFactory, encoderPath) = GetRegisteredEncoder(path, format);
 			assert(encoderFactory);
+
 			// open file
-			std::string
-				normPath(sys::NormPath(encoderPath)),
-				absPath(sys::AbsPath(normPath));
-			fs.open(absPath.c_str(), std::ios_base::binary | std::ios_base::out);
-			if (!fs) THROW err::FileAccessException<>();
+			fs.open(path, std::ios_base::binary | std::ios_base::out);
+			if (!fs)
+				THROW((err::Exception<err::ClipModuleTag, err::FileAccessTag>()))
+
 			// create encoder
 			try
 			{
@@ -65,19 +68,20 @@ namespace page
 					std::bind(&Stream::WriteEncoded, this, _1, _2),
 					size, frameRate, quality));
 				assert(encoder);
-				std::cout << "opened clip stream to " << normPath << std::endl;
+				std::cout << "opened clip stream to " << path << std::endl;
 			}
 			catch (...)
 			{
 				fs.close();
-				std::remove(absPath.c_str());
+				std::remove(path);
 				throw;
 			}
 		}
+		
 		Stream::~Stream()
 		{
 			// print statistics
-			if (*cfg::logVerbose)
+			if (CVAR(logVerbose))
 			{
 				// FIXME: implement
 			}
@@ -101,7 +105,7 @@ namespace page
 		void Stream::WriteEncoded(const void *s, unsigned n)
 		{
 			if (!fs.write(static_cast<const char *>(s), n))
-				THROW err::FileWriteException<>();
+				THROW((err::Exception<err::ClipModuleTag, err::FileWriteTag>()))
 		}
 	}
 }

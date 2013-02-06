@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -33,8 +34,8 @@
 #ifdef HAVE_GLU
 #	include <GL/glu.h> // gluBuild2DMipmaps, gluScaleImage
 #endif
-#include "../../cfg/opengl.hpp" // vidTexDown, vidTexMipmap
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../cfg/vars.hpp"
+#include "../../err/Exception.hpp"
 #include "../../math/pow2.hpp" // Pow2Ceil
 #include "ext.hpp" // ARB_texture_non_power_of_two, EXT_{abgr,bgra}, {EXT,SGIS}_texture_edge_clamp, SGIS_generate_mipmap
 #include "tex.hpp" // Compatibility
@@ -50,7 +51,7 @@ namespace page
 				GLuint MakeTextureFromData(const res::Image::Data &data, const math::Vector<2, unsigned> &size, GLint internalFormat, GLenum format, GLenum type, bool mipmap, const math::Vector<2, bool> clamp)
 				{
 					// determine compatible size
-					math::Vector<2, GLsizei> texSize(Max(size >> *cfg::opengl::vidTexDown, 1));
+					math::Vector<2, GLsizei> texSize(Max(size >> CVAR(opengl)::renderTextureDown, 1));
 					if (!haveArbTextureNonPowerOfTwo)
 						std::transform(texSize.begin(), texSize.end(), texSize.begin(), math::Pow2Ceil);
 					res::Image::Data newData;
@@ -82,7 +83,7 @@ namespace page
 						}
 						res::Image::Data scaledData(Content(texSize) * depth);
 						if (gluScaleImage(format, size.x, size.y, type, &*(newData.empty() ? data : newData).begin(), texSize.x, texSize.y, type, &*scaledData.begin()))
-							THROW err::PlatformException<err::OpenglPlatformTag>("failed to scale image");
+							THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to scale image")))
 						newData.swap(scaledData);
 #else
 						// FIXME: implement; use Scale(res::Image)
@@ -91,9 +92,9 @@ namespace page
 					// generate texture
 					GLuint tex;
 					if (glGenTextures(1, &tex), glGetError())
-						THROW err::PlatformException<err::OpenglPlatformTag>("failed to generate texture");
+						THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to generate texture")))
 					glBindTexture(GL_TEXTURE_2D, tex);
-					if (mipmap && *cfg::opengl::vidTexMipmap)
+					if (mipmap && CVAR(opengl)::renderTextureMipmap)
 					{
 						if (haveSgisGenerateMipmap)
 						{
@@ -125,7 +126,7 @@ namespace page
 						if (clamp.y) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 						// HACK: to prevent interpolation at edges, disable
 						// linear filtering
-						if (mipmap && *cfg::opengl::vidTexMipmap)
+						if (mipmap && CVAR(opengl)::renderTextureMipmap)
 						{
 							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
@@ -136,7 +137,8 @@ namespace page
 							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 						}
 					}
-					if (glGetError()) THROW err::PlatformException<err::OpenglPlatformTag>("failed to initialize texture");
+					if (glGetError())
+						THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to initialize texture")))
 					return tex;
 				}
 			}

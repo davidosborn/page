@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,7 +28,7 @@
  * of this software.
  */
 
-#include "../err/exception/throw.hpp" // THROW
+#include "../err/Exception.hpp"
 
 namespace page
 {
@@ -58,7 +59,7 @@ namespace page
 					else
 					{
 						// FIXME: implement
-						THROW err::Exception<err::ConversionTag>();
+						THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 					}
 				}
 			};
@@ -77,7 +78,7 @@ namespace page
 					// FIXME: implement
 					// http://en.cppreference.com/w/cpp/locale/wstring_convert
 					// http://stackoverflow.com/questions/7232710/convert-between-string-u16string-u32string
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -93,7 +94,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -109,7 +110,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -125,7 +126,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -141,7 +142,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -157,7 +158,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -173,7 +174,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -189,7 +190,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -205,7 +206,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -221,7 +222,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -237,7 +238,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -253,7 +254,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -269,7 +270,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -285,7 +286,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 			template <
@@ -301,7 +302,7 @@ namespace page
 					typename ConvertFlags::Type   toFlags)
 				{
 					// FIXME: implement
-					THROW err::Exception<err::ConversionTag>();
+					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
 				}
 			};
 		}

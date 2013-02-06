@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,33 +29,14 @@
  */
 
 #include <iostream> // cout
-#include "cfg.hpp" // Commit, Init
-#include "err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_ERROR_AND
+
+// local
+#include "cfg/State.hpp" // State::{GetGlobalInstance,Write}
+#include "err/report.hpp" // ReportError, std::exception
 #include "game/Game.hpp" // Game::{{,~}Game,Run}
 #include "log/print.hpp" // Print{Info,Stats}
 #include "opt.hpp" // Parse
 #include "sys.hpp" // PrintInfo
-
-namespace page
-{
-	namespace
-	{
-		struct Initer
-		{
-			Initer(int argc, char *argv[])
-			{
-				opt::Parse(argc, argv);
-				sys::PrintInfo();
-				cfg::Init();
-				log::PrintInfo();
-			}
-			~Initer()
-			{
-				log::PrintStats();
-			}
-		};
-	}
-}
 
 #ifdef USE_WIN32
 #	include <windows.h>
@@ -69,15 +51,20 @@ int main(int argc, char *argv[])
 	int status = 0;
 	try
 	{
-		Initer initer(argc, argv);
-		try
-		{
-			game::Game().Run();
-			cfg::Commit();
-		}
-		CATCH_ALL_AND_PRINT_ERROR_AND(status = 1;)
-		std::cout << "exiting with status " << status << std::endl;
+		opt::Parse(argc, argv);
+		sys::PrintInfo();
+		log::PrintInfo();
+
+		game::Game().Run();
+
+		cfg::State::GetGlobalInstance().Write();
+		log::PrintStats();
 	}
-	CATCH_ALL_AND_PRINT_ERROR_AND(status = 1;)
+	catch (const std::exception &e)
+	{
+		err::ReportError(e);
+		status = 1;
+	}
+	std::cout << "exiting with status " << status << std::endl;
 	return status;
 }

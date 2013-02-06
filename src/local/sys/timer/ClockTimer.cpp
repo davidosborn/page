@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,7 +28,7 @@
  * of this software.
  */
 
-#include "../err/exception/throw.hpp" // THROW
+#include "../err/Exception.hpp"
 #include "ClockTimer.hpp"
 
 namespace page
@@ -38,14 +39,15 @@ namespace page
 		ClockTimer::ClockTimer()
 		{
 			if ((time = std::clock()) == -1)
-				THROW err::Exception<err::NotAvailableTag>("clock device not available");
+				THROW((err::Exception<err::SysModuleTag, err::NotAvailableTag>("clock device not available")))
 		}
 
 		// update
 		float ClockTimer::Step()
 		{
 			std::clock_t newTime = std::clock();
-			if (newTime == -1) THROW err::Exception<err::NotAvailableTag>("clock device not available");
+			if (newTime == -1)
+				THROW((err::Exception<err::SysModuleTag, err::NotAvailableTag>("clock device not available")))
 			float delta = (newTime - time) / CLOCKS_PER_SEC;
 			time = newTime;
 			return delta;

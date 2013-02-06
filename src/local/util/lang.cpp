@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -31,15 +32,16 @@
 #include <cctype> // isalnum
 #include <iostream> // cout
 #include <iterator> // back_inserter
+#include <memory> // unique_ptr
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "../err/exception/catch.hpp" // CATCH_ALL_AND_PRINT_WARNING
+
+#include "../err/report.hpp" // ReportWarning, std::exception
 #include "../log/Indenter.hpp"
 #include "../res/Index.hpp" // GetIndex, Index::Open
 #include "../res/Stream.hpp" // Stream::{~Stream,GetLine}
 #include "functional.hpp" // isspace_function
-#include "scoped_ptr.hpp"
 #include "string.hpp" // Partition, Split
 
 namespace page
@@ -556,7 +558,7 @@ namespace page
 				log::Indenter indenter;
 				try
 				{
-					scoped_ptr<res::Stream> stream(res::GetIndex().Open("lang/english.dict"));
+					const std::unique_ptr<res::Stream> stream(res::GetIndex().Open("lang/english.dict"));
 					for (std::string line;;)
 					{
 						// ignore comments and empty lines
@@ -578,7 +580,10 @@ namespace page
 						dict.insert(entry);
 					}
 				}
-				CATCH_ALL_AND_PRINT_WARNING
+				catch (const std::exception &e)
+				{
+					err::ReportWarning(e);
+				}
 				return dict;
 			}
 			const Dict &GetDict()

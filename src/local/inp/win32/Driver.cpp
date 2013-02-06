@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -36,7 +37,7 @@
 #include "../../cache/proxy/win32/Cursor.hpp"
 #include "../../env/win32/Window.hpp" // Window->env::Window, Window::GetHwnd
 #include "../../env/Window.hpp" // Window::{{focus,message,move,size}Sig,Get{Position,Size},HasFocus}
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../math/Aabb.hpp"
 #include "../../math/win32.hpp" // Make{Rect,Vector}
 #include "../../res/type/Theme.hpp" // Theme::cursor
@@ -527,10 +528,12 @@ namespace page
 					GetSystemMetrics(SM_CXDRAG),
 					GetSystemMetrics(SM_CYDRAG)) / 2;
 				if (!SystemParametersInfo(SPI_GETKEYBOARDDELAY, 0, &repeatDelay, 0))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to query keyboard repeat delay");
+					THROW((err::Exception<err::InpModuleTag, err::Win32PlatformTag>("failed to query keyboard repeat delay") <<
+						boost::errinfo_api_function("SystemParametersInfo")))
 				repeatDelay = (repeatDelay + 1) * 250;
 				if (!SystemParametersInfo(SPI_GETKEYBOARDSPEED, 0, &repeatSpeed, 0))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to query keyboard repeat speed");
+					THROW((err::Exception<err::InpModuleTag, err::Win32PlatformTag>("failed to query keyboard repeat speed") <<
+						boost::errinfo_api_function("SystemParametersInfo")))
 				repeatSpeed = 400 - repeatSpeed * 12;
 			}
 

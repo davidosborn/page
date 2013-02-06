@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,7 +31,7 @@
 #include <iostream> // c{err,log,out}, ios_base::Init, streambuf
 #include <memory> // shared_ptr
 
-#include "../cfg/State.hpp" // State::{GetGlobalInstance,log*}
+#include "../cfg/vars.hpp"
 #include "../util/init_priority.hpp" // LOG_INIT_PRIORITY
 #include "filter/IndentFilter.hpp"
 #include "filter/TimeFilter.hpp"
@@ -48,9 +49,9 @@ namespace page
 		{
 			class Initializer
 			{
-				/*------------+
-				| constructor |
-				+------------*/
+				/*--------------------------+
+				| constructors & destructor |
+				+--------------------------*/
 
 				public:
 				Initializer() :
@@ -66,9 +67,9 @@ namespace page
 							outRootSink = std::make_shared<BranchableStream>(),
 							errRootSink = std::make_shared<BranchableStream>();
 
-						if (*cfg::State::GetGlobalInstance().logConsole)
+						if (CVAR(logConsole))
 						{
-							if (*cfg::State::GetGlobalInstance().logConsoleSpawn)
+							if (CVAR(logConsoleSpawn))
 							{
 								auto consoleSink(std::make_shared<ConsoleSink>(PACKAGE_NAME " log"));
 								outRootSink->Attach(consoleSink);
@@ -80,9 +81,9 @@ namespace page
 								errRootSink->Attach(std::make_shared<StderrSink>());
 							}
 						}
-						if (*cfg::State::GetGlobalInstance().logFile)
+						if (CVAR(logFile))
 						{
-							auto fileSink(std::make_shared<FileSink>(*cfg::State::GetGlobalInstance().logFilePath));
+							auto fileSink(std::make_shared<FileSink>(absolute(CVAR(logFilePath), CVAR(installPath))));
 							outRootSink->Attach(fileSink);
 							errRootSink->Attach(fileSink);
 						}

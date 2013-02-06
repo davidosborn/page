@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,12 +29,13 @@
  */
 
 #include <cassert>
-#include <memory> // shared_ptr
+#include <memory> // {shared,unique}_ptr
 #include <unordered_map>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include "../../../err/exception/throw.hpp" // THROW
-#include "../../../util/scoped_ptr.hpp"
+
+#include "../../../err/Exception.hpp"
 #include "../../adapt/freetype.hpp" // FracToFloat, GetLib, OpenArgs
 #include "../../type/Font.hpp"
 #include "../register.hpp" // LoadFunction, REGISTER_LOADER
@@ -47,7 +49,7 @@ namespace page
 		{
 			FT_Face face;
 			if (FT_Open_Face(GetLib(), args.Get(), faceIndex, &face)) return 0;
-			util::scoped_ptr<Font> font(new Font);
+			const std::unique_ptr<Font> font(new Font);
 			try
 			{
 				// map existing characters to glyphs
@@ -68,7 +70,7 @@ namespace page
 					if (FT_IS_SCALABLE(face))
 					{
 						if (FT_Load_Glyph(face, iter->second, FT_LOAD_NO_SCALE))
-							THROW err::PlatformException<err::FreetypePlatformTag, err::ResourceTag>("failed to load glyph outline");
+							THROW((err::Exception<err::ResModuleTag, err::FreetypePlatformTag>("failed to load glyph outline")))
 						if (face->glyph->format == FT_GLYPH_FORMAT_OUTLINE)
 						{
 							// load contours
@@ -116,9 +118,9 @@ namespace page
 						for (unsigned i = 0; i < face->num_fixed_sizes; ++i)
 						{
 							if (FT_Select_Size(face, i))
-								THROW err::PlatformException<err::FreetypePlatformTag, err::ResourceTag>("failed to select bitmap strike");
+								THROW((err::Exception<err::ResModuleTag, err::FreetypePlatformTag>("failed to select bitmap strike")))
 							if (FT_Load_Glyph(face, iter->second, FT_LOAD_DEFAULT))
-								THROW err::PlatformException<err::FreetypePlatformTag, err::ResourceTag>("failed to load glyph bitmap");
+								THROW((err::Exception<err::ResModuleTag, err::FreetypePlatformTag>("failed to load glyph bitmap")))
 							if (face->glyph->format == FT_GLYPH_FORMAT_BITMAP)
 							{
 								// FIXME: implement; load renditions
@@ -149,7 +151,7 @@ namespace page
 						{
 							FT_Vector vector;
 							if (FT_Get_Kerning(face, left->second, right->second, FT_KERNING_UNSCALED, &vector))
-								THROW err::PlatformException<err::FreetypePlatformTag, err::ResourceTag>("failed to load kerning");
+								THROW((err::Exception<err::ResModuleTag, err::FreetypePlatformTag>("failed to load kerning")))
 							// FIXME: need to throw away kernings which are the
 							// same as the default kerning
 							if (FT_IS_SCALABLE(face))

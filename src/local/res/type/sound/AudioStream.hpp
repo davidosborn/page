@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,18 +31,32 @@
 #ifndef    page_local_res_type_sound_AudioStream_hpp
 #   define page_local_res_type_sound_AudioStream_hpp
 
-#	include "../../../util/NonCopyable.hpp"
+#	include "../../../util/class.hpp" // MAKE_UNCOPYABLE
 
 namespace page
 {
 	namespace res
 	{
-		struct AudioStream : util::NonCopyable
+		class AudioStream
 		{
-			// destroy
-			virtual ~AudioStream();
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			// operations
+			public:
+			virtual ~AudioStream() = default;
+
+			/*----------------------+
+			| copy & move semantics |
+			+----------------------*/
+
+			MAKE_UNCOPYABLE(AudioStream)
+
+			/*-----------+
+			| operations |
+			+-----------*/
+			
+			public:
 			virtual unsigned Read(void *, unsigned) = 0;
 			virtual void Seek(unsigned sample) = 0;
 		};

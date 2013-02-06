@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -31,6 +32,7 @@
 #   define page_local_res_type_sound_PcmDecoder_hpp
 
 #	include <memory> // shared_ptr
+
 #	include "../../../util/endian.hpp" // Endian
 #	include "AudioDecoder.hpp"
 
@@ -40,16 +42,30 @@ namespace page
 	{
 		class Pipe;
 
-		struct PcmDecoder : AudioDecoder
+		class PcmDecoder : public AudioDecoder
 		{
-			// construct
-			PcmDecoder(const std::shared_ptr<const Pipe> &,
-				unsigned channels, unsigned bitDepth,
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
+			PcmDecoder(
+				const std::shared_ptr<const Pipe> &,
+				unsigned channels,
+				unsigned bitDepth,
 				util::Endian = util::nativeEndian);
 
-			// operations
-			AudioStream *Open() const;
+			/*-----------+
+			| operations |
+			+-----------*/
+			
+			public:
+			std::unique_ptr<AudioStream> Open() const override;
 
+			/*-------------+
+			| data members |
+			+-------------*/
+			
 			private:
 			std::shared_ptr<const Pipe> pipe;
 			unsigned sampleSize;

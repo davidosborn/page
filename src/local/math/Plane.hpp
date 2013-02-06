@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -44,7 +45,7 @@ namespace page
 			explicit Plane(const Vector<n, T> & = NormVector<n, T>(), T = 0);
 			template <unsigned m, typename U> explicit Plane(const Plane<m, U> &);
 			/**
-			 * Creates a plane from a surface-normal vector and an arbitrary
+			 * Create a plane from a surface-normal vector and an arbitrary
 			 * spatial-coordinate which intersects with the plane.
 			 */
 			Plane(const Vector<n, T> &no, const Vector<n, T> &);

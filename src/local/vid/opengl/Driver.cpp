@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -34,8 +35,8 @@
 #include <string>
 #include <GL/gl.h>
 #include "../../env/Window.hpp" // Window::{GetSize,{focus,size}Sig}
-#include "../../err/exception/throw.hpp" // THROW
-#include "../../err/opengl.hpp" // CheckError
+#include "../../err/Exception.hpp"
+#include "../../err/platform/opengl.hpp" // CheckError
 #include "../../log/Indenter.hpp"
 #include "../../math/Color.hpp" // RgbaColor
 #include "../../math/Vector.hpp"
@@ -63,7 +64,8 @@ namespace page
 				// NOTE: reading from the framebuffer may produce indeterminate
 				// results when the OpenGL context is not entirely visible
 				math::Vector<2, int> wndSize(GetWindow().GetSize());
-				if (!All(wndSize)) THROW err::PlatformException<err::OpenglPlatformTag>("viewport too small");
+				if (!All(wndSize))
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("viewport too small")))
 				// initialize destination image
 				res::Image img;
 				img.size = size;
@@ -184,7 +186,7 @@ namespace page
 			{
 				glViewport(0, 0, size.x, size.y);
 				res->Resize(size);
-				
+
 				// HACK: the scissor region remains clipped to the initial size
 				// of the window unless we update it here
 				glScissor(0, 0, size.x, size.y);

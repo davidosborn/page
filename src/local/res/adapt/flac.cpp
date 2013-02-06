@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,9 +29,10 @@
  */
 
 #include <cassert>
-#include "../../err/exception/throw.hpp" // THROW
-#include "../../util/scoped_ptr.hpp"
-#include "../Pipe.hpp" // Pipe::Open
+#include <memory> // unique_ptr
+
+#include "../../err/Exception.hpp"
+#include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../Stream.hpp"
 #include "flac.hpp" // File, WriteCallback
 
@@ -48,7 +50,7 @@ namespace page
 					explicit ClientData(const Pipe &pipe, const WriteCallback &write) :
 						stream(pipe.Open()), write(write), written(false) {}
 
-					util::scoped_ptr<Stream> stream;
+					const std::unique_ptr<Stream> stream;
 					WriteCallback write;
 					bool written; // has the first frame been decoded?
 				};
@@ -137,15 +139,11 @@ namespace page
 					// NOTE: disabled; use return values rather than exceptions
 /*					switch (e)
 					{
-						case FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC:
-						THROW err::FormatException<err::ResourceTag>("lost synchronization");
-						case FLAC__STREAM_DECODER_ERROR_STATUS_BAD_HEADER:
-						THROW err::FormatException<err::ResourceTag>("corrupt header");
-						case FLAC__STREAM_DECODER_ERROR_STATUS_FRAME_CRC_MISMATCH:
-						THROW err::FormatException<err::ResourceTag>("CRC mismatch");
-						case FLAC__STREAM_DECODER_ERROR_STATUS_UNPARSEABLE_STREAM:
-						THROW err::FormatException<err::ResourceTag>("unrecognized fields");
-						default: THROW err::FormatException<err::ResourceTag>();
+						case FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC:          THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::FormatTag>("lost synchronization")))
+						case FLAC__STREAM_DECODER_ERROR_STATUS_BAD_HEADER:         THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::FormatTag>("corrupt header")))
+						case FLAC__STREAM_DECODER_ERROR_STATUS_FRAME_CRC_MISMATCH: THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::FormatTag>("CRC mismatch")))
+						case FLAC__STREAM_DECODER_ERROR_STATUS_UNPARSEABLE_STREAM: THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::FormatTag>("unrecognized fields")))
+						default:                                                   THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::FormatTag>()))
 					}*/
 				}
 
@@ -166,17 +164,12 @@ namespace page
 					switch (status)
 					{
 						case FLAC__STREAM_DECODER_INIT_STATUS_OK: break;
-						case FLAC__STREAM_DECODER_INIT_STATUS_UNSUPPORTED_CONTAINER:
-						THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag>("unsupported container");
-						case FLAC__STREAM_DECODER_INIT_STATUS_INVALID_CALLBACKS:
-						THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag>("invalid callbacks");
-						case FLAC__STREAM_DECODER_INIT_STATUS_MEMORY_ALLOCATION_ERROR:
-						THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag, typename err::AllocException<>::Tags>(err::AllocException<>().What());
-						case FLAC__STREAM_DECODER_INIT_STATUS_ERROR_OPENING_FILE:
-						THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag, typename err::FileAccessException<>::Tags>(err::FileAccessException<>().What());
-						case FLAC__STREAM_DECODER_INIT_STATUS_ALREADY_INITIALIZED:
-						THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag>("already initialized");
-						default: THROW err::PlatformException<err::FlacPlatformTag>();
+						case FLAC__STREAM_DECODER_INIT_STATUS_UNSUPPORTED_CONTAINER:   THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag>("unsupported container")))
+						case FLAC__STREAM_DECODER_INIT_STATUS_INVALID_CALLBACKS:       THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag>("invalid callbacks")))
+						case FLAC__STREAM_DECODER_INIT_STATUS_MEMORY_ALLOCATION_ERROR: THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::AllocTag>()))
+						case FLAC__STREAM_DECODER_INIT_STATUS_ERROR_OPENING_FILE:      THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::FileAccessTag>()))
+						case FLAC__STREAM_DECODER_INIT_STATUS_ALREADY_INITIALIZED:     THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag>("already initialized")))
+						default:                                                       THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag>()))
 					}
 				}
 				bool Init(FLAC__StreamDecoder *sd, const ClientData *cd, FLAC__StreamDecoderInitStatus status)
@@ -196,9 +189,9 @@ namespace page
 					while (!cd->written);
 					return true;
 				}
-				bool InitFlac(util::scoped_ptr<FLAC__StreamDecoder> &sd, const Pipe &pipe, const WriteCallback &write)
+				bool InitFlac(const std::unique_ptr<FLAC__StreamDecoder> &sd, const Pipe &pipe, const WriteCallback &write)
 				{
-					util::scoped_ptr<ClientData> cd(new ClientData(pipe, write));
+					const std::unique_ptr<ClientData> cd(new ClientData(pipe, write));
 					if (Init(sd.get(), cd.get(), FLAC__stream_decoder_init_stream(
 						sd.get(), Read, Seek, Tell, Length, Eof, Write, 0, Error, cd.get())))
 					{
@@ -208,9 +201,9 @@ namespace page
 					}
 					return false;
 				}
-				bool InitOggFlac(util::scoped_ptr<FLAC__StreamDecoder> &sd, const Pipe &pipe, const WriteCallback &write)
+				bool InitOggFlac(const std::unique_ptr<FLAC__StreamDecoder> &sd, const Pipe &pipe, const WriteCallback &write)
 				{
-					util::scoped_ptr<ClientData> cd(new ClientData(pipe, write));
+					const std::unique_ptr<ClientData> cd(new ClientData(pipe, write));
 					if (Init(sd.get(), cd.get(), FLAC__stream_decoder_init_ogg_stream(
 						sd.get(), Read, Seek, Tell, Length, Eof, Write, 0, Error, cd.get())))
 					{
@@ -227,16 +220,11 @@ namespace page
 			{
 				switch (e)
 				{
-					case FLAC__STREAM_DECODER_OGG_ERROR:
-					THROW err::PlatformException<err::OggPlatformTag, err::ResourceTag>();
-					case FLAC__STREAM_DECODER_SEEK_ERROR:
-					THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>("stream seek error");
-					case FLAC__STREAM_DECODER_ABORTED:
-					THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>(err::StreamReadException<>().What());
-					case FLAC__STREAM_DECODER_MEMORY_ALLOCATION_ERROR:
-					THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag, typename err::AllocException<>::Tags>(err::AllocException<>().What());
-					case FLAC__STREAM_DECODER_UNINITIALIZED:
-					THROW err::PlatformException<err::FlacPlatformTag, err::ResourceTag>("not initialized");
+					case FLAC__STREAM_DECODER_OGG_ERROR:               THROW((err::Exception<err::ResModuleTag, err::OggPlatformTag>()))
+					case FLAC__STREAM_DECODER_SEEK_ERROR:              THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::StreamSeekTag>()))
+					case FLAC__STREAM_DECODER_ABORTED:                 THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::StreamReadTag>()))
+					case FLAC__STREAM_DECODER_MEMORY_ALLOCATION_ERROR: THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::AllocTag>()))
+					case FLAC__STREAM_DECODER_UNINITIALIZED:           THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag>("not initialized")))
 				}
 			}
 			void CheckError(const FLAC__StreamDecoder *sd)
@@ -261,7 +249,7 @@ namespace page
 			}
 			File Open(const Pipe &pipe, const WriteCallback &write)
 			{
-				util::scoped_ptr<FLAC__StreamDecoder> sd(
+				const std::unique_ptr<FLAC__StreamDecoder> sd(
 					FLAC__stream_decoder_new(), FLAC__stream_decoder_delete);
 				return
 					InitFlac   (sd, pipe, write) ||

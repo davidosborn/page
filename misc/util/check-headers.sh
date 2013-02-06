@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. "$0/../include/config.sh"
+
 fill() # string, length
 {
 	result="$1"
@@ -9,12 +11,12 @@ fill() # string, length
 	echo $result
 }
 
-echo "checking header guards..."
-for file in `find ../../src -iname *.hpp`; do
-	nice_path=${file##../../}
-	echo -n "  `fill \"$nice_path\" 60`"
-	inc_macro="${nice_path##src/}"
-	inc_macro="${inc_macro%%.hpp}"
-	inc_macro=`echo $inc_macro | tr / _`
-	grep "#ifndef    page_${inc_macro}_inc" "$file" >/dev/null && echo "ok" || echo "FAILED"
+echo "checking headers..."
+for file in $( find "$top_dir/src/local" -iname *.hpp ); do
+	nice_path=${file##$top_dir/}
+	echo -n "  `fill \"$nice_path\" 70`"
+	include_guard="${nice_path##src/}"
+	include_guard="${include_guard%%.hpp}"
+	include_guard=`echo $include_guard | tr / _`
+	grep "#ifndef    page_${include_guard}_hpp" "$file" >/dev/null && grep "#   define page_${include_guard}_hpp" "$file" >/dev/null && echo "ok" || echo "FAILED"
 done

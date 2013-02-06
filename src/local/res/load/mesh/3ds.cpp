@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <cassert>
 #include <memory> // shared_ptr
-#include "../../Pipe.hpp" // Pipe::Open
+#include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../Stream.hpp"
 #include "../../type/Mesh.hpp"
 #include "../register.hpp" // LoadFunction, REGISTER_LOADER

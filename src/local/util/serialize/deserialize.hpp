@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -50,7 +51,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Deserializes a non-string value from a stream.
+		 * Deserialize a non-string value from a stream.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
 		 */
@@ -64,7 +65,7 @@ namespace page
 					!is_string<T>::value)));
 
 		/**
-		 * Deserializes a string from a stream.
+		 * Deserialize a string from a stream.
 		 *
 		 * @note Characters from the stream will be added to the string until
 		 *       either EOF is reached or a terminating character is read.
@@ -80,7 +81,7 @@ namespace page
 				ENABLE_IF((is_string_2<String, Char, CharTraits>::value)));
 
 		/**
-		 * Deserializes a string from a stream, where the character encoding of
+		 * Deserialize a string from a stream, where the character encoding of
 		 * the string is different from that of the stream.
 		 *
 		 * @note Characters from the stream will be added to the string until
@@ -105,7 +106,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Deserializes an unlimited sequence of values from a stream, where the
+		 * Deserialize an unlimited sequence of values from a stream, where the
 		 * values are written to a sequence container.
 		 *
 		 * @note The sequence container will be cleared before deserialization
@@ -133,7 +134,7 @@ namespace page
 					util::is_compatible_with_insert_iterator<Sequence>::value)));
 
 		/**
-		 * Deserializes an unlimited sequence of values from a stream, where the
+		 * Deserialize an unlimited sequence of values from a stream, where the
 		 * values are written to an output iterator.
 		 *
 		 * @note The values will be deserialized in sequence until either EOF is
@@ -157,7 +158,7 @@ namespace page
 					!std::is_pointer<OutputIterator>::value));
 
 		/**
-		 * Deserializes a range of values from a stream, where the constness of
+		 * Deserialize a range of values from a stream, where the constness of
 		 * the range is not propogated to its elements.
 		 *
 		 * @note The values will be deserialized in sequence until either EOF is
@@ -184,7 +185,7 @@ namespace page
 					!util::is_compatible_with_insert_iterator<Range>::value)));
 
 		/**
-		 * Deserializes a range of values from a stream, where the constness of
+		 * Deserialize a range of values from a stream, where the constness of
 		 * the range is propogated to its elements.
 		 *
 		 * @note The values will be deserialized in sequence until either EOF is
@@ -211,7 +212,7 @@ namespace page
 					!util::is_compatible_with_insert_iterator<Range>::value)));
 
 		/**
-		 * Deserializes a range of values from a stream, where the range is
+		 * Deserialize a range of values from a stream, where the range is
 		 * specified by the @c first and @c last iterators, and where @c last
 		 * points to one element past the end of the range.
 		 *
@@ -235,7 +236,7 @@ namespace page
 				ENABLE_IF(is_iterator<Iterator>::value));
 
 		/**
-		 * Deserializes @c std::tuple from a stream, where the tuple is an
+		 * Deserialize @c std::tuple from a stream, where the tuple is an
 		 * lvalue reference.
 		 *
 		 * @note The tuple elements will be deserialized in sequence until
@@ -257,8 +258,8 @@ namespace page
 				const LastDelimiter & = DeserializationDelimiter<Char>::None());
 		
 		/**
-		 * Deserializes @c std::tuple from a stream, where the tuple is an
-		 * rvalue reference.
+		 * Deserialize @c std::tuple from a stream, where the tuple is an rvalue
+		 * reference.
 		 *
 		 * @note The tuple elements will be deserialized in sequence until
 		 *       either EOF is reached or the entire tuple has been
@@ -279,7 +280,7 @@ namespace page
 				const LastDelimiter & = DeserializationDelimiter<Char>::None());
 
 		/**
-		 * Deserializes @c std::pair from a stream, where the pair is an lvalue
+		 * Deserialize @c std::pair from a stream, where the pair is an lvalue
 		 * reference.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
@@ -295,7 +296,7 @@ namespace page
 				const LastDelimiter & = DeserializationDelimiter<Char>::None());
 
 		/**
-		 * Deserializes @c std::pair from a stream, where the pair is an rvalue
+		 * Deserialize @c std::pair from a stream, where the pair is an rvalue
 		 * reference.
 		 *
 		 * @throw nothrow Sets @c failbit on error.
@@ -316,7 +317,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Deserializes from a stream rvalue.  This is useful for working with
+		 * Deserialize from a stream rvalue.  This is useful for working with
 		 * @c std::basic_istringstream.
 		 */
 		template <typename Char, typename CharTraits, typename... Args>

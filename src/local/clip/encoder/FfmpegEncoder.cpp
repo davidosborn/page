@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,13 +28,17 @@
  * of this software.
  */
 
+// FFmpeg
 extern "C"
 {
 	#include <libavformat/avformat.h>
 }
-#include "../../err/exception/throw.hpp" // THROW
+
+// local
+#include "../../err/Exception.hpp"
 #include "../../math/Vector.hpp"
-#include "register.hpp" // MakeEncoderFactory, REGISTER_ENCODER
+#include "../../util/init_priority.hpp" // REG_INIT_PRIORITY
+#include "EncoderFactory.hpp"
 #include "FfmpegEncoder.hpp"
 
 namespace page
@@ -62,9 +67,25 @@ namespace page
 			// FIXME: implement
 		}
 
-		// FIXME: may need extensions and names for all FFmpeg-supported formats
-		REGISTER_ENCODER(
-			MakeEncoderFactory<FfmpegEncoder>(),
-			"", "", 0)
+		/*-------------+
+		| registration |
+		+-------------*/
+
+		namespace
+		{
+			/**
+			 * A static initializer which registers @c FfmpegEncoder with
+			 * @c Encoder::Factory::GetGlobalInstance().
+			 */
+			struct Initializer
+			{
+				Initializer()
+				{
+					// FIXME: may need extensions and names for all FFmpeg-supported formats
+					EncoderFactory::GetGlobalInstance().Register<FfmpegEncoder>("", "", 0);
+				}
+			}
+				initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
+		}
 	}
 }

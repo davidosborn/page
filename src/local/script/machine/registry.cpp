@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <cassert>
 #include <unordered_map>
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "registry.hpp" // MachineFactory
 
 namespace page
@@ -56,7 +57,7 @@ namespace page
 			const Registry &reg(GetRegistry());
 			Registry::Factories::const_iterator iter(reg.factories.find(format));
 			if (iter != reg.factories.end()) return iter->second(router);
-			THROW err::Exception<err::NotAvailableTag>("no " + GetName(format) + " machine available");
+			THROW((err::Exception<err::ScriptModuleTag, err::NotAvailableTag>("no " + GetName(format) + " machine available")))
 		}
 
 		// registration

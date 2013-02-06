@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -35,9 +36,11 @@
 #include <cstdint> // uintptr_t
 #include <cstdlib> // abs
 #include <locale> // locale, num_get, num_put
+#include <sstream> // istringstream
+#include <string>
+
 #include "../math/float.hpp" // {,Is}{Inf,Nan}
 #include "ios.hpp" // IosBaseFmtSaver
-#include "sstream.hpp" // make_istringstream
 
 namespace page
 {
@@ -142,7 +145,7 @@ namespace page
 					};
 					if (!Match(targets.begin(), targets.end(), seq, err, val))
 					{
-						MAKE_ISTRINGSTREAM_1(char, seq)//auto ss(make_istringstream<char>(seq));
+						std::istringstream ss(seq);
 						Base::do_get(iter_type(ss.rdbuf()), iter_type(), str, err, val);
 						if (err != std::ios_base::goodbit)
 						{
@@ -186,7 +189,7 @@ namespace page
 				};
 				if (!Match(targets.begin(), targets.end(), seq, err, val))
 				{
-					MAKE_ISTRINGSTREAM_1(char, seq)//auto ss(make_istringstream(seq));
+					std::istringstream ss(seq);
 					Base::do_get(iter_type(ss.rdbuf()), iter_type(), str, err, val);
 				}
 				val = std::copysign(val, sign);

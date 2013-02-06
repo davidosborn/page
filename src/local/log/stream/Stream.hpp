@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -52,32 +53,32 @@ namespace page
 
 			public:
 			/**
-			 * Writes a single character to the stream.
+			 * Write a single character to the stream.
 			 */
 			void Write(char);
 
 			/**
-			 * Writes an array of characters to the stream.
+			 * Write an array of characters to the stream.
 			 */
 			void Write(const char *, unsigned);
 
 			/**
-			 * Writes a string to the stream.
+			 * Write a string to the stream.
 			 */
 			void Write(const std::string &);
 
 			/**
-			 * Writes a C-string to the stream.
+			 * Write a C-string to the stream.
 			 */
 			void Write(const char *);
 
 			/**
-			 * Flushes any buffered output.
+			 * Flush any buffered output.
 			 */
 			void Flush();
 
 			/**
-			 * Clears the stream of any intermediate state.
+			 * Clear the stream of any intermediate state.
 			 */
 			void Clear();
 
@@ -87,21 +88,21 @@ namespace page
 
 			private:
 			/**
-			 * Writes a string to the stream.
+			 * Write a string to the stream.
 			 *
 			 * @note Implementations are permitted to buffer the output.
 			 */
 			virtual void DoWrite(const std::string &) = 0;
 
 			/**
-			 * Flushes any buffered output.
+			 * Flush any buffered output.
 			 *
 			 * @note The default implementation does nothing.
 			 */
 			virtual void DoFlush();
 
 			/**
-			 * Clears the stream of any intermediate state.
+			 * Clear the stream of any intermediate state.
 			 *
 			 * @note The default implementation does nothing.
 			 */
@@ -115,12 +116,12 @@ namespace page
 
 			public:
 			/**
-			 * Returns @c *this up-casted to @c std::streambuf.
+			 * @return @c *this up-casted to @c std::streambuf.
 			 */
 			std::streambuf &streambuf();
 
 			/**
-			 * Returns @c *this up-casted to @c std::streambuf.
+			 * @return @c *this up-casted to @c std::streambuf.
 			 */
 			const std::streambuf &streambuf() const;
 

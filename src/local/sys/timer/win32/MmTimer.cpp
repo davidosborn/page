@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,7 +28,7 @@
  * of this software.
  */
 
-#include "../../../err/exception/throw.hpp" // THROW
+#include "../../../err/Exception.hpp"
 #include "MmTimer.hpp"
 
 namespace page
@@ -40,7 +41,7 @@ namespace page
 			MmTimer::MmTimer()
 			{
 				if (timeBeginPeriod(1))
-					THROW err::PlatformException<err::WinPlatform32>("failed to set multimedia timer resolution");
+					THROW((err::Exception<err::SysModuleTag, err::WinPlatform32>("failed to set multimedia timer resolution")))
 				time = timeGetTime();
 			}
 			MmTimer::~MmTimer()

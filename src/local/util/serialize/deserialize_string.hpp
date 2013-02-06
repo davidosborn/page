@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -42,7 +43,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Deserializes from @c std::basic_string by forwarding to the stream
+		 * Deserialize from @c std::basic_string by forwarding to the stream
 		 * deserialization functions.
 		 */
 		template <typename Char, typename CharTraits, typename Allocator, typename... Args>
@@ -50,7 +51,7 @@ namespace page
 				const std::basic_string<Char, CharTraits, Allocator> &, Args &&...);
 
 		/**
-		 * Deserializes from a string literal by forwarding to the stream
+		 * Deserialize from a string literal by forwarding to the stream
 		 * deserialization functions.
 		 */
 		template <typename Char, typename... Args>

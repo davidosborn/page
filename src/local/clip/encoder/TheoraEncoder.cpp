@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,18 +28,25 @@
  * of this software.
  */
 
+// C++
 #include <cstdlib> // {,s}rand
 #include <ctime> // time
-#include "../../err/exception/throw.hpp" // THROW
+
+// local
+#include "../../err/Exception.hpp"
 #include "../../math/algorithm.hpp" // RgbToYcbcr420
-#include "register.hpp" // MakeEncoderFactory, REGISTER_ENCODER
+#include "../../util/init_priority.hpp" // REG_INIT_PRIORITY
+#include "EncoderFactory.hpp"
 #include "TheoraEncoder.hpp"
 
 namespace page
 {
 	namespace clip
 	{
-		// construct/destroy
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
 		TheoraEncoder::TheoraEncoder(const Callback &cb, const math::Vector<2, unsigned> &size, float frameRate, float quality) :
 			Encoder(cb, Content(size) * 3),
 			size(size), size16((size + 15) & ~0xfu), offset((size16 - size) / 2)
@@ -46,7 +54,7 @@ namespace page
 			// initialize ogg stream
 			std::srand(std::time(0));
 			if (ogg_stream_init(&os, std::rand()))
-				THROW err::PlatformException<err::OggPlatformTag>("failed to initialize stream");
+				THROW((err::Exception<err::ClipModuleTag, err::OggPlatformTag>("failed to initialize stream")))
 			try
 			{
 				// initialize Theora encoder
@@ -77,7 +85,7 @@ namespace page
 				if (theora_encode_init(&ts, &ti))
 				{
 					theora_info_clear(&ti);
-					THROW err::PlatformException<err::TheoraPlatformTag>("failed to initialize encoder");
+					THROW((err::Exception<err::ClipModuleTag, err::TheoraPlatformTag>("failed to initialize encoder")))
 				}
 				theora_info_clear(&ti);
 				try
@@ -122,6 +130,7 @@ namespace page
 				throw;
 			}
 		}
+		
 		TheoraEncoder::~TheoraEncoder()
 		{
 			if (!tbData.empty()) EncodeBuffer(true);
@@ -129,7 +138,10 @@ namespace page
 			ogg_stream_destroy(&os);
 		}
 
-		// encoding
+		/*---------+
+		| encoding |
+		+---------*/
+
 		void TheoraEncoder::Encode(const void *s)
 		{
 			if (tbData.empty())
@@ -163,6 +175,7 @@ namespace page
 				tb.v + halfOffset.y * halfSize16.x + halfOffset.x,
 				size, size.x * 3, size16.x);
 		}
+		
 		void TheoraEncoder::EncodeBuffer(bool lastFrame)
 		{
 			theora_encode_YUVin(&ts, &tb);
@@ -176,8 +189,24 @@ namespace page
 			}
 		}
 
-		REGISTER_ENCODER(
-			MakeEncoderFactory<TheoraEncoder>(),
-			"ogg,ogv,ogx", "theora", 50)
+		/*-------------+
+		| registration |
+		+-------------*/
+
+		namespace
+		{
+			/**
+			 * A static initializer which registers @c TheoraEncoder with
+			 * @c Encoder::Factory::GetGlobalInstance().
+			 */
+			struct Initializer
+			{
+				Initializer()
+				{
+					EncoderFactory::GetGlobalInstance().Register<TheoraEncoder>("theora", "ogg,ogv,ogx", 50);
+				}
+			}
+				initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
+		}
 	}
 }

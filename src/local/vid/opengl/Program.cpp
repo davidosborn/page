@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -35,10 +36,12 @@
 #include <iostream> // c{log,out}
 #include <string>
 #include <vector>
-#include "../../cfg.hpp" // logVerbose
-#include "../../err/exception/throw.hpp" // THROW
+
+#include <boost/io/ios_state.hpp> // ios_all_saver
+
+#include "../../cfg/vars.hpp"
+#include "../../err/Exception.hpp"
 #include "../../log/Indenter.hpp"
-#include "../../util/ios.hpp" // BasicIosFormatSaver
 #include "../../util/opengl/shader.hpp" // GetUniformTypeName
 #include "../../util/opengl/string.hpp" // Native, String
 #include "../../util/string.hpp" // Trim
@@ -180,7 +183,8 @@ namespace page
 			const Program::Uniform &Program::GetUniform(const std::string &name) const
 			{
 				const Uniform *uniform = FindUniform(name);
-				if (!uniform) THROW err::PlatformException<err::OpenglPlatformTag>(name + " is not an active uniform");
+				if (!uniform)
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>(name + " is not an active uniform")))
 				return *uniform;
 			}
 			const Program::Uniform *Program::FindUniform(const std::string &name) const
@@ -200,7 +204,8 @@ namespace page
 			{
 				GLint activeUniforms;
 				glGetObjectParameterivARB(*handle, GL_OBJECT_ACTIVE_UNIFORMS_ARB, &activeUniforms);
-				if (glGetError()) THROW err::PlatformException<err::OpenglPlatformTag>("failed to get number of uniforms");
+				if (glGetError())
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to get number of uniforms")))
 				for (unsigned i = 0; i < activeUniforms; ++i)
 				{
 					std::vector<GLcharARB> nameBuffer(32);
@@ -210,7 +215,8 @@ namespace page
 					{
 						GLsizei length;
 						glGetActiveUniformARB(*handle, i, nameBuffer.size(), &length, &size, &type, &*nameBuffer.begin());
-						if (glGetError()) THROW err::PlatformException<err::OpenglPlatformTag>("failed to get uniform information");
+						if (glGetError())
+							THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to get uniform information")))
 						if (length < nameBuffer.size() - 1)
 						{
 							nameBuffer.resize(length);
@@ -220,14 +226,16 @@ namespace page
 					}
 					std::string name(nameBuffer.begin(), std::find(nameBuffer.begin(), nameBuffer.end(), '['));
 					GLint location = glGetUniformLocationARB(*handle, name.c_str());
-					if (glGetError()) THROW err::PlatformException<err::OpenglPlatformTag>("failed to get uniform location");
+					if (glGetError())
+						THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to get uniform location")))
 					Uniform uniform = {name, size, type, location};
 					uniforms.insert(std::make_pair(name, uniform));
 				}
-				if (*cfg::logVerbose)
+				if (CVAR(logVerbose))
 				{
 					std::cout << "enumerating uniforms" << std::endl;
 					log::Indenter indenter;
+
 					// build table of uniform data
 					Table table;
 					table.reserve(uniforms.size());
@@ -244,16 +252,20 @@ namespace page
 							row.name += std::string("[") + util::lexical_cast<std::string>(uniform.size) + ']';
 						table.push_back(row);
 					}
+
 					// sort table
 					std::sort(table.begin(), table.end(), CompareTableRow());
+
 					// calculate alignment
 					std::string::size_type width = 0;
 					for (Table::const_iterator row(table.begin()); row != table.end(); ++row)
 						width = std::max(row->type.size(), width);
+
 					// set flags for trailing alignment
-					util::BasicIosFormatSaver<char> iosFormatSaver(std::cout);
+					boost::io::ios_all_saver iosFormatSaver(std::cout);
 					std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 					std::cout.fill(' ');
+
 					// print table
 					for (Table::const_iterator row(table.begin()); row != table.end(); ++row)
 						std::cout << std::setw(width + 1) << row->type << row->name << std::endl;
@@ -267,7 +279,7 @@ namespace page
 				assert(type != GL_FRAGMENT_SHADER_ARB || haveArbFragmentShader);
 				GLhandleARB shader = glCreateShaderObjectARB(type);
 				if (!shader)
-					THROW err::PlatformException<err::OpenglPlatformTag>("failed to create shader object");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to create shader object")))
 				util::opengl::String ns(util::opengl::Native(source));
 				const GLcharARB *src = ns.c_str();
 				glShaderSourceARB(shader, 1, &src, 0);
@@ -276,14 +288,14 @@ namespace page
 				glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
 				if (!status)
 				{
-					if (*cfg::logVerbose)
+					if (CVAR(logVerbose))
 					{
 						std::clog << "compile error" << std::endl;
 						log::Indenter indenter;
 						std::clog << GetInfoLog(shader) << std::endl;
 					}
 					glDeleteObjectARB(shader);
-					THROW err::PlatformException<err::OpenglPlatformTag>("failed to compile shader");
+					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to compile shader")))
 				}
 				return shader;
 			}

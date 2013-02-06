@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -118,7 +119,7 @@ namespace page
 			}
 		}
 		/**
-		 * Slices a @c std::tuple, creating a new @c std::tuple.
+		 * Slice a @c std::tuple, creating a new @c std::tuple.
 		 *
 		 * @note This implementation supports Python-like indexing, where
 		 *       negative indices are counted back from the end.
@@ -132,7 +133,7 @@ namespace page
 		///@}
 
 		/**
-		 * Returns the last element in a @c std::tuple.
+		 * Return the last element in a @c std::tuple.
 		 */
 		template <typename Tuple>
 			auto tuple_back(Tuple &&t) ->
@@ -146,7 +147,7 @@ namespace page
 		}
 
 		/**
-		 * Returns the first element in a @c std::tuple.
+		 * Return the first element in a @c std::tuple.
 		 */
 		template <typename Tuple>
 			auto tuple_front(Tuple &&t) ->
@@ -156,7 +157,7 @@ namespace page
 		}
 
 		/**
-		 * Removes the last element from a @c std::tuple.
+		 * Remove the last element from a @c std::tuple.
 		 */
 		template <typename Tuple>
 			auto tuple_pop_back(Tuple &&t) ->
@@ -166,7 +167,7 @@ namespace page
 		}
 
 		/**
-		 * Removes the first element from a @c std::tuple.
+		 * Remove the first element from a @c std::tuple.
 		 */
 		template <typename Tuple>
 			auto tuple_pop_front(Tuple &&t) ->
@@ -229,7 +230,7 @@ namespace page
 			}
 		}
 		/**
-		 * Reverses a @c std::tuple.
+		 * Reverse a @c std::tuple.
 		 */
 		template <typename Tuple>
 			auto tuple_reverse(Tuple &&t) ->
@@ -296,7 +297,7 @@ namespace page
 			}
 		}
 		/**
-		 * Calls a function, passing the @c std::tuple values as arguments.
+		 * Call a function, passing the @c std::tuple values as arguments.
 		 *
 		 * @note Consider using @c std::forward_as_tuple to build the tuple, as
 		 *       it preserves rvalues.

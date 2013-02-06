@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,10 +29,11 @@
  */
 
 #include <cassert>
-#include <memory> // shared_ptr
+#include <memory> // {shared,unique}_ptr
+
 #include <expat.h>
-#include "../../../../util/scoped_ptr.hpp"
-#include "../../../Pipe.hpp" // Pipe::Open
+
+#include "../../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../../Stream.hpp" // Stream::~Stream
 #include "../../../type/Cursor.hpp"
 #include "../../register.hpp" // LoadFunction, REGISTER_LOADER
@@ -43,15 +45,15 @@ namespace page
 		Cursor *LoadNativeExpatCursor(const std::shared_ptr<const Pipe> &pipe)
 		{
 			assert(pipe);
-			util::scoped_ptr<Stream> stream(pipe->Open());
+			const std::unique_ptr<Stream> stream(pipe->Open());
 			// FIXME: implement
-			util::scoped_ptr<Cursor> cursor(new Cursor);
+			const std::unique_ptr<Cursor> cursor(new Cursor);
 			return cursor.release();
 		}
 
 		LoadFunction GetNativeExpatCursorLoader(const Pipe &pipe)
 		{
-			util::scoped_ptr<Stream> stream(pipe.Open());
+			const std::unique_ptr<Stream> stream(pipe.Open());
 			// FIXME: implement
 			return 0;
 		}

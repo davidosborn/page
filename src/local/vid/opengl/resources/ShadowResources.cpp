@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -31,19 +32,18 @@
 #include <array>
 #include <cassert>
 #include <iostream> // cout
-#include <memory> // shared_ptr
+#include <memory> // {shared,unique}_ptr
 #include <string>
 
 #include <boost/optional.hpp>
 
 #include "../../../cache/proxy/Resource.hpp"
-#include "../../../cfg.hpp" // logVerbose
-#include "../../../cfg/opengl.hpp" // vidShadow{,Down,Filter,Type}
-#include "../../../err/exception/catch.hpp" // CATCH_ALL{,_AND_PRINT_WARNING}_AND, PRINT_WARNING
-#include "../../../err/exception/throw.hpp" // THROW
+#include "../../../cfg/vars.hpp"
+#include "../../../cfg/vars.hpp"
+#include "../../../err/Exception.hpp"
+#include "../../../err/report.hpp" // ReportWarning, std::exception
 #include "../../../log/Indenter.hpp"
 #include "../../../math/Vector.hpp"
-#include "../../../util/scoped_ptr.hpp"
 #include "../ext.hpp" // ARB_{{fragment,vertex}_shader,shader_objects,texture_float}, ATI_texture_float, EXT_framebuffer_object
 #include "../Program.hpp"
 #include "../RenderTargetPool.hpp"
@@ -101,7 +101,7 @@ namespace page
 						else assert(!"no compatible color format");
 						// select filtering mode
 						RenderTargetPool::Flags flags = depthFramebufferFlag;
-						if (*cfg::opengl::vidShadowFilter)
+						if (CVAR(opengl)::renderShadowFilter)
 							flags = static_cast<RenderTargetPool::Flags>(
 								flags | filterFramebufferFlag);
 						// create best compatible render-target pool
@@ -111,18 +111,18 @@ namespace page
 							{
 								return new RenderTargetPool(size, colorFormat, 1, flags);
 							}
-							CATCH_ALL_AND(
+							catch (const std::exception &e)
 							{
 								if (flags & filterFramebufferFlag)
 								{
-									PRINT_WARNING
-									if (*cfg::logVerbose)
+									err::ReportWarning(e);
+									if (CVAR(logVerbose))
 										std::cout << "falling back to unfiltered mode" << std::endl;
 									flags = static_cast<RenderTargetPool::Flags>(
 										flags ^ filterFramebufferFlag);
 								}
 								else throw;
-							})
+							}
 						}
 					}
 				};
@@ -137,7 +137,7 @@ namespace page
 					}
 					Program *MakeProgram() const
 					{
-						util::scoped_ptr<Program> program(new Program(
+						const std::unique_ptr<Program> program(new Program(
 							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow.fs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow.vs"),
 							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow-packed.fs"),
@@ -178,7 +178,7 @@ namespace page
 						else assert(!"no compatible color format");
 						// select filtering mode
 						RenderTargetPool::Flags flags = depthFramebufferFlag;
-						if (*cfg::opengl::vidShadowFilter)
+						if (CVAR(opengl)::renderShadowFilter)
 							flags = static_cast<RenderTargetPool::Flags>(
 								flags | filterFramebufferFlag);
 						// create best compatible render-target pool
@@ -188,18 +188,18 @@ namespace page
 							{
 								return new RenderTargetPool(size, colorFormat, 1, flags);
 							}
-							CATCH_ALL_AND(
+							catch (const std::exception &e)
 							{
 								if (flags & filterFramebufferFlag)
 								{
-									PRINT_WARNING
-									if (*cfg::logVerbose)
+									err::ReportWarning(e);
+									if (CVAR(logVerbose))
 										std::cout << "falling back to unfiltered mode" << std::endl;
 									flags = static_cast<RenderTargetPool::Flags>(
 										flags ^ filterFramebufferFlag);
 								}
 								else throw;
-							})
+							}
 						}
 					}
 				};
@@ -227,7 +227,7 @@ namespace page
 					const TypeIniter &initer(**iter);
 					// FIXME: C++0x with strong enums won't need this
 					// static_cast (N2347)
-					if (initer.type == static_cast<ShadowResources::Type>(*cfg::opengl::vidShadowType))
+					if (initer.type == static_cast<ShadowResources::Type>(CVAR(opengl)::renderShadowType))
 					{
 						std::rotate(initers.begin(), iter, iter + 1);
 						break;
@@ -244,7 +244,7 @@ namespace page
 					{
 						// create program
 						boost::optional<log::Indenter> indenter;
-						if (*cfg::logVerbose)
+						if (CVAR(logVerbose))
 						{
 							std::cout << "creating program" << std::endl;
 							indenter = boost::in_place();
@@ -253,20 +253,28 @@ namespace page
 						{
 							program.reset(initer.MakeProgram());
 						}
-						CATCH_ALL_AND_PRINT_WARNING_AND(throw;)
-						// create render-target pool
-						if (*cfg::logVerbose)
+						catch (const std::exception &e)
 						{
-							indenter = boost::none_t;
+							err::ReportWarning(e);
+							throw;
+						}
+						// create render-target pool
+						if (CVAR(logVerbose))
+						{
+							indenter = boost::none;
 							std::cout << "creating render-target pool" << std::endl;
 							indenter = boost::in_place();
 						}
 						try
 						{
 							renderTargetPool.reset(initer.MakeRenderTargetPool(
-								renderTargetSize >> *cfg::opengl::vidShadowDown));
+								renderTargetSize >> CVAR(opengl)::renderShadowDown));
 						}
-						CATCH_ALL_AND_PRINT_WARNING_AND(throw;)
+						catch (const std::exception &e)
+						{
+							err::ReportWarning(e);
+							throw;
+						}
 					}
 					catch (...)
 					{
@@ -279,7 +287,7 @@ namespace page
 					type = initer.type;
 					return;
 				}
-				THROW err::PlatformException<err::OpenglPlatformTag>("no compatible shadow type");
+				THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("no compatible shadow type")))
 			}
 
 			// access
@@ -302,7 +310,7 @@ namespace page
 				// NOTE: this should be enough to ensure compatibility with at
 				// least one shadow type
 				return
-					*cfg::opengl::vidShadow &&
+					CVAR(opengl)::renderShadow &&
 					haveArbFragmentShader &&
 					haveArbShaderObjects &&
 					haveArbVertexShader &&

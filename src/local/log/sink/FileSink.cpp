@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,7 +28,7 @@
  * of this software.
  */
 
-#include "../../cfg/State.hpp" // State::{GetGlobalInstance,installPath}
+#include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"
 #include "FileSink.hpp"
 
@@ -41,15 +42,14 @@ namespace page
 
 		FileSink::FileSink(const boost::filesystem::path &path)
 		{
-			auto absPath = absolute(path, *cfg::State::GetGlobalInstance().installPath);
+			auto absPath = absolute(path, CVAR(installPath));
 			fs.open(absPath.string());
 			if (!fs)
 			{
-				BOOST_THROW_EXCEPTION(
-					err::FileException("failed to open file stream") <<
+				THROW((err::Exception<err::LogModuleTag, err::FileTag>("failed to open file stream") <<
 					boost::errinfo_api_function("std::ofstream::open") <<
 					boost::errinfo_file_name(absPath.string()) <<
-					boost::errinfo_file_open_mode("w"));
+					boost::errinfo_file_open_mode("w")))
 			}
 		}
 
@@ -60,7 +60,7 @@ namespace page
 		void FileSink::DoWrite(const std::string &s)
 		{
 			if (!fs.write(s.data(), s.size()))
-				BOOST_THROW_EXCEPTION(err::FileException("file write error"));
+				THROW((err::Exception<err::LogModuleTag, err::FileWriteTag>()))
 		}
 	}
 }

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,12 +31,12 @@
 #include <cassert>
 #include <cstdint> // uint16_t
 #include <cstring> // memcmp
-#include <memory> // shared_ptr
-#include "../../../err/exception/throw.hpp" // THROW
+#include <memory> // {shared,unique}_ptr
+
+#include "../../../err/Exception.hpp"
 #include "../../../util/endian.hpp" // littleEndian, TransformEndian
-#include "../../../util/scoped_ptr.hpp"
 #include "../../fmt/wav.hpp"
-#include "../../Pipe.hpp" // Pipe::Open
+#include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../pipe/SubPipe.hpp"
 #include "../../Stream.hpp"
 #include "../../type/Sound.hpp"
@@ -49,7 +50,7 @@ namespace page
 		Sound *LoadWavSound(const std::shared_ptr<const Pipe> &pipe)
 		{
 			assert(pipe);
-			util::scoped_ptr<Stream> stream(pipe->Open());
+			const std::unique_ptr<Stream> stream(pipe->Open());
 			fmt::Header header;
 			if (stream->ReadSome(&header, sizeof header) != sizeof header ||
 				std::memcmp(header.id, fmt::riff, sizeof header.id) ||
@@ -58,31 +59,31 @@ namespace page
 			stream->Read(&format, sizeof format);
 			util::TransformEndian(&format, fmt::formatFormat, util::littleEndian);
 			if (std::memcmp(format.id, fmt::fmt, sizeof format.id))
-				THROW err::FormatException<err::ResourceTag>("unexpected chunk id");
+				THROW((err::Exception<err::ResModuleTag, err::FormatTag>("unexpected chunk id")))
 			if (format.format != 1)
-				THROW err::FormatException<err::ResourceTag>("unsupported compression format");
+				THROW((err::Exception<err::ResModuleTag, err::FormatTag>("unsupported compression format")))
 			switch (format.size)
 			{
 				case 16:
 				case 18:
 				case 40: break;
-				default: THROW err::FormatException<err::ResourceTag>("invalid format chunk size");
+				default: THROW((err::Exception<err::ResModuleTag, err::FormatTag>("invalid format chunk size")))
 			}
 			if (!format.channels)
-				THROW err::FormatException<err::ResourceTag>("no channels");
+				THROW((err::Exception<err::ResModuleTag, err::FormatTag>("no channels")))
 			if (format.channels > 2)
-				THROW err::FormatException<err::ResourceTag>("too many channels");
+				THROW((err::Exception<err::ResModuleTag, err::FormatTag>("too many channels")))
 			if (format.byteRate != format.frequency * format.blockAlign)
-				THROW err::FormatException<err::ResourceTag>("invalid byte rate");
+				THROW((err::Exception<err::ResModuleTag, err::FormatTag>("invalid byte rate")))
 			if (format.blockAlign != format.channels * format.bitDepth / 8)
-				THROW err::FormatException<err::ResourceTag>("invalid block alignment");
+				THROW((err::Exception<err::ResModuleTag, err::FormatTag>("invalid block alignment")))
 			switch (format.bitDepth)
 			{
 				case 8:
 				case 16:
 				case 24:
 				case 32: break;
-				default: THROW err::FormatException<err::ResourceTag>("invalid bit depth");
+				default: THROW((err::Exception<err::ResModuleTag, err::FormatTag>("invalid bit depth")))
 			}
 			if (format.size >= 18)
 			{
@@ -90,23 +91,23 @@ namespace page
 				stream->Read(&extSize, sizeof extSize);
 				util::TransformEndian(&extSize, "w", util::littleEndian);
 				if (extSize && format.size != 18 + extSize)
-					THROW err::FormatException<err::ResourceTag>("invalid extension size");
+					THROW((err::Exception<err::ResModuleTag, err::FormatTag>("invalid extension size")))
 				if (extSize != 22)
-					THROW err::FormatException<err::ResourceTag>("unsupported extension");
+					THROW((err::Exception<err::ResModuleTag, err::FormatTag>("unsupported extension")))
 				fmt::ExtFormat format;
 				stream->Read(&format, sizeof format);
 				util::TransformEndian(&format, fmt::extFormatFormat, util::littleEndian);
 				if (std::memcmp(format.guid, fmt::pcm, sizeof format.guid))
-					THROW err::FormatException<err::ResourceTag>("unsupported extension");
+					THROW((err::Exception<err::ResModuleTag, err::FormatTag>("unsupported extension")))
 			}
 			fmt::Data data;
 			stream->Read(&data, sizeof data);
 			util::TransformEndian(&data, fmt::dataFormat, util::littleEndian);
 			if (std::memcmp(data.id, fmt::data, sizeof data.id))
-				THROW err::FormatException<err::ResourceTag>("unexpected chunk id");
+				THROW((err::Exception<err::ResModuleTag, err::FormatTag>("unexpected chunk id")))
 			if (data.size % format.blockAlign)
-				THROW err::FormatException<err::ResourceTag>("invalid data size");
-			util::scoped_ptr<Sound> sound(new Sound);
+				THROW((err::Exception<err::ResModuleTag, err::FormatTag>("invalid data size")))
+			const std::unique_ptr<Sound> sound(new Sound);
 			sound->channels = format.channels;
 			sound->bitDepth = format.bitDepth;
 			sound->frequency = format.frequency;
@@ -119,7 +120,7 @@ namespace page
 
 		LoadFunction GetWavSoundLoader(const Pipe &pipe)
 		{
-			util::scoped_ptr<Stream> stream(pipe.Open());
+			const std::unique_ptr<Stream> stream(pipe.Open());
 			fmt::Header header;
 			return stream->ReadSome(&header, sizeof header) == sizeof header &&
 				!std::memcmp(header.id, fmt::riff, sizeof header.id) &&

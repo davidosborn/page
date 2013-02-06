@@ -1,6 +1,51 @@
-Merge log/print.[ch]pp, sys.[ch]pp/PrintInfo, and log/stats.[ch]pp.
+Consider whether EncoderFactory can be back-ported into util/Factory, with Key and Args parameterized via typelists.
 
-Make sure cfg is being used consistently with the rest of the program.
+Get rid of util/lexical_cast, replace with Boost's lexical_cast.
+
+Put class-source-files in the class-sub-directory, instead of above it (ie: aud/sound/Sound.hpp instead of aud/Sound.hpp).
+
+Separate includes into groups, each group separated by a space, and put a comment title before each group.
+
+Switch back to declarative style -- it is better.
+http://lua-users.org/lists/lua-l/2012-03/msg00785.html
+
+Make short-form typedefs for math types (such as Vec3f).
+
+----------------
+
+Fix up all instances of catch with tags to maybe use CATCH_TAGS?
+Anyway, search for "catch" and fix it up.  Avoid catch (...)!
+
+Fix up all instances of @throw (ie: doxygen), to specify which tags are thrown.
+
+Fix up the boost MPL system utils to use inserters to deal with:
+http://boost.2283326.n4.nabble.com/mpl-Documentation-suggestion-td4631533.html
+Then update everything else to use views more.
+
+Get rid of win32::Native, etc. (or use them everywhere and get rid of "A(" functions).  Either way, be consistent.
+
+Some people say that we should never "catch (...)" <http://www.boost.org/community/error_handling.html>.
+
+Make it so some of the stuff in config.h is auto-generated via the package database in configure.
+
+boolalpha should be set when deserializing boolean values from a configuration file.
+
+Defaults from InitIos, which is not longer used:
+	s.setf  (std::ios_base::boolalpha);
+	s.setf  (std::ios_base::fixed, std::ios_base::floatfield);
+	s.unsetf(std::ios_base::showpoint);
+	s.precision(2);
+
+Figure out how to make headings and contents in doxygen, so we can have preconditions and postconditions (ie: design by contract).  It should look the same as the return-value format, just as another couple of additional sections below that.
+
+Some Sources are read-only, so consider whether to have some kind of inheritance heirarchy with them, such as ReadOnlySource.  And maybe something to deal with the revision control aspect.
+
+Finish merging cfg updates from dcct.
+Make sure cfg is being used consistently throughout the program.
+Make sure it compiles.
+Commit.
+
+Merge log/print.[ch]pp, sys.[ch]pp/PrintInfo, and log/stats.[ch]pp.
 
 We now have a dependency on Boost, so it needs to be checked for in configure.
 
@@ -1240,6 +1285,7 @@ FILE FORMATS:
 ARCHIVE FORMATS: ar, tar, zip
 FILTERS: bzip2, gzip
 SOURCES: dir, file, libcurl
+CLIP ENCODERS: ffmpeg, theora, vp8
 
 Threads will be used here:
 - audio streamer, to stream audio at a constant rate

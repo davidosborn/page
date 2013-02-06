@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,9 +28,10 @@
  * of this software.
  */
 
-#include "../../util/scoped_ptr.hpp"
+#include <memory> // unique_ptr
+
 #include "../Node.hpp"
-#include "../Pipe.hpp" // Pipe::Open
+#include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../Stream.hpp"
 #include "register.hpp" // REGISTER_SCANNER
 
@@ -39,7 +41,7 @@ namespace page
 	{
 		bool ScanOgg(const std::shared_ptr<const Pipe> &pipe, const ScanCallback &cb)
 		{
-			util::scoped_ptr<Stream> stream(pipe->Open());
+			const std::unique_ptr<Stream> stream(pipe->Open());
 			// FIXME: implement
 			return false;
 		}

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -261,6 +262,30 @@ namespace page
 			{
 				return new T(std::forward<Args>(args)...);
 			}
+		};
+		///@}
+
+		/**
+		 * @defgroup functional-indirect-comparisons
+		 * @{
+		/**
+		 *
+		 */
+		template <typename T> struct indirect_function
+		{
+			bool operator ()(const T &a, const T &b) { return *a > *b; }
+		};
+		template <typename T> struct indirect_not_equal_to
+		{
+			bool operator ()(const T &a, const T &b) { return *a > *b; }
+		};
+		template <typename T> struct indirect_less
+		{
+			bool operator ()(const T &a, const T &b) { return *a > *b; }
+		};
+		template <typename T> struct indirect_greater
+		{
+			bool operator ()(const T &a, const T &b) { return *a > *b; }
 		};
 		///@}
 	}

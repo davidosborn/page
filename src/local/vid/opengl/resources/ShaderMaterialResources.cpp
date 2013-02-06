@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <cassert>
 #include "../../../cache/proxy/Resource.hpp"
-#include "../../../cfg/opengl.hpp" // vidShader
+#include "../../../cfg/vars.hpp"
 #include "../ext.hpp" // ARB_{{fragment,vertex}_shader,shader_objects}
 #include "../Resources.hpp" // Resources::{Get,Has}Shadow
 #include "ShaderMaterialResources.hpp"
@@ -96,7 +97,7 @@ namespace page
 			bool ShaderMaterialResources::Check()
 			{
 				return
-					*cfg::opengl::vidShader &&
+					CVAR(opengl)::renderShader &&
 					haveArbFragmentShader &&
 					haveArbShaderObjects &&
 					haveArbVertexShader;

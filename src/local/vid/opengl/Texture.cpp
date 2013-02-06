@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <algorithm> // transform
 #include <cassert>
-#include "../../cfg/opengl.hpp" // vidTexDown
+#include "../../cfg/vars.hpp"
 #include "../../math/Color.hpp" // RgbaColor
 #include "../../math/pow2.hpp" // Pow2Ceil
 #include "ext.hpp" // ARB_texture_non_power_of_two
@@ -52,7 +53,7 @@ namespace page
 					GL_FLOAT, &*math::RgbaColor<GLfloat>(color).begin());
 			}
 			Texture::Texture(const res::Image &img, Format format, Flags flags, const math::Vector<2, bool> &clamp) :
-				size(img.size), pow2Size(Max(size >> *cfg::opengl::vidTexDown, 1))
+				size(img.size), pow2Size(Max(size >> CVAR(opengl)::renderTextureDown, 1))
 			{
 				// FIXME: texture size calculations are duplicated in tex.cpp
 				if (!haveArbTextureNonPowerOfTwo)

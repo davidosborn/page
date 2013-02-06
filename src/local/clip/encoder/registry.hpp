@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -30,6 +31,10 @@
 #ifndef    page_local_clip_encoder_registry_hpp
 #   define page_local_clip_encoder_registry_hpp
 
+	// Boost
+#	include <boost/filesystem/path.hpp>
+
+	// local
 #	include <functional> // function
 #	include <string>
 #	include <utility> // pair
@@ -39,21 +44,27 @@ namespace page
 {
 	namespace clip
 	{
-		// access
+		/*-------+
+		| access |
+		+-------*/
+
 		/**
-		 * Searches for a registered encoder that matches the given parameters
-		 * and returns a @c std::pair containing a factory function to produce
+		 * Search for a registered encoder that matches the given parameters and
+		 * and return a @c std::pair containing a factory function to produce
 		 * the encoder object and the path with the proper extension for the
 		 * encoded format.
 		 */
-		std::pair<EncoderFactory, std::string>
+		std::pair<EncoderFactory, boost::filesystem::path>
 			GetRegisteredEncoder(
-				const std::string &path,
+				const boost::filesystem::path &path,
 				const std::string &format);
 
-		// registration
+		/*-------------+
+		| registration |
+		+-------------*/
+
 		/**
-		 * Registers an encoder with the system.
+		 * Register an encoder with the system.
 		 */
 		void RegisterEncoder(
 			const EncoderFactory &,

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,24 +28,27 @@
  * of this software.
  */
 
-#include <algorithm> // find, remove, remove_if
+// C++
+#include <algorithm> // find, remove, remove_if, transform
 #include <cctype> // isdigit
 #include <ctime> // {,local}time
 #include <functional> // bind, logical_and, logical_not
 #include <locale> // use_facet, time_put
-#include "../err/exception/throw.hpp" // THROW
-#include "../sys/file.hpp" // IsInvalid, IsWildcard, PathExists
+#include <sstream> // ostringstream
+
+// local
+#include "../err/Exception.hpp"
 #include "functional.hpp" // tolower_function
-#include "lexical_cast.hpp"
-#include "path.hpp" // ExtPart
-#include "sstream.hpp" // make_ostringstream
 
 namespace page
 {
 	namespace util
 	{
-		// symbolic path expansion
-		std::string ExpandPath(const std::string &path)
+		/*------------------+
+		| path manipulation |
+		+------------------*/
+
+		boost::filesystem::path ExpandPath(const boost::filesystem::path &path)
 		{
 			std::string expPath(path);
 			// remove null characters
@@ -65,7 +69,7 @@ namespace page
 					}
 			// expand date/time symbols
 			std::time_t time = std::time(0);
-			MAKE_OSTRINGSTREAM_1(char)//auto ss(make_ostringstream<char>());
+			std::ostringstream ss;
 			std::use_facet<std::time_put<char>>(ss.getloc()).put(
 				ss, ss, ss.fill(), std::localtime(&time),
 				&expPath[0], &expPath[0] + expPath.size());
@@ -113,7 +117,8 @@ namespace page
 							}
 						}
 					}
-					if (!ns.empty()) THROW err::Exception<err::RangeTag>("incremental path out of range");
+					if (!ns.empty())
+						THROW((err::Exception<err::UtilModuleTag, err::RangeTag>("incremental path out of range")))
 					if (!sys::PathExists(incPath))
 					{
 						expPath = incPath;
@@ -124,41 +129,64 @@ namespace page
 			return expPath;
 		}
 
-		// extension extraction
-		ExtPart PartitionExt(const std::string &path)
+		/*-----------------------+
+		| extension manipulation |
+		+-----------------------*/
+
+		boost::filesystem::path GetExtension(
+			const boost::filesystem::path &path,
+			unsigned index)
 		{
-			// FIXME: perhaps a reverse-partition function would be useful here
-			// FIXME: abort if extension contains sys::Special characters
-			std::string::size_type extPos = path.rfind('.');
-			return extPos != std::string::npos ?
-				ExtPart(path.substr(0, extPos), path.substr(extPos + 1)) :
-				ExtPart(path, "");
-		}
-		std::string GetExt(const std::string &path, unsigned index)
-		{
-			// FIXME: abort if extension contains sys::Special characters
-			// FIXME: skip if extension contains no characters
-			std::string ext;
-			std::string::size_type extPos, extEnd = std::string::npos;
+			auto s(path.native());
+			decltype(s)::size_type extStart, extEnd(s.npos);
 			for (;;)
 			{
-				extPos = path.rfind('.', extEnd);
-				if (!index || extPos == std::string::npos) break;
-				extEnd = extPos;
+				extStart = s.rfind('.', extEnd);
+				if (!index || extStart == s.npos) break;
+				extEnd = extStart;
 				--index;
 			}
-			if (extPos)
+			if (extStart)
 			{
-				ext = path.substr(extPos + 1, extEnd);
+				auto ext(path.substr(extStart + 1, extEnd));
 				std::transform(ext.begin(), ext.end(), ext.begin(), tolower_function<char>());
+				return boost::filesystem::path(ext);
 			}
-			return ext;
+			return boost::filesystem::path();
 		}
 
-		// extension insertion
-		std::string WithExt(const std::string &path, const std::string &ext)
+		std::pair<boost::filesystem::path, boost::filesystem::path>
+			PartitionExtension(const std::string &path)
 		{
-			return GetExt(path) != ext ? path + '.' + ext : path;
+			auto s(path.native());
+			auto i(s.rfind('.'));
+			return i != s.npos ?
+				std::make_pair(
+					boost::filesystem::path(s.substr(0, i)),
+					boost::filesystem::path(s.substr(i + 1))) :
+				std::make_pair(
+					path,
+					boost::filesystem::path());
+		}
+
+		boost::filesystem::path AddExtension(
+			const boost::filesystem::path &path,
+			const boost::filesystem::path &extension)
+		{
+			auto newPath(path);
+			if (newPath.empty() || newPath.native().back() == '.')
+				newPath += '.';
+			newPath += extension;
+			return newPath;
+		}
+
+		boost::filesystem::path WithExtension(
+			const boost::filesystem::path &path,
+			const boost::filesystem::path &extension)
+		{
+			if (GetExtension(path) != extension)
+				return AddExtension(path, extension);
+			return path;
 		}
 	}
 }

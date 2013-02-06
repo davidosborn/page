@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <algorithm> // min
 #include <zip.h>
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../sys/file.hpp" // FileSize
 #include "../../util/buffer.hpp" // GetDirtyBuffer
 #include "../adapt/zip.hpp" // ZipError
@@ -84,14 +85,17 @@ namespace page
 			void ZipStream::DoRead(void *s, unsigned n)
 			{
 				int result = zip_fread(file, s, n);
-				if (result == -1) THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>(err::StreamReadException<>().What());
+				if (result == -1)
+					THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::StreamReadTag>()))
 				pos += result;
-				if (result < n) THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::EndOfStreamException<>::Tags>(err::EndOfStreamException<>().What());
+				if (result < n)
+					THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::EndOfStreamTag>()))
 			}
 			unsigned ZipStream::DoReadSome(void *s, unsigned n)
 			{
 				int result = zip_fread(file, s, n);
-				if (result == -1) THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>(err::StreamReadException<>().What());
+				if (result == -1)
+					THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::StreamReadTag>()))
 				pos += result;
 				return result;
 			}
@@ -112,9 +116,11 @@ namespace page
 				{
 					unsigned n2 = std::min(n, util::GetDirtyBuffer().size());
 					int result = zip_fread(file, &*util::GetDirtyBuffer().begin(), n2);
-					if (result == -1) THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>(err::StreamReadException<>().What());
+					if (result == -1)
+						THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::StreamReadTag>()))
 					pos += result;
-					if (result < n2) THROW err::PlatformException<err::ZipPlatformTag, err::ResourceTag, typename err::EndOfStreamException<>::Tags>(err::EndOfStreamException<>().What());
+					if (result < n2)
+						THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::EndOfStreamTag>()))
 					n -= n2;
 				}
 			}

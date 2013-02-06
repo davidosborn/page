@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -31,7 +32,7 @@
 #include <locale> // use_facet, time_put
 #include <sstream> // ostringstream
 
-#include "../../cfg/State.hpp" // State::{GetGlobalInstance,logTimeChange}
+#include "../../cfg/vars.hpp"
 #include "TimeFilter.hpp"
 
 namespace page
@@ -64,7 +65,7 @@ namespace page
 			}
 
 			// generate prefix using time string
-			if (*cfg::State::GetGlobalInstance().logTimeChange)
+			if (CVAR(logTimeChange))
 			{
 				std::string r;
 				if (timeChanged)

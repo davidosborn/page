@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -31,6 +32,7 @@
 #   define page_local_res_type_sound_VorbisDecoder_hpp
 
 #	include <memory> // shared_ptr
+
 #	include "AudioDecoder.hpp"
 
 namespace page
@@ -39,13 +41,25 @@ namespace page
 	{
 		class Pipe;
 
-		struct VorbisDecoder : AudioDecoder
+		class VorbisDecoder : public AudioDecoder
 		{
-			// construct
-			VorbisDecoder(const std::shared_ptr<const Pipe> &);
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			// operations
-			AudioStream *Open() const;
+			public:
+			explicit VorbisDecoder(const std::shared_ptr<const Pipe> &);
+
+			/*-----------+
+			| operations |
+			+-----------*/
+
+			public:
+			std::unique_ptr<AudioStream> Open() const override;
+
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			std::shared_ptr<const Pipe> pipe;

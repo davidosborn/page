@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -31,10 +32,11 @@
 // FIXME: we should not use atexit here; the parsing state should not be static
 // but rather a new state object should be initialized every load time
 #include <cstdlib> // atexit
-#include <memory> // shared_ptr
+#include <memory> // {shared,unique}_ptr
+
 #include <expat.h>
-#include "../../../../util/scoped_ptr.hpp"
-#include "../../../Pipe.hpp" // Pipe::Open
+
+#include "../../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../../Stream.hpp"
 #include "../../../type/Model.hpp"
 #include "../../register.hpp" // LoadFunction, REGISTER_LOADER
@@ -83,18 +85,18 @@ namespace page
 		Model *LoadNativeExpatModel(const std::shared_ptr<const Pipe> &pipe)
 		{
 			assert(pipe);
-			util::scoped_ptr<Stream> stream(pipe->Open());
+			const std::unique_ptr<Stream> stream(pipe->Open());
 			// FIXME: check format, perhaps the DTD
 			while (!stream->Eof())
 				XML_ParseBuffer(GetParser(), stream->ReadSome(XML_GetBuffer(GetParser(), bufferSize), bufferSize), false);
 			XML_ParseBuffer(GetParser(), 0, true);
-			util::scoped_ptr<Model> model(new Model);
+			const std::unique_ptr<Model> model(new Model);
 			return model.release();
 		}
 
 		LoadFunction GetNativeExpatModelLoader(const Pipe &pipe)
 		{
-			util::scoped_ptr<Stream> stream(pipe.Open());
+			const std::unique_ptr<Stream> stream(pipe.Open());
 			// FIXME: check format, perhaps the DTD
 			return LoadNativeExpatModel;
 		}

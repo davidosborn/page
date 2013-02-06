@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -37,9 +38,11 @@
 #include <vector>
 #include <GL/glx.h>
 #include <GL/glxext.h>
-#include "../../../cfg.hpp" // logVerbose
+
+#include <boost/io/ios_state.hpp> // ios_all_saver
+
+#include "../../../cfg/vars.hpp"
 #include "../../../log/Indenter.hpp"
-#include "../../../util/ios.hpp" // BasicIosFormatSaver
 #include "../../../util/pp.hpp" // STRINGIZE
 #include "../../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "../ext.hpp" // GetProcAddress, ProcAddress
@@ -100,18 +103,22 @@ namespace page
 					haveArbGetProcAddress = true;
 					std::cout << "loading X11 OpenGL extensions" << std::endl;
 					log::Indenter indenter;
+
 					// build supported extension set
 					std::string extString(glXQueryExtensionsString(display, screen));
 					std::unordered_set<std::string> supportedExts;
 					util::Deserialize(extString, std::inserter(supportedExts, supportedExts.end()));
+
 					// calculate extension alignment width
 					std::streamsize width = 0;
 					for (Exts::const_iterator ext(exts.begin()); ext != exts.end(); ++ext)
 						width = std::max(static_cast<std::streamsize>(ext->name.size()), width);
+
 					// set flags for trailing alignment
-					util::BasicIosFormatSaver<char> iosFormatSaver(std::cout);
+					boost::io::ios_all_saver iosFormatSaver(std::cout);
 					std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 					std::cout.fill(' ');
+
 					// check relevant extensions
 					for (Exts::iterator ext(exts.begin()); ext != exts.end(); ++ext)
 					{
@@ -130,7 +137,7 @@ namespace page
 										broken = true;
 										ext->have = false;
 									}
-									if (*cfg::logVerbose)
+									if (CVAR(logVerbose))
 									{
 										log::Indenter indenter;
 										std::cout << "missing function " << proc->name << std::endl;

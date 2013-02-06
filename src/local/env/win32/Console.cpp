@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,9 +28,12 @@
  * of this software.
  */
 
+// Win32
 #include <windows.h>
+
+// local
 #include "Console.hpp"
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../util/win32/string.hpp" // Native, String
 
 namespace page
@@ -41,7 +45,8 @@ namespace page
 			Console::Console(const std::string &title)
 			{
 				if (!AllocConsole() || !SetConsoleTitle(util::win32::Native(title).c_str()))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to allocate console");
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to allocate console") <<
+						boost::errinfo_api_function("AllocConsole")))
 			}
 
 			void Console::Put(char c)
@@ -49,14 +54,16 @@ namespace page
 				TCHAR tc = c;
 				DWORD w;
 				if (!WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), &tc, 1, &w, 0))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to write to console");
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to write to console") <<
+						boost::errinfo_api_function("WriteConsole")))
 			}
 			void Console::Put(const std::string &s)
 			{
 				util::win32::String ts(util::win32::Native(s));
 				DWORD w;
 				if (!WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), ts.c_str(), ts.size(), &w, 0))
-					THROW err::PlatformException<err::Win32PlatformTag>("failed to write to console");
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to write to console") <<
+						boost::errinfo_api_function("WriteConsole")))
 			}
 		}
 

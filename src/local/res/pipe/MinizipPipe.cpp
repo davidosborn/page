@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <algorithm> // min
 #include <cassert>
-#include "../../err/exception/throw.hpp" // THROW
+#include "../../err/Exception.hpp"
 #include "../../util/buffer.hpp" // GetDirtyBuffer
 #include "../adapt/minizip.hpp" // MakeZlibFileFuncDef
 #include "../Stream.hpp"
@@ -81,14 +82,17 @@ namespace page
 			void MinizipStream::DoRead(void *s, unsigned n)
 			{
 				int result = unzReadCurrentFile(file, s, n);
-				if (result < 0) THROW err::PlatformException<err::MinizipPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>(err::StreamReadException<>().What());
+				if (result < 0)
+					THROW((err::Exception<err::ResModuleTag, err::MinizipPlatformTag, err::StreamReadTag>()))
 				pos += result;
-				if (result < n) THROW err::PlatformException<err::MinizipPlatformTag, err::ResourceTag, typename err::EndOfStreamException<>::Tags>(err::EndOfStreamException<>().What());
+				if (result < n)
+					THROW((err::Exception<err::ResModuleTag, err::MinizipPlatformTag, err::EndOfStreamTag>()))
 			}
 			unsigned MinizipStream::DoReadSome(void *s, unsigned n)
 			{
 				int result = unzReadCurrentFile(file, s, n);
-				if (result < 0) THROW err::PlatformException<err::MinizipPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>(err::StreamReadException<>().What());
+				if (result < 0)
+					THROW((err::Exception<err::ResModuleTag, err::MinizipPlatformTag, err::StreamReadTag>()))
 				pos += result;
 				return result;
 			}
@@ -109,9 +113,11 @@ namespace page
 				{
 					unsigned n2 = std::min(n, util::GetDirtyBuffer().size());
 					int result = unzReadCurrentFile(file, &*util::GetDirtyBuffer().begin(), n2);
-					if (result < 0) THROW err::PlatformException<err::MinizipPlatformTag, err::ResourceTag, typename err::StreamReadException<>::Tags>(err::StreamReadException<>().What());
+					if (result < 0)
+						THROW((err::Exception<err::ResModuleTag, err::MinizipPlatformTag, err::StreamReadTag>()))
 					pos += result;
-					if (result < n2) THROW err::PlatformException<err::MinizipPlatformTag, err::ResourceTag, typename err::EndOfStreamException<>::Tags>(err::EndOfStreamException<>().What());
+					if (result < n2)
+						THROW((err::Exception<err::ResModuleTag, err::MinizipPlatformTag, err::EndOfStreamTag>()))
 					n -= n2;
 				}
 			}

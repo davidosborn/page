@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -29,7 +30,7 @@
 
 #include <functional> // bind
 #include <regex>
-#include "../../err/exception/catch.hpp" // CATCH_TAGS
+#include "../../err/Exception.hpp"
 #include "../../sys/file.hpp" // {Abs,Cat,Norm}Path, IsDir, ModTime, WalkDir
 #include "../path.hpp" // NormPath
 #include "../pipe/FilePipe.hpp" // FilePipe::{,~}FilePipe
@@ -61,7 +62,7 @@ namespace page
 						IndexFile(path);
 					}
 				}
-				CATCH_TAGS(err::FileTag)
+				catch (const err::Exception<err::FileTag>::Permutation &)
 				{
 					Clear(path);
 					files.erase(fileIter++);
