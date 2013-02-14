@@ -31,7 +31,7 @@
 #include <algorithm> // equal, find{,_if{,_not}}
 #include <iterator> // back_inserter, istreambuf_iterator
 #include <tuple>
-#include "algorithm.hpp" // copy_while_not
+#include "algorithm/stdext.hpp" // copy_until
 #include "serialize/deserialize_string.hpp" // Deserialize
 #include "serialize/serialize_string.hpp" // Serialize
 
@@ -120,7 +120,7 @@ namespace page
 		{
 			if (!is) return is;
 			s.clear();
-			copy_while_not(
+			copy_until(
 				std::istreambuf_iterator<Char, CharTraits>(is),
 				std::istreambuf_iterator<Char, CharTraits>(),
 				std::back_inserter(s), isnewline_function<Char>());

@@ -35,27 +35,85 @@ namespace page
 {
 	namespace math
 	{
+		/**
+		 * The default floating-point type.
+		 */
 		typedef float defaultType;
 
-		// colors
-		template <unsigned, typename = defaultType> class Color;
-		template <typename = defaultType> class HsvColor;
-		template <typename = defaultType> class RgbColor;
-		template <typename = defaultType> class RgbaColor;
-		template <typename = defaultType> class YcbcrColor;
+		/*-------+
+		| colors |
+		+-------*/
 
-		// others
-		template <unsigned, typename = defaultType> class Aabb;
-		template <typename = defaultType> class Axan;
-		template <typename = defaultType> class Euler;
-		template <typename = defaultType> class Frustum;
-		template <unsigned nr, unsigned = nr, typename = defaultType> class Matrix;
-		template <typename = defaultType> class OrthoFrustum;
-		template <unsigned, typename = defaultType> class Plane;
-		template <typename = defaultType> class Quat;
-		template <unsigned, typename> class Slice;
-		template <unsigned, typename = defaultType> class Vector;
-		template <typename = defaultType> class ViewFrustum;
+		template <unsigned, typename = defaultType>
+			class Color;
+
+		template <typename = defaultType>
+			class HsvColor;
+
+		template <typename = defaultType>
+			class RgbColor;
+
+		template <typename = defaultType>
+			class RgbaColor;
+
+		template <typename = defaultType>
+			class YcbcrColor;
+
+		/*----------------+
+		| everything else |
+		+----------------*/
+
+		template <unsigned, typename = defaultType>
+			class Aabb;
+
+		template <typename = defaultType>
+			class Axan;
+
+		template <typename = defaultType>
+			class Euler;
+
+		template <typename = defaultType>
+			class Frustum;
+
+		template <unsigned nr, unsigned = nr, typename = defaultType>
+			class Matrix;
+
+		template <typename = defaultType>
+			class OrthoFrustum;
+
+		template <unsigned, typename = defaultType>
+			class Plane;
+
+		template <typename = defaultType>
+			class Quat;
+
+		template <unsigned, typename>
+			class Slice;
+
+		template <unsigned, typename = defaultType>
+			class Vector;
+
+		template <typename = defaultType>
+			class ViewFrustum;
+
+		/*--------+
+		| aliases |
+		+--------*/
+
+		typedef Matrix<3> Mat3;
+		typedef Matrix<4> Mat4;
+
+		typedef Vector<2> Vec2;
+		typedef Vector<3> Vec3;
+		typedef Vector<4> Vec4;
+
+		typedef Vector<2, int> Vec2i;
+		typedef Vector<3, int> Vec3i;
+		typedef Vector<4, int> Vec4i;
+
+		typedef Vector<2, unsigned> Vec2u;
+		typedef Vector<3, unsigned> Vec3u;
+		typedef Vector<4, unsigned> Vec4u;
 	}
 }
 

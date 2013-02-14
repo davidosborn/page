@@ -38,19 +38,34 @@ namespace page
 {
 	namespace math
 	{
-		// standard interpolation
-		template <typename T, typename U> T Lerp(T a, T b, U mu)
+		namespace
+		{
+		}
+	
+		/*-----------------------+
+		| standard interpolation |
+		+-----------------------*/
+
+		template <typename T, typename U>
+			T Lerp(T a, T b, U mu)
 		{
 			return a + (b - a) * mu;
 		}
-		template <typename T, typename U> Quat<T> Lerp(const Quat<T> &a, const Quat<T> &b, U mu)
+
+		template <typename T, typename U>
+			Quat<T> Lerp(const Quat<T> &a, const Quat<T> &b, U mu)
 		{
-			Quat<T> a2(a);
-			// FIXME: don't need this check if called from Slerp or FastSlerp
-			if (Dot(a, b) < 0) a2 = -a2;
-			return Norm(a2 + (b - a2) * mu);
+			return LerpUnchecked(Dot(a, b) < 0 ? -a : a, b, mu);
 		}
-		template <typename T, typename U> Quat<T> Slerp(const Quat<T> &a, const Quat<T> &b, U mu)
+
+		template <typename T, typename U>
+			Quat<T> LerpUnchecked(const Quat<T> &a, const Quat<T> &b, U mu)
+		{
+			return Norm(a + (b - a) * mu);
+		}
+
+		template <typename T, typename U>
+			Quat<T> Slerp(const Quat<T> &a, const Quat<T> &b, U mu)
 		{
 			// Van Verth, Essential Mathematics for Games, 2004
 			typedef typename ArithmeticConversion<T, U>::Result R;
@@ -61,11 +76,13 @@ namespace page
 				a2 = -a2;
 				dot = -dot;
 			}
-			if (dot > .999f) return Lerp(a2, b, mu);
+			if (dot > .999f) return LerpUnchecked(a2, b, mu);
 			T th = std::acos(dot);
 			return (a2 * std::sin((1 - mu) * th) + b * std::sin(mu * th)) / std::sin(th);
 		}
-		template <typename T, typename U> Quat<T> FastSlerp(const Quat<T> &a, const Quat<T> &b, U mu)
+
+		template <typename T, typename U>
+			Quat<T> FastSlerp(const Quat<T> &a, const Quat<T> &b, U mu)
 		{
 			// Van Verth, Essential Mathematics for Games, 2004
 			// Jonathan Blow, Hacking Quaternions, Game Developer, March 2002
@@ -76,33 +93,49 @@ namespace page
 				factor = 1 - dot * .7878088f,
 				k = factor * factor * .5069269f,
 				mu2 = (k * 2 * mu - k * 3) * mu + k + 1;
-			return Lerp(a2, b, mu2);
+			return LerpUnchecked(a2, b, mu2);
 		}
-		template <typename T, typename U> Quat<T> Squad(const Quat<T> &a, const Quat<T> &b, const Quat<T> &c, const Quat<T> &d, U mu)
+
+		template <typename T, typename U>
+			Quat<T> Squad(const Quat<T> &a, const Quat<T> &b, const Quat<T> &c, const Quat<T> &d, U mu)
 		{
 			return Slerp(Slerp(a, d, mu), Slerp(b, c, mu), 2 * (1 - mu) * mu);
 		}
-		template <typename T, typename U> T Bilerp(T a, T b, T c, U mu1, U mu2)
+
+		template <typename T, typename U>
+			T Bilerp(T a, T b, T c, U mu1, U mu2)
 		{
 			return a + (b - a) * mu1 + (c - a) * mu2;
 		}
-		template <typename T, typename U> Quat<T> Bilerp(const Quat<T> &a, const Quat<T> &b, const Quat<T> &c, U mu1, U mu2)
+
+		template <typename T, typename U>
+			Quat<T> Bilerp(const Quat<T> &a, const Quat<T> &b, const Quat<T> &c, U mu1, U mu2)
 		{
 			return Norm(a + (b - a) * mu1 + (c - a) * mu2);
 		}
 
-		// linear interpolation
-		template <typename T, typename U> T LinearInterp(T a, T b, U mu)
+		/*---------------------+
+		| linear interpolation |
+		+---------------------*/
+
+		template <typename T, typename U>
+			T LinearInterp(T a, T b, U mu)
 		{
 			return Lerp(a, b, mu);
 		}
-		template <typename T, typename U> Quat<T> LinearInterp(const Quat<T> &a, const Quat<T> &b, U mu)
+
+		template <typename T, typename U>
+			Quat<T> LinearInterp(const Quat<T> &a, const Quat<T> &b, U mu)
 		{
 			return Slerp(a, b, mu);
 		}
 
-		// cubic interpolation
-		template <typename T, typename U> T CubicInterp(T a, T b, T c, T d, U mu)
+		/*--------------------+
+		| cubic interpolation |
+		+--------------------*/
+
+		template <typename T, typename U>
+			T CubicInterp(T a, T b, T c, T d, U mu)
 		{
 			T
 				p = d - c - (a - b),
@@ -110,19 +143,27 @@ namespace page
 				r = c - a;
 			return ((p * mu + q) * mu + r) * mu + b;
 		}
-		template <typename T, typename U> Quat<T> CubicInterp(const Quat<T> &a, const Quat<T> &b, const Quat<T> &c, const Quat<T> &d, U mu)
+
+		template <typename T, typename U>
+			Quat<T> CubicInterp(const Quat<T> &a, const Quat<T> &b, const Quat<T> &c, const Quat<T> &d, U mu)
 		{
 			return Squad(a, b, c, d, mu);
 		}
 
-		// non-linear interpolation
-		template <typename T, typename U> T HermiteInterp(T a, T b, U mu)
+		/*-------------------------+
+		| non-linear interpolation |
+		+-------------------------*/
+
+		template <typename T, typename U>
+			T HermiteInterp(T a, T b, U mu)
 		{
 			assert(mu >= 0 && mu <= 1);
 			// based on smoothstep as defined in the GLSL Specification
 			return a + (b - a) * mu * mu * (3 - 2 * mu);
 		}
-		template <typename T, typename U, typename V> T HermiteInterp(T a, T b, U mu, V exp)
+
+		template <typename T, typename U, typename V>
+			T HermiteInterp(T a, T b, U mu, V exp)
 		{
 			assert(mu >= 0 && mu <= 1);
 			// based on smoothstep as defined in the GLSL Specification
@@ -132,26 +173,36 @@ namespace page
 			return a + (b - a) * (std::copysign(d, c) * .5f + .5f);
 		}
 
-		// non-linear scaling
-		template <typename T> T HermiteScale(T mu)
+		/*-------------------+
+		| non-linear scaling |
+		+-------------------*/
+
+		template <typename T>
+			T HermiteScale(T mu)
 		{
 			return HermiteInterp<T>(0, 1, mu);
 		}
-		template <typename T, typename U> T HermiteScale(T mu, U exp)
+
+		template <typename T, typename U>
+			T HermiteScale(T mu, U exp)
 		{
 			return HermiteInterp<T>(0, 1, mu, exp);
 		}
 
-		// convolution-filter kernels
-		template <unsigned n, typename T> std::array<T, n> HermiteConvolutionKernel(T size)
+		/*---------------------------+
+		| convolution-filter kernels |
+		+---------------------------*/
+
+		template <unsigned n, typename T>
+			std::array<T, n> HermiteConvolutionKernel(T size)
 		{
 			static_assert(n % 2, "kernel size must be odd");
 			typedef std::array<T, n> Kernel;
 			Kernel kernel;
 			T inc = 1 / size, mu = -int(n / 2) * inc;
-			for (typename Kernel::iterator iter(kernel.begin()); iter != kernel.end(); ++iter)
+			for (auto &element : kernel)
 			{
-				*iter = HermiteInterp<T>(1, 0, std::min(std::max(std::abs(mu), T(0)), T(1)));
+				element = HermiteInterp<T>(1, 0, std::min(std::max(std::abs(mu), T(0)), T(1)));
 				mu += inc;
 			}
 			std::transform(kernel.begin(), kernel.end(), kernel.begin(),
@@ -159,15 +210,17 @@ namespace page
 					std::accumulate(kernel.begin(), kernel.end(), T(0))));
 			return kernel;
 		}
-		template <unsigned n, typename T, typename U> std::array<T, n> HermiteConvolutionKernel(T size, U exp)
+
+		template <unsigned n, typename T, typename U>
+			std::array<T, n> HermiteConvolutionKernel(T size, U exp)
 		{
 			static_assert(n % 2, "kernel size must be odd");
 			typedef std::array<T, n> Kernel;
 			Kernel kernel;
 			T inc = 1 / size, mu = -int(n / 2) * inc;
-			for (typename Kernel::iterator iter(kernel.begin()); iter != kernel.end(); ++iter)
+			for (auto &element : kernel)
 			{
-				*iter = HermiteInterp<T>(1, 0, std::min(std::max(std::abs(mu), T(0)), T(1)), exp);
+				element = HermiteInterp<T>(1, 0, std::min(std::max(std::abs(mu), T(0)), T(1)), exp);
 				mu += inc;
 			}
 			std::transform(kernel.begin(), kernel.end(), kernel.begin(),

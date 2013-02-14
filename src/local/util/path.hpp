@@ -48,12 +48,16 @@ namespace page
 		/**
 		 * Parse and expand the special symbols in a path.
 		 *
-		 * Supports strftime and incremental symbols.  Incremental symbols are
-		 * denoted by %i with an optional width modifier after the percent sign.
-		 * The width modifier must be an unsigned decimal integer.  Multiple
-		 * incremental symbols are permitted; they will form an overflow
-		 * cascade.  If no unique incremental filename is found, an err::Range
-		 * is thrown.  Null characters will be thrown away.
+		 * Supports all of the symbols supported by strftime, as well as the
+		 * following extensions:
+		 *
+		 * %i A number that is incremented each time the file is saved.  The
+		 *    function inserts the lowest number that will not conflict with an
+		 *    existing filename.  An optional width modifier may be specified
+		 *    immediately after the percent sign, which must be an unsigned
+		 *    decimal integer.  Multiple incremental symbols form an overflow
+		 *    cascade, where the last one increments first.  If no unique
+		 *    incremental filename is found, an exception is thrown.
 		 */
 		boost::filesystem::path ExpandPath(const boost::filesystem::path &);
 

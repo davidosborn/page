@@ -33,7 +33,10 @@
 
 #	include <string> // basic_string, char_traits
 #	include <type_traits> // is_{,explicitly_}convertible
-#	include "../type_traits.hpp" // ENABLE_IF, is_{{,convertible_to_}string,range}
+
+#	include "../type_traits/container.hpp" // is_range
+#	include "../type_traits/sfinae.hpp" // ENABLE_IF
+#	include "../type_traits/string.hpp" // is_{,convertible_to_}string
 
 namespace page
 {

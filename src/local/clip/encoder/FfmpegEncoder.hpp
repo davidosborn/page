@@ -49,7 +49,7 @@ namespace page
 			public:
 			FfmpegEncoder(
 				const Callback &,
-				const math::Vector<2, unsigned> &size,
+				const math::Vec2u &size,
 				float frameRate,
 				float quality);
 

@@ -35,7 +35,7 @@
 #	include <memory> // addressof
 
 	// local
-#	include "type_traits.hpp" // remove_indirection
+#	include "../type_traits/pointer.hpp" // remove_indirection
 
 namespace page
 {

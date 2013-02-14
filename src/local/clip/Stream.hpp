@@ -34,6 +34,7 @@
 	// C++
 #	include <memory> // unique_ptr
 #	include <string>
+#	include <vector>
 
 	// Boost
 #	include <boost/filesystem/fstream.hpp> // ofstream
@@ -41,7 +42,7 @@
 
 	// local
 #	include "../math/Vector.hpp"
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class.hpp" // MAKE_UNCOPYABLE
 
 namespace page
 {
@@ -51,27 +52,56 @@ namespace page
 	{
 		class Encoder;
 
-		struct Stream : util::NonCopyable
+		struct Stream
 		{
-			// construct/destroy
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
 			Stream(
 				const boost::filesystem::path &path,
-				const std::string &format,
+				const std::vector<std::string> &mimeTypes,
+				const std::vector<std::string> &formats,
 				const math::Vector<2, unsigned> &size,
-				float frameRate, float quality);
+				float frameRate, 
+				float quality);
+
 			~Stream();
+			
+			/*----------------------+
+			| copy & move semantics |
+			+----------------------*/
 
-			// attributes
-			const math::Vector<2, unsigned> &GetSize() const;
+			MAKE_UNCOPYABLE(Stream)
 
-			// audio/video input
+			/*-----------+
+			| attributes |
+			+-----------*/
+
+			public:
+			const math::Vec2u &GetSize() const;
+
+			/*------------------+
+			| audio/video input |
+			+------------------*/
+
+			public:
 			void Write(const res::Image &);
 
+			/*---------------+
+			| encoded output |
+			+---------------*/
+
 			private:
-			// encoded output
 			void WriteEncoded(const void *, unsigned);
 
-			math::Vector<2, unsigned> size;
+			/*-------------+
+			| data members |
+			+-------------*/
+
+			private:
+			math::Vec2u size;
 			boost::filesystem::ofstream fs;
 			std::unique_ptr<Encoder> encoder;
 		};

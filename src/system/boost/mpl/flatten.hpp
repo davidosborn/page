@@ -28,7 +28,7 @@
  */
 
 #ifndef    page_system_boost_mpl_flatten_hpp
-#	define page_system_boost_mpl_flatten_hpp
+#   define page_system_boost_mpl_flatten_hpp
 
 #	include <boost/mpl/begin_end.hpp> // end
 #	include <boost/mpl/clear.hpp>

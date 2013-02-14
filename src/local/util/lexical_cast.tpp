@@ -30,7 +30,8 @@
 
 #include "serialize/deserialize_string.hpp" // Deserialize
 #include "serialize/serialize_string.hpp" // Serialize
-#include "type_traits.hpp" // ENABLE_IF, is_string
+#include "type_traits/sfinae.hpp" // ENABLE_IF
+#include "type_traits/string.hpp" // is_string
 
 namespace page
 {

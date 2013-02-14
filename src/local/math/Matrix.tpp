@@ -35,7 +35,7 @@
 #include <istream>
 #include <ostream>
 #include "../math/float.hpp" // Near
-#include "../util/algorithm.hpp" // transform_n
+#include "../util/algorithm/stdext.hpp" // transform_n
 #include "Axan.hpp"
 #include "Euler.hpp"
 #include "Quat.hpp"

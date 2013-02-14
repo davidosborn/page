@@ -100,7 +100,7 @@ namespace page
 			 * A configuration variable specifying the video resolution for in-
 			 * game recordings.
 			 */
-			Var<math::Vector<2, unsigned>>               clipVideoResolution;
+			Var<math::Vec2u>                             clipVideoResolution;
 
 			/**
 			 * A configuration variable specifying whether to draw bounding
@@ -250,7 +250,7 @@ namespace page
 			 * A configuration variable specifying the video resolution for
 			 * screenshots.
 			 */
-			Var<math::Vector<2, unsigned>>               screenshotSize;
+			Var<math::Vec2u>                             screenshotSize;
 
 			/**
 			 * A configuration variable specifying the video refresh rate.  A
@@ -262,7 +262,7 @@ namespace page
 			 * A configuration variable specifying the video resolution when the
 			 * main window is in fullscreen mode.
 			 */
-			Var<math::Vector<2, unsigned>>               videoResolution;
+			Var<math::Vec2u>                             videoResolution;
 
 			/**
 			 * A configuration variable specifying whether the main window
@@ -280,13 +280,13 @@ namespace page
 			 * A configuration variable specifying the initial position of the
 			 * main window.
 			 */
-			Var<math::Vector<2, int>>                    windowPosition;
+			Var<math::Vec2i>                             windowPosition;
 
 			/**
 			 * A configuration variable specifying the initial size of the main
 			 * window.
 			 */
-			Var<math::Vector<2, unsigned>>               windowSize;
+			Var<math::Vec2u>                             windowSize;
 		};
 	}
 }

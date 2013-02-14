@@ -29,7 +29,7 @@
  */
 
 #include "../../err/Exception.hpp"
-#include "../../util/functional.hpp" // new_function
+#include "../../util/functional/factory.hpp" // new_function
 #include "../machine/register.hpp" // REGISTER_MACHINE
 #include "Library.hpp"
 #include "Machine.hpp"

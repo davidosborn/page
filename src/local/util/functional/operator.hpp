@@ -33,7 +33,6 @@
 
 #	include <cmath> // fmod
 #	include <type_traits> // is_floating_point
-#	include <utility> // forward
 
 namespace page
 {
@@ -82,18 +81,6 @@ namespace page
 			T operator ()(T a) const
 			{
 				return +a;
-			}
-		};
-
-		/**
-		 * A function object that wraps @c operator @c new.
-		 */
-		template <typename T, typename... Args>
-			struct new_function
-		{
-			T *operator ()(Args &&... args) const
-			{
-				return new T(std::forward<Args>(args)...);
 			}
 		};
 		///@}

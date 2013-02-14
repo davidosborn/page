@@ -50,12 +50,12 @@
 #	include <boost/mpl/sort.hpp>
 #	include <boost/mpl/transform.hpp>
 #	include <boost/mpl/unique.hpp>
-#	include <boost/mpl/unpack_to_template.hpp>
+#	include <boost/mpl/unpack.hpp>
 #	include <boost/mpl/vector.hpp>
 
 	// local
 #	include "../util/io/separated_ostream_iterator.hpp"
-#	include "../util/type_traits.hpp" // DEFINE_SFINAE_TYPE_TRAIT_1
+#	include "../util/type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT_1
 
 namespace page
 {
@@ -88,7 +88,7 @@ namespace page
 				IsTagSet,
 				typename std::enable_if<(
 					std::is_base_of<
-						typename boost::mpl::unpack_to_template<
+						typename boost::mpl::unpack<
 							TagSet
 							>::apply<
 								typename T::_OrigTags

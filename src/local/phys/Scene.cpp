@@ -40,7 +40,7 @@
 #include "../math/Vector.hpp"
 #include "../math/ViewFrustum.hpp"
 #include "../res/type/Scene.hpp"
-#include "../util/functional.hpp" // address_of
+#include "../util/functional/pointer.hpp" // address_of
 #include "../util/iterator/indirect_iterator.hpp"
 #include "Body.hpp"
 #include "Camera.hpp"

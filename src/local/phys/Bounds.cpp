@@ -38,7 +38,7 @@
 #include "../res/type/Mesh.hpp"
 #include "../res/type/Model.hpp"
 #include "../util/copy_ptr.hpp"
-#include "../util/functional.hpp" // dereference
+#include "../util/functional/pointer.hpp" // dereference
 #include "../util/iterator/indirect_iterator.hpp"
 #include "../util/iterator/member_iterator.hpp"
 #include "attrib/Pose.hpp"

@@ -57,7 +57,7 @@ namespace page
 			public:
 			TheoraEncoder(
 				const Callback &,
-				const math::Vector<2, unsigned> &size,
+				const math::Vec2u &size,
 				float frameRate,
 				float quality);
 
@@ -84,7 +84,7 @@ namespace page
 			ogg_stream_state os;
 			yuv_buffer tb;
 			std::vector<unsigned char> tbData;
-			math::Vector<2, unsigned> size, size16, offset;
+			math::Vec2u size, size16, offset;
 		};
 	}
 }

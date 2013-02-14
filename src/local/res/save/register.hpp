@@ -33,7 +33,7 @@
 
 #	include <functional> // bind
 #	include <string>
-#	include "../../util/functional.hpp" // reinterpret_cast_function
+#	include "../../util/functional/cast.hpp" // reinterpret_cast_function
 #	include "../../util/typeinfo.hpp" // GetTypeId, std::type_info
 #	include "function.hpp" // Referenceable, SaveFunction
 #	include "registry.hpp" // RegisterSaver

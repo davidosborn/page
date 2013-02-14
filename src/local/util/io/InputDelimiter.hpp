@@ -34,7 +34,8 @@
 #	include <functional> // function
 #	include <string> // char_traits
 
-#	include "../type_traits.hpp" // ENABLE_IF, is_range
+#	include "../type_traits/container.hpp" // is_range
+#	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
 namespace page
 {

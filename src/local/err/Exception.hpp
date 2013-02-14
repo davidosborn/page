@@ -40,7 +40,7 @@
 #	include <boost/mpl/copy.hpp>
 #	include <boost/mpl/permutate.hpp>
 #	include <boost/mpl/transform.hpp>
-#	include <boost/mpl/unpack_to_template.hpp>
+#	include <boost/mpl/unpack.hpp>
 #	include <boost/mpl/vector.hpp>
 
 	// local
@@ -125,7 +125,7 @@ namespace page
 				struct GetExceptionPermutation
 			{
 				typedef
-					typename boost::mpl::unpack_to_template<
+					typename boost::mpl::unpack<
 						ExceptionPermutation
 						>::apply<
 							typename TagSet<_Tags...>::Tags
@@ -159,7 +159,7 @@ namespace page
 				struct GetExceptionPermutations
 			{
 				typedef
-					typename boost::mpl::unpack_to_template<ExceptionInheritor>::apply<
+					typename boost::mpl::unpack<ExceptionInheritor>::apply<
 						typename boost::mpl::transform<
 							typename boost::mpl::copy<
 								typename boost::mpl::permutate<
@@ -169,7 +169,7 @@ namespace page
 									boost::mpl::vector<
 										boost::mpl::vector<>>>
 								>::type,
-							boost::mpl::unpack_to_template<ExceptionPermutation>
+							boost::mpl::unpack<ExceptionPermutation>
 							>::type
 						>::type type;
 			};

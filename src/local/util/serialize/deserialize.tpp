@@ -34,12 +34,12 @@
 #include <sstream> // basic_istringstream
 #include <utility> // forward, move
 
-#include "../algorithm.hpp" // copy_while_not
+#include "../algorithm/stdext.hpp" // copy_until
 #include "../iterator/range.hpp"
 #include "../iterator/repeat_iterator.hpp"
 #include "../string_convert.hpp" // Convert
 #include "../tuple.hpp" // tuple_{,pop_}front
-#include "../type_traits.hpp" // output_iterator_value_type
+#include "../type_traits/iterator.hpp" // output_iterator_value_type
 #include "skip.hpp"
 
 namespace page
@@ -321,7 +321,7 @@ namespace page
 			if (!is.fail())
 			{
 				s.clear();
-				copy_while_not(
+				copy_until(
 					std::istreambuf_iterator<Char, CharTraits>(is),
 					std::istreambuf_iterator<Char, CharTraits>(),
 					std::back_inserter(s), terminator);

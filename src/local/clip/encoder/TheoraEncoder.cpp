@@ -46,7 +46,7 @@ namespace page
 		| constructors & destructor |
 		+--------------------------*/
 
-		TheoraEncoder::TheoraEncoder(const Callback &cb, const math::Vector<2, unsigned> &size, float frameRate, float quality) :
+		TheoraEncoder::TheoraEncoder(const Callback &cb, const math::Vec2u &size, float frameRate, float quality) :
 			Encoder(cb, Content(size) * 3),
 			size(size), size16((size + 15) & ~0xfu), offset((size16 - size) / 2)
 		{
@@ -54,6 +54,7 @@ namespace page
 			std::srand(std::time(0));
 			if (ogg_stream_init(&os, std::rand()))
 				THROW((err::Exception<err::ClipModuleTag, err::OggPlatformTag>("failed to initialize stream")))
+				
 			try
 			{
 				// initialize Theora encoder
@@ -87,6 +88,7 @@ namespace page
 					THROW((err::Exception<err::ClipModuleTag, err::TheoraPlatformTag>("failed to initialize encoder")))
 				}
 				theora_info_clear(&ti);
+				
 				try
 				{
 					// write header
@@ -98,6 +100,7 @@ namespace page
 						Return(og.header, og.header_len);
 						Return(og.body, og.body_len);
 					}
+					
 					// write comments
 					theora_comment tc;
 					theora_comment_init(&tc);
@@ -107,9 +110,11 @@ namespace page
 					// HACK: theora_encode_comment allocates; we have to free
 					// see libtheora's encoder_example.c
 					free(op.packet);
+					
 					// write codebooks
 					theora_encode_tables(&ts, &op);
 					ogg_stream_packetin(&os, &op);
+					
 					// flush remaining headers
 					for (ogg_page og; ogg_stream_flush(&os, &og);)
 					{
@@ -152,6 +157,7 @@ namespace page
 				tb.uv_width  = tb.y_width  / 2;
 				tb.uv_height = tb.y_height / 2;
 				tb.uv_stride = tb.uv_width;
+				
 				// initialize Y'CbCr buffer data
 				unsigned
 					lumaSize = tb.y_stride * tb.y_height,
@@ -163,8 +169,9 @@ namespace page
 				tb.v = tb.u + chromaSize;
 			}
 			else EncodeBuffer();
+			
 			// convert RGB input to Y'CbCr 4:2:0
-			math::Vector<2, unsigned>
+			math::Vec2u
 				halfSize16(size16 / 2),
 				halfOffset(offset / 2);
 			math::RgbToYcbcr420(
@@ -202,8 +209,11 @@ namespace page
 			{
 				Initializer()
 				{
-					auto &a(Encoder::Factory::GetGlobalInstance());
-					a.Register<TheoraEncoder>("theora", "ogg,ogv,ogx", 50);
+					Encoder::Factory::GetGlobalInstance().Register<TheoraEncoder>(
+						50,
+						{"theora"},
+						{"video/ogg", "video/theora"},
+						{"ogv", "ogx"});
 				}
 			}
 				initializer __attribute__((init_priority(REG_INIT_PRIORITY)));

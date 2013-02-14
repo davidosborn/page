@@ -32,7 +32,9 @@
 #   define page_local_util_iterator_range_hpp
 
 #	include <utility> // declval, pair
-#	include "../type_traits.hpp" // ENABLE_IF, is_range
+
+#	include "../type_traits/container.hpp" // is_range
+#	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
 namespace page
 {

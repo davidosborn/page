@@ -35,7 +35,12 @@
 #	include <string> // basic_string
 #	include <tuple>
 #	include <utility> // declval, pair
-#	include "../type_traits.hpp" // DEFINE_SFINAE_TYPE_TRAIT_1, ENABLE_IF, is_{insertable,iterator,range,string}
+
+#	include "../type_traits/container.hpp" // is_range
+#	include "../type_traits/iterator.hpp" // is_iterator
+#	include "../type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT_1, ENABLE_IF
+#	include "../type_traits/stream.hpp" // is_insertable
+#	include "../type_traits/string.hpp" // is_string
 #	include "SerializationDelimiter.hpp"
 
 namespace page

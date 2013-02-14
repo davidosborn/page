@@ -34,8 +34,9 @@
 #	include <ios> // ios_base
 #	include <string> // basic_string
 #	include <type_traits> // is_base_of, remove_reference
+
 #	include "../pp.hpp" // COMMA
-#	include "../type_traits.hpp" // ENABLE_IF
+#	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
 namespace page
 {

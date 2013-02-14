@@ -33,7 +33,9 @@
 
 #	include <iterator> // iterator_traits
 #	include <type_traits> // remove_cv
-#	include "../type_traits.hpp" // copy_cv, remove_indirection
+
+#	include "../type_traits/const_volatile.hpp" // copy_cv
+#	include "../type_traits/pointer.hpp" // remove_indirection
 #	include "iterator_adapter.hpp"
 
 namespace page

@@ -34,7 +34,7 @@
 #	include <type_traits> // enable_if
 #	include <vector>
 #	include "../../../util/copy_ptr.hpp"
-#	include "../../../util/type_traits.hpp" // is_iterator_over
+#	include "../../../util/type_traits/iterator.hpp" // is_iterator_over
 #	include "../../Proxy.hpp"
 
 namespace page

@@ -58,7 +58,7 @@
 #include "../../cache/proxy/opengl/FontTexture.hpp"
 #include "../../math/Color.hpp" // RgbaColor
 #include "../../res/type/Font.hpp" // GetAdvance, GetGlyph, Wrap
-#include "../../util/functional.hpp" // isspace_function
+#include "../../util/functional/locale.hpp" // isspace_function
 #include "FontTexture.hpp" // Bind, FontTexture::GetSection
 
 namespace page

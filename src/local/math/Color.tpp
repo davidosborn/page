@@ -30,8 +30,8 @@
 
 #include <algorithm> // copy, fill, find, {max,min}{,_element}, swap_ranges, transform
 #include <functional> // bind, divides, {,not_}equal_to, {greater,less}{,_equal}, logical_{and,not,or}, minus, multiples, plus
-#include "../util/algorithm.hpp" // transform_n
-#include "../util/functional.hpp" // modulus, unary_plus
+#include "../util/algorithm/stdext.hpp" // transform_n
+#include "../util/functional/operator.hpp" // modulus, unary_plus
 #include "../util/iterator/range.hpp"
 #include "../util/serialize/deserialize.hpp" // Deserialize
 #include "../util/serialize/serialize.hpp" // Serialize

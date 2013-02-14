@@ -42,6 +42,7 @@ set -e
 
 GNU_MIRROR=ftp://gnu.mirror.iweb.com/gnu
 
+BOOST_VERSION=1.53.0
 BZIP2_VERSION=1.0.6
 CMAKE_VERSION=2.8.5
 CURL_VERSION=7.24.0
@@ -65,6 +66,36 @@ MAKE_FLAGS=#"-j -l 1.5"
 # system checks
 
 USING_MINGW=`hash msysinfo && echo yes || echo no`
+
+################################################################################
+# Package:        boost
+# Dependencies:   
+# Depended on by:
+
+wget http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost_${BOOST_VERSION//./_}.tar.bz2/download --no-check-certificate -O- | tar -jx
+cd boost_${BOOST_VERSION//./_}
+patch -p1 -i../boost-1.49.0.patch # fixes boost/filesystem static-initialization problems under MinGW
+if [ "$USING_MINGW" == yes ]; then
+	./bootstrap.sh --with-toolset=mingw
+	rm project-config.jam # https://svn.boost.org/trac/boost/ticket/5680
+fi
+./b2 --with-filesystem --with-signals variant=debug link=static threading=multi toolset=gcc
+
+# install headers
+find boost -type f -print0 | while read -d $'\0' source
+do
+	target="/usr/local/include/$source"
+	install -D "$source" "$target"
+done
+
+# install libraries
+find stage/lib -type f -print0 | while read -d $'\0' source
+do
+	target=$( echo "$source" | sed -e 's/^stage\(\/lib\/libboost_[a-z_]*\).*\.a/\/usr\/local\1.a/' )
+	install "$source" "$target"
+done
+
+cd ..
 
 ################################################################################
 # Package:        bzip2

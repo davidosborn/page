@@ -30,7 +30,7 @@
 
 #include <algorithm> // find, sort
 #include <functional> // bind, mem_fun_ref
-#include "../../../util/functional.hpp" // dereference
+#include "../../../util/functional/pointer.hpp" // dereference
 #include "../../../util/iterator/call_iterator.hpp"
 #include "../../../util/iterator/indirect_iterator.hpp"
 #include "../../../util/serialize/serialize_string.hpp" // Serialize

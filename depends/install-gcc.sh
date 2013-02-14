@@ -85,6 +85,6 @@ cd ..
 
 wget $GNU_MIRROR/gdb/gdb-$GDB_VERSION.tar.bz2 -O- | tar -jx
 cd gdb-$GDB_VERSION
-./configure
+./configure --with-system-gdbinit
 make $MAKE_FLAGS install
 cd ..

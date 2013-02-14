@@ -36,8 +36,9 @@
 #	include <vector>
 
 	// local
+#	include "../../math/fwd.hpp"
 #	include "../../util/class.hpp" // MAKE_UNCOPYABLE
-#	include "../../util/CodecFactory.hpp"
+#	include "EncoderFactory.hpp"
 
 namespace page
 {
@@ -58,11 +59,7 @@ namespace page
 			/**
 			 *
 			 */
-			typedef util::CodecFactory<Encoder,
-				const Callback &callback,
-				const math::Vector<2, unsigned> &size,
-				float frameRate,
-				float quality> Factory;
+			typedef EncoderFactory Factory;
 
 			/*--------------------------+
 			| constructors & destructor |

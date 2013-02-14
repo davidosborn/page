@@ -35,10 +35,16 @@
 #include <functional> // bind, logical_and, logical_not
 #include <locale> // use_facet, time_put
 #include <sstream> // ostringstream
+#include <utility> // pair
+
+// Boost
+#include <boost/filesystem/path.hpp>
 
 // local
 #include "../err/Exception.hpp"
-#include "functional.hpp" // tolower_function
+#include "functional/locale.hpp" // tolower_function
+
+#include "path.hpp"
 
 namespace page
 {
@@ -50,7 +56,7 @@ namespace page
 
 		boost::filesystem::path ExpandPath(const boost::filesystem::path &path)
 		{
-			std::string expPath(path);
+			/*std::string expPath(path);
 			// remove null characters
 			expPath.erase(std::remove(expPath.begin(), expPath.end(), '\0'), expPath.end());
 			// hide incremental symbols
@@ -126,7 +132,9 @@ namespace page
 					}
 				}
 			}
-			return expPath;
+			return expPath;*/
+			
+			return path;
 		}
 
 		/*-----------------------+
@@ -148,7 +156,7 @@ namespace page
 			}
 			if (extStart)
 			{
-				auto ext(path.substr(extStart + 1, extEnd));
+				auto ext(s.substr(extStart + 1, extEnd));
 				std::transform(ext.begin(), ext.end(), ext.begin(), tolower_function<char>());
 				return boost::filesystem::path(ext);
 			}
@@ -156,7 +164,7 @@ namespace page
 		}
 
 		std::pair<boost::filesystem::path, boost::filesystem::path>
-			PartitionExtension(const std::string &path)
+			PartitionExtension(const boost::filesystem::path &path)
 		{
 			auto s(path.native());
 			auto i(s.rfind('.'));
@@ -173,8 +181,8 @@ namespace page
 			const boost::filesystem::path &path,
 			const boost::filesystem::path &extension)
 		{
-			auto newPath(path);
-			if (newPath.empty() || newPath.native().back() == '.')
+			boost::filesystem::path newPath(path);
+			if (newPath.empty() || newPath.native().back() != '.')
 				newPath += '.';
 			newPath += extension;
 			return newPath;

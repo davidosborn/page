@@ -28,7 +28,7 @@
  */
 
 #ifndef    page_system_boost_mpl_join_hpp
-#	define page_system_boost_mpl_join_hpp
+#   define page_system_boost_mpl_join_hpp
 
 #	include <boost/mpl/copy.hpp> // reverse_copy
 #	include <boost/mpl/front_inserter.hpp>

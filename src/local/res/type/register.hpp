@@ -34,7 +34,7 @@
 #	include <functional> // bind, function
 #	include <string>
 #	include "../../util/Deleter.hpp" // Deleter, GetDeleter
-#	include "../../util/functional.hpp" // reinterpret_cast_function
+#	include "../../util/functional/cast.hpp" // reinterpret_cast_function
 #	include "../../util/typeinfo.hpp" // GetTypeId, std::type_info
 #	include "function.hpp" // PostLoadFunction, Referenceable
 #	include "registry.hpp" // RegisterType

@@ -9,6 +9,7 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -27,47 +28,51 @@
  * of this software.
  */
 
-#ifndef    page_system_boost_mpl_unpack_to_template_hpp
-#	define page_system_boost_mpl_unpack_to_template_hpp
+#ifndef    page_local_util_type_traits_pointer_hpp
+#   define page_local_util_type_traits_pointer_hpp
 
-#	include <boost/mpl/back.hpp>
-#	include <boost/mpl/empty.hpp>
-#	include <boost/mpl/pop_back.hpp>
+#	include <type_traits>
 
-namespace boost
+namespace page
 {
-	namespace mpl
+	namespace util
 	{
 		/**
-		 * Instantiates a class template, unpacking a sequence into the
-		 * template arguments.
-		 *
-		 * @note This class has been structured like a
-		 *       <em>metafunction class</em> to maximize its usability.
+		 * Removes one level of indirection from a type.
 		 */
-		template <template <typename...> class Template>
-			struct unpack_to_template
+		template <typename T> struct remove_indirection
 		{
-			template <
-				typename Sequence,
-				bool = empty<Sequence>::value,
-				typename... Args>
-					struct apply
-			{
-				typedef
-					typename apply<
-						typename pop_back<Sequence>::type,
-						empty<typename pop_back<Sequence>::type>::value,
-						typename back<Sequence>::type,
-						Args...>::type type;
-			};
-			
-			template <typename Sequence, typename... Args>
-				struct apply<Sequence, true, Args...>
-			{
-				typedef Template<Args...> type;
-			};
+			typedef decltype(*std::declval<T>())                    reference;
+			typedef typename std::remove_reference<reference>::type type;
+			typedef typename std::remove_cv<type>::type             value_type;
 		};
+
+		/**
+		 * @defgroup remove_member_pointer
+		 * @{
+		 */
+		namespace detail
+		{
+			template <typename T>
+				struct remove_member_pointer_impl
+			{
+				typedef T type;
+			};
+			template <typename T, typename U>
+				struct remove_member_pointer_impl<T U::*>
+			{
+				typedef T type;
+			};
+		}
+		
+		/**
+		 * Removes the member pointer from a type, leaving the type of the member
+		 * pointed to.
+		 */
+		template <typename T>
+			struct remove_member_pointer :
+				detail::remove_member_pointer_impl<T> {};
+		///@}
 	}
 }
 

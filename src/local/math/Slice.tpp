@@ -30,7 +30,7 @@
 
 #include <algorithm> // copy, transform
 #include <functional> // bind2nd, divides, minus, multiplies, plus, negate
-#include "../util/functional.hpp" // modulus
+#include "../util/functional/operator.hpp" // modulus
 #include "../util/iterator/range.hpp"
 #include "../util/serialize/deserialize.hpp" // Deserialize
 #include "../util/serialize/serialize.hpp" // Serialize

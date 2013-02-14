@@ -32,7 +32,7 @@
 #include <iostream> // clog
 #include "../../../err/Exception.hpp"
 #include "../../../log/manip.hpp" // Warning
-#include "../../../util/functional.hpp" // tolower_function
+#include "../../../util/functional/locale.hpp" // tolower_function
 #include "../../../util/string.hpp" // Join
 #include "Parser.hpp"
 

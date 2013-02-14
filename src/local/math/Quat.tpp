@@ -34,8 +34,8 @@
 #include <functional> // bind, divides, minus, multiplies, plus, negate
 #include <numeric> // inner_product
 #include "../math/float.hpp" // Near
-#include "../util/algorithm.hpp" // find_not
-#include "../util/functional.hpp" // modulus
+#include "../util/algorithm/stdext.hpp" // find_not
+#include "../util/functional/operator.hpp" // modulus
 #include "../util/iterator/range.hpp"
 #include "../util/serialize/deserialize.hpp" // Deserialize
 #include "../util/serialize/serialize.hpp" // Serialize

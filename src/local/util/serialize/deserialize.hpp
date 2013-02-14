@@ -37,7 +37,12 @@
 #	include <tuple>
 #	include <type_traits> // is_pointer
 #	include <utility> // pair
-#	include "../type_traits.hpp" // ENABLE_IF, is_{compatible_with_insert_iterator,const_propogated,extractable,iterator,range,string}
+
+#	include "../type_traits/container.hpp" // is_{compatible_with_insert_iterator,const_propogated,range}
+#	include "../type_traits/iterator.hpp" // is_iterator
+#	include "../type_traits/sfinae.hpp" // ENABLE_IF
+#	include "../type_traits/stream.hpp" // is_extractable
+#	include "../type_traits/string.hpp" // is_string
 #	include "DeserializationDelimiter.hpp"
 #	include "SequenceDeserializationFlags.hpp"
 

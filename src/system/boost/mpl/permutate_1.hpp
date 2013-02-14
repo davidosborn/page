@@ -28,7 +28,7 @@
  */
 
 #ifndef    page_system_boost_mpl_permutate_1_hpp
-#	define page_system_boost_mpl_permutate_1_hpp
+#   define page_system_boost_mpl_permutate_1_hpp
 
 #	include <boost/mpl/advance.hpp>
 #	include <boost/mpl/begin_end.hpp>

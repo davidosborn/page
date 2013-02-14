@@ -1,4 +1,24 @@
-Replace includes of "util/functional.hpp" with the proper subdivided headers.
+I commented out util::ExpandPath until I have time to clean it up.
+
+Clean up the documentation of util/factory/Factory.hpp.
+
+The installation steps for Boost in install-depends.sh say that we should apply a certain patch to ensure correct order-of-initialization between boost::filesystem and the Standard Library under MinGW -- not sure if this is relevant anymore.
+
+Don't use <algorithm> and x.begin()/x.end() anymore, use range-based-for-loops instead.
+
+Source files should always include their associated header to pick up any default function arguments.
+
+A lot of the algorithms in util/algorithm/stdext.hpp can be removed when the math module gets updated for C++11.
+
+Is there a way to merge util/functional/factory and build_function_signature?
+
+Gotta get the boost/mpl stuff to work with views, and not just mutable sequences.
+
+Fix implementation of CodecFactory::Get{Extensions,Formats,MimeTypes}.
+
+The error we're getting looks like a conflict between the ConcreteCodec
+member struct and the function template argument of the same name.  Try
+giving one of them a different name.
 
 Consider whether EncoderFactory can be back-ported into util/Factory, with Key and Args parameterized via typelists.
 
@@ -12,6 +32,8 @@ Switch back to declarative style -- it is better.
 http://lua-users.org/lists/lua-l/2012-03/msg00785.html
 
 Make short-form typedefs for math types (such as Vec3f).
+
+We NEED line-wrapping when looking at TODO!
 
 ----------------
 

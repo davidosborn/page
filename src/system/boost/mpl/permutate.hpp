@@ -28,7 +28,7 @@
  */
 
 #ifndef    page_system_boost_mpl_permutate_hpp
-#	define page_system_boost_mpl_permutate_hpp
+#   define page_system_boost_mpl_permutate_hpp
 
 #	include <boost/mpl/back_inserter.hpp>
 #	include <boost/mpl/copy.hpp>

@@ -35,7 +35,8 @@
 #	include <limits> // numeric_limits
 #	include <tuple>
 #	include <utility> // declval
-#	include "type_traits.hpp" // ENABLE_IF
+
+#	include "type_traits/sfinae.hpp" // ENABLE_IF
 
 namespace page
 {

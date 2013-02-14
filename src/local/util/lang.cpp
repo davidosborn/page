@@ -41,7 +41,7 @@
 #include "../log/Indenter.hpp"
 #include "../res/Index.hpp" // GetIndex, Index::Open
 #include "../res/Stream.hpp" // Stream::{~Stream,GetLine}
-#include "functional.hpp" // isspace_function
+#include "functional/locale.hpp" // isspace_function
 #include "string.hpp" // Partition, Split
 
 namespace page

@@ -32,7 +32,8 @@
 #include <cassert>
 #include <ostream>
 #include <utility> // move
-#include "type_traits.hpp" // copy_cv
+
+#include "type_traits/const_volatile.hpp" // copy_cv
 
 namespace page
 {

@@ -40,23 +40,29 @@
 #include "../err/Exception.hpp"
 #include "../res/type/Image.hpp"
 #include "Encoder.hpp" // Encoder::{~Encoder,Write}
-#include "encoder/registry.hpp" // EncoderFactory, GetRegisteredEncoder
+#include "encoder/EncoderFactory.hpp" // EncoderFactory, GetRegisteredEncoder
 #include "Stream.hpp"
 
 namespace page
 {
 	namespace clip
 	{
-		// construct/destroy
-		Stream::Stream(const boost::filesystem::path &path, const std::string &format, const math::Vector<2, unsigned> &size, float frameRate, float quality) :
-			size(size)
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		Stream::Stream(
+			const boost::filesystem::path &path, 
+			const std::string &format, 
+			const math::Vec2u &size, 
+			float frameRate, 
+			float quality) :
+				size(size)
 		{
-			EncoderFactory encoderFactory; std::string encoderPath;
-			std::tie(encoderFactory, encoderPath) = GetRegisteredEncoder(path, format);
-			assert(encoderFactory);
+			auto product(EncoderFactory::GetGlobalInstance().Produce(path, format));
 
 			// open file
-			fs.open(path, std::ios_base::binary | std::ios_base::out);
+			fs.open(product.path, std::ios_base::binary | std::ios_base::out);
 			if (!fs)
 				THROW((err::Exception<err::ClipModuleTag, err::FileAccessTag>()))
 
@@ -64,7 +70,7 @@ namespace page
 			try
 			{
 				using namespace std::placeholders;
-				encoder.reset(encoderFactory(
+				encoder.reset(product.function(
 					std::bind(&Stream::WriteEncoded, this, _1, _2),
 					size, frameRate, quality));
 				assert(encoder);
@@ -87,13 +93,19 @@ namespace page
 			}
 		}
 
-		// attributes
+		/*-----------+
+		| attributes |
+		+-----------*/
+
 		const math::Vector<2, unsigned> &Stream::GetSize() const
 		{
 			return size;
 		}
 
-		// audio/video input
+		/*------------------+
+		| audio/video input |
+		+------------------*/
+
 		void Stream::Write(const res::Image &img)
 		{
 			// FIXME: crop to size
@@ -101,7 +113,10 @@ namespace page
 			encoder->Write(&*img.data.begin(), img.data.size());
 		}
 
-		// encoded output
+		/*---------------+
+		| encoded output |
+		+---------------*/
+
 		void Stream::WriteEncoded(const void *s, unsigned n)
 		{
 			if (!fs.write(static_cast<const char *>(s), n))

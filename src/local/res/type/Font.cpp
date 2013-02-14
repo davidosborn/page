@@ -35,7 +35,7 @@
 #include <cmath> // ceil
 #include <functional> // hash
 #include <iterator> // back_inserter
-#include "../../util/functional.hpp" // isspace_function
+#include "../../util/functional/locale.hpp" // isspace_function
 #include "Font.hpp"
 #include "register.hpp" // REGISTER_TYPE
 

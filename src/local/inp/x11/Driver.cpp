@@ -33,8 +33,8 @@
 #include <vector>
 #include <X11/Xutil.h> // XLookupString
 #include "../../env/x11/Window.hpp"
-#include "../../util/algorithm.hpp" // for_each_if
-#include "../../util/functional.hpp" // isprint_function
+#include "../../util/algorithm/stdext.hpp" // for_each_if
+#include "../../util/functional/locale.hpp" // isprint_function
 #include "Driver.hpp"
 
 namespace page

@@ -45,7 +45,7 @@ namespace page
 	namespace clip
 	{
 		// construct/destroy
-		FfmpegEncoder::FfmpegEncoder(const Callback &cb, const math::Vector<2, unsigned> &size, float frameRate, float quality) :
+		FfmpegEncoder::FfmpegEncoder(const Callback &cb, const math::Vec2u &size, float frameRate, float quality) :
 			Encoder(cb, Content(size) * 3)
 		{
 			av_register_all();
@@ -81,7 +81,7 @@ namespace page
 				Initializer()
 				{
 					// FIXME: may need extensions and names for all FFmpeg-supported formats
-					Encoder::Factory::GetGlobalInstance().Register<FfmpegEncoder>("", "", 0);
+					Encoder::Factory::GetGlobalInstance().Register<FfmpegEncoder>(0, {}, {}, {});
 				}
 			}
 				initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
