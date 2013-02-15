@@ -50,6 +50,9 @@ namespace page
 		 *
 		 * @note Because the container stores references instead of values,
 		 *       the emplace functions are not provided.
+		 *
+		 * @note The specification for @c std::initializer_list doesn't permit
+		 *       reference types, so we have to use pointers instead.
 		 */
 		template <typename T>
 			class reference_vector
@@ -60,7 +63,7 @@ namespace page
 
 			private:
 			typedef std::vector<T *> container_type;
-			
+
 			public:
 			typedef T &value_type;
 			typedef T &reference;
@@ -81,12 +84,12 @@ namespace page
 			reference_vector(size_type, value_type);
 			template <typename InputIterator>
 				reference_vector(InputIterator, InputIterator);
-			reference_vector(std::initializer_list<value_type>);
-			
+			reference_vector(std::initializer_list<typename container_type::value_type>);
+
 			/*----------------------+
 			| copy & move semantics |
 			+----------------------*/
-			
+
 			DEFINE_COPY(reference_vector, default)
 			DEFINE_MOVE(reference_vector, default)
 
@@ -101,7 +104,7 @@ namespace page
 			const_iterator end()    const;
 			const_iterator cbegin() const;
 			const_iterator cend()   const;
-			
+
 			reverse_iterator       rbegin();
 			const_reverse_iterator rbegin()  const;
 			reverse_iterator       rend();
@@ -112,7 +115,7 @@ namespace page
 			/*---------+
 			| capacity |
 			+---------*/
-			
+
 			size_type size() const;
 			size_type max_size() const;
 			bool empty() const;
@@ -121,11 +124,11 @@ namespace page
 			size_type capacity() const;
 			void reserve(size_type);
 			void shrink_to_fit();
-			
+
 			/*---------------+
 			| element access |
 			+---------------*/
-			
+
 			reference       operator [](size_type);
 			const_reference operator [](size_type) const;
 			reference       at(size_type);
@@ -149,16 +152,16 @@ namespace page
 			iterator insert(const_iterator, size_type, value_type);
 			template <typename Iterator>
 				iterator insert(const_iterator, Iterator, Iterator);
-			iterator insert(const_iterator, std::initializer_list<value_type>);
-			
+			iterator insert(const_iterator, std::initializer_list<typename container_type::value_type>);
+
 			iterator erase(const_iterator);
 			iterator erase(const_iterator, const_iterator);
-			
+
 			void clear();
-			
+
 			template <typename Iterator>
 				void assign(Iterator, Iterator);
-			void assign(std::initializer_list<value_type>);
+			void assign(std::initializer_list<typename container_type::value_type>);
 			void assign(size_type, value_type);
 
 			/*-------------+

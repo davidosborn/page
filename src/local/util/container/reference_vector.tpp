@@ -58,8 +58,14 @@ namespace page
 						boost::make_transform_iterator(last,  address_of<typename InputIterator::value_type>())) {}
 
 		template <typename T>
-			reference_vector<T>::reference_vector(std::initializer_list<value_type> il) :
-				container(il) {}
+			reference_vector<T>::reference_vector(std::initializer_list<typename container_type::value_type> il) :
+				container(il)
+
+				/**
+				 * This is the code we would use if std::initializer_list supported
+				 * reference types.
+				 */
+				/*container(boost::adaptors::transform(il, address_of<value_type>()))*/ {}
 
 		/*----------+
 		| iterators |
@@ -201,58 +207,58 @@ namespace page
 		/*---------------+
 		| element access |
 		+---------------*/
-		
+
 		template <typename T>
-			typename reference_vector<T>::reference 
+			typename reference_vector<T>::reference
 				reference_vector<T>::operator [](size_type i)
 		{
 			return *container[i];
 		}
-		
+
 		template <typename T>
-			typename reference_vector<T>::const_reference 
+			typename reference_vector<T>::const_reference
 				reference_vector<T>::operator [](size_type i) const
 		{
 			return *container[i];
 		}
-		
+
 		template <typename T>
-			typename reference_vector<T>::reference 
+			typename reference_vector<T>::reference
 				reference_vector<T>::at(size_type i)
 		{
 			return *container.at(i);
 		}
-		
+
 		template <typename T>
-			typename reference_vector<T>::const_reference 
+			typename reference_vector<T>::const_reference
 				reference_vector<T>::at(size_type i) const
 		{
 			return *container.at(i);
 		}
-		
+
 		template <typename T>
-			typename reference_vector<T>::reference 
+			typename reference_vector<T>::reference
 				reference_vector<T>::front()
 		{
 			return *container.front();
 		}
-		
+
 		template <typename T>
-			typename reference_vector<T>::const_reference 
+			typename reference_vector<T>::const_reference
 				reference_vector<T>::front() const
 		{
 			return *container.front();
 		}
-		
+
 		template <typename T>
-			typename reference_vector<T>::reference 
+			typename reference_vector<T>::reference
 				reference_vector<T>::back()
 		{
 			return *container.back();
 		}
-		
+
 		template <typename T>
-			typename reference_vector<T>::const_reference 
+			typename reference_vector<T>::const_reference
 				reference_vector<T>::back() const
 		{
 			return *container.back();
@@ -306,10 +312,16 @@ namespace page
 
 		template <typename T>
 			typename reference_vector<T>::iterator
-				reference_vector<T>::insert(const_iterator iter, std::initializer_list<value_type> il)
+				reference_vector<T>::insert(const_iterator iter, std::initializer_list<typename container_type::value_type> il)
 		{
-			return iterator(container.insert(iter.base(),
-				boost::adaptors::transform(il, address_of<value_type>())));
+			return iterator(container.insert(iter.base(), il));
+
+			/**
+			 * This is the code we would use if std::initializer_list supported
+			 * reference types.
+			 */
+			/*return iterator(container.insert(iter.base(),
+				boost::adaptors::transform(il, address_of<value_type>())));*/
 		}
 
 		template <typename T>
@@ -342,9 +354,15 @@ namespace page
 		}
 
 		template <typename T>
-			void reference_vector<T>::assign(std::initializer_list<value_type> il)
+			void reference_vector<T>::assign(std::initializer_list<typename container_type::value_type> il)
 		{
-			container.assign(boost::adaptors::transform(il, address_of<value_type>()));
+			container.assign(il);
+
+			/**
+			 * This is the code we would use if std::initializer_list supported
+			 * reference types.
+			 */
+			//container.assign(boost::adaptors::transform(il, address_of<value_type>()));
 		}
 
 		template <typename T>
