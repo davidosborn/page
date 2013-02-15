@@ -43,7 +43,7 @@
 #	include <boost/mpl/vector.hpp>
 
 	// local
-#	include "../container/indirect_vector.hpp"
+#	include "../container/reference_vector.hpp"
 #	include "../functional/factory.hpp" // factory_function
 #	include "Criterion.hpp"
 
@@ -218,7 +218,7 @@ namespace page
 			 *
 			 */
 			template <typename T>
-				indirect_vector<const Blueprint>
+				reference_vector<const Blueprint>
 					Select(const Criterion<T, Criteria> &) const;
 
 			/**

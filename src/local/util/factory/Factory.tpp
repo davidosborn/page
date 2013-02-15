@@ -87,11 +87,11 @@ namespace page
 
 		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data>
 			template <typename T>
-				indirect_vector<const typename Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Blueprint>
+				reference_vector<const typename Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Blueprint>
 				Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Select(
 					const Criterion<T, Criteria> &criterion) const
 		{
-			indirect_vector<const Blueprint> r;
+			reference_vector<const Blueprint> r;
 			for (const auto &blueprint : blueprints)
 				if (criterion(blueprint.criteria))
 					r.push_back(blueprint);
