@@ -31,8 +31,10 @@
 #ifndef    page_local_util_factory_Criterion_hpp
 #   define page_local_util_factory_Criterion_hpp
 
+	// C++
 #	include <unordered_set>
 
+	// local
 #	include "../algorithm/contains.hpp"
 
 namespace page
@@ -51,7 +53,21 @@ namespace page
 				return static_cast<const Derived &>(*this)(criteria);
 			}
 		};
-		
+
+		/**
+		 * A criterion which always evaluates to @c true.
+		 */
+		template <typename Criteria>
+			class TrueCriterion :
+				public Criterion<TrueCriterion<Criteria>, Criteria>
+		{
+			public:
+			bool operator ()(const Criteria &criteria) const
+			{
+				return true;
+			}
+		};
+
 		/**
 		 * A criterion which evaluates to @c true if the specified criteria
 		 * member is equal to the specified value.
@@ -76,7 +92,7 @@ namespace page
 			private:
 			T value;
 		};
-		
+
 		/**
 		 * A criterion which evaluates to @c true if the specified criteria
 		 * member contains the specified value.
@@ -102,53 +118,93 @@ namespace page
 			typename T::value_type value;
 		};
 
-		/*class AndCriterion :
-			public Criterion
+		/**
+		 * A criterion which evaluates to @c true if both of the members also
+		 * evaluate to @c true.
+		 */
+		template <typename T, typename U, typename Criteria>
+			class AndCriterion :
+				public Criterion<AndCriterion<T, U, Criteria>, Criteria>
 		{
 			public:
-			AndCriterion(const Criterion &first, const Criterion &second) :
-				first(first), second(second) {}
+			AndCriterion(
+				const Criterion<T, Criteria> &a,
+				const Criterion<U, Criteria> &b) :
+					a(a), b(b) {}
+
+			AndCriterion(
+				Criterion<T, Criteria> &&a,
+				Criterion<U, Criteria> &&b) :
+					a(std::move(a)),
+					b(std::move(b)) {}
 
 			public:
-			bool Apply(const Criteria &criteria) const override
+			bool operator ()(const Criteria &criteria) const
 			{
-				return first.Apply(criteria) && second.Apply(criteria);
+				return a(criteria) && b(criteria);
 			}
 
 			private:
-			std::unique_ptr<Criterion> first, second;
+			Criterion<T, Criteria> a;
+			Criterion<U, Criteria> b;
 		};
 
-		class OrCriterion :
-			public Criterion
+		/**
+		 * A criterion which evaluates to @c true if one of the members also
+		 * evaluate to @c true.
+		 */
+		template <typename T, typename U, typename Criteria>
+			class OrCriterion :
+				public Criterion<OrCriterion<T, U, Criteria>, Criteria>
 		{
 			public:
-			OrCriterion(Criterion &&first, Criterion &&second) :
-				first(first), second(second) {}
+			OrCriterion(
+				const Criterion<T, Criteria> &a,
+				const Criterion<U, Criteria> &b) :
+					a(a), b(b) {}
+
+			OrCriterion(
+				Criterion<T, Criteria> &&a,
+				Criterion<U, Criteria> &&b) :
+					a(std::move(a)),
+					b(std::move(b)) {}
 
 			public:
-			bool Apply(const Criteria &criteria) const override
+			bool operator ()(const Criteria &criteria) const
 			{
-				return first.Apply(criteria) || second.Apply(criteria);
+				return a(criteria) || b(criteria);
 			}
 
 			private:
-			Criterion first, second;
+			Criterion<T, Criteria> a;
+			Criterion<U, Criteria> b;
 		};
 
-		AndCriterion operator &&(Criterion &&a, Criterion &&b)
+		/**
+		 * A short form of @c AndCriterion.
+		 */
+		template <typename T, typename U, typename Criteria>
+			AndCriterion<T, U, Criteria> operator &&(
+				Criterion<T, Criteria> &&a,
+				Criterion<U, Criteria> &&b)
 		{
-			return AndCriterion(
-				std::forward<Criterion>(a),
-				std::forward<Criterion>(b));
+			return AndCriterion<T, U, Criteria>(
+				std::forward<Criterion<T, Criteria>>(a),
+				std::forward<Criterion<U, Criteria>>(b));
 		}
 
-		OrCriterion operator ||(Criterion &&a, Criterion &&b)
+		/**
+		 * A short form of @c OrCriterion.
+		 */
+		template <typename T, typename U, typename Criteria>
+			OrCriterion<T, U, Criteria> operator ||(
+				Criterion<T, Criteria> &&a,
+				Criterion<U, Criteria> &&b)
 		{
-			return OrCriterion(
-				std::forward<Criterion>(a),
-				std::forward<Criterion>(b));
-		}*/
+			return OrCriterion<T, U, Criteria>(
+				std::forward<Criterion<T, Criteria>>(a),
+				std::forward<Criterion<U, Criteria>>(b));
+		}
 	}
 }
 

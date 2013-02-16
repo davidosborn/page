@@ -28,51 +28,28 @@
  * of this software.
  */
 
-#ifndef    page_local_util_factory_EncoderFactory_hpp
-#   define page_local_util_factory_EncoderFactory_hpp
+#ifndef    page_local_util_class_Monostate_hpp
+#   define page_local_util_class_Monostate_hpp
 
-	// C++
-#	include <string>
-#	include <unordered_set>
-
-	// local
-#	include "Factory.hpp"
+#	define GLOBAL(x) (x::GetGlobalInstance())
 
 namespace page
 {
 	namespace util
 	{
-		/**
-		 * The criteria used by @c EncoderFactory.
-		 */
-		struct EncoderCriteria
+		template <typename T>
+			class Monostate
 		{
-			std::unordered_set<std::string> formats;
-			std::unordered_set<std::string> mimeTypes;
-			std::unordered_set<std::string> extensions;
-
-			using FormatCriterion    = MemberContainsCriterion<decltype(formats),    EncoderCriteria, &EncoderCriteria::formats>;
-			using MimeTypeCriterion  = MemberContainsCriterion<decltype(mimeTypes),  EncoderCriteria, &EncoderCriteria::mimeTypes>;
-			using ExtensionCriterion = MemberContainsCriterion<decltype(extensions), EncoderCriteria, &EncoderCriteria::extensions>;
-		};
-		
-		/**
-		 * The data used by @c EncoderFactory.
-		 */
-		struct EncoderData
-		{
+			public:
 			/**
-			 * The default extension, which can be appended to the output path
-			 * if it doesn't already have an appropriate extension.
+			 * @return A reference to a single global instance of the class.
 			 */
-			std::string defaultExtension;
+			static T &GetGlobalInstance()
+			{
+				static T instance;
+				return instance;
+			}
 		};
-
-		/**
-		 * A factory for producing encoders.
-		 */
-		template <typename AbstractEncoder, typename ConstructorArgs>
-			using EncoderFactory = Factory<AbstractEncoder, ConstructorArgs, EncoderCriteria, EncoderData>;
 	}
 }
 

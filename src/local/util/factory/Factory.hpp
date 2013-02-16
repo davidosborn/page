@@ -35,7 +35,6 @@
 #	include <functional> // function
 #	include <list>
 #	include <memory> // unique_ptr
-#	include <vector>
 
 	// Boost
 #	include <boost/mpl/push_front.hpp>
@@ -43,6 +42,7 @@
 #	include <boost/mpl/vector.hpp>
 
 	// local
+#	include "../class/Monostate.hpp"
 #	include "../container/reference_vector.hpp"
 #	include "../functional/factory.hpp" // factory_function
 #	include "Criterion.hpp"
@@ -51,14 +51,82 @@ namespace page
 {
 	namespace util
 	{
+////////// ConstructorArgs /////////////////////////////////////////////////////
+
 		/**
-		 *
+		 * A variadic template used to pass constructor arguments to @c Factory.
 		 */
 		template <typename... T>
 			struct ConstructorArgs
 		{
 			typedef boost::mpl::vector<T...> type;
 		};
+
+////////// detail::Blueprint ///////////////////////////////////////////////////
+
+		namespace detail
+		{
+			/**
+			 * A structure containing information about a registered product.
+			 */
+			template <typename Function, typename Criteria, typename Data>
+				struct Blueprint
+			{
+				/**
+				 * Constructor, to safely initialize @c Blueprint.
+				 */
+				Blueprint(const Function &function, int priority, const Criteria &criteria, const Data &data) :
+					function(function), priority(priority), criteria(criteria), data(data) {}
+
+				/**
+				 * A factory function which returns a new instance of the
+				 * product.
+				 */
+				Function function;
+
+				/**
+				 * The product's priority, where the higher priority products
+				 * are selected first.  By convention, it is in the range of
+				 * [0, 100].
+				 *
+				 * @note When a new product is registered, it is placed ahead of
+				 *       any previously registered products of the same
+				 *       priority.
+				 */
+				int priority;
+
+				/**
+				 * The criteria associated with this product, which are
+				 * considered when selecting a product during production.
+				 */
+				Criteria criteria;
+
+				/**
+				 *
+				 */
+				Data data;
+			};
+
+////////// detail::Selection ///////////////////////////////////////////////////
+
+			/**
+			 * An ordered container of blueprint references, used to transport
+			 * the results of @c Factory::Select.
+			 */
+			template <typename Function, typename Criteria, typename Data>
+				using Selection = reference_vector<const Blueprint<Function, Criteria, Data>>;
+				
+			/**
+			 * Appends one @c Selection to another, removing any duplicate
+			 * blueprints while maintaining the order.
+			 */
+			template <typename Function, typename Criteria, typename Data>
+				void Merge(
+					Selection<Function, Criteria, Data> &,
+					const Selection<Function, Criteria, Data> &);
+		}
+
+////////// Factory /////////////////////////////////////////////////////////////
 
 		/**
 		 * A factory for producing concrete instances of an abstract type, where
@@ -73,7 +141,8 @@ namespace page
 			typename ConstructorArgs,
 			typename Criteria_,
 			typename Data_ = void>
-				class Factory
+				class Factory :
+					public Monostate<Factory<AbstractProduct, ConstructorArgs, Criteria_, Data_>>
 		{
 			/*------+
 			| types |
@@ -114,16 +183,6 @@ namespace page
 			 */
 			typedef Data_ Data;
 
-			/*----------------+
-			| global instance |
-			+----------------*/
-
-			public:
-			/**
-			 * Provides global access to a single instance of the class.
-			 */
-			static Factory &GetGlobalInstance();
-
 			/*-------------+
 			| registration |
 			+-------------*/
@@ -148,85 +207,27 @@ namespace page
 					const Criteria & = Criteria(),
 					const Data     & = Data());
 
-			/*----------+
-			| blueprint |
-			+----------*/
-
-			public:
-			/**
-			 * A structure containing information about a registered product.
-			 */
-			struct Blueprint
-			{
-				/**
-				 * Constructor, to safely initialize @c Blueprint.
-				 */
-				Blueprint(const Function &function, int priority, const Criteria &criteria, const Data &data) :
-					function(function), priority(priority), criteria(criteria), data(data) {}
-
-				/**
-				 * @defgroup factory-priority
-				 *
-				 * Relational operators to support the ordering of factory
-				 * products by priority.
-				 *
-				 * @{
-				 */
-				bool operator ==(const Blueprint &other) const { return priority == other.priority; }
-				bool operator !=(const Blueprint &other) const { return priority != other.priority; }
-				bool operator < (const Blueprint &other) const { return priority <  other.priority; }
-				bool operator > (const Blueprint &other) const { return priority >  other.priority; }
-				bool operator <=(const Blueprint &other) const { return priority <= other.priority; }
-				bool operator >=(const Blueprint &other) const { return priority >= other.priority; }
-				///@}
-
-				/**
-				 * A factory function which returns a new instance of the
-				 * product.
-				 */
-				Function function;
-
-				/**
-				 * The product's priority, where the higher priority products
-				 * are selected first.  By convention, it is in the range of
-				 * [0, 100].
-				 *
-				 * @note When a new product is registered, it is placed ahead of
-				 *       any previously registered products of the same
-				 *       priority.
-				 */
-				int priority;
-
-				/**
-				 * The criteria associated with this product, which are
-				 * considered when selecting a product during production.
-				 */
-				Criteria criteria;
-
-				/**
-				 *
-				 */
-				Data data;
-			};
-
 			/*-----------+
 			| production |
 			+-----------*/
 
 			public:
-			/**
-			 *
-			 */
-			template <typename T>
-				reference_vector<const Blueprint>
-					Select(const Criterion<T, Criteria> &) const;
+			typedef detail::Blueprint<Function, Criteria, Data> Blueprint;
+			typedef detail::Selection<Function, Criteria, Data> Selection;
 
 			/**
-			 *
+			 * Returns an ordered sequence of blueprints that match the
+			 * specified criteria.
 			 */
 			template <typename T>
-				const Blueprint &
-					SelectBest(const Criterion<T, Criteria> &) const;
+				Selection Select(const Criterion<T, Criteria> & = TrueCriterion<Criteria>()) const;
+
+			/**
+			 * Returns the blueprint with the highest priority that matches the
+			 * specified criteria.
+			 */
+			template <typename T>
+				const Blueprint &SelectBest(const Criterion<T, Criteria> & = TrueCriterion<Criteria>()) const;
 
 			/*-------------+
 			| data members |

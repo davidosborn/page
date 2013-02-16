@@ -28,52 +28,35 @@
  * of this software.
  */
 
-#ifndef    page_local_util_factory_EncoderFactory_hpp
-#   define page_local_util_factory_EncoderFactory_hpp
+#ifndef    page_local_util_class_copy_move_hpp
+#   define page_local_util_class_copy_move_hpp
 
-	// C++
-#	include <string>
-#	include <unordered_set>
+	/**
+	 * Define the copy-constructor and copy-assignment-operator of the specified
+	 * class.  The value should be either "default" or "delete".
+	 */
+#	define DEFINE_COPY(CLASS, VALUE) \
+		CLASS(const CLASS &)             = VALUE; \
+		CLASS &operator =(const CLASS &) = VALUE;
 
-	// local
-#	include "Factory.hpp"
+	/**
+	 * Define the move-constructor and move-assignment-operator of the specified
+	 * class.  The value should be either "default" or "delete".
+	 */
+#	define DEFINE_MOVE(CLASS, VALUE) \
+		CLASS(CLASS &&)             = VALUE; \
+		CLASS &operator =(CLASS &&) = VALUE;
 
-namespace page
-{
-	namespace util
-	{
-		/**
-		 * The criteria used by @c EncoderFactory.
-		 */
-		struct EncoderCriteria
-		{
-			std::unordered_set<std::string> formats;
-			std::unordered_set<std::string> mimeTypes;
-			std::unordered_set<std::string> extensions;
-
-			using FormatCriterion    = MemberContainsCriterion<decltype(formats),    EncoderCriteria, &EncoderCriteria::formats>;
-			using MimeTypeCriterion  = MemberContainsCriterion<decltype(mimeTypes),  EncoderCriteria, &EncoderCriteria::mimeTypes>;
-			using ExtensionCriterion = MemberContainsCriterion<decltype(extensions), EncoderCriteria, &EncoderCriteria::extensions>;
-		};
-		
-		/**
-		 * The data used by @c EncoderFactory.
-		 */
-		struct EncoderData
-		{
-			/**
-			 * The default extension, which can be appended to the output path
-			 * if it doesn't already have an appropriate extension.
-			 */
-			std::string defaultExtension;
-		};
-
-		/**
-		 * A factory for producing encoders.
-		 */
-		template <typename AbstractEncoder, typename ConstructorArgs>
-			using EncoderFactory = Factory<AbstractEncoder, ConstructorArgs, EncoderCriteria, EncoderData>;
-	}
-}
+	/**
+	 * Make the specified class "uncopyable" (ISO/IEC n3242 8.4.3.3).  The class
+	 * will not be copyable, but it will be movable.  This behaviour is
+	 * inherited, as long as the compiler is able to implicitly generate the
+	 * move-constructor and move-assignment-operator of the derived class (in
+	 * particular, it can't in the case of an user-defined destructor).
+	 */
+#	define MAKE_UNCOPYABLE(CLASS) \
+		public: \
+		DEFINE_COPY(CLASS, delete) \
+		DEFINE_MOVE(CLASS, default)
 
 #endif

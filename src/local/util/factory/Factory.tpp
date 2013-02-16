@@ -30,26 +30,42 @@
 
 // C++
 #include <algorithm> // upper_bound
-#include <functional> // greater
+#include <functional> // bind, greater
 
 // local
+#include "../functional/member.hpp" // member_of
+#include "../functional/pointer.hpp" // address_of
 #include "../../err/Exception.hpp"
 
 namespace page
 {
 	namespace util
 	{
-		/*----------------+
-		| global instance |
-		+----------------*/
+////////// detail::Selection ///////////////////////////////////////////////////
 
-		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data>
-			Factory<AbstractProduct, ConstructorArgs, Criteria, Data> &
-			Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::GetGlobalInstance()
+		namespace detail
 		{
-			static Factory instance;
-			return instance;
+			template <typename Function, typename Criteria, typename Data>
+				void Merge(
+					Selection<Function, Criteria, Data> &a,
+					const Selection<Function, Criteria, Data> &b)
+			{
+				a.reserve(a.size() + b.size());
+				for (const auto &blueprint : b)
+				{
+					if (std::find_if(a.begin(), a.end(),
+						std::bind(
+							std::equal_to<const Blueprint<Function, Criteria, Data> *>(),
+							std::bind(
+								address_of<const Blueprint<Function, Criteria, Data>>(),
+								std::placeholders::_1),
+							&blueprint)) == a.end())
+						a.push_back(blueprint);
+				}
+			}
 		}
+	
+////////// Factory /////////////////////////////////////////////////////////////
 
 		/*-------------+
 		| registration |
@@ -67,7 +83,14 @@ namespace page
 						blueprints.begin(),
 						blueprints.end(),
 						blueprint,
-						std::greater<Blueprint>()),
+						std::bind(
+							std::greater<int>(),
+							std::bind(
+								make_member_of(&Blueprint::priority),
+								std::placeholders::_1),
+							std::bind(
+								make_member_of(&Blueprint::priority),
+								std::placeholders::_2))),
 					blueprint));
 		}
 
@@ -87,11 +110,11 @@ namespace page
 
 		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data>
 			template <typename T>
-				reference_vector<const typename Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Blueprint>
+				typename Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Selection
 				Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Select(
 					const Criterion<T, Criteria> &criterion) const
 		{
-			reference_vector<const Blueprint> r;
+			Selection r;
 			for (const auto &blueprint : blueprints)
 				if (criterion(blueprint.criteria))
 					r.push_back(blueprint);

@@ -28,51 +28,33 @@
  * of this software.
  */
 
-#ifndef    page_local_util_factory_EncoderFactory_hpp
-#   define page_local_util_factory_EncoderFactory_hpp
+#ifndef    page_local_util_class_inheritance_hpp
+#   define page_local_util_class_inheritance_hpp
 
-	// C++
-#	include <string>
-#	include <unordered_set>
+#	include <utility> // forward
 
-	// local
-#	include "Factory.hpp"
+	/**
+	 * Cause the specified class to inherit the constructors of one of its base
+	 * classes.
+	 *
+	 * @see ISO/IEC n1898, Forwarding and Inherited Constructors
+	 */
+#	define INHERIT_CONSTRUCTORS(CLASS, BASE) \
+		template <typename... Args> \
+			explicit CLASS(Args &&... args) : \
+				BASE(std::forward<Args>(args)...) {}
 
 namespace page
 {
 	namespace util
 	{
 		/**
-		 * The criteria used by @c EncoderFactory.
+		 * An intermediate class-template which inherits from the base classes
+		 * specified as template arguments.
 		 */
-		struct EncoderCriteria
-		{
-			std::unordered_set<std::string> formats;
-			std::unordered_set<std::string> mimeTypes;
-			std::unordered_set<std::string> extensions;
-
-			using FormatCriterion    = MemberContainsCriterion<decltype(formats),    EncoderCriteria, &EncoderCriteria::formats>;
-			using MimeTypeCriterion  = MemberContainsCriterion<decltype(mimeTypes),  EncoderCriteria, &EncoderCriteria::mimeTypes>;
-			using ExtensionCriterion = MemberContainsCriterion<decltype(extensions), EncoderCriteria, &EncoderCriteria::extensions>;
-		};
-		
-		/**
-		 * The data used by @c EncoderFactory.
-		 */
-		struct EncoderData
-		{
-			/**
-			 * The default extension, which can be appended to the output path
-			 * if it doesn't already have an appropriate extension.
-			 */
-			std::string defaultExtension;
-		};
-
-		/**
-		 * A factory for producing encoders.
-		 */
-		template <typename AbstractEncoder, typename ConstructorArgs>
-			using EncoderFactory = Factory<AbstractEncoder, ConstructorArgs, EncoderCriteria, EncoderData>;
+		template <typename... Bases>
+			class PublicVirtualInheritor :
+				public virtual Bases... {};
 	}
 }
 
