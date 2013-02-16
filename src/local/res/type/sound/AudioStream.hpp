@@ -31,7 +31,7 @@
 #ifndef    page_local_res_type_sound_AudioStream_hpp
 #   define page_local_res_type_sound_AudioStream_hpp
 
-#	include "../../../util/class.hpp" // MAKE_UNCOPYABLE
+#	include "../../../util/class/copy_move.hpp" // MAKE_UNCOPYABLE
 
 namespace page
 {

@@ -219,15 +219,15 @@ namespace page
 			 * Returns an ordered sequence of blueprints that match the
 			 * specified criteria.
 			 */
-			template <typename T>
-				Selection Select(const Criterion<T, Criteria> & = TrueCriterion<Criteria>()) const;
+			template <typename T = TrueCriterion<Criteria>>
+				Selection Select(const Criterion<T, Criteria> & = T()) const;
 
 			/**
 			 * Returns the blueprint with the highest priority that matches the
 			 * specified criteria.
 			 */
-			template <typename T>
-				const Blueprint &SelectBest(const Criterion<T, Criteria> & = TrueCriterion<Criteria>()) const;
+			template <typename T = TrueCriterion<Criteria>>
+				const Blueprint &SelectBest(const Criterion<T, Criteria> & = T()) const;
 
 			/*-------------+
 			| data members |

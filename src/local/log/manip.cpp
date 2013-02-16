@@ -31,7 +31,7 @@
 #include <ostream>
 #include <typeinfo> // bad_cast
 
-#include "filter/IndentFilterState.hpp" // IndentFilterState::{{De,In}dent,GetGlobalInstance}
+#include "filter/IndentFilterState.hpp"
 #include "stream/Stream.hpp" // Stream::Clear
 
 namespace page
@@ -58,13 +58,13 @@ namespace page
 
 		std::ostream &Indent(std::ostream &os)
 		{
-			IndentFilterState::GetGlobalInstance().Indent();
+			GLOBAL(IndentFilterState).Indent();
 			return os;
 		}
 
 		std::ostream &Dedent(std::ostream &os)
 		{
-			IndentFilterState::GetGlobalInstance().Dedent();
+			GLOBAL(IndentFilterState).Dedent();
 			return os;
 		}
 

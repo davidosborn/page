@@ -37,6 +37,7 @@
 #	include <ostream> // basic_ostream
 
 	// local
+#	include "../../util/class/Monostate.hpp"
 #	include "CommonState.hpp"
 
 #	ifdef USE_OPENGL
@@ -56,8 +57,9 @@ namespace page
 		class State :
 			public CommonState,
 #	ifdef USE_OPENGL
-			public opengl::RenderState
+			public opengl::RenderState,
 #	endif
+			public util::Monostate<State>
 		{
 			/*--------------------------+
 			| constructors & destructor |
@@ -73,16 +75,6 @@ namespace page
 			 * @copydoc Commit
 			 */
 			~State();
-
-			/*----------------+
-			| global instance |
-			+----------------*/
-
-			public:
-			/**
-			 * Provides global access to a single instance of the class.
-			 */
-			static State &GetGlobalInstance();
 
 			/*-----------------+
 			| revision control |

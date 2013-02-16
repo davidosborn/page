@@ -31,19 +31,15 @@
 #ifndef    page_local_log_filter_IndentFilterState_hpp
 #   define page_local_log_filter_IndentFilterState_hpp
 
+#	include "../../util/class/Monostate.hpp"
+
 namespace page
 {
 	namespace log
 	{
-		class IndentFilterState
+		class IndentFilterState :
+			public util::Monostate<IndentFilterState>
 		{
-			/*----------------+
-			| global instance |
-			+----------------*/
-
-			public:
-			static IndentFilterState &GetGlobalInstance();
-
 			/*----------+
 			| observers |
 			+----------*/

@@ -38,7 +38,7 @@
 #	include <boost/range/adaptor/indirected.hpp>
 
 	// local
-#	include "../../util/class.hpp" // DEFINE_{COPY,MOVE}
+#	include "../../util/class/copy_move.hpp" // DEFINE_{COPY,MOVE}
 
 namespace page
 {

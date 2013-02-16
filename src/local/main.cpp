@@ -31,7 +31,7 @@
 #include <iostream> // cout
 
 // local
-#include "cfg/State.hpp" // State::{GetGlobalInstance,Write}
+#include "cfg/State.hpp"
 #include "err/report.hpp" // ReportError, std::exception
 #include "game/Game.hpp" // Game::{{,~}Game,Run}
 #include "log/print.hpp" // Print{Info,Stats}
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
 		game::Game().Run();
 
-		cfg::State::GetGlobalInstance().Write();
+		GLOBAL(cfg::State).Write();
 		log::PrintStats();
 	}
 	catch (const std::exception &e)

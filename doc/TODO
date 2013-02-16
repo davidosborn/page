@@ -1,3 +1,7 @@
+Factory::Blueprint should not be comparable like it is, because you want to be able to call std::unique on a list of blueprints and remove the ones that are the same.
+
+The constructor for clip::Stream takes the path and format in such a way that it isn't very configurable which Encoder is selected.  Like it would be better if we could select the best encoder according to a more flexible criteria.
+
 I commented out util::ExpandPath until I have time to clean it up.
 
 Clean up the documentation of util/factory/Factory.hpp.

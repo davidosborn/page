@@ -35,6 +35,9 @@
 #	include <functional> // function
 #	include <memory> // unique_ptr
 
+	// local
+#	include "class/Monostate.hpp"
+
 namespace page
 {
 	namespace util
@@ -50,7 +53,8 @@ namespace page
 		 *       Style" by Jim Hyslop and Herb Sutter.
 		 */
 		template <typename T, typename... Args>
-			class MonoFactory
+			class MonoFactory :
+				public Monostate<MonoFactory<T, Args...>>
 		{
 			/*------+
 			| types |
@@ -58,16 +62,6 @@ namespace page
 			
 			public:
 			typedef std::function<std::unique_ptr<T> (Args...)> Function;
-
-			/*----------------+
-			| global instance |
-			+----------------*/
-
-			public:
-			/**
-			 * Provides global access to a single instance of the class.
-			 */
-			static MonoFactory &GetGlobalInstance();
 
 			/*-------------+
 			| registration |

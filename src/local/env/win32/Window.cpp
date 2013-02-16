@@ -99,20 +99,20 @@ namespace page
 					}
 					catch (const err::Exception<err::Win32PlatformTag>::Permutation &)
 					{
-						cfg::State::GetGlobalInstance().windowFullscreen = full = false;
+						CVAR(windowFullscreen) = full = false;
 						goto InitWindowed;
 					}
 					style = WS_POPUP;
 					rect.left = rect.top = 0;
-					rect.right  = cfg::State::GetGlobalInstance().videoResolution->x;
-					rect.bottom = cfg::State::GetGlobalInstance().videoResolution->y;
+					rect.right  = CVAR(videoResolution).x;
+					rect.bottom = CVAR(videoResolution).y;
 				}
 				else
 				{
 					InitWindowed:
 					style = WS_OVERLAPPEDWINDOW;
-					rect.right  = (rect.left = cfg::State::GetGlobalInstance().windowPosition->x) + cfg::State::GetGlobalInstance().windowSize->x;
-					rect.bottom = (rect.top  = cfg::State::GetGlobalInstance().windowPosition->y) + cfg::State::GetGlobalInstance().windowSize->y;
+					rect.right  = (rect.left = CVAR(windowPosition).x) + CVAR(windowSize).x;
+					rect.bottom = (rect.top  = CVAR(windowPosition).y) + CVAR(windowSize).y;
 					AdjustWindowRectEx(&rect, style, FALSE, WS_EX_APPWINDOW);
 				}
 				// create window
@@ -214,14 +214,14 @@ namespace page
 					DEVMODE dm = {};
 					dm.dmSize       = sizeof dm;
 					dm.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT;
-					dm.dmPelsWidth  = cfg::State::GetGlobalInstance().videoResolution->x;
-					dm.dmPelsHeight = cfg::State::GetGlobalInstance().videoResolution->y;
+					dm.dmPelsWidth  = CVAR(videoResolution).x;
+					dm.dmPelsHeight = CVAR(videoResolution).y;
 
 					// maintain refresh rate
 					if (HDC hdc = GetDC(NULL))
 					{
-						if (GetDeviceCaps(hdc, HORZRES) == cfg::State::GetGlobalInstance().vidResolution->x &&
-							GetDeviceCaps(hdc, VERTRES) == cfg::State::GetGlobalInstance().vidResolution->y)
+						if (GetDeviceCaps(hdc, HORZRES) == CVAR(vidResolution).x &&
+							GetDeviceCaps(hdc, VERTRES) == CVAR(vidResolution).y)
 						{
 							dm.dmFields |= DM_DISPLAYFREQUENCY;
 							dm.dmDisplayFrequency = GetDeviceCaps(hdc, VREFRESH);
@@ -253,7 +253,7 @@ namespace page
 					}
 					SetWindowLongPtr(hwnd, GWL_STYLE, WS_POPUP);
 					muteMove = muteSize = false;
-					SetWindowPos(hwnd, 0, 0, 0, cfg::State::GetGlobalInstance().videoResolution->x, cfg::State::GetGlobalInstance().videoResolution->y, SWP_SHOWWINDOW | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
+					SetWindowPos(hwnd, 0, 0, 0, CVAR(videoResolution).x, CVAR(videoResolution).y, SWP_SHOWWINDOW | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
 					SetForegroundWindow(hwnd);
 				}
 				else
@@ -270,8 +270,8 @@ namespace page
 						throw;
 					}
 					RECT rect;
-					rect.right  = (rect.left = cfg::State::GetGlobalInstance().windowPosition->x) + cfg::State::GetGlobalInstance().windowSize->x;
-					rect.bottom = (rect.top  = cfg::State::GetGlobalInstance().windowPosition->y) + cfg::State::GetGlobalInstance().windowSize->y;
+					rect.right  = (rect.left = CVAR(windowPosition).x) + CVAR(windowSize).x;
+					rect.bottom = (rect.top  = CVAR(windowPosition).y) + CVAR(windowSize).y;
 					AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_APPWINDOW);
 					SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 					muteMove = muteSize = false;
@@ -280,7 +280,7 @@ namespace page
 					SetForegroundWindow(hwnd);
 				}
 				muteFocus = muteMove = muteSize = false;
-				cfg::State::GetGlobalInstance().windowFullscreen = full;
+				CVAR(windowFullscreen) = full;
 			}
 
 			// message handling
@@ -301,11 +301,11 @@ namespace page
 						break;
 						case SC_MAXIMIZE:
 						case SC_MAXIMIZE + 2:
-						cfg::State::GetGlobalInstance().windowMaximized = true;
+						CVAR(windowMaximized) = true;
 						break;
 						case SC_RESTORE:
 						case SC_RESTORE + 2:
-						if (!min) cfg::State::GetGlobalInstance().windowMaximized = false;
+						if (!min) CVAR(windowMaximized) = false;
 						break;
 					}
 					break;
@@ -353,7 +353,7 @@ namespace page
 					if (alive && !min && !muteMove && !moving && wparam != 0x83008300)
 					{
 						math::Vector<2, int> newPos(GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
-						if (!CVAR(windowMaximized) && !full) cfg::State::GetGlobalInstance().windowPosition = newPos;
+						if (!CVAR(windowMaximized) && !full) CVAR(windowPosition) = newPos;
 						moveSig(newPos);
 					}
 					break;
@@ -364,7 +364,7 @@ namespace page
 					if (alive && !min && !muteSize && !sizing && wparam != SIZE_MINIMIZED)
 					{
 						math::Vector<2, unsigned> newSize(LOWORD(lparam), HIWORD(lparam));
-						if (!CVAR(windowMaximized) && !full) cfg::State::GetGlobalInstance().windowSize = newSize;
+						if (!CVAR(windowMaximized) && !full) CVAR(windowSize) = newSize;
 						sizeSig(newSize);
 					}
 					break;
@@ -376,14 +376,14 @@ namespace page
 							RECT rect;
 							GetClientRect(hwnd, &rect);
 							MapWindowPoints(hwnd, 0, reinterpret_cast<LPPOINT>(&rect), 1);
-							moveSig(*(cfg::State::GetGlobalInstance().windowPosition = math::Vector<2, int>(rect.left, rect.top)));
+							moveSig(*(CVAR(windowPosition) = math::Vector<2, int>(rect.left, rect.top)));
 							moving = false;
 						}
 						if (sizing)
 						{
 							RECT rect;
 							GetClientRect(hwnd, &rect);
-							sizeSig(*(cfg::State::GetGlobalInstance().windowSize = math::Vector<2, unsigned>(rect.right, rect.bottom)));
+							sizeSig(*(CVAR(windowSize) = math::Vector<2, unsigned>(rect.right, rect.bottom)));
 							sizing = false;
 						}
 					}

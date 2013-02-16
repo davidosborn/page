@@ -70,11 +70,11 @@ namespace page
 						boost::errinfo_api_function("XOpenDisplay")))
 				// create window
 				// FIXME: XCreateWindow expects the position of the window frame
-				// while cfg::State::GetGlobalInstance().windowPosition is the position of the window client area
+				// while CVAR(windowPosition) is the position of the window client area
 				screen = DefaultScreen(display);
 				if (!(w = XCreateWindow(display, RootWindow(display, screen),
-					cfg::State::GetGlobalInstance().windowPosition->x, cfg::State::GetGlobalInstance().windowPosition->y,
-					cfg::State::GetGlobalInstance().windowSize->x, cfg::State::GetGlobalInstance().windowSize->y, 0,
+					CVAR(windowPosition).x, CVAR(windowPosition).y,
+					CVAR(windowSize).x, CVAR(windowSize).y, 0,
 					CopyFromParent, // depth
 					InputOutput,    // class
 					CopyFromParent, // visual
@@ -118,7 +118,7 @@ namespace page
 					}
 					catch (...)
 					{
-						cfg::State::GetGlobalInstance().windowFullscreen = false;
+						CVAR(windowFullscreen) = false;
 					}
 				}
 				// show window
@@ -169,14 +169,14 @@ namespace page
 							math::Vector<2, int> pos(event.xconfigure.x, event.xconfigure.y);
 							if (Any(pos != GetPosition()))
 							{
-								cfg::State::GetGlobalInstance().windowPosition = pos;
+								CVAR(windowPosition) = pos;
 								moveSig(pos);
 							}
 							// generate size event
 							math::Vector<2, unsigned> size(event.xconfigure.width, event.xconfigure.height);
 							if (Any(size != GetSize()))
 							{
-								cfg::State::GetGlobalInstance().windowSize = size;
+								CVAR(windowSize) = size;
 								sizeSig(size);
 							}
 						}

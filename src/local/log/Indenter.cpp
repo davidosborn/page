@@ -29,7 +29,7 @@
  */
 
 #include "../util/memory.hpp" // Share
-#include "filter/IndentFilterState.hpp" // IndentFilterState::{{De,In}dent,GetGlobalInstance}
+#include "filter/IndentFilterState.hpp"
 #include "Indenter.hpp"
 
 namespace page
@@ -41,7 +41,7 @@ namespace page
 		+--------------------------*/
 
 		Indenter::Indenter() :
-			Indenter(util::Share(IndentFilterState::GetGlobalInstance())) {}
+			Indenter(util::Share(GLOBAL(IndentFilterState))) {}
 
 		Indenter::Indenter(const std::shared_ptr<IndentFilterState> &state) :
 			state(state)

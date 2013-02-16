@@ -203,20 +203,19 @@ namespace page
 		{
 			/**
 			 * A static initializer which registers @c TheoraEncoder with
-			 * @c Encoder::Factory::GetGlobalInstance().
+			 * @c Encoder::Factory.
 			 */
 			struct Initializer
 			{
 				Initializer()
 				{
-					Encoder::Factory::GetGlobalInstance().Register<TheoraEncoder>(
+					GLOBAL(Encoder::Factory).Register<TheoraEncoder>(
 						50,
 						{"theora"},
 						{"video/ogg", "video/theora"},
 						{"ogv", "ogx"});
 				}
-			}
-				initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
+			} initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
 		}
 	}
 }

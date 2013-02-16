@@ -42,7 +42,7 @@
 
 	// local
 #	include "../math/Vector.hpp"
-#	include "../util/class.hpp" // MAKE_UNCOPYABLE
+#	include "../util/class/copy_move.hpp" // MAKE_UNCOPYABLE
 
 namespace page
 {
@@ -61,8 +61,7 @@ namespace page
 			public:
 			Stream(
 				const boost::filesystem::path &path,
-				const std::vector<std::string> &mimeTypes,
-				const std::vector<std::string> &formats,
+				const std::string &format,
 				const math::Vector<2, unsigned> &size,
 				float frameRate, 
 				float quality);

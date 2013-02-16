@@ -40,7 +40,7 @@
 #	include <boost/optional.hpp>
 
 	// local
-#	include "../../util/class.hpp" // MAKE_UNCOPYABLE
+#	include "../../util/class/copy_move.hpp" // MAKE_UNCOPYABLE
 
 namespace page
 {

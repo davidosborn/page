@@ -31,9 +31,9 @@
 #ifndef    page_local_log_filter_IndentFilter_hpp
 #   define page_local_log_filter_IndentFilter_hpp
 
-#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
+#	include "../../util/class/inheritance.hpp" // INHERIT_CONSTRUCTORS
 #	include "../../util/memory.hpp" // Share
-#	include "IndentFilterState.hpp" // IndentFilterState::GetGlobalInstance
+#	include "IndentFilterState.hpp"
 #	include "PrefixFilter.hpp"
 
 namespace page
@@ -67,7 +67,7 @@ namespace page
 
 			private:
 			std::shared_ptr<IndentFilterState> state =
-				util::Share(IndentFilterState::GetGlobalInstance());
+				util::Share(GLOBAL(IndentFilterState));
 		};
 	}
 }

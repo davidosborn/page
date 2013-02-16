@@ -28,7 +28,7 @@
  * of this software.
  */
 
-#include "../../gui/Console.hpp" // Console::{Factory::{GetGlobalInstance,Make},Write}
+#include "../../gui/Console.hpp"
 #include "ConsoleSink.hpp"
 
 namespace page
@@ -40,7 +40,7 @@ namespace page
 		+--------------------------*/
 
 		ConsoleSink::ConsoleSink(const std::string &title) :
-			console(gui::Console::Factory::GetGlobalInstance().Make(title)) {}
+			console(GLOBAL(gui::Console::Factory).Make(title)) {}
 
 		/*----------------------+
 		| Stream implementation |

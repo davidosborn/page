@@ -35,16 +35,6 @@ namespace page
 {
 	namespace log
 	{
-		/*----------------+
-		| global instance |
-		+----------------*/
-
-		IndentFilterState &IndentFilterState::GetGlobalInstance()
-		{
-			static IndentFilterState instance;
-			return instance;
-		}
-
 		/*----------+
 		| observers |
 		+----------*/

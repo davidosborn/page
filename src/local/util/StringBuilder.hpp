@@ -33,7 +33,7 @@
 
 #	include <sstream> // basic_{ostringstream,string}
 
-#	include "class.hpp" // MAKE_UNCOPYABLE
+#	include "class/copy_move.hpp" // MAKE_UNCOPYABLE
 
 namespace page
 {

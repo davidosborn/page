@@ -38,17 +38,6 @@ namespace page
 {
 	namespace util
 	{
-		/*----------------+
-		| global instance |
-		+----------------*/
-		
-		template <typename T, typename... Args>
-			auto MonoFactory<T, Args...>::GetGlobalInstance() -> MonoFactory &
-		{
-			static MonoFactory instance;
-			return instance;
-		}
-		
 		/*-------------+
 		| registration |
 		+-------------*/

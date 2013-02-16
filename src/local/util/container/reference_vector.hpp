@@ -38,7 +38,7 @@
 #	include <boost/iterator/indirect_iterator.hpp>
 
 	// local
-#	include "../class.hpp" // DEFINE_{COPY,MOVE}
+#	include "../class/copy_move.hpp" // DEFINE_{COPY,MOVE}
 
 namespace page
 {

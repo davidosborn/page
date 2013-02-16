@@ -74,17 +74,16 @@ namespace page
 		{
 			/**
 			 * A static initializer which registers @c FfmpegEncoder with
-			 * @c Encoder::Factory::GetGlobalInstance().
+			 * @c Encoder::Factory.
 			 */
 			struct Initializer
 			{
 				Initializer()
 				{
 					// FIXME: may need extensions and names for all FFmpeg-supported formats
-					Encoder::Factory::GetGlobalInstance().Register<FfmpegEncoder>(0, {}, {}, {});
+					GLOBAL(Encoder::Factory).Register<FfmpegEncoder>(0, {}, {}, {});
 				}
-			}
-				initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
+			} initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
 		}
 	}
 }

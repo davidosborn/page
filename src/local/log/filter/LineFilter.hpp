@@ -31,7 +31,7 @@
 #ifndef    page_local_log_filter_LineFilter_hpp
 #   define page_local_log_filter_LineFilter_hpp
 
-#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
+#	include "../../util/class/inheritance.hpp" // INHERIT_CONSTRUCTORS
 #	include "Filter.hpp"
 
 namespace page

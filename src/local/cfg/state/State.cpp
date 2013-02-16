@@ -65,16 +65,6 @@ namespace page
 			Commit();
 		}
 
-		/*----------------+
-		| global instance |
-		+----------------*/
-
-		State &State::GetGlobalInstance()
-		{
-			static State instance;
-			return instance;
-		}
-
 		/*-----------------+
 		| revision control |
 		+-----------------*/

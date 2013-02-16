@@ -31,7 +31,7 @@
 #ifndef    page_local_log_stream_BufferStream_hpp
 #   define page_local_log_stream_BufferStream_hpp
 
-#	include "../../util/class.hpp" // INHERIT_CONSTRUCTORS
+#	include "../../util/class/inheritance.hpp" // INHERIT_CONSTRUCTORS
 #	include "BranchableStream.hpp"
 
 namespace page

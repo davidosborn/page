@@ -33,14 +33,12 @@
 #include <cstdio> // remove
 #include <functional> // bind
 #include <iostream> // cout
-#include <utility> // tie
 
 // local
 #include "../cfg/vars.hpp"
 #include "../err/Exception.hpp"
 #include "../res/type/Image.hpp"
-#include "Encoder.hpp" // Encoder::{~Encoder,Write}
-#include "encoder/EncoderFactory.hpp" // EncoderFactory, GetRegisteredEncoder
+#include "encoder/Encoder.hpp"
 #include "Stream.hpp"
 
 namespace page
@@ -52,17 +50,19 @@ namespace page
 		+--------------------------*/
 
 		Stream::Stream(
-			const boost::filesystem::path &path, 
-			const std::string &format, 
-			const math::Vec2u &size, 
-			float frameRate, 
+			const boost::filesystem::path &path,
+			const std::string &format,
+			const math::Vec2u &size,
+			float frameRate,
 			float quality) :
 				size(size)
 		{
-			auto product(EncoderFactory::GetGlobalInstance().Produce(path, format));
-
+			// select the closest-matching encoder
+			boost::filesystem::path encoderPath(path);
+			auto encoderBlueprint(GLOBAL(Encoder::Factory).Select(encoderPath, format));
+		
 			// open file
-			fs.open(product.path, std::ios_base::binary | std::ios_base::out);
+			fs.open(encoderPath, std::ios_base::binary | std::ios_base::out);
 			if (!fs)
 				THROW((err::Exception<err::ClipModuleTag, err::FileAccessTag>()))
 
@@ -70,7 +70,7 @@ namespace page
 			try
 			{
 				using namespace std::placeholders;
-				encoder.reset(product.function(
+				encoder.reset(encoderBlueprint.function(
 					std::bind(&Stream::WriteEncoded, this, _1, _2),
 					size, frameRate, quality));
 				assert(encoder);
@@ -83,7 +83,7 @@ namespace page
 				throw;
 			}
 		}
-		
+
 		Stream::~Stream()
 		{
 			// print statistics

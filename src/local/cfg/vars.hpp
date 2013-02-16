@@ -31,12 +31,12 @@
 #ifndef    page_local_cfg_vars_hpp
 #   define page_local_cfg_vars_hpp
 
-#	include "state/State.hpp" // State::{*,GetGlobalInstance}
+#	include "state/State.hpp"
 
 	/**
 	 * @return The value of the specified configuration variable from the
 	 *         default @c State.
 	 */
-#	define CVAR(x) (*::page::cfg::State::GetGlobalInstance().x)
+#	define CVAR(x) (*GLOBAL(::page::cfg::State).x)
 
 #endif
