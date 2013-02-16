@@ -28,65 +28,60 @@
  * of this software.
  */
 
-// FFmpeg
-extern "C"
-{
-	#include <libavformat/avformat.h>
-}
+#ifndef    page_local_clip_encoder_detail_EncoderFactory_hpp
+#   define page_local_clip_encoder_detail_EncoderFactory_hpp
 
-// local
-#include "../../err/Exception.hpp"
-#include "../../math/Vector.hpp"
-#include "../../util/init_priority.hpp" // REG_INIT_PRIORITY
-#include "FfmpegEncoder.hpp"
+	// Boost
+#	include <boost/filesystem/path.hpp>
+
+	// local
+#	include "../../../math/fwd.hpp"
+#	include "../../../util/factory/EncoderFactory.hpp"
 
 namespace page
 {
 	namespace clip
 	{
-		// construct/destroy
-		FfmpegEncoder::FfmpegEncoder(const Callback &cb, const math::Vec2u &size, float frameRate, float quality) :
-			Encoder(cb, Content(size) * 3)
-		{
-			av_register_all();
-			// FIXME: implement
-		}
-		FfmpegEncoder::~FfmpegEncoder()
-		{
-			// FIXME: implement
-		}
+		class Encoder;
 
-		// encoding
-		void FfmpegEncoder::Encode(const void *s)
-		{
-			// FIXME: implement
-		}
-		void FfmpegEncoder::EncodeBuffer(bool lastFrame)
-		{
-			// FIXME: implement
-		}
-
-		/*-------------+
-		| registration |
-		+-------------*/
-
-		namespace
+		namespace detail
 		{
 			/**
-			 * A static initializer which registers @c FfmpegEncoder with
-			 * @c Encoder::Factory.
+			 *
 			 */
-			struct Initializer
+			typedef std::function<void (const void *, unsigned)> EncoderCallback;
+			
+			/**
+			 *
+			 */
+			using EncoderConstructorArgs = 
+				util::ConstructorArgs<
+					const EncoderCallback &,
+					const math::Vec2u &,
+					float,
+					float>;
+
+			/**
+			 *
+			 */
+			class EncoderFactory :
+				public util::EncoderFactory<Encoder, EncoderConstructorArgs, EncoderFactory>
 			{
-				Initializer()
-				{
-					// FIXME: may need extensions and names for all FFmpeg-supported formats
-					GLOBAL(Encoder::Factory).Register<FfmpegEncoder>(
-						0,
-						Encoder::Factory::Criteria{{"ffmpeg"}},
-						Encoder::Factory::Data{};
-				}
-			} initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
+				private:
+				using Base = util::EncoderFactory<Encoder, EncoderConstructorArgs, EncoderFactory>;
+			
+				public:
+				using Base::SelectBest;
+				
+				/**
+				 *
+				 */
+				const Blueprint &SelectBest(
+					boost::filesystem::path &,
+					const std::string &format) const;
+			};
 		}
 	}
 }
+
+#endif

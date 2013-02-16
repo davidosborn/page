@@ -37,6 +37,10 @@
 	// Boost
 #	include <boost/filesystem/path.hpp>
 
+	// local
+#	include "type_traits/container.hpp" // is_range
+#	include "type_traits/sfinae.hpp" // ENABLE_IF
+
 namespace page
 {
 	namespace util
@@ -97,6 +101,16 @@ namespace page
 			const boost::filesystem::path &path,
 			const boost::filesystem::path &extension);
 
+		/**
+		 * Ensure the path ends with one of the specified extensions.  If it
+		 * does not, the first extension is used.
+		 */
+		template <typename InputRange>
+			boost::filesystem::path WithExtension(
+				const boost::filesystem::path &path,
+				InputRange extensions,
+				ENABLE_IF((is_range<InputRange>::value)));
+				
 		/**
 		 * Ensure the path ends with one of the specified extensions.  If it
 		 * does not, the first extension is used.

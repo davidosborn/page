@@ -28,78 +28,12 @@
  * of this software.
  */
 
-// C++
-#include <iostream> // clog
-
-// local
-#include "../../err/Exception.hpp"
-#include "../../log/manip.hpp" // Warning
-#include "../../util/path.hpp" // {Get,With}Extension
 #include "Encoder.hpp"
 
 namespace page
 {
 	namespace clip
 	{
-////////// detail::EncoderFactory //////////////////////////////////////////////
-
-		namespace detail
-		{
-			const typename EncoderFactory::Blueprint &
-				EncoderFactory::SelectBest(
-					boost::filesystem::path &path,
-					const std::string &format) const
-			{
-				auto extension(util::GetExtension(path));
-
-				const Encoder::Factory::Blueprint *blueprint(nullptr);
-
-				// try to match format
-				if (!format.empty())
-				{
-					try
-					{
-						blueprint = &GLOBAL(Encoder::Factory).SelectBest(
-							EncoderFactory::Criteria::FormatCriterion(format));
-						goto Selected;
-					}
-					catch (const err::Exception<err::FactoryTag>::Permutation &)
-					{
-						std::clog << log::Warning << "format '" << format << "' does not match any registered encoders" << std::endl;
-					}
-				}
-
-				// try to match extension
-				{
-					std::string extension(util::GetExtension(path));
-					if (!extension.empty())
-					{
-						try
-						{
-							blueprint = &GLOBAL(Encoder::Factory).SelectBest(
-								EncoderFactory::Criteria::ExtensionCriterion(extension));
-							goto Selected;
-						}
-						catch (const err::Exception<err::FactoryTag>::Permutation &)
-						{
-							std::clog << log::Warning << "extension '" << extension << "' does not match any registered encoders" << std::endl;
-						}
-					}
-				}
-
-				blueprint = &GLOBAL(Encoder::Factory).SelectBest();
-
-				Selected:
-				path = util::WithExtension(path,
-					blueprint->criteria.extensions.begin(),
-					blueprint->criteria.extensions.end());
-
-				return *blueprint;
-			}
-		}
-
-////////// Encoder /////////////////////////////////////////////////////////////
-
 		/*--------------------------+
 		| constructors & destructor |
 		+--------------------------*/

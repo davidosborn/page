@@ -38,6 +38,15 @@ namespace page
 		| extension manipulation |
 		+-----------------------*/
 
+		template <typename InputRange>
+			boost::filesystem::path WithExtension(
+				const boost::filesystem::path &path,
+				InputRange extensions,
+				ENABLE_IF_IMPL((is_range<InputRange>::value)))
+		{
+			return WithExtension(path, extensions.begin(), extensions.end());
+		}
+
 		template <typename InputIterator>
 			boost::filesystem::path WithExtension(
 				const boost::filesystem::path &path,

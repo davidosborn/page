@@ -71,8 +71,8 @@ namespace page
 		/**
 		 * A factory for producing encoders.
 		 */
-		template <typename AbstractEncoder, typename ConstructorArgs>
-			using EncoderFactory = Factory<AbstractEncoder, ConstructorArgs, EncoderCriteria, EncoderData>;
+		template <typename AbstractEncoder, typename ConstructorArgs, typename Derived = void>
+			using EncoderFactory = Factory<AbstractEncoder, ConstructorArgs, EncoderCriteria, EncoderData, Derived>;
 	}
 }
 

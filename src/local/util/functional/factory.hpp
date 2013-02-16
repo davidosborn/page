@@ -51,7 +51,8 @@ namespace page
 		template <typename T, typename... Args>
 			struct new_function
 		{
-			typedef T *signature(Args...);
+			typedef T *result_type;
+			typedef result_type signature(Args...);
 
 			T *operator ()(Args &&... args) const
 			{
@@ -66,7 +67,8 @@ namespace page
 		template <typename T, typename... Args>
 			struct factory_function
 		{
-			typedef std::unique_ptr<T> signature(Args...);
+			typedef std::unique_ptr<T> result_type;
+			typedef result_type signature(Args...);
 
 			std::unique_ptr<T> operator ()(Args &&... args) const
 			{
@@ -80,11 +82,27 @@ namespace page
 		template <typename T, typename... Args>
 			struct make_shared_function
 		{
-			typedef std::shared_ptr<T> signature(Args...);
+			typedef std::shared_ptr<T> result_type;
+			typedef result_type signature(Args...);
 
 			std::shared_ptr<T> operator ()(Args &&... args) const
 			{
 				return std::make_shared<T>(std::forward<Args>(args)...);
+			}
+		};
+		
+		/**
+		 * A function object that creates an object on the stack.
+		 */
+		template <typename T, typename... Args>
+			struct constructor_function
+		{
+			typedef T result_type;
+			typedef result_type signature(Args...);
+
+			T operator ()(Args &&... args) const
+			{
+				return T(std::forward<Args>(args)...);
 			}
 		};
 		///@}

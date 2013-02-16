@@ -71,8 +71,8 @@ namespace page
 		| registration |
 		+-------------*/
 
-		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data>
-			void Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Register(
+		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data, typename Derived>
+			void Factory<AbstractProduct, ConstructorArgs, Criteria, Data, Derived>::Register(
 				const Function &function, int priority, const Criteria &criteria, const Data &data)
 		{
 			Blueprint blueprint(function, priority, criteria, data);
@@ -94,9 +94,9 @@ namespace page
 					blueprint));
 		}
 
-		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data>
+		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data, typename Derived>
 			template <typename ConcreteProduct>
-				void Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Register(
+				void Factory<AbstractProduct, ConstructorArgs, Criteria, Data, Derived>::Register(
 					int priority, const Criteria &criteria, const Data &data)
 		{
 			Register(
@@ -108,10 +108,10 @@ namespace page
 		| production |
 		+-----------*/
 
-		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data>
+		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data, typename Derived>
 			template <typename T>
-				typename Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Selection
-				Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Select(
+				typename Factory<AbstractProduct, ConstructorArgs, Criteria, Data, Derived>::Selection
+				Factory<AbstractProduct, ConstructorArgs, Criteria, Data, Derived>::Select(
 					const Criterion<T, Criteria> &criterion) const
 		{
 			Selection r;
@@ -121,10 +121,10 @@ namespace page
 			return r;
 		}
 
-		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data>
+		template <typename AbstractProduct, typename ConstructorArgs, typename Criteria, typename Data, typename Derived>
 			template <typename T>
-				const typename Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::Blueprint &
-				Factory<AbstractProduct, ConstructorArgs, Criteria, Data>::SelectBest(
+				const typename Factory<AbstractProduct, ConstructorArgs, Criteria, Data, Derived>::Blueprint &
+				Factory<AbstractProduct, ConstructorArgs, Criteria, Data, Derived>::SelectBest(
 					const Criterion<T, Criteria> &criterion) const
 		{
 			for (const auto &blueprint : blueprints)

@@ -32,56 +32,16 @@
 #   define page_local_clip_encoder_Encoder_hpp
 
 	// C++
-#	include <functional> // function
 #	include <vector>
 
-	// Boost
-#	include <boost/filesystem/path.hpp>
-
 	// local
-#	include "../../math/fwd.hpp"
 #	include "../../util/class/copy_move.hpp" // MAKE_UNCOPYABLE
-#	include "../../util/factory/EncoderFactory.hpp"
+#	include "detail/EncoderFactory.hpp"
 
 namespace page
 {
 	namespace clip
 	{
-		class Encoder;
-
-////////// detail::EncoderFactory //////////////////////////////////////////////
-		
-		namespace detail
-		{
-			/**
-			 *
-			 */
-			typedef std::function<void (const void *, unsigned)> EncoderCallback;
-
-			/**
-			 *
-			 */
-			class EncoderFactory :
-				public util::EncoderFactory<
-					Encoder,
-					util::ConstructorArgs<
-						const EncoderCallback &,
-						const math::Vec2u &,
-						float,
-						float>>
-			{
-				public:
-				/**
-				 *
-				 */
-				const Blueprint &SelectBest(
-					boost::filesystem::path &,
-					const std::string &format) const;
-			};
-		}
-
-////////// Encoder /////////////////////////////////////////////////////////////
-		
 		class Encoder
 		{
 			/*------+

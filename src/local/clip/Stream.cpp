@@ -30,9 +30,11 @@
 
 // C++
 #include <cassert>
-#include <cstdio> // remove
 #include <functional> // bind
 #include <iostream> // cout
+
+// Boost
+#include <boost/filesystem/operations.hpp>
 
 // local
 #include "../cfg/vars.hpp"
@@ -59,10 +61,10 @@ namespace page
 		{
 			// select the closest-matching encoder
 			boost::filesystem::path encoderPath(path);
-			auto encoderBlueprint(GLOBAL(Encoder::Factory).Select(encoderPath, format));
+			auto encoderBlueprint(GLOBAL(Encoder::Factory).SelectBest(encoderPath, format));
 		
 			// open file
-			fs.open(encoderPath, std::ios_base::binary | std::ios_base::out);
+			fs.open(encoderPath, std::ios_base::binary);
 			if (!fs)
 				THROW((err::Exception<err::ClipModuleTag, err::FileAccessTag>()))
 
@@ -70,16 +72,16 @@ namespace page
 			try
 			{
 				using namespace std::placeholders;
-				encoder.reset(encoderBlueprint.function(
+				encoder = encoderBlueprint.function(
 					std::bind(&Stream::WriteEncoded, this, _1, _2),
-					size, frameRate, quality));
+					size, frameRate, quality);
 				assert(encoder);
-				std::cout << "opened clip stream to " << path << std::endl;
+				std::cout << "opened clip stream to " << encoderPath.string() << std::endl;
 			}
 			catch (...)
 			{
 				fs.close();
-				std::remove(path);
+				remove(encoderPath);
 				throw;
 			}
 		}

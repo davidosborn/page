@@ -211,9 +211,11 @@ namespace page
 				{
 					GLOBAL(Encoder::Factory).Register<TheoraEncoder>(
 						50,
-						{"theora"},
-						{"video/ogg", "video/theora"},
-						{"ogv", "ogx"});
+						Encoder::Factory::Criteria{
+							{"theora"},
+							{"video/ogg", "video/theora"},
+							{"ogv", "ogx"}},
+						Encoder::Factory::Data{"ogv"});
 				}
 			} initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
 		}

@@ -35,8 +35,10 @@
 #	include <functional> // function
 #	include <list>
 #	include <memory> // unique_ptr
+#	include <type_traits> // is_void
 
 	// Boost
+#	include <boost/mpl/if.hpp>
 #	include <boost/mpl/push_front.hpp>
 #	include <boost/mpl/unpack.hpp>
 #	include <boost/mpl/vector.hpp>
@@ -140,9 +142,14 @@ namespace page
 			typename AbstractProduct,
 			typename ConstructorArgs,
 			typename Criteria_,
-			typename Data_ = void>
+			typename Data_   = void,
+			typename Derived = void>
 				class Factory :
-					public Monostate<Factory<AbstractProduct, ConstructorArgs, Criteria_, Data_>>
+					public Monostate<
+						typename boost::mpl::if_<
+							std::is_void<Derived>,
+							Factory<AbstractProduct, ConstructorArgs, Criteria_, Data_, Derived>,
+							Derived>::type>
 		{
 			/*------+
 			| types |
