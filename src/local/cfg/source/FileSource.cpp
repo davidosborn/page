@@ -268,8 +268,8 @@ namespace page
 								std::string::reverse_iterator(valueBegin),
 								isspace).base();
 						*line =
-							std::string(line->begin(), valueBegin) +
-							*iter->second                          +
+							std::string(line->begin(), valueBegin)
+							*iter->second                         
 							std::string(valueEnd, line->end());
 						vars.erase(iter);
 					}

@@ -166,7 +166,7 @@ namespace page
 				lockBuffer.resize(size);
 				const std::unique_ptr<Stream> stream(MakeStream());
 				if (prevLockSize) stream->Seek(prevLockSize);
-				lockBuffer.resize(prevLockSize +
+				lockBuffer.resize(prevLockSize
 					stream->ReadSome(&lockBuffer[prevLockSize], size - prevLockSize));
 			}
 		}

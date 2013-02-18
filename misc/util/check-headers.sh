@@ -12,7 +12,7 @@ fill() # string, length
 }
 
 echo "checking headers..."
-for file in $( find "$top_dir/src/local" -iname *.hpp ); do
+for file in $( find "$top_dir/src/local" -iname \*.hpp ); do
 	nice_path=${file##$top_dir/}
 	echo -n "  `fill \"$nice_path\" 70`"
 	include_guard="${nice_path##src/}"

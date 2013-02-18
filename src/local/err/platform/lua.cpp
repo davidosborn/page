@@ -28,11 +28,12 @@
  * of this software.
  */
 
+// C++
 #include <cassert>
 #include <string>
 
 // local
-#include "Exception.hpp"
+#include "../Exception.hpp"
 #include "lua.hpp" // CATCH_LUA_ERRORS
 
 namespace page

@@ -31,6 +31,7 @@
 #ifndef    page_local_err_platform_x11_hpp
 #   define page_local_err_platform_x11_hpp
 
+	// C++
 #	include <string>
 
 namespace page

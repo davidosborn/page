@@ -31,7 +31,10 @@
 #ifndef    page_local_err_platform_opengl_hpp
 #   define page_local_err_platform_opengl_hpp
 
+	// C++
 #	include <string>
+
+	// OpenGL
 #	include <GL/gl.h> // GLenum
 
 namespace page

@@ -44,15 +44,15 @@ namespace page
 		Frame Emitter::GetFrame() const
 		{
 			return
-				AmbientRange::GetFrame() +
-				Cutoff::GetFrame() +
-				DiffuseRange::GetFrame() +
-				EmissiveRange::GetFrame() +
-				LifetimeRange::GetFrame() +
-				OpacityRange::GetFrame() +
-				PositionOrientation::GetFrame() +
-				SpecularRange::GetFrame() +
-				SizeRange::GetFrame() +
+				AmbientRange::GetFrame()
+				Cutoff::GetFrame()
+				DiffuseRange::GetFrame()
+				EmissiveRange::GetFrame()
+				LifetimeRange::GetFrame()
+				OpacityRange::GetFrame()
+				PositionOrientation::GetFrame()
+				SpecularRange::GetFrame()
+				SizeRange::GetFrame()
 				SpeedRange::GetFrame();
 		}
 		void Emitter::Update(const Frame &frame)

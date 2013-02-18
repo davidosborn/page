@@ -1946,7 +1946,7 @@ fi
 
 if [ "$with_lua" = yes ]; then
 	add_cxx_sources <<\EOF
-local/err/lua
+local/err/platform/lua
 local/res/load/script/lua
 local/script/lua/Library
 local/script/lua/lib/Base
@@ -1989,7 +1989,7 @@ local/aud/openal/channel/AmbientChannel
 local/aud/openal/channel/SpatialChannel
 local/aud/openal/Driver
 local/cache/proxy/openal/Buffer
-local/err/openal
+local/err/platform/openal
 local/res/type/sound/openal
 EOF
 fi
@@ -2001,7 +2001,7 @@ local/cache/proxy/opengl/FontTexture
 local/cache/proxy/opengl/Program
 local/cache/proxy/opengl/Texture
 local/cfg/state/opengl/RenderState
-local/err/opengl
+local/err/platform/opengl
 local/res/load/opengl/shader/FragmentShader
 local/res/load/opengl/shader/VertexShader
 local/res/type/opengl/Shader
@@ -2060,7 +2060,7 @@ fi
 
 if [ "$with_posix" = yes ]; then
 	add_cxx_sources <<\EOF
-local/err/posix
+local/err/platform/posix
 local/sys/posix
 local/sys/posix/file
 local/sys/posix/proc
@@ -2106,7 +2106,7 @@ fi
 
 if [ "$with_x" = yes ]; then
 	add_cxx_sources <<\EOF
-local/err/x11
+local/err/platform/x11
 local/util/x11/event
 local/wnd/x11/Console
 local/wnd/x11/msg

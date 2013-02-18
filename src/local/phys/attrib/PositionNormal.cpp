@@ -63,7 +63,7 @@ namespace page
 			Frame PositionNormal::GetFrame() const
 			{
 				return
-					Position::GetFrame() +
+					Position::GetFrame()
 					Normal::GetFrame();
 			}
 			void PositionNormal::Update(const Frame &frame)

@@ -41,7 +41,7 @@ namespace page
 			{
 				timeval newTime;
 				gettimeofday(&newTime, 0);
-				float delta = newTime.tv_sec - time.tv_sec +
+				float delta = newTime.tv_sec - time.tv_sec
 					(newTime.tv_usec - time.tv_usec) / 1000000.f;
 				time = newTime;
 				return delta;

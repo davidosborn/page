@@ -121,7 +121,7 @@ namespace page
 					halfLineGap = (lineHeight - maxBearing) / 2;
 				math::Aabb<2> titleBox(childBox.min, math::Vector<2>(
 					childBox.max.x,
-					childBox.min.y +
+					childBox.min.y
 						(std::count(title.begin(), title.end(), '\n') + 1) *
 						lineHeight + halfLineGap));
 				context.DrawBackground(theme.window.title.background, titleBox);
@@ -169,7 +169,7 @@ namespace page
 				lineHeight = font.lineHeight * theme.window.title.text.size,
 				maxBearing = font.maxBearing.y * theme.window.title.text.size,
 				halfLineGap = (lineHeight - maxBearing) / 2;
-			return halfLineGap + theme.window.margin +
+			return halfLineGap + theme.window.margin
 				(std::count(title.begin(), title.end(), '\n') + 1) * lineHeight;
 		}
 

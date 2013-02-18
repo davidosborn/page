@@ -31,8 +31,11 @@
 #ifndef    page_local_err_platform_lua_hpp
 #   define page_local_err_platform_lua_hpp
 
+	// C++
+#	include <exception>
+
+	// Lua
 #	include <lua.hpp> // lua_State, luaL_error
-#	include "exception/catch.hpp" // CATCH_ALL_AND
 
 namespace page
 {
@@ -47,11 +50,15 @@ namespace page
 }
 
 #	define CATCH_LUA_ERRORS(state) \
-		CATCH_ALL_AND(::luaL_error(state, CAUGHT_EXCEPTION_WHAT);)
+		catch (const std::exception &e) \
+		{ \
+			::luaL_error(state, e.what()); \
+		}
 
 #	define luaL_dofile_unprotected(state, file) \
 		::page::err::lua::CheckErrorForLua(state, ::luaL_loadfile(state, file)); \
 		::lua_call(state, 0, 0);
+
 #	define luaL_dostring_unprotected(state, string) \
 		::page::err::lua::CheckErrorForLua(state, ::luaL_loadstring(state, string)); \
 		::lua_call(state, 0, 0);

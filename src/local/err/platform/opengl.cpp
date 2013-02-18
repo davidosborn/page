@@ -28,6 +28,7 @@
  * of this software.
  */
 
+// C++
 #include <string>
 
 // OpenGL
@@ -37,7 +38,7 @@
 #endif
 
 // local
-#include "Exception.hpp"
+#include "../Exception.hpp"
 
 namespace page
 {

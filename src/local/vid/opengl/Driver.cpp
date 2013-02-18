@@ -82,7 +82,7 @@ namespace page
 				{
 					// render in sections using framebuffer
 					math::Aabb<2, int> box(
-						math::Aabb<2, int>(0, img.size) +
+						math::Aabb<2, int>(0, img.size)
 						math::Vector<2, int>(0, wndSize.y - img.size.y));
 					res::Image::Data::iterator iter(img.data.begin());
 					for (;;)

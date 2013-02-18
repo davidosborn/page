@@ -43,7 +43,7 @@ namespace page
 				timeb newTime;
 				if (ftime(&newTime) == -1)
 					THROW((err::Exception<err::SysModuleTag, err::PosixPlatformTag>("failed to get system time")))
-				float delta = newTime.time - time.time +
+				float delta = newTime.time - time.time
 					(newTime.millitm - time.millitm) / 1000000.f;
 				time = newTime;
 				return delta;

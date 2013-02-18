@@ -49,13 +49,13 @@ namespace page
 		Frame Light::GetFrame() const
 		{
 			return
-				Ambient::GetFrame() +
-				Attenuation::GetFrame() +
-				Cutoff::GetFrame() +
-				Diffuse::GetFrame() +
-				Falloff::GetFrame() +
-				PositionOrientation::GetFrame() +
-				Range::GetFrame() +
+				Ambient::GetFrame()
+				Attenuation::GetFrame()
+				Cutoff::GetFrame()
+				Diffuse::GetFrame()
+				Falloff::GetFrame()
+				PositionOrientation::GetFrame()
+				Range::GetFrame()
 				Specular::GetFrame();
 		}
 		void Light::Update(const Frame &frame)

@@ -68,7 +68,7 @@ namespace page
 			Frame PositionOrientationScale::GetFrame() const
 			{
 				return
-					PositionOrientation::GetFrame() +
+					PositionOrientation::GetFrame()
 					Scale::GetFrame();
 			}
 			void PositionOrientationScale::Update(const Frame &frame)

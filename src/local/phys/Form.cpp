@@ -64,7 +64,7 @@ namespace page
 		Frame Form::Part::GetFrame() const
 		{
 			return
-				Deformation::GetFrame() +
+				Deformation::GetFrame()
 				PositionOrientationScale::GetFrame();
 		}
 		void Form::Part::Update(const Frame &frame)
@@ -118,7 +118,7 @@ namespace page
 		Frame Form::GetFrame() const
 		{
 			return
-				Opacity::GetFrame() +
+				Opacity::GetFrame()
 				Pose::GetFrame();
 		}
 		void Form::Update(const Frame &frame)
