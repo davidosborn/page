@@ -327,7 +327,7 @@ namespace page
 			std::cout.fill('0');
 			std::cout << "character " << std::setw(4) << static_cast<unsigned>(c);
 			iosFormatSaver.restore();
-			
+
 			// print friendly representation if available
 			std::string repr(Repr(c));
 			if (!repr.empty()) std::cout << " (" << repr << ')';

@@ -43,7 +43,7 @@ namespace page
 				timespec newTime;
 				if (clock_gettime(CLOCK_REALTIME, &newTime) == -1)
 					THROW((err::Exception<err::SysModuleTag, err::PosixPlatformTag>("failed to get real-time clock time")))
-				float delta = newTime.tv_sec - time.tv_sec
+				float delta = newTime.tv_sec - time.tv_sec +
 					(newTime.tv_nsec - time.tv_nsec) / 1000000000.f;
 				time = newTime;
 				return delta;

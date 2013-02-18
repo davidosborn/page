@@ -70,7 +70,7 @@ namespace page
 			public:
 			const CmdlineSource &GetSource() const;
 		};
-		
+
 ////////// CmdlineSource ///////////////////////////////////////////////////////
 
 		/*--------------------------+

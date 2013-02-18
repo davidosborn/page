@@ -57,7 +57,7 @@ namespace page
 
 			public:
 			BasicState() = default;
-			
+
 			DEFINE_COPY(BasicState, delete)
 			DEFINE_MOVE(BasicState, delete)
 

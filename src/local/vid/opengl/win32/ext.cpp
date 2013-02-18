@@ -174,7 +174,7 @@ namespace page
 					boost::io::ios_all_saver iosFormatSaver(std::cout);
 					std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 					std::cout.fill(' ');
-					
+
 					// check relevant extensions
 					for (Exts::iterator ext(exts.begin()); ext != exts.end(); ++ext)
 					{

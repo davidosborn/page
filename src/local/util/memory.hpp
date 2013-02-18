@@ -44,7 +44,7 @@ namespace page
 		{
 			void operator ()(const void *) {}
 		};
-		
+
 		/**
 		 * @return A @c std::shared_ptr representation of a static instance.
 		 */

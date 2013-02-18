@@ -43,12 +43,12 @@ namespace page
 /*		Frame Particle::GetFrame() const
 		{
 			return
-				Ambient::GetFrame()
-				Diffuse::GetFrame()
-				Emissive::GetFrame()
-				Position::GetFrame()
-				Opacity::GetFrame()
-				Size::GetFrame()
+				Ambient::GetFrame() +
+				Diffuse::GetFrame() +
+				Emissive::GetFrame() +
+				Position::GetFrame() +
+				Opacity::GetFrame() +
+				Size::GetFrame() +
 				Specular::GetFrame();
 		}
 		void Particle::Update(const Frame &frame)

@@ -50,7 +50,7 @@ namespace page
 		{
 			typedef Char         char_type;
 			typedef CharTraits traits_type;
-			
+
 			/**
 			 * The type of the serialization delimiter.
 			 */
@@ -68,7 +68,7 @@ namespace page
 			 * A no-op overload for the @c Normalize function.
 			 */
 			static Type Normalize(const Type &);
-			
+
 			/**
 			 * A function to convert a single character into the standard
 			 * delimiter type.

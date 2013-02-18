@@ -59,7 +59,7 @@ namespace page
 			/*------+
 			| types |
 			+------*/
-			
+
 			public:
 			typedef std::function<std::unique_ptr<T> (Args...)> Function;
 

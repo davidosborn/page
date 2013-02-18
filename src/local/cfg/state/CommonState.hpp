@@ -52,10 +52,10 @@ namespace page
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
-			
+
 			public:
 			CommonState();
-		
+
 			/*------------------------+
 			| configuration variables |
 			+------------------------*/

@@ -60,8 +60,8 @@ namespace page
 				}
 			}
 		};
-		
-		template <typename Char> 
+
+		template <typename Char>
 			struct isspace_function
 		{
 			bool operator ()(Char c) const
@@ -69,8 +69,8 @@ namespace page
 				return std::isspace(c, std::locale());
 			}
 		};
-		
-		template <typename Char> 
+
+		template <typename Char>
 			struct tolower_function
 		{
 			bool operator ()(Char c) const
@@ -78,8 +78,8 @@ namespace page
 				return std::tolower(c, std::locale());
 			}
 		};
-		
-		template <typename Char> 
+
+		template <typename Char>
 			struct toupper_function
 		{
 			bool operator ()(Char c) const

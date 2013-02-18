@@ -44,14 +44,14 @@ namespace page
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
-			
+
 			public:
 			virtual ~AudioDecoder() = default;
 
 			/*-----------+
 			| operations |
 			+-----------*/
-			
+
 			public:
 			virtual std::unique_ptr<AudioStream> Open() const = 0;
 		};

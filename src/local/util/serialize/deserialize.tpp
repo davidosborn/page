@@ -433,7 +433,7 @@ namespace page
 			return Deserialize(is, std::tuple<First, Second>(p), flags, delimiter, lastDelimiter);
 		}
 		///@}
-		
+
 		/**
 		 * @weakgroup deserialize-from-stream
 		 * @{

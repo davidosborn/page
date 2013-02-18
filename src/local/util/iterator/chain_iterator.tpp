@@ -46,7 +46,7 @@ namespace page
 			for (const auto &range : ranges)
 				this->ranges.push_back(make_range(range));
 			currentRange = this->ranges.begin();
-			
+
 			Init();
 		}
 		template <typename Iterator>
@@ -75,7 +75,7 @@ namespace page
 					else iter = currentRange->begin();
 			}
 		}
-		
+
 		// arithmetic
 		template <typename Iterator>
 			void chain_iterator<Iterator>::Increment()
@@ -231,7 +231,7 @@ namespace page
 				return other > *this;
 			}
 		}
-		
+
 		// mapping
 		template <typename Iterator>
 			typename chain_iterator<Iterator>::Ranges::const_iterator

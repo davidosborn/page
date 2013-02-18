@@ -63,7 +63,7 @@ namespace page
 
 			private:
 			class Reader;
-			
+
 			public:
 			std::unique_ptr<Source::Reader> OpenReader() const override;
 		};

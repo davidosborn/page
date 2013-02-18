@@ -83,7 +83,7 @@ namespace page
 			void Increment() override;
 			void Decrement() override;
 			void Advance(difference_type) override;
-			
+
 			util::range<Iterator> range;
 		};
 

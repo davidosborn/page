@@ -54,7 +54,7 @@ namespace page
 		}
 		std::string Skin::GetSource() const
 		{
-			return mesh->GetSource() + ':'
+			return mesh->GetSource() + ':' +
 				util::lexical_cast<std::string>(poseId);
 		}
 

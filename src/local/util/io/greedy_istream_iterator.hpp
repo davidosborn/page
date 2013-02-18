@@ -111,7 +111,7 @@ namespace page
 			istream_type *is = nullptr;
 			InputDelimiter<Char, CharTraits> separator, terminator;
 			T value;
-			
+
 			/**
 			 * Indicates that this iterator will become an end-of-stream
 			 * iterator the next time it advances.

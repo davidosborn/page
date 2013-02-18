@@ -37,7 +37,7 @@ namespace page
 		{
 			void operator ()(typename shared_handle<T>::handle_type handle_type) const {}
 		};
-		
+
 		// deleter adapter
 		template <typename T> struct shared_handle<T>::DeleterAdapter
 		{
@@ -47,7 +47,7 @@ namespace page
 				delete handle;
 			}
 		};
-		
+
 		// constructors
 		template <typename T> shared_handle<T>::shared_handle() {}
 		template <typename T> shared_handle<T>::shared_handle(handle_type handle) :
@@ -147,7 +147,7 @@ namespace page
 		{
 			return shared_handle<T>(handle, deleter);
 		}
-		
+
 		// specialized algorithms
 		template <typename T> void swap(shared_handle<T> &a, shared_handle<T> &b) noexcept
 		{

@@ -117,7 +117,7 @@ namespace page
 			 */
 			template <typename Function, typename Criteria, typename Data>
 				using Selection = reference_vector<const Blueprint<Function, Criteria, Data>>;
-				
+
 			/**
 			 * Appends one @c Selection to another, removing any duplicate
 			 * blueprints while maintaining the order.

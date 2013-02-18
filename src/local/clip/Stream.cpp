@@ -62,7 +62,7 @@ namespace page
 			// select the closest-matching encoder
 			boost::filesystem::path encoderPath(path);
 			auto encoderBlueprint(GLOBAL(Encoder::Factory).SelectBest(encoderPath, format));
-		
+
 			// open file
 			fs.open(encoderPath, std::ios_base::binary);
 			if (!fs)

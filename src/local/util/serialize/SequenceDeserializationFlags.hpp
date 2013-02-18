@@ -50,13 +50,13 @@ namespace page
 				 * single delimiter.
 				 */
 				collapse = 0x01,
-				
+
 				/**
 				 * Indicates that consecutive leading and trailing delimiters
 				 * should be ignored.
 				 */
 				trim = 0x02,
-				
+
 				/**
 				 * A default flag for whitespace delimiters.
 				 */

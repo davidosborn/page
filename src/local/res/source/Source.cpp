@@ -158,7 +158,7 @@ namespace page
 				}
 				const Path::Type &type(iter->second);
 				void *data = type.loader(path.node.pipe);
-				if (!data) 
+				if (!data)
 					THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("resource type mismatch") <<
 						boost::errinfo_file_name(path.node.path) <<
 						err::errinfo_subject(id.name)))

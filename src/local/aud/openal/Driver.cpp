@@ -65,12 +65,12 @@ namespace page
 						if (!vendor.empty()) std::cout << vendor << std::endl;
 					}
 				}
-				
+
 				// open device
 				if (!(device = alcOpenDevice(0)))
 					THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to open device") <<
 						boost::errinfo_api_function("alcOpenDevice")))
-				
+
 				// print device information
 				std::string deviceName(util::Trim(std::string(
 					alcGetString(device, ALC_DEVICE_SPECIFIER))));
@@ -80,7 +80,7 @@ namespace page
 					log::Indenter indenter;
 					std::cout << deviceName << std::endl;
 				}
-				
+
 				// initialize context
 				if (!(context = alcCreateContext(device, 0)))
 				{
@@ -95,7 +95,7 @@ namespace page
 					THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to make context current") <<
 						boost::errinfo_api_function("alcMakeContextCurrent")))
 				}
-				
+
 				// perform deferred initialization
 				Init();
 			}

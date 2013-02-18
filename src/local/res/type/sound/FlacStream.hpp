@@ -43,7 +43,7 @@ namespace page
 	namespace res
 	{
 		class Pipe;
-	
+
 		class FlacStream : public AudioStream
 		{
 			/*--------------------------+

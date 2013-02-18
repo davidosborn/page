@@ -90,7 +90,7 @@ namespace page
 				return std::make_shared<T>(std::forward<Args>(args)...);
 			}
 		};
-		
+
 		/**
 		 * A function object that creates an object on the stack.
 		 */

@@ -94,7 +94,7 @@ namespace page
 			y = std::copysign(std::sqrt(std::max<T>(1 - m.xx + m.yy - m.zz, 0)) / 2, m.xz - m.zx);
 			z = std::copysign(std::sqrt(std::max<T>(1 - m.xx - m.yy + m.zz, 0)) / 2, m.yx - m.xy);
 			w = std::sqrt(std::max<T>(1 + m.xx + m.yy + m.zz, 0)) / 2;*/
-			
+
 			// reference implementation
 			T trace = m.xx + m.yy + m.zz;
 			if (trace > 0)

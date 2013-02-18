@@ -42,7 +42,7 @@ namespace page
 		namespace win32
 		{
 ////////// RegistrySource //////////////////////////////////////////////////////
-			
+
 			/**
 			 * Represents a folder in the Windows registry.
 			 */
@@ -54,7 +54,7 @@ namespace page
 
 				public:
 				explicit RegistrySource(HKEY key, const std::string &path);
-				
+
 				private:
 				/**
 				 * Generate a URI from a registry key and path.
@@ -75,7 +75,7 @@ namespace page
 				private:
 				class Reader;
 				class Writer;
-				
+
 				public:
 				std::unique_ptr<Source::Reader> OpenReader() const override;
 				std::unique_ptr<Source::Writer> OpenWriter() const override;
@@ -90,7 +90,7 @@ namespace page
 			};
 
 ////////// RegistrySource::Reader //////////////////////////////////////////////
-			
+
 			/**
 			 * The implementation of @c RegistrySource's reader.
 			 */
@@ -129,7 +129,7 @@ namespace page
 					std::vector<BYTE> content;
 					DWORD type;
 				};
-				
+
 				/**
 				 * Read a registry value, store its type, and return its
 				 * content.
@@ -157,7 +157,7 @@ namespace page
 			};
 
 ////////// RegistrySource::Writer //////////////////////////////////////////////
-			
+
 			/**
 			 * The implementation of @c RegistrySource's writer.
 			 */

@@ -93,7 +93,7 @@ namespace page
 			reference operator [](unsigned);
 			const_reference operator [](unsigned) const;
 		};
-		
+
 		/**
 		 * @name Color
 		 *
@@ -218,7 +218,7 @@ namespace page
 			explicit YcbcrColor(const RgbColor<T> &);
 			explicit YcbcrColor(const RgbaColor<T> &);
 			explicit YcbcrColor(const Vector<3, T> &);
-			
+
 			// assignment
 			YcbcrColor &operator =(T);
 

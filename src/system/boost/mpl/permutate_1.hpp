@@ -64,7 +64,7 @@ namespace boost
 					T,
 					front_inserter<vector<>>
 					>::type ExtensibleSequence;
-		
+
 			typedef
 				typename first<
 					typename fold<

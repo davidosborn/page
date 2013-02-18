@@ -44,7 +44,7 @@ namespace page
 	{
 		class Source;
 		class Stream;
-	
+
 		/**
 		 * Provides access to resources through an ordered list of sources.
 		 *
@@ -57,7 +57,7 @@ namespace page
 			 * Build the initial index by scanning the configured sources.
 			 */
 			Index();
-			
+
 			// modifiers
 			/**
 			 * Add a new source to the index.
@@ -71,7 +71,7 @@ namespace page
 			 * disk.
 			 */
 			void Refresh();
-			
+
 			// resource access
 			/**
 			 * Provide stream-level access to the indexed resources.

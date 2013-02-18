@@ -66,7 +66,7 @@ namespace page
 			// assignment
 			unique_handle &operator =(unique_handle &&);
 			template <typename U> unique_handle &operator =(unique_handle<U> &&);
-			
+
 			// destructor
 			~unique_handle();
 
@@ -92,7 +92,7 @@ namespace page
 			Optional<handle_type> handle;
 			deleter_type deleter;
 		};
-		
+
 		// factory functions
 		template <typename T> unique_handle<T> make_unique_handle(T);
 		template <typename T> unique_handle<T> make_unique_handle(T, typename unique_handle<T>::deleter_type);

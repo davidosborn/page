@@ -74,7 +74,7 @@ namespace page
 			scoped_ptr(other.release()) {}
 		template <typename T> template <typename U, typename D> scoped_ptr<T>::scoped_ptr(std::unique_ptr<U, D> &&other) :
 			scoped_ptr(other.release(), other.get_deleter()) {}
-		
+
 		// destructors
 		template <typename T> scoped_ptr<T>::~scoped_ptr()
 		{

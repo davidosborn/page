@@ -67,7 +67,7 @@ namespace page
 			// validate ranges
 			for (std::vector<fmt::Face>::const_iterator face(faces.begin()); face != faces.end(); ++face)
 				for (const std::int32_t *neighbour = face->neighbours; neighbour != face->neighbours + 3; ++neighbour)
-					if (*neighbour + 1 > faces.size()) 
+					if (*neighbour + 1 > faces.size())
 						THROW((err::Exception<err::ResModuleTag, err::FormatTag, err::RangeTag>("face index out of range")))
 			// create track
 			const std::unique_ptr<Track> track(new Track);

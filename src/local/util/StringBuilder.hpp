@@ -51,14 +51,14 @@ namespace page
 			/*------+
 			| types |
 			+------*/
-			
+
 			public:
 			typedef std::basic_string<Char, CharTraits> String;
 
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
-			
+
 			public:
 			StringBuilder() = default;
 

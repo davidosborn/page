@@ -110,7 +110,7 @@ namespace page
 				const boost::filesystem::path &path,
 				InputRange extensions,
 				ENABLE_IF((is_range<InputRange>::value)));
-				
+
 		/**
 		 * Ensure the path ends with one of the specified extensions.  If it
 		 * does not, the first extension is used.

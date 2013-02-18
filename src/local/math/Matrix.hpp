@@ -71,7 +71,7 @@ namespace page
 			BasicMatrix(const BasicMatrix &);
 			template <unsigned mr, unsigned mc, typename U> explicit BasicMatrix(const BasicMatrix<mr, mc, U> &);
 			explicit BasicMatrix(const Vector<nr < nc ? nr : nc, T> &);
-			
+
 			// assignment
 			BasicMatrix &operator =(T);
 			BasicMatrix &operator =(const BasicMatrix &);
@@ -132,7 +132,7 @@ namespace page
 			static ColSlice MakeColSlice(reference);
 			static ConstColSlice MakeConstColSlice(const_reference);
 		};
-		
+
 		/**
 		 * @class Matrix
 		 *
@@ -149,7 +149,7 @@ namespace page
 			Matrix(T = 1, T = 0);
 			template <unsigned mr, unsigned mc, typename U> explicit Matrix(const Matrix<mr, mc, U> &);
 			explicit Matrix(const Vector<nr < nc ? nr : nc, T> &);
-			
+
 			// assignment
 			Matrix &operator =(T);
 
@@ -206,7 +206,7 @@ namespace page
 			Matrix(const Vector<2, T> &, const Vector<2, T> &);
 			template <unsigned mr, unsigned mc, typename U> explicit Matrix(const Matrix<mr, mc, U> &);
 			explicit Matrix(const Vector<2, T> &);
-			
+
 			// assignment
 			Matrix &operator =(T);
 
@@ -264,7 +264,7 @@ namespace page
 			explicit Matrix(const Euler<T> &);
 			explicit Matrix(const Quat<T> &);
 			explicit Matrix(const Vector<3, T> &);
-			
+
 			// assignment
 			Matrix &operator =(T);
 
@@ -323,7 +323,7 @@ namespace page
 			explicit Matrix(const Euler<T> &);
 			explicit Matrix(const Quat<T> &);
 			explicit Matrix(const Vector<3, T> &);
-			
+
 			// assignment
 			Matrix &operator =(T);
 
@@ -385,7 +385,7 @@ namespace page
 			explicit Matrix(const Quat<T> &);
 			explicit Matrix(const Vector<3, T> &);
 			explicit Matrix(const Vector<4, T> &);
-			
+
 			// assignment
 			Matrix &operator =(T);
 

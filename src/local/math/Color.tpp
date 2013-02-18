@@ -59,7 +59,7 @@ namespace page
 		{
 			std::copy(v.begin(), v.end(), begin());
 		}
-		
+
 		// assignment
 		template <typename D, unsigned n, typename T> BasicColor<D, n, T> &BasicColor<D, n, T>::operator =(T t)
 		{
@@ -114,7 +114,7 @@ namespace page
 			Base(other) {}
 		template <unsigned n, typename T> Color<n, T>::Color(const Vector<n, T> &v) :
 			Base(v) {}
-			
+
 		// assignment
 		template <unsigned n, typename T> Color<n, T> &Color<n, T>::operator =(T t)
 		{
@@ -158,7 +158,7 @@ namespace page
 			Base(HsvColor(RgbColor<T>(rgba))) {}
 		template <typename T> HsvColor<T>::HsvColor(const Vector<3, T> &v) :
 			Base(v) {}
-		
+
 		// assignment
 		template <typename T> HsvColor<T> &HsvColor<T>::operator =(T t)
 		{
@@ -208,7 +208,7 @@ namespace page
 			Base(v) {}
 		template <typename T> RgbColor<T>::RgbColor(const YcbcrColor<T> &ycbcr) :
 			Base(YcbcrToRgbColorMatrix<T>() * Vector<3, T>(ycbcr)) {}
-		
+
 		// assignment
 		template <typename T> RgbColor<T> &RgbColor<T>::operator =(T t)
 		{
@@ -240,7 +240,7 @@ namespace page
 			Base(v) {}
 		template <typename T> RgbaColor<T>::RgbaColor(const YcbcrColor<T> &ycbcr, T a) :
 			Base(RgbaColor(RgbColor<T>(ycbcr), a)) {}
-		
+
 		// assignment
 		template <typename T> RgbaColor<T> &RgbaColor<T>::operator =(T t)
 		{
@@ -270,7 +270,7 @@ namespace page
 			Base(YcbcrColor(RgbColor<T>(rgba))) {}
 		template <typename T> YcbcrColor<T>::YcbcrColor(const Vector<3, T> &v) :
 			Base(v) {}
-		
+
 		// assignment
 		template <typename T> YcbcrColor<T> &YcbcrColor<T>::operator =(T t)
 		{

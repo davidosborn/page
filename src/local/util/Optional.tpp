@@ -54,13 +54,13 @@ namespace page
 		{
 			if (!empty) new (&storage) T(*other);
 		}
-		
+
 		// destructor
 		template <typename T> Optional<T>::~Optional()
 		{
 			if (!empty) (*this)->~T();
 		}
-		
+
 		// assignment
 		template <typename T> Optional<T> &Optional<T>::operator =(const T &value)
 		{
@@ -180,7 +180,7 @@ namespace page
 		template <typename T, typename U> bool operator >=(const Optional<T> &a, const Optional<U> &b) noexcept { return a && b ? *a >= *b : !!a >= !!b; }
 		template <typename T, typename U> bool operator ==(const Optional<T> &a, const Optional<U> &b) noexcept { return a && b ? *a == *b : !!a == !!b; }
 		template <typename T, typename U> bool operator !=(const Optional<T> &a, const Optional<U> &b) noexcept { return a && b ? *a != *b : !!a != !!b; }
-		
+
 		// nullptr relational operators
 		template <typename T> bool operator ==(const Optional<T> &a, std::nullptr_t) noexcept { return  !a; }
 		template <typename T> bool operator ==(std::nullptr_t, const Optional<T> &a) noexcept { return  !a; }

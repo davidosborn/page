@@ -41,7 +41,7 @@ namespace page
 		namespace
 		{
 		}
-	
+
 		/*-----------------------+
 		| standard interpolation |
 		+-----------------------*/

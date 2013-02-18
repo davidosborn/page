@@ -55,7 +55,7 @@ namespace page
 			/*-----------+
 			| operations |
 			+-----------*/
-			
+
 			public:
 			virtual unsigned Read(void *, unsigned) = 0;
 			virtual void Seek(unsigned sample) = 0;

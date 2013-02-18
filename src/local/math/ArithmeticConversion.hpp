@@ -60,7 +60,7 @@ namespace page
 				typedef void Result;
 			};
 		}
-	
+
 		/**
 		 * Determine the type resulting from a "usual arithmetic conversion"
 		 * (ISO/IEC 14882:2003 5.1.9)

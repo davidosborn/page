@@ -75,7 +75,7 @@ namespace page
 			for (auto &var : GetVars())
 				if (!var.IsModified())
 					varsForUpdate.push_back(&var);
-		
+
 			for (const auto &source : sources)
 			{
 				auto reader(source->OpenReader());

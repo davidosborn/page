@@ -66,7 +66,7 @@ namespace page
 		// unary operators
 		template <unsigned n, typename T> Aabb<n, T> operator +(const Aabb<n, T> &);
 		template <unsigned n, typename T> Aabb<n, T> operator -(const Aabb<n, T> &);
-		
+
 		// vector arithmetic operators
 		template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> operator *(const Aabb<n, T> &, const Vector<n, U> &);
 		template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> operator /(const Aabb<n, T> &, const Vector<n, U> &);

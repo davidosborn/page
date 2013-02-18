@@ -55,7 +55,7 @@ namespace page
 					From>
 			{
 				typedef std::basic_string<ToChar, ToCharTraits, ToAllocator> To;
-				
+
 				static To Apply(const From &from)
 				{
 					return Serialize<ToChar, ToCharTraits, ToAllocator>(from);
@@ -86,13 +86,13 @@ namespace page
 			{
 				typedef std::basic_string<  ToChar,   ToCharTraits,   ToAllocator> To;
 				typedef std::basic_string<FromChar, FromCharTraits, FromAllocator> From;
-			
+
 				static To Apply(const From &from)
 				{
 					return Serialize<ToChar, ToCharTraits, ToAllocator>(from);
 				}
 			};*/
-			
+
 			template <typename To, typename From>
 				To LexicalCastImpl(const From &from,
 					ENABLE_IF(

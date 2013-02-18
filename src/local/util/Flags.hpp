@@ -38,7 +38,7 @@ namespace page
 		struct Flags
 		{
 			typedef int Type;
-			
+
 			enum { none = 0 };
 		};
 	}

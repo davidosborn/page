@@ -63,7 +63,7 @@ namespace page
 			Frame PositionOrientation::GetFrame() const
 			{
 				return
-					Position::GetFrame()
+					Position::GetFrame() +
 					Orientation::GetFrame();
 			}
 			void PositionOrientation::Update(const Frame &frame)

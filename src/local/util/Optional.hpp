@@ -54,10 +54,10 @@ namespace page
 			Optional(std::nullptr_t);
 			Optional(const Optional &);
 			template <typename U> explicit Optional(const Optional<U> &);
-			
+
 			// destructor
 			~Optional();
-			
+
 			// assignment
 			Optional &operator =(const T &);
 			Optional &operator =(const Optional &);
@@ -96,7 +96,7 @@ namespace page
 		template <typename T> bool operator ==(std::nullptr_t, const Optional<T> &) noexcept;
 		template <typename T> bool operator !=(const Optional<T> &, std::nullptr_t) noexcept;
 		template <typename T> bool operator !=(std::nullptr_t, const Optional<T> &) noexcept;
-		
+
 		// specialized algorithms
 		template <typename T> void swap(Optional<T> &, Optional<T> &) noexcept;
 	}

@@ -40,14 +40,14 @@ namespace page
 	namespace res
 	{
 		class Node;
-		
+
 		// access
 		/**
 		 * Search for a registered loader that matches the given parameters and
 		 * return it.
 		 */
 		LoadFunction GetRegisteredLoader(const std::type_info &, const Node &);
-		
+
 		// registration
 		/**
 		 * Register a loader with the system.

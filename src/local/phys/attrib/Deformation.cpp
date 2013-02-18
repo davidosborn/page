@@ -41,7 +41,7 @@ namespace page
 			Frame Deformation::Vertex::GetFrame() const
 			{
 				return
-					PositionNormal::GetFrame()
+					PositionNormal::GetFrame() +
 					TexCoord::GetFrame();
 			}
 			void Deformation::Vertex::Update(const Frame &frame)

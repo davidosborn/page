@@ -54,7 +54,7 @@ namespace page
 				typedef typename std::remove_const<To>::type type;
 			};
 		}
-		
+
 		/**
 		 * Copies const qualifiers from one type to another.
 		 */
@@ -82,7 +82,7 @@ namespace page
 				typedef typename std::remove_volatile<To>::type type;
 			};
 		}
-		
+
 		/**
 		 * Copies volatile qualifiers from one type to another.
 		 */

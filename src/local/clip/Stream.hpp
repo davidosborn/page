@@ -63,11 +63,11 @@ namespace page
 				const boost::filesystem::path &path,
 				const std::string &format,
 				const math::Vector<2, unsigned> &size,
-				float frameRate, 
+				float frameRate,
 				float quality);
 
 			~Stream();
-			
+
 			/*----------------------+
 			| copy & move semantics |
 			+----------------------*/

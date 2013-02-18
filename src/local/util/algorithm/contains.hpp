@@ -64,7 +64,7 @@ namespace page
 				if (element == value) return true;
 			return false;
 		}
-		
+
 		/**
 		 * @return @c true if the specified container contains the specified
 		 *         value.

@@ -57,7 +57,7 @@ namespace page
 			typedef typename Base::element_type element_type;
 			typedef typename Base::deleter_type deleter_type;
 			typedef std::function<void (const T *)> const_deleter_type;
-		
+
 			// constructors
 			unique_ptr();
 			explicit unique_ptr(pointer);
@@ -66,17 +66,17 @@ namespace page
 			unique_ptr(unique_ptr &&);
 			template <typename U> unique_ptr(std::auto_ptr<U> &&);
 			template <typename U, typename D> unique_ptr(std::unique_ptr<U, D> &&);
-			
+
 			// destructor
 			~unique_ptr();
 
 			// observers
 			const_deleter_type get_const_deleter() const;
-			
+
 			// disable copy from lvalue
 			unique_ptr(const unique_ptr &) = delete;
 			unique_ptr &operator =(const unique_ptr &) = delete;
-			
+
 			private:
 			// deleter
 			class ConstDeleterAdapter;

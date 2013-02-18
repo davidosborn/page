@@ -55,7 +55,7 @@ namespace page
 			using MimeTypeCriterion  = MemberContainsCriterion<decltype(mimeTypes),  EncoderCriteria, &EncoderCriteria::mimeTypes>;
 			using ExtensionCriterion = MemberContainsCriterion<decltype(extensions), EncoderCriteria, &EncoderCriteria::extensions>;
 		};
-		
+
 		/**
 		 * The data used by @c EncoderFactory.
 		 */

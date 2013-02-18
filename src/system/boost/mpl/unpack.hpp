@@ -61,7 +61,7 @@ namespace boost
 						typename back<Sequence>::type,
 						Args...>::type type;
 			};
-			
+
 			template <typename Sequence, typename... Args>
 				struct apply<Sequence, true, Args...>
 			{

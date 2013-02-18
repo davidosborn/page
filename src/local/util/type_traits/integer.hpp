@@ -47,7 +47,7 @@ namespace page
 				struct is_integer_type_impl :
 					std::is_integral<T> {};
 		}
-		
+
 		/**
 		 * Identifies types belonging to the "integer types" category
 		 * (ISO/IEC N3242 3.9.1.7).
@@ -81,7 +81,7 @@ namespace page
 					is_standard_integer_type_impl_2<
 						typename std::remove_cv<T>::type> {};
 		}
-		
+
 		/**
 		 * Identifies types belonging to the "standard integer types" category
 		 * (ISO/IEC N3242 3.9.1.3).
@@ -113,7 +113,7 @@ namespace page
 					is_extended_integer_type_impl_2<
 						typename std::remove_cv<T>::type> {};
 		}
-		
+
 		/**
 		 * Identifies types belonging to the "extended integer types" category
 		 * (ISO/IEC N3242 3.9.1.3).

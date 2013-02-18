@@ -44,8 +44,8 @@ namespace page
 		 */
 		/**
 		 * A function object for extracting a member of an aggregate.
-		 * 
-		 * @note @c std::mem_fn is probably a better choice if you need to 
+		 *
+		 * @note @c std::mem_fn is probably a better choice if you need to
 		 *       access a member function rather than a data member.
 		 *       @c std::mem_fn takes a pointer-to-member-function (ie: &T::F)
 		 *       and returns a function object that calls the member.

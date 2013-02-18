@@ -84,7 +84,7 @@ namespace page
 		Frame Sound::GetFrame() const
 		{
 			return
-				Position::GetFrame()
+				Position::GetFrame() +
 				Volume::GetFrame();
 		}
 		void Sound::Update(const Frame &frame)

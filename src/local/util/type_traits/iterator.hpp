@@ -83,7 +83,7 @@ namespace page
 				typedef void type; // T is not an iterator
 			};
 		}
-		
+
 		/**
 		 * Like @c std::iterator_traits::value_type, but for output iterators.
 		 * Determines the @b natural @c value_type of the output iterator.
@@ -115,7 +115,7 @@ namespace page
 				struct is_iterator_over_impl<T, U, false> :
 					std::false_type {};
 		}
-		
+
 		/**
 		 * Detects whether a type is both an iterator and an iterator over a
 		 * specific type.

@@ -36,7 +36,6 @@
 #include <boost/exception/diagnostic_information.hpp>
 
 // local
-#include "../log/Indenter.hpp"
 #include "../log/manip.hpp" // Error, Warning
 #include "../wnd/message.hpp" // Message
 

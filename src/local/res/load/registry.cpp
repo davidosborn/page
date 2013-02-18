@@ -50,7 +50,7 @@ namespace page
 				{
 					typedef std::vector<GetLoaderFunction> Loaders;
 					typedef std::unordered_multimap<std::string, GetLoaderFunction> Associations;
-					
+
 					Loaders loaders;
 					Associations exts, mimes, tags;
 				};

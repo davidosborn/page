@@ -71,7 +71,7 @@ namespace page
 		}
 		std::string Aabb::GetSource() const
 		{
-			return bounds->GetSource() + ':'
+			return bounds->GetSource() + ':' +
 				util::lexical_cast<std::string>(id);
 		}
 

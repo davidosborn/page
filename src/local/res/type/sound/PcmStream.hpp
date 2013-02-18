@@ -53,7 +53,7 @@ namespace page
 			/*-----------+
 			| operations |
 			+-----------*/
-			
+
 			public:
 			unsigned Read(void *, unsigned) override;
 			void Seek(unsigned sample) override;
@@ -61,7 +61,7 @@ namespace page
 			/*-------------+
 			| data members |
 			+-------------*/
-			
+
 			private:
 			std::unique_ptr<Stream> super;
 			unsigned sampleSize;

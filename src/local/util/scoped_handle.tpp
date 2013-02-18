@@ -37,7 +37,7 @@ namespace page
 		{
 			void operator ()(typename scoped_handle<T>::handle_type handle_type) const {}
 		};
-		
+
 		// constructors
 		template <typename T> scoped_handle<T>::scoped_handle() :
 			scoped_handle(nullptr) {}
@@ -137,7 +137,7 @@ namespace page
 		{
 			return scoped_handle<T>(handle, deleter);
 		}
-		
+
 		// specialized algorithms
 		template <typename T> void swap(scoped_handle<T> &a, scoped_handle<T> &b) noexcept
 		{

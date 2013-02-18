@@ -47,12 +47,12 @@ namespace page
 			error,
 			warning
 		};
-		
+
 		/**
 		 * Displays a message box to the user, with a default title.
 		 */
 		void Message(const std::string &, MessageType = MessageType::info);
-		
+
 		/**
 		 * Displays a message box to the user.
 		 */

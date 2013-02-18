@@ -82,11 +82,11 @@ namespace page
 		Frame Camera::GetFrame() const
 		{
 			return
-				Aspect::GetFrame()
-				Depth::GetFrame()
-				Exposure::GetFrame()
-				Fov::GetFrame()
-				Opacity::GetFrame()
+				Aspect::GetFrame() +
+				Depth::GetFrame() +
+				Exposure::GetFrame() +
+				Fov::GetFrame() +
+				Opacity::GetFrame() +
 				PositionOrientation::GetFrame();
 		}
 		void Camera::Update(const Frame &frame)

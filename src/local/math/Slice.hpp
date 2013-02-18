@@ -67,7 +67,7 @@ namespace page
 			// constructors
 			explicit BasicSlice(const Iterator &);
 			template <typename Iterator2> BasicSlice(const BasicSlice<n, Iterator2> &);
-			
+
 			// assignment
 			const BasicSlice &operator =(const BasicSlice &) const;
 			template <typename Iterator2> const BasicSlice &operator =(const BasicSlice<n, Iterator2> &) const;
@@ -102,7 +102,7 @@ namespace page
 			// constructors
 			explicit Slice(const Iterator &);
 			template <typename Iterator2> Slice(const Slice<n, Iterator2> &);
-			
+
 			// assignment
 			template <typename Iterator2> const Slice &operator =(const Slice<n, Iterator2> &) const;
 			const Slice &operator =(const value_type &) const;
@@ -120,7 +120,7 @@ namespace page
 			explicit Slice(const Iterator &);
 			Slice(const Slice &);
 			template <typename Iterator2> Slice(const Slice<2, Iterator2> &);
-			
+
 			// assignment
 			const Slice &operator =(const Slice &) const;
 			template <typename Iterator2> const Slice &operator =(const Slice<2, Iterator2> &) const;
@@ -144,7 +144,7 @@ namespace page
 			explicit Slice(const Iterator &);
 			Slice(const Slice &);
 			template <typename Iterator2> Slice(const Slice<3, Iterator2> &);
-			
+
 			// assignment
 			const Slice &operator =(const Slice &) const;
 			template <typename Iterator2> const Slice &operator =(const Slice<3, Iterator2> &) const;
@@ -168,7 +168,7 @@ namespace page
 			explicit Slice(const Iterator &);
 			Slice(const Slice &);
 			template <typename Iterator2> Slice(const Slice<4, Iterator2> &);
-			
+
 			// assignment
 			const Slice &operator =(const Slice &) const;
 			template <typename Iterator2> const Slice &operator =(const Slice<4, Iterator2> &) const;

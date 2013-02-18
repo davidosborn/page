@@ -131,7 +131,7 @@ namespace page
 			 * The state the variable is associated with.
 			 */
 			BasicState &state;
-			
+
 			/**
 			 * The variable's key.
 			 */

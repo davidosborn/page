@@ -87,7 +87,7 @@ namespace page
 			private:
 			// initialization
 			void Init();
-			
+
 			// arithmetic
 			void Increment() override;
 			void Decrement() override;
@@ -98,14 +98,14 @@ namespace page
 
 			// comparison
 			bool Less(const chain_iterator &) const override;
-			
+
 			// mapping
 			typedef std::vector<range<Iterator>> Ranges;
 			typename Ranges::const_iterator WhichRange(const Iterator &) const;
 
 			using Base::iter;
 			/**
-			 * 
+			 *
 			 * @note If @c ranges is empty, the iterator may represent the end
 			 *       of a chain of ranges, or it could represent the beginning
 			 *       of a chain containing a single range.

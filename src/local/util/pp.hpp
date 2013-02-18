@@ -36,7 +36,7 @@
 	 * @{
 	 */
 #	define STRINGIZE2(x) #x
-	
+
 	/**
 	 * Convert the macro argument into a string literal.
 	 */

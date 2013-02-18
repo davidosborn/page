@@ -261,7 +261,7 @@ namespace page
 				typename SequenceDeserializationFlags::Type = SequenceDeserializationFlags::defaultForSpaceDelimiter,
 				const     Delimiter & = DeserializationDelimiter<Char>::Space(),
 				const LastDelimiter & = DeserializationDelimiter<Char>::None());
-		
+
 		/**
 		 * Deserialize @c std::tuple from a stream, where the tuple is an rvalue
 		 * reference.

@@ -108,7 +108,7 @@ namespace page
 					}
 					else newline = '\0';
 					break;
-					
+
 					default: r.push_back(c);
 				}
 			}

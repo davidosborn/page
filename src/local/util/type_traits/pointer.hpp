@@ -64,7 +64,7 @@ namespace page
 				typedef T type;
 			};
 		}
-		
+
 		/**
 		 * Removes the member pointer from a type, leaving the type of the member
 		 * pointed to.

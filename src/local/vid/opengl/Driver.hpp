@@ -59,7 +59,7 @@ namespace page
 				// preemptive destruction
 				// must be called at beginning of derived destructor
 				void Deinit();
-				
+
 				private:
 				// adapter extension initialization
 				virtual void InitAdapterExt() = 0;

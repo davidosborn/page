@@ -74,7 +74,7 @@ namespace page
 			 * A no-op overload for the @c Normalize function.
 			 */
 			static Type Normalize(const Type &);
-			
+
 			/**
 			 * A function to convert a single character into the standard
 			 * delimiter type.

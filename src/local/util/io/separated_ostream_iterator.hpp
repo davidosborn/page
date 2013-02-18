@@ -56,7 +56,7 @@ namespace page
 			typedef Char                                 char_type;
 			typedef CharTraits                           traits_type;
 			typedef std::basic_ostream<Char, CharTraits> ostream_type;
-			
+
 			private:
 			typedef std::basic_string<Char, CharTraits, Allocator> Separator;
 

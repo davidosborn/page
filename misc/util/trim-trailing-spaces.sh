@@ -9,5 +9,5 @@ for file in \
 		-iname \*.h   -o \
 		-iname \*.hpp -o \
 		-iname \*.tpp \) ); do
-	sed -e "s/[[:space:]]+$//" -i "$file"
+	sed -e "s/[[:space:]]*$//" -i "$file"
 done

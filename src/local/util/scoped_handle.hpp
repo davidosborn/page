@@ -90,7 +90,7 @@ namespace page
 			Optional<handle_type> handle;
 			deleter_type deleter;
 		};
-		
+
 		// factory functions
 		template <typename T> scoped_handle<T> make_scoped_handle(T);
 		template <typename T> scoped_handle<T> make_scoped_handle(T, typename scoped_handle<T>::deleter_type);

@@ -49,7 +49,7 @@ namespace page
 			 * spatial-coordinate which intersects with the plane.
 			 */
 			Plane(const Vector<n, T> &no, const Vector<n, T> &);
-			
+
 			// assignment
 			Plane &operator =(const Vector<n, T> &);
 

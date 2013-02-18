@@ -64,7 +64,7 @@ namespace page
 			}
 			std::string Cursor::GetSource() const
 			{
-				return cursor->GetSource() + ':'
+				return cursor->GetSource() + ':' +
 					util::lexical_cast<std::string>(size);
 			}
 

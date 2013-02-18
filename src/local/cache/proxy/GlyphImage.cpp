@@ -53,7 +53,7 @@ namespace page
 		}
 		std::string GlyphImage::GetSource() const
 		{
-			return font->GetSource() + ':' + ch + ':'
+			return font->GetSource() + ':' + ch + ':' +
 				util::lexical_cast<std::string>(size);
 		}
 

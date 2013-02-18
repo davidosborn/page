@@ -58,14 +58,14 @@ namespace page
 			/*-----------+
 			| operations |
 			+-----------*/
-			
+
 			public:
 			std::unique_ptr<AudioStream> Open() const override;
 
 			/*-------------+
 			| data members |
 			+-------------*/
-			
+
 			private:
 			std::shared_ptr<const Pipe> pipe;
 			unsigned sampleSize;

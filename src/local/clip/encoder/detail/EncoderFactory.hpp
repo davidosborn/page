@@ -50,11 +50,11 @@ namespace page
 			 *
 			 */
 			typedef std::function<void (const void *, unsigned)> EncoderCallback;
-			
+
 			/**
 			 *
 			 */
-			using EncoderConstructorArgs = 
+			using EncoderConstructorArgs =
 				util::ConstructorArgs<
 					const EncoderCallback &,
 					const math::Vec2u &,
@@ -69,10 +69,10 @@ namespace page
 			{
 				private:
 				using Base = util::EncoderFactory<Encoder, EncoderConstructorArgs, EncoderFactory>;
-			
+
 				public:
 				using Base::SelectBest;
-				
+
 				/**
 				 *
 				 */

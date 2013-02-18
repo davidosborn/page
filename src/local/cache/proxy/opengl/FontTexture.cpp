@@ -55,7 +55,7 @@ namespace page
 			}
 			std::string FontTexture::GetSource() const
 			{
-				return font->GetSource() + ':'
+				return font->GetSource() + ':' +
 					util::lexical_cast<std::string>(fontSize);
 			}
 

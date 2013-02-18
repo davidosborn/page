@@ -64,7 +64,7 @@ namespace page
 			protected:
 			void Index(const Node &);
 			void Clear(const std::string &group = "");
-			
+
 			public:
 			// resource access
 			Stream *Open(const std::string &path) const;
@@ -72,7 +72,7 @@ namespace page
 
 			private:
 			class Group;
-			
+
 			// parsing
 			const void *LoadFromDisk(const std::type_info &, const std::string &path) const;
 			void ScanToBuildIndex(const Node &, Group &, const std::string &rootPath = "");

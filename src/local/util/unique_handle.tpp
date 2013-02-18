@@ -37,7 +37,7 @@ namespace page
 		{
 			void operator ()(typename unique_handle<T>::handle_type handle_type) const {}
 		};
-		
+
 		// constructors
 		template <typename T> unique_handle<T>::unique_handle() :
 			unique_handle(nullptr) {}
@@ -71,7 +71,7 @@ namespace page
 			unique_handle(other).swap(*this);
 			return *this;
 		}
-		
+
 		// observers
 		template <typename T> typename unique_handle<T>::handle_type &unique_handle<T>::unique_handle::operator *() noexcept
 		{
@@ -153,7 +153,7 @@ namespace page
 		{
 			return unique_handle<T>(handle, deleter);
 		}
-		
+
 		// specialized algorithms
 		template <typename T> void swap(unique_handle<T> &a, unique_handle<T> &b) noexcept
 		{

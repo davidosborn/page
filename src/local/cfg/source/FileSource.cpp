@@ -79,7 +79,7 @@ namespace page
 
 			public:
 			const FileSource &GetSource() const;
-			
+
 			/*-------------+
 			| data members |
 			+-------------*/
@@ -93,7 +93,7 @@ namespace page
 		};
 
 ////////// FileSource::Writer definition ///////////////////////////////////////
-				
+
 		/**
 		 * The implementation of @c FileSource's writer.
 		 */
@@ -128,7 +128,7 @@ namespace page
 
 			public:
 			const FileSource &GetSource() const;
-			
+
 			/*-------------+
 			| data members |
 			+-------------*/
@@ -140,7 +140,7 @@ namespace page
 			 */
 			std::unordered_map<std::string, boost::optional<std::string>> vars;
 		};
-	
+
 ////////// FileSource //////////////////////////////////////////////////////////
 
 		/*--------------------------+
@@ -156,17 +156,17 @@ namespace page
 		/*----------------------+
 		| Source implementation |
 		+----------------------*/
-		
+
 		std::unique_ptr<Source::Reader> FileSource::OpenReader() const
 		{
 			return std::unique_ptr<Source::Reader>(new FileSource::Reader(*this));
 		}
-		
+
 		std::unique_ptr<Source::Writer> FileSource::OpenWriter() const
 		{
 			return std::unique_ptr<Source::Writer>(new FileSource::Writer(*this));
 		}
-		
+
 ////////// FileSource::Reader implementation ///////////////////////////////////
 
 		FileSource::Reader::Reader(const FileSource &source) :
@@ -199,7 +199,7 @@ namespace page
 				throw;
 			}
 		}
-		
+
 		boost::optional<std::string> FileSource::Reader::Read(const std::string &key)
 		{
 			auto iter(vars.find(key));
@@ -212,7 +212,7 @@ namespace page
 
 		FileSource::Writer::Writer(const FileSource &source) :
 			Source::Writer(source) {}
-			
+
 		FileSource::Writer::~Writer()
 		{
 			// load existing file
@@ -223,7 +223,7 @@ namespace page
 				if (!fs)
 					THROW((err::Exception<err::CfgModuleTag, err::FileTag>("failed to open file stream") <<
 						boost::errinfo_api_function("std::ifstream::open")))
-				
+
 				for (std::string line; std::getline(fs, line).good();)
 					lines.push_back(line);
 				if (fs.fail() && !fs.eof())
@@ -268,8 +268,8 @@ namespace page
 								std::string::reverse_iterator(valueBegin),
 								isspace).base();
 						*line =
-							std::string(line->begin(), valueBegin)
-							*iter->second                         
+							std::string(line->begin(), valueBegin) +
+							*iter->second                          +
 							std::string(valueEnd, line->end());
 						vars.erase(iter);
 					}

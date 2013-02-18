@@ -53,7 +53,7 @@ namespace page
 			/*-----------+
 			| operations |
 			+-----------*/
-			
+
 			public:
 			std::unique_ptr<AudioStream> Open() const override;
 
@@ -68,7 +68,7 @@ namespace page
 			/*-------------+
 			| data members |
 			+-------------*/
-			
+
 			private:
 			std::shared_ptr<const Pipe> pipe;
 		};

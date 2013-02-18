@@ -79,7 +79,7 @@ namespace page
 		Frame FollowController::DoGetFrame(const Frame &, const Frame &) const
 		{
 			Frame frame;
-			frame.position = Center(*aabb, center)
+			frame.position = Center(*aabb, center) +
 				orientation * math::NormVector<3>() * distance;
 			frame.orientation = orientation;
 			return frame;

@@ -47,11 +47,11 @@ namespace page
 			 */
 			if (!is.good())
 				return std::make_pair(false, 0);
-		
+
 			auto
 				delimiter (DeserializationDelimiter<Char, CharTraits>::Normalize(delimiterArg)),
 				terminator(DeserializationDelimiter<Char, CharTraits>::Normalize(terminatorArg));
-			
+
 			unsigned n = 0;
 			for (; n < limit; ++n)
 			{

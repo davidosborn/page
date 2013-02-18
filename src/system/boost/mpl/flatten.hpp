@@ -60,7 +60,7 @@ namespace boost
 						insert_range<_1, end<_1>, _2>>
 					>::type type;
 		};
-		
+
 		template <typename T>
 			struct flatten<T, false>
 		{

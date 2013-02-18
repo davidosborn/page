@@ -62,7 +62,7 @@ namespace page
 			template <> struct make_signed_impl<unsigned long>      { typedef long        type; };
 			template <> struct make_signed_impl<unsigned long long> { typedef long long   type; };
 		}
-		
+
 		/**
 		 * An alternative to @c std::make_signed with simplified behaviour.
 		 *
@@ -95,7 +95,7 @@ namespace page
 			template <> struct make_unsigned_impl<long>        { typedef unsigned long      type; };
 			template <> struct make_unsigned_impl<long long>   { typedef unsigned long long type; };
 		}
-		
+
 		/**
 		 * An alternative to @c std::make_unsigned with simplified behaviour.
 		 *

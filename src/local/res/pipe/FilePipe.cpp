@@ -64,7 +64,7 @@ namespace page
 				if (!fs)
 					if (sys::IsFile(path))
 						THROW((err::Exception<err::ResModuleTag, err::FileAccessTag>()))
-					else 
+					else
 						THROW((err::Exception<err::ResModuleTag, err::FileNotFoundTag>()))
 				// determine file size
 				fs.seekg(0, std::ifstream::end);
@@ -76,9 +76,9 @@ namespace page
 			{
 				if (!fs) fs.clear();
 				if (!fs.read(static_cast<char *>(s), n))
-					if (fs.eof()) 
+					if (fs.eof())
 						THROW((err::Exception<err::ResModuleTag, err::EndOfFileTag>()))
-					else 
+					else
 						THROW((err::Exception<err::ResModuleTag, err::FileReadTag>()))
 			}
 			unsigned FileStream::DoReadSome(void *s, unsigned n)

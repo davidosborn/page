@@ -40,14 +40,14 @@ namespace page
 	namespace res
 	{
 		class Node;
-	
+
 		// access
 		/**
 		 * Search for a registered scanner that is compatible with the given
 		 * node, and call it with the provided callback.
 		 */
 		bool CallRegisteredScanner(const Node &, const ScanCallback &);
-		
+
 		// registration
 		/**
 		 * Register a scanner with the system.

@@ -62,7 +62,7 @@ namespace page
 				std::basic_ostream<Char, CharTraits> &,
 				const T &,
 				ENABLE_IF((is_insertable<const T &, std::basic_ostream<Char, CharTraits> &>::value)));
-		
+
 		/**
 		 * Serialize a string to a stream, where the character encoding of
 		 * the string is different from that of the stream.
@@ -114,7 +114,7 @@ namespace page
 				Iterator last,
 				const Delimiter & = SerializationDelimiter<Char, CharTraits>::Space(),
 				ENABLE_IF(is_iterator<Iterator>::value));
-		
+
 		/**
 		 * Serialize @c std::tuple to a stream.
 		 *
@@ -139,7 +139,7 @@ namespace page
 				const std::pair<First, Second> &,
 				const Delimiter & = SerializationDelimiter<Char, CharTraits>::Space());
 		///@}
-		
+
 		/**
 		 * @addtogroup serialize-to-stream
 		 * @{
@@ -153,7 +153,7 @@ namespace page
 				std::basic_ostream<Char, CharTraits> &&,
 				Args &&...);
 		///@}
-		
+
 
 		/**
 		 * @addtogroup serialize

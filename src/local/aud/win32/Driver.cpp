@@ -62,7 +62,7 @@ namespace page
 					reinterpret_cast<DWORD_PTR>(this), CALLBACK_FUNCTION) != MMSYSERR_NOERROR)
 						THROW((err::Exception<err::AudModuleTag, err::Win32PlatformTag>("failed to open audio output device") <<
 							boost::errinfo_api_function("waveOutOpen")))
-				
+
 				Init();
 			}
 			Driver::~Driver()

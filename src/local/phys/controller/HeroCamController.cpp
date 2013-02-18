@@ -78,7 +78,7 @@ namespace page
 		{
 			Frame frame;
 			math::Quat<> orientation(this->orientation);
-			frame.position = Center(*aabb, math::Vector<3>(.5, center, .5))
+			frame.position = Center(*aabb, math::Vector<3>(.5, center, .5)) +
 				orientation * (math::NormVector<3>() * distance);
 			frame.orientation = orientation;
 			return frame;

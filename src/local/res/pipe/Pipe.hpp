@@ -125,7 +125,7 @@ namespace page
 			private:
 			void Save();
 			void Load();
-			
+
 			Pipe *pipe;
 			unsigned size;
 		};
