@@ -36,7 +36,7 @@
 
 namespace page
 {
-	namespace env {namespace x11 { class Window; }}
+	namespace wnd { namespace x11 { class Window; }}
 
 	namespace vid
 	{
@@ -47,12 +47,12 @@ namespace page
 				struct Driver : opengl::Driver
 				{
 					// construct
-					explicit Driver(env::x11::Window &);
+					explicit Driver(wnd::x11::Window &);
 					~Driver();
 
 					// window access
-					env::x11::Window &GetWindow();
-					const env::x11::Window &GetWindow() const;
+					wnd::x11::Window &GetWindow();
+					const wnd::x11::Window &GetWindow() const;
 
 					private:
 					// extension initialization

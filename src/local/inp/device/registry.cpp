@@ -59,7 +59,7 @@ namespace page
 		}
 
 		// creation
-		Devices MakeDevices(env::Window &wnd)
+		Devices MakeDevices(wnd::Window &wnd)
 		{
 			const Registry &reg(GetRegistry());
 			Devices devices;

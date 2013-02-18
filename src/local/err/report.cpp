@@ -36,8 +36,8 @@
 #include <boost/exception/diagnostic_information.hpp>
 
 // local
-#include "../env/msg.hpp" // Message
 #include "../log/manip.hpp" // Error, Warning
+#include "../wnd/message.hpp" // Message
 
 namespace page
 {
@@ -49,7 +49,7 @@ namespace page
 			log::Indenter indenter;
 			auto info = boost::diagnostic_information(e);
 			std::cerr << info << std::endl;
-			env::Message(info, env::errorMessage);
+			wnd::Message(info, wnd::MessageType::error);
 		}
 
 		void ReportWarning(const std::exception &e)

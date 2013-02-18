@@ -43,7 +43,7 @@ namespace page
 			struct Driver : aud::Driver
 			{
 				// construct/destroy
-				explicit Driver(env::Window &);
+				explicit Driver(wnd::Window &);
 				~Driver();
 
 				// update

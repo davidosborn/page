@@ -30,8 +30,8 @@
 
 #include <GL/gl.h>
 #include "../../cache/proxy/opengl/Texture.hpp"
-#include "../../env/Window.hpp" // Window::GetSize
 #include "../../math/Vector.hpp"
+#include "../../wnd/Window.hpp" // Window::GetSize
 #include "../Driver.hpp" // Driver::GetWindow
 #include "DrawContext.hpp"
 #include "Driver.hpp" // Driver->vid::Driver

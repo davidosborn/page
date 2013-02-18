@@ -106,7 +106,7 @@ namespace page
 
 		// driver
 		// construct/destroy
-		Driver::Driver(env::Window &wnd) : wnd(wnd), scene(0) {}
+		Driver::Driver(wnd::Window &wnd) : wnd(wnd), scene(0) {}
 		Driver::~Driver() {}
 
 		// update
@@ -244,11 +244,11 @@ namespace page
 		}
 
 		// window access
-		env::Window &Driver::GetWindow()
+		wnd::Window &Driver::GetWindow()
 		{
 			return wnd;
 		}
-		const env::Window &Driver::GetWindow() const
+		const wnd::Window &Driver::GetWindow() const
 		{
 			return wnd;
 		}

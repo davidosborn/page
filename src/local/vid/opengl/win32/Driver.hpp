@@ -35,7 +35,7 @@
 
 namespace page
 {
-	namespace env {namespace win32 { class Window; }}
+	namespace wnd { namespace win32 { class Window; }}
 
 	namespace vid
 	{
@@ -46,7 +46,7 @@ namespace page
 				struct Driver : opengl::Driver
 				{
 					// construct
-					explicit Driver(env::win32::Window &);
+					explicit Driver(wnd::win32::Window &);
 					~Driver();
 
 					private:

@@ -29,8 +29,8 @@
  */
 
 #include <windows.h>
-#include "../../../env/win32/Window.hpp" // Window::GetHwnd
 #include "../../../err/Exception.hpp"
+#include "../../../wnd/win32/Window.hpp" // Window::GetHwnd
 #include "Driver.hpp"
 #include "ext.hpp" // InitExt
 
@@ -43,7 +43,7 @@ namespace page
 			namespace win32
 			{
 				// construct/destroy
-				Driver::Driver(env::win32::Window &wnd) :
+				Driver::Driver(wnd::win32::Window &wnd) :
 					opengl::Driver(wnd), hwnd(wnd.GetHwnd())
 				{
 					if (!(hdc = GetDC(hwnd)))
@@ -100,9 +100,9 @@ namespace page
 		}
 
 		// factory function
-		Driver *MakeDriver(env::Window &wnd)
+		Driver *MakeDriver(wnd::Window &wnd)
 		{
-			return new opengl::win32::Driver(dynamic_cast<env::win32::Window &>(wnd));
+			return new opengl::win32::Driver(dynamic_cast<wnd::win32::Window &>(wnd));
 		}
 	}
 }

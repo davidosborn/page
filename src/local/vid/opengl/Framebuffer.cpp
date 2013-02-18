@@ -30,9 +30,9 @@
 
 #include <algorithm> // transform
 #include <cassert>
-#include "../../env/Window.hpp" // Window::GetSize
 #include "../../err/Exception.hpp"
 #include "../../math/pow2.hpp" // Pow2Ceil
+#include "../../wnd/Window.hpp" // Window::GetSize
 #include "AttribGuard.hpp"
 #include "DrawContext.hpp" // DrawContext::GetDriver
 #include "Driver.hpp" // Driver::GetWindow

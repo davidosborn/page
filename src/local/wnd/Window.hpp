@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#ifndef    page_local_env_Window_hpp
-#   define page_local_env_Window_hpp
+#ifndef    page_local_wnd_Window_hpp
+#   define page_local_wnd_Window_hpp
 
 #	include <memory> // unique_ptr
 #	include <string>
@@ -43,7 +43,7 @@ namespace page
 	namespace inp { class Driver; }
 	namespace vid { class Driver; }
 
-	namespace env
+	namespace wnd
 	{
 		struct Window : util::NonCopyable
 		{

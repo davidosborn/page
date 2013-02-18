@@ -34,13 +34,13 @@
 #include <iostream> // cout
 #include <string>
 #include <GL/gl.h>
-#include "../../env/Window.hpp" // Window::{GetSize,{focus,size}Sig}
 #include "../../err/Exception.hpp"
 #include "../../err/platform/opengl.hpp" // CheckError
 #include "../../log/Indenter.hpp"
 #include "../../math/Color.hpp" // RgbaColor
 #include "../../math/Vector.hpp"
 #include "../../util/string.hpp" // Trim
+#include "../../wnd/Window.hpp" // Window::{GetSize,{focus,size}Sig}
 #include "ClientAttribGuard.hpp"
 #include "DrawContext.hpp" // DrawContext::DrawContext
 #include "Driver.hpp"
@@ -56,7 +56,7 @@ namespace page
 		namespace opengl
 		{
 			// construct
-			Driver::Driver(env::Window &wnd) : vid::Driver(wnd) {}
+			Driver::Driver(wnd::Window &wnd) : vid::Driver(wnd) {}
 
 			// off-screen rendering
 			res::Image Driver::RenderImage(const math::Vector<2, unsigned> &size)

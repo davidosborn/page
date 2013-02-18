@@ -35,13 +35,13 @@
 #include <unordered_map>
 #include <windows.h>
 #include "../../cache/proxy/win32/Cursor.hpp"
-#include "../../env/win32/Window.hpp" // Window->env::Window, Window::GetHwnd
-#include "../../env/Window.hpp" // Window::{{focus,message,move,size}Sig,Get{Position,Size},HasFocus}
 #include "../../err/Exception.hpp"
 #include "../../math/Aabb.hpp"
 #include "../../math/win32.hpp" // Make{Rect,Vector}
 #include "../../res/type/Theme.hpp" // Theme::cursor
 #include "../../ui/Interface.hpp" // Interface::GetTheme
+#include "../../wnd/win32/Window.hpp" // Window->wnd::Window, Window::GetHwnd
+#include "../../wnd/Window.hpp" // Window::{{focus,message,move,size}Sig,Get{Position,Size},HasFocus}
 #include "Driver.hpp"
 
 namespace page
@@ -62,7 +62,7 @@ namespace page
 			}
 
 			// construct
-			Driver::Driver(env::win32::Window &wnd) : inp::Driver(wnd)
+			Driver::Driver(wnd::win32::Window &wnd) : inp::Driver(wnd)
 			{
 				// connect signals
 				using std::bind;
@@ -78,13 +78,13 @@ namespace page
 			}
 
 			// window access
-			env::win32::Window &Driver::GetWindow()
+			wnd::win32::Window &Driver::GetWindow()
 			{
-				return static_cast<env::win32::Window &>(inp::Driver::GetWindow());
+				return static_cast<wnd::win32::Window &>(inp::Driver::GetWindow());
 			}
-			const env::win32::Window &Driver::GetWindow() const
+			const wnd::win32::Window &Driver::GetWindow() const
 			{
-				return static_cast<const env::win32::Window &>(inp::Driver::GetWindow());
+				return static_cast<const wnd::win32::Window &>(inp::Driver::GetWindow());
 			}
 
 			// state query
@@ -549,9 +549,9 @@ namespace page
 		}
 
 		// factory function
-		Driver *MakeDriver(env::Window &wnd)
+		Driver *MakeDriver(wnd::Window &wnd)
 		{
-			return new win32::Driver(dynamic_cast<env::win32::Window &>(wnd));
+			return new win32::Driver(dynamic_cast<wnd::win32::Window &>(wnd));
 		}
 	}
 }

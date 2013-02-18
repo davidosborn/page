@@ -36,7 +36,7 @@ namespace page
 	namespace aud
 	{
 		// construct
-		NullDriver::NullDriver(env::Window &wnd) : Driver(wnd)
+		NullDriver::NullDriver(wnd::Window &wnd) : Driver(wnd)
 		{
 			Init();
 		}

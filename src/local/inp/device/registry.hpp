@@ -38,18 +38,18 @@
 
 namespace page
 {
-	namespace env { class Window; }
+	namespace wnd { class Window; }
 
 	namespace inp
 	{
 		class Device;
 
 		// factory type
-		typedef std::function<Device *(env::Window &)> DeviceFactory;
+		typedef std::function<Device *(wnd::Window &)> DeviceFactory;
 
 		// creation
 		typedef std::vector<std::shared_ptr<Device>> Devices;
-		Devices MakeDevices(env::Window &);
+		Devices MakeDevices(wnd::Window &);
 
 		// registration
 		void RegisterDevice(const DeviceFactory &, const std::string &name);

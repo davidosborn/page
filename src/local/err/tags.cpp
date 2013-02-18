@@ -77,7 +77,6 @@ namespace page
 		template <> const char *Tag<TagId::cacheModule> ::name = "cache module";
 		template <> const char *Tag<TagId::cfgModule>   ::name = "configuration module";
 		template <> const char *Tag<TagId::clipModule>  ::name = "clip module";
-		template <> const char *Tag<TagId::envModule>   ::name = "environment module";
 		template <> const char *Tag<TagId::errModule>   ::name = "error module";
 		template <> const char *Tag<TagId::gameModule>  ::name = "game module";
 		template <> const char *Tag<TagId::inpModule>   ::name = "input module";
@@ -90,6 +89,7 @@ namespace page
 		template <> const char *Tag<TagId::uiModule>    ::name = "user-interface module";
 		template <> const char *Tag<TagId::utilModule>  ::name = "utilities module";
 		template <> const char *Tag<TagId::vidModule>   ::name = "video module";
+		template <> const char *Tag<TagId::wndModule>   ::name = "windowing module";
 
 		/*-----------------------+
 		| platform-specific tags |

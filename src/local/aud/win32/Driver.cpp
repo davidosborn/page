@@ -29,8 +29,8 @@
  */
 
 #include <climits> // CHAR_BIT
-#include "../../env/win32/Window.hpp" // Window->env::Window
 #include "../../err/Exception.hpp"
+#include "../../wnd/win32/Window.hpp" // Window->wnd::Window
 #include "Driver.hpp"
 
 namespace page
@@ -45,7 +45,7 @@ namespace page
 				sampleRate    = 22050;
 
 			// construct/destroy
-			Driver::Driver(env::win32::Window &wnd) : aud::Driver(wnd)
+			Driver::Driver(wnd::win32::Window &wnd) : aud::Driver(wnd)
 			{
 				PCMWAVEFORMAT wf =
 				{
@@ -117,9 +117,9 @@ namespace page
 		}
 
 		// factory function
-		Driver *MakeDriver(env::Window &wnd)
+		Driver *MakeDriver(wnd::Window &wnd)
 		{
-			return new win32::Driver(dynamic_cast<env::win32::Window &>(wnd));
+			return new win32::Driver(dynamic_cast<wnd::win32::Window &>(wnd));
 		}
 	}
 }

@@ -38,9 +38,9 @@
 
 namespace page
 {
-	namespace env { class Window; }
 	namespace phys { class Scene; }
 	namespace ui { class Interface; }
+	namespace wnd { class Window; }
 
 	namespace vid
 	{
@@ -49,7 +49,7 @@ namespace page
 		struct Driver : util::NonCopyable
 		{
 			// construct/destroy
-			explicit Driver(env::Window &wnd);
+			explicit Driver(wnd::Window &wnd);
 			virtual ~Driver();
 
 			// update
@@ -71,8 +71,8 @@ namespace page
 			void SetContrast(float);
 
 			// window access
-			env::Window &GetWindow();
-			const env::Window &GetWindow() const;
+			wnd::Window &GetWindow();
+			const wnd::Window &GetWindow() const;
 
 			// inspiration modifiers
 			void Imbue(const phys::Scene *);
@@ -89,7 +89,7 @@ namespace page
 			// draw context factory function
 			virtual DrawContext *MakeDrawContext(const math::Aabb<2> &) = 0;
 
-			env::Window &wnd;
+			wnd::Window &wnd;
 			const phys::Scene *scene;
 			const ui::Interface *interface;
 			float sceneSaturation;
@@ -97,7 +97,7 @@ namespace page
 		};
 
 		// factory function
-		Driver *MakeDriver(env::Window &);
+		Driver *MakeDriver(wnd::Window &);
 	}
 }
 

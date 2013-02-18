@@ -28,26 +28,26 @@
  * of this software.
  */
 
-#ifndef    page_local_env_x11_Console_hpp
-#   define page_local_env_x11_Console_hpp
+#include <cassert>
 
-#	include "../Console.hpp"
+#include "../util/pp.hpp" // STRINGIZE
+#include "msg.hpp"
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
-		namespace x11
+		void Message(const std::string &msg, MessageType type)
 		{
-			struct Console : env::Console
+			std::string title;
+			switch (type)
 			{
-				Console(const std::string &title);
-
-				void Put(char);
-				void Put(const std::string &);
-			};
+				case MessageType::info:    title = STRINGIZE(NAME);            break;
+				case MessageType::error:   title = STRINGIZE(NAME) " error";   break;
+				case MessageType::warning: title = STRINGIZE(NAME) " warning"; break;
+				default: assert(!"invalid message type");
+			}
+			Message(msg, type, title);
 		}
 	}
 }
-
-#endif

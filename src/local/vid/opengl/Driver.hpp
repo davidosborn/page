@@ -46,7 +46,7 @@ namespace page
 			struct Driver : vid::Driver
 			{
 				// construct
-				explicit Driver(env::Window &);
+				explicit Driver(wnd::Window &);
 
 				// off-screen rendering
 				res::Image RenderImage(const math::Vector<2, unsigned> &size);

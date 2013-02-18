@@ -57,7 +57,7 @@ enum // _NET_WM_STATE actions
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
 		namespace x11
 		{

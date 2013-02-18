@@ -43,8 +43,8 @@
 
 namespace page
 {
-	namespace env { class Window; }
 	namespace ui { class Interface; }
+	namespace wnd { class Window; }
 
 	namespace inp
 	{
@@ -53,7 +53,7 @@ namespace page
 		struct Driver : util::NonCopyable
 		{
 			// construct/destroy
-			explicit Driver(env::Window &);
+			explicit Driver(wnd::Window &);
 			virtual ~Driver();
 
 			// cursor mode
@@ -91,8 +91,8 @@ namespace page
 			void Update();
 
 			// window access
-			env::Window &GetWindow();
-			const env::Window &GetWindow() const;
+			wnd::Window &GetWindow();
+			const wnd::Window &GetWindow() const;
 
 			// inspiration modifiers
 			void Imbue(const ui::Interface *);
@@ -141,7 +141,7 @@ namespace page
 			void OnKey(Key);
 			void OnChar(char);
 
-			env::Window &wnd;
+			wnd::Window &wnd;
 			const ui::Interface *interface;
 
 			// devices
@@ -171,7 +171,7 @@ namespace page
 		};
 
 		// factory function
-		Driver *MakeDriver(env::Window &);
+		Driver *MakeDriver(wnd::Window &);
 	}
 }
 

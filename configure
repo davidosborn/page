@@ -1670,9 +1670,6 @@ local/cfg/state/State
 local/clip/encoder/detail/EncoderFactory
 local/clip/encoder/Encoder
 local/clip/Stream
-local/env/Console
-local/env/msg
-local/env/Window
 local/err/init
 local/err/report
 local/err/tags
@@ -1876,6 +1873,9 @@ local/vid/DrawContext
 local/vid/Driver
 local/vid/Filter
 local/vid/ViewContext
+local/wnd/Console
+local/wnd/message
+local/wnd/Window
 EOF
 
 if [ "$host_cpu" = i386 -o "$host_cpu" = amd64 ]; then
@@ -2091,9 +2091,6 @@ if [ "$with_win32" = yes ]; then
 	add_cxx_sources <<\EOF
 local/cache/proxy/win32/Cursor
 local/cfg/source/win32/RegistrySource
-local/env/win32/Console
-local/env/win32/msg
-local/env/win32/Window
 local/math/win32
 local/res/type/cursor/win32
 local/res/type/image/win32
@@ -2101,16 +2098,19 @@ local/sys/win32
 local/sys/win32/file
 local/sys/win32/proc
 local/util/win32/string
+local/wnd/win32/Console
+local/wnd/win32/msg
+local/wnd/win32/Window
 EOF
 fi
 
 if [ "$with_x" = yes ]; then
 	add_cxx_sources <<\EOF
-local/env/x11/Console
-local/env/x11/msg
-local/env/x11/Window
 local/err/x11
 local/util/x11/event
+local/wnd/x11/Console
+local/wnd/x11/msg
+local/wnd/x11/Window
 EOF
 fi
 

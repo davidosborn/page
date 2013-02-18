@@ -29,7 +29,7 @@
  */
 
 #include <cassert>
-#include "../env/Window.hpp" // Window::GetSize
+#include "../wnd/Window.hpp" // Window::GetSize
 #include "DrawContext.hpp"
 #include "Driver.hpp" // Driver::GetWindow
 #include "Filter.hpp"

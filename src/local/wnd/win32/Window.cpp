@@ -43,7 +43,7 @@
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
 		namespace win32
 		{

@@ -44,7 +44,7 @@
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
 		// construct/destroy
 		Window::Window() : focus(false)

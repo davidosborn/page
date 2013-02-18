@@ -36,7 +36,7 @@
 
 namespace page
 {
-	namespace env {namespace win32 { class Window; }}
+	namespace wnd { namespace win32 { class Window; }}
 
 	namespace inp
 	{
@@ -45,11 +45,11 @@ namespace page
 			struct Driver : inp::Driver
 			{
 				// construct
-				explicit Driver(env::win32::Window &);
+				explicit Driver(wnd::win32::Window &);
 
 				// window access
-				env::win32::Window &GetWindow();
-				const env::win32::Window &GetWindow() const;
+				wnd::win32::Window &GetWindow();
+				const wnd::win32::Window &GetWindow() const;
 
 				private:
 				// state query

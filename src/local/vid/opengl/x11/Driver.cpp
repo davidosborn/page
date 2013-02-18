@@ -29,8 +29,8 @@
  */
 
 #include <X11/Xlib.h>
-#include "../../../env/x11/Window.hpp" // Window::Get{Display,Screen}
 #include "../../../err/Exception.hpp"
+#include "../../../wnd/x11/Window.hpp" // Window::Get{Display,Screen}
 #include "Driver.hpp"
 #include "ext.hpp" // InitExt
 
@@ -43,7 +43,7 @@ namespace page
 			namespace x11
 			{
 				// construct/destroy
-				Driver::Driver(env::x11::Window &wnd) : opengl::Driver(wnd)
+				Driver::Driver(wnd::x11::Window &wnd) : opengl::Driver(wnd)
 				{
 					Display *display = wnd.GetDisplay();
 					// select visual
@@ -73,35 +73,35 @@ namespace page
 				}
 
 				// window access
-				env::x11::Window &Driver::GetWindow()
+				wnd::x11::Window &Driver::GetWindow()
 				{
-					return dynamic_cast<env::x11::Window &>(opengl::Driver::GetWindow());
+					return dynamic_cast<wnd::x11::Window &>(opengl::Driver::GetWindow());
 				}
-				const env::x11::Window &Driver::GetWindow() const
+				const wnd::x11::Window &Driver::GetWindow() const
 				{
-					return dynamic_cast<const env::x11::Window &>(opengl::Driver::GetWindow());
+					return dynamic_cast<const wnd::x11::Window &>(opengl::Driver::GetWindow());
 				}
 
 				// extension initialization
 				void Driver::InitAdapterExt()
 				{
-					const env::x11::Window &wnd(GetWindow());
+					const wnd::x11::Window &wnd(GetWindow());
 					InitExt(wnd.GetDisplay(), wnd.GetScreen());
 				}
 
 				// framebuffer modifiers
 				void Driver::Flush()
 				{
-					const env::x11::Window &wnd(GetWindow());
+					const wnd::x11::Window &wnd(GetWindow());
 					glXSwapBuffers(wnd.GetDisplay(), wnd.GetWindow());
 				}
 			}
 		}
 
 		// factory function
-		Driver *MakeDriver(env::Window &wnd)
+		Driver *MakeDriver(wnd::Window &wnd)
 		{
-			return new opengl::x11::Driver(dynamic_cast<env::x11::Window &>(wnd));
+			return new opengl::x11::Driver(dynamic_cast<wnd::x11::Window &>(wnd));
 		}
 	}
 }

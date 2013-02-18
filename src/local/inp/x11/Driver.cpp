@@ -32,9 +32,9 @@
 #include <functional> // bind
 #include <vector>
 #include <X11/Xutil.h> // XLookupString
-#include "../../env/x11/Window.hpp"
 #include "../../util/algorithm/stdext.hpp" // for_each_if
 #include "../../util/functional/locale.hpp" // isprint_function
+#include "../../wnd/x11/Window.hpp"
 #include "Driver.hpp"
 
 namespace page
@@ -46,7 +46,7 @@ namespace page
 			const unsigned keyBufferSize = 16;
 
 			// construct
-			Driver::Driver(env::x11::Window &wnd) : inp::Driver(wnd)
+			Driver::Driver(wnd::x11::Window &wnd) : inp::Driver(wnd)
 			{
 				using std::bind;
 				using namespace std::placeholders;
@@ -54,13 +54,13 @@ namespace page
 			}
 
 			// window access
-			env::x11::Window &Driver::GetWindow()
+			wnd::x11::Window &Driver::GetWindow()
 			{
-				return static_cast<env::x11::Window &>(inp::Driver::GetWindow());
+				return static_cast<wnd::x11::Window &>(inp::Driver::GetWindow());
 			}
-			const env::x11::Window &Driver::GetWindow() const
+			const wnd::x11::Window &Driver::GetWindow() const
 			{
-				return static_cast<const env::x11::Window &>(inp::Driver::GetWindow());
+				return static_cast<const wnd::x11::Window &>(inp::Driver::GetWindow());
 			}
 
 			// state query
@@ -170,9 +170,9 @@ namespace page
 		}
 
 		// factory function
-		Driver *MakeDriver(env::Window &wnd)
+		Driver *MakeDriver(wnd::Window &wnd)
 		{
-			return new x11::Driver(dynamic_cast<env::x11::Window &>(wnd));
+			return new x11::Driver(dynamic_cast<wnd::x11::Window &>(wnd));
 		}
 	}
 }

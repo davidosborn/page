@@ -28,47 +28,26 @@
  * of this software.
  */
 
-// Win32
-#include <windows.h>
+#ifndef    page_local_wnd_win32_Console_hpp
+#   define page_local_wnd_win32_Console_hpp
 
-// local
-#include "Console.hpp"
-#include "../../err/Exception.hpp"
-#include "../../util/win32/string.hpp" // Native, String
+#	include "../Console.hpp"
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
 		namespace win32
 		{
-			Console::Console(const std::string &title)
+			struct Console : wnd::Console
 			{
-				if (!AllocConsole() || !SetConsoleTitle(util::win32::Native(title).c_str()))
-					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to allocate console") <<
-						boost::errinfo_api_function("AllocConsole")))
-			}
+				Console(const std::string &title);
 
-			void Console::Put(char c)
-			{
-				TCHAR tc = c;
-				DWORD w;
-				if (!WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), &tc, 1, &w, 0))
-					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to write to console") <<
-						boost::errinfo_api_function("WriteConsole")))
-			}
-			void Console::Put(const std::string &s)
-			{
-				util::win32::String ts(util::win32::Native(s));
-				DWORD w;
-				if (!WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), ts.c_str(), ts.size(), &w, 0))
-					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to write to console") <<
-						boost::errinfo_api_function("WriteConsole")))
-			}
+				void Put(char);
+				void Put(const std::string &);
+			};
 		}
-
-		// factory function
-		Console *MakeConsole(const std::string &title)
-			{ return new win32::Console(title); }
 	}
 }
+
+#endif

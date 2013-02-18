@@ -28,36 +28,63 @@
  * of this software.
  */
 
-// X11
-#include <X11/Xlib.h>
+#ifndef    page_local_wnd_win32_Window_hpp
+#   define page_local_wnd_win32_Window_hpp
 
-// local
-#include "Console.hpp"
-#include "../../err/Exception.hpp"
+#	include <windows.h> // HWND, LPARAM, LRESULT, UINT, WPARAM
+#	include "../Window.hpp"
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
-		namespace x11
+		namespace win32
 		{
-			Console::Console(const std::string &title)
+			struct Window : wnd::Window
 			{
-				// FIXME: implement
-			}
+				// construct/destroy
+				Window(const std::string &title);
+				~Window();
 
-			void Console::Put(char c)
-			{
-				// FIXME: implement
-			}
-			void Console::Put(const std::string &s)
-			{
-				// FIXME: implement
-			}
+				// update
+				void Update();
+
+				// platform access
+				HWND GetHwnd() const;
+
+				// message signal
+				util::Signal<void (UINT, WPARAM, LPARAM)> messageSig;
+
+				// environment state
+				math::Vector<2, unsigned> GetScreenSize() const;
+
+				private:
+				// driver factory functions
+				aud::Driver *MakeAudioDriver();
+				inp::Driver *MakeInputDriver();
+				vid::Driver *MakeVideoDriver();
+
+				// fullscreen modifiers
+				static void SetFull(bool);
+				void SwitchFull();
+
+				// message handling
+				LRESULT WindowProc(UINT, WPARAM, LPARAM);
+				static LRESULT CALLBACK MsgRouter(HWND, UINT, WPARAM, LPARAM);
+
+				// window class
+				static LPCTSTR MakeClass();
+				static LPCTSTR GetClass();
+
+				HWND hwnd;
+				bool
+					alive, min, full,              // window state
+					waitFocus, moving, sizing,     // transition state
+					muteFocus, muteMove, muteSize; // hide unwanted messages
+				HBITMAP clientBitmap; // for saving client area
+			};
 		}
-
-		// factory function
-		Console *MakeConsole(const std::string &title)
-			{ return new x11::Console(title); }
 	}
 }
+
+#endif

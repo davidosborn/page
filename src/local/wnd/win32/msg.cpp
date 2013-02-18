@@ -40,7 +40,7 @@
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
 		void Message(const std::string &msg, MessageType type, const std::string &title)
 		{

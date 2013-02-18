@@ -35,7 +35,6 @@
 #include "../cache.hpp" // Purge, Update
 #include "../cfg/vars.hpp"
 #include "../clip/Stream.hpp"
-#include "../env/Window.hpp"
 #include "../err/report.hpp" // ReportWarning, std::exception
 #include "../inp/Driver.hpp"
 #include "../log/Indenter.hpp"
@@ -48,6 +47,7 @@
 #include "../util/path.hpp" // ExpandPath
 #include "../util/pp.hpp" // STRINGIZE
 #include "../vid/Driver.hpp"
+#include "../wnd/Window.hpp"
 #include "Game.hpp"
 #include "Interface.hpp"
 #include "Scene.hpp"
@@ -78,7 +78,7 @@ namespace page
 			std::cout << "creating window" << std::endl;
 			{
 				log::Indenter indenter;
-				wnd.reset(env::MakeWindow(STRINGIZE(NAME)));
+				wnd.reset(wnd::MakeWindow(STRINGIZE(NAME)));
 				// bind signal handlers
 				using namespace std::placeholders;
 				wnd->exitSig.Connect(std::bind(&Game::OnExit, this));

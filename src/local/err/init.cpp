@@ -33,9 +33,9 @@
 #include <iostream> // cerr
 
 // local
-#include "../err/msg.hpp" // Message
 #include "../log/manip.hpp" // Clear
 #include "../util/init_priority.hpp" // LOG_INIT_PRIORITY
+#include "../wnd/message.hpp" // Message
 
 namespace page
 {
@@ -46,14 +46,14 @@ namespace page
 			void unexpected()
 			{
 				std::cerr << log::Clear;
-				err::Message("unexpected exception");
+				wnd::Message("unexpected exception", wnd::MessageType::error);
 				std::abort();
 			}
 
 			void terminate()
 			{
 				std::cerr << log::Clear;
-				err::Message("abnormal termination");
+				wnd::Message("abnormal termination", wnd::MessageType::error);
 				std::abort();
 			}
 

@@ -28,26 +28,12 @@
  * of this software.
  */
 
-#ifndef    page_local_env_win32_Console_hpp
-#   define page_local_env_win32_Console_hpp
-
-#	include "../Console.hpp"
+#include "Console.hpp"
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
-		namespace win32
-		{
-			struct Console : env::Console
-			{
-				Console(const std::string &title);
-
-				void Put(char);
-				void Put(const std::string &);
-			};
-		}
+		Console::~Console() {}
 	}
 }
-
-#endif

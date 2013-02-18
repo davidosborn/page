@@ -38,13 +38,13 @@
 
 namespace page
 {
-	namespace env { class Window; }
 	namespace phys
 	{
 		class Scene;
 		class Sound;
 	}
 	namespace res { class Sound; }
+	namespace wnd { class Window; }
 
 	namespace aud
 	{
@@ -84,7 +84,7 @@ namespace page
 		struct Driver : util::NonCopyable
 		{
 			// construct/destroy
-			explicit Driver(env::Window &);
+			explicit Driver(wnd::Window &);
 			virtual ~Driver();
 
 			// update
@@ -99,8 +99,8 @@ namespace page
 			virtual void SetVolume(float) = 0;
 
 			// window access
-			env::Window &GetWindow();
-			const env::Window &GetWindow() const;
+			wnd::Window &GetWindow();
+			const wnd::Window &GetWindow() const;
 
 			// inspiration modifiers
 			void Imbue(const phys::Scene *);
@@ -123,7 +123,7 @@ namespace page
 			virtual AmbientChannel *MakeAmbientChannel(const Sound &) const = 0;
 			virtual SpatialChannel *MakeSpatialChannel(const phys::Sound &) const = 0;
 
-			env::Window &wnd;
+			wnd::Window &wnd;
 			typedef std::vector<std::shared_ptr<Sound>> Sounds;
 			Sounds sounds;
 			typedef std::vector<std::shared_ptr<AmbientChannel>> AmbientChannels;
@@ -135,7 +135,7 @@ namespace page
 
 #	ifdef HAVE_AUDIO
 		// factory function
-		Driver *MakeDriver(env::Window &);
+		Driver *MakeDriver(wnd::Window &);
 #	endif
 	}
 }

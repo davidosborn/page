@@ -40,7 +40,7 @@ namespace page
 		struct NullDriver : Driver
 		{
 			// construct
-			explicit NullDriver(env::Window &);
+			explicit NullDriver(wnd::Window &);
 
 			// modifiers
 			void SetVolume(float);

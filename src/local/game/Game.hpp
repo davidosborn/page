@@ -38,9 +38,9 @@
 namespace page
 {
 	namespace clip { class Stream; }
-	namespace env { class Window; }
 	namespace script { class Driver; }
 	namespace sys { class Timer; }
+	namespace wnd { class Window; }
 
 	namespace game
 	{
@@ -77,7 +77,7 @@ namespace page
 			void OnFocus(bool);
 			void OnKey(inp::Key);
 
-			std::unique_ptr<env::Window> wnd;
+			std::unique_ptr<wnd::Window> wnd;
 			std::unique_ptr<script::Driver> scriptDriver;
 			std::unique_ptr<Scene> scene;
 			std::unique_ptr<Interface> interface;

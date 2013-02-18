@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#include "../../env/Window.hpp" // Window::GetSize
 #include "../../math/Aabb.hpp"
+#include "../../wnd/Window.hpp" // Window::GetSize
 #include "DrawContext.hpp" // DrawContext::Get{Clip,Driver,LogicalBox}
 #include "Driver.hpp" // Driver::GetWindow
 #include "Framebuffer.hpp" // Bind, Framebuffer::Get{Size,Texture}

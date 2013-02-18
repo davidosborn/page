@@ -37,9 +37,9 @@
 
 #include <boost/io/ios_state.hpp> // ios_all_saver
 
-#include "../env/Window.hpp"
 #include "../math/Aabb.hpp"
 #include "../math/float.hpp" // Near
+#include "../wnd/Window.hpp"
 #include "Device.hpp" // Device::Update
 #include "device/registry.hpp" // MakeDevices
 #include "Driver.hpp"
@@ -124,7 +124,7 @@ namespace page
 		}
 
 		// construct/destroy
-		Driver::Driver(env::Window &wnd) : wnd(wnd), interface(0),
+		Driver::Driver(wnd::Window &wnd) : wnd(wnd), interface(0),
 			cursorMode(pointCursorMode)
 		{
 			// connect signals
@@ -231,11 +231,11 @@ namespace page
 		}
 
 		// window access
-		env::Window &Driver::GetWindow()
+		wnd::Window &Driver::GetWindow()
 		{
 			return wnd;
 		}
-		const env::Window &Driver::GetWindow() const
+		const wnd::Window &Driver::GetWindow() const
 		{
 			return wnd;
 		}

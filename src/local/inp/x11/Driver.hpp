@@ -43,11 +43,11 @@ namespace page
 			struct Driver : inp::Driver
 			{
 				// construct
-				explicit Driver(env::x11::Window &);
+				explicit Driver(wnd::x11::Window &);
 
 				// window access
-				env::x11::Window &GetWindow();
-				const env::x11::Window &GetWindow() const;
+				wnd::x11::Window &GetWindow();
+				const wnd::x11::Window &GetWindow() const;
 
 				private:
 				// state query

@@ -28,24 +28,26 @@
  * of this software.
  */
 
-#include <cassert>
+#ifndef    page_local_wnd_x11_Console_hpp
+#   define page_local_wnd_x11_Console_hpp
 
-// X11
-#include <X11/Xlib.h>
-
-// local
-#include "../../err/Exception.hpp"
-#include "../msg.hpp" // MessageType
+#	include "../Console.hpp"
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
-		void Message(const std::string &msg, MessageType type, const std::string &title)
+		namespace x11
 		{
-			// FIXME: set icon depending on message type
-			// FIXME: implement; see
-			// http://www.faqs.org/faqs/x-faq/part7/section-8.html
+			struct Console : wnd::Console
+			{
+				Console(const std::string &title);
+
+				void Put(char);
+				void Put(const std::string &);
+			};
 		}
 	}
 }
+
+#endif

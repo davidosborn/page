@@ -42,7 +42,7 @@ namespace page
 	namespace vid
 	{
 		// construct/destroy
-		Driver::Driver(env::Window &wnd) :
+		Driver::Driver(wnd::Window &wnd) :
 			wnd(wnd), scene(0), interface(0),
 			sceneSaturation(1), brightness(0), contrast(1) {}
 		Driver::~Driver() {}
@@ -97,11 +97,11 @@ namespace page
 		}
 
 		// window access
-		env::Window &Driver::GetWindow()
+		wnd::Window &Driver::GetWindow()
 		{
 			return wnd;
 		}
-		const env::Window &Driver::GetWindow() const
+		const wnd::Window &Driver::GetWindow() const
 		{
 			return wnd;
 		}

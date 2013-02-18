@@ -46,7 +46,7 @@ namespace page
 		namespace openal
 		{
 			// construct/destroy
-			Driver::Driver(env::Window &wnd) : aud::Driver(wnd)
+			Driver::Driver(wnd::Window &wnd) : aud::Driver(wnd)
 			{
 				// print driver information
 				const char *versionPtr = alGetString(AL_VERSION);
@@ -141,7 +141,7 @@ namespace page
 		}
 
 		// factory function
-		Driver *MakeDriver(env::Window &wnd)
+		Driver *MakeDriver(wnd::Window &wnd)
 		{
 			return new openal::Driver(wnd);
 		}

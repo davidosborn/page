@@ -28,26 +28,24 @@
  * of this software.
  */
 
-#ifndef    page_local_env_Console_hpp
-#   define page_local_env_Console_hpp
+#include <cassert>
 
-#	include <string>
+// X11
+#include <X11/Xlib.h>
+
+// local
+#include "../../err/Exception.hpp"
+#include "../msg.hpp" // MessageType
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
-		struct Console
+		void Message(const std::string &msg, MessageType type, const std::string &title)
 		{
-			virtual ~Console();
-
-			virtual void Put(char) = 0;
-			virtual void Put(const std::string &) = 0;
-		};
-
-		// factory function
-		Console *MakeConsole(const std::string &title);
+			// FIXME: set icon depending on message type
+			// FIXME: implement; see
+			// http://www.faqs.org/faqs/x-faq/part7/section-8.html
+		}
 	}
 }
-
-#endif

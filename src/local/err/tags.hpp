@@ -92,7 +92,6 @@ namespace page
 				cacheModule,
 				cfgModule,
 				clipModule,
-				envModule,
 				errModule,
 				gameModule,
 				inpModule,
@@ -105,6 +104,7 @@ namespace page
 				uiModule,
 				utilModule,
 				vidModule,
+				wndModule,
 
 				/*--------------------------+
 				| platform-specific tag-IDs |
@@ -560,14 +560,6 @@ namespace page
 		struct ClipModuleTag : Tag<TagId::clipModule>, TagSet<ModuleTag> {};
 
 		/**
-		 * A tag to be used when an error occurs within the environment module.
-		 *
-		 * @note The environment module is contained in the @c ::page::env
-		 *       namespace and the @c src/local/env directory.
-		 */
-		struct EnvModuleTag : Tag<TagId::envModule>, TagSet<ModuleTag> {};
-
-		/**
 		 * A tag to be used when an error occurs within the error module.
 		 *
 		 * @note The error module is contained in the @c ::page::err namespace
@@ -663,6 +655,14 @@ namespace page
 		 *       and the @c src/local/vid directory.
 		 */
 		struct VidModuleTag : Tag<TagId::vidModule>, TagSet<ModuleTag> {};
+
+		/**
+		 * A tag to be used when an error occurs within the windowing module.
+		 *
+		 * @note The windowing module is contained in the @c ::page::wnd
+		 *       namespace and the @c src/local/wnd directory.
+		 */
+		struct WndModuleTag : Tag<TagId::wndModule>, TagSet<ModuleTag> {};
 
 		/*-----------------------+
 		| platform-specific tags |

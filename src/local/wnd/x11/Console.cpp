@@ -28,25 +28,36 @@
  * of this software.
  */
 
-#include <cassert>
-#include "../util/pp.hpp" // STRINGIZE
-#include "msg.hpp"
+// X11
+#include <X11/Xlib.h>
+
+// local
+#include "Console.hpp"
+#include "../../err/Exception.hpp"
 
 namespace page
 {
-	namespace env
+	namespace wnd
 	{
-		void Message(const std::string &msg, MessageType type)
+		namespace x11
 		{
-			std::string title;
-			switch (type)
+			Console::Console(const std::string &title)
 			{
-				case infoMessage: title = STRINGIZE(NAME); break;
-				case errorMessage: title = STRINGIZE(NAME) " error"; break;
-				case warningMessage: title = STRINGIZE(NAME) " warning"; break;
-				default: assert(!"invalid message type");
+				// FIXME: implement
 			}
-			Message(msg, type, title);
+
+			void Console::Put(char c)
+			{
+				// FIXME: implement
+			}
+			void Console::Put(const std::string &s)
+			{
+				// FIXME: implement
+			}
 		}
+
+		// factory function
+		Console *MakeConsole(const std::string &title)
+			{ return new x11::Console(title); }
 	}
 }
