@@ -60,29 +60,29 @@ namespace page
 					// determine optimal solution
 					cfg::opengl::renderVbo = vboTime <= varTime;
 				}
-				std::cout << "vertex buffering = " << (CVAR(opengl)::renderVbo ? "enabled" : "disabled") << std::endl;
+				std::cout << "vertex buffering = " << (*CVAR(opengl)::renderVbo ? "enabled" : "disabled") << std::endl;
 				if (haveExtFramebufferObject && haveArbShadow)
 				{
 					// FIXME: implement
 					cfg::opengl::renderShadow = true;
 				}
-				std::cout << "shadowing        = " << (CVAR(opengl)::renderBump ? "enabled" : "disabled") << std::endl;
+				std::cout << "shadowing        = " << (*CVAR(opengl)::renderBump ? "enabled" : "disabled") << std::endl;
 				if (haveArbFragmentShader && haveArbShaderObjects ||
 					haveNvRegisterCombiners)
 				{
 					// FIXME: implement
 					cfg::opengl::renderBump = true;
 				}
-				std::cout << "bump mapping     = " << (CVAR(opengl)::renderBump ? "enabled" : "disabled") << std::endl;
+				std::cout << "bump mapping     = " << (*CVAR(opengl)::renderBump ? "enabled" : "disabled") << std::endl;
 			}
 			void InitProfile()
 			{
-				if (!CVAR(opengl)::renderTuneAuto) return;
+				if (!*CVAR(opengl)::renderTuneAuto) return;
 				cfg::ScopedDomain domain(cfg::siteDomain);
 				std::string
 					deviceProfile(std::string(reinterpret_cast<const char *>(glGetString(GL_VENDOR))) + ' ' + reinterpret_cast<const char *>(glGetString(GL_RENDERER))),
 					profile(deviceProfile + ' ' + reinterpret_cast<const char *>(glGetString(GL_VERSION)));
-				if (profile != CVAR(opengl)::renderTuneProfile)
+				if (profile != *CVAR(opengl)::renderTuneProfile)
 				{
 					std::cout << "tuning new " <<
 						(deviceProfile == cfg::opengl::renderTuneProfile->substr(0, deviceProfile.size()) ?

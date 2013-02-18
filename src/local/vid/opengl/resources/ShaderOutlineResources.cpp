@@ -57,7 +57,7 @@ namespace page
 				// create program
 				{
 					boost::optional<log::Indenter> indenter;
-					if (CVAR(logVerbose))
+					if (*CVAR(logVerbose))
 					{
 						std::cout << "creating program" << std::endl;
 						indenter = boost::in_place();
@@ -78,7 +78,7 @@ namespace page
 				// create render-target pool
 				{
 					boost::optional<log::Indenter> indenter;
-					if (CVAR(logVerbose))
+					if (*CVAR(logVerbose))
 					{
 						std::cout << "creating render-target pool" << std::endl;
 						indenter = boost::in_place();
@@ -111,8 +111,8 @@ namespace page
 			bool ShaderOutlineResources::Check()
 			{
 				return
-					CVAR(opengl)::renderOutline &&
-					CVAR(opengl)::renderShader &&
+					*CVAR(opengl)::renderOutline &&
+					*CVAR(opengl)::renderShader &&
 					haveArbFragmentShader &&
 					haveArbShaderObjects &&
 					haveArbVertexShader &&

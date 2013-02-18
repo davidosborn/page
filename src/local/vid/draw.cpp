@@ -98,9 +98,9 @@ namespace page
 			DrawContext::FilterSaver filterSaver(context);
 			// FIXME: scale/bias for exposure
 			// FIXME: post-processing effects, such as rain on camera lens
-			if (CVAR(opengl)::renderMedian &&
+			if (*CVAR(opengl)::renderMedian &&
 				context.GetFilterCaps() & DrawContext::medianFilter)
-				context.PushMedianFilter(CVAR(opengl)::renderMedianLevel, true);
+				context.PushMedianFilter(*CVAR(opengl)::renderMedianLevel, true);
 			const std::unique_ptr<ViewContext> viewContext(context.MakeViewContext(GetViewFrustum(camera)));
 			viewContext->Draw(scene);
 		}

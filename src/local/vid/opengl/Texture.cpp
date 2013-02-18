@@ -53,7 +53,7 @@ namespace page
 					GL_FLOAT, &*math::RgbaColor<GLfloat>(color).begin());
 			}
 			Texture::Texture(const res::Image &img, Format format, Flags flags, const math::Vector<2, bool> &clamp) :
-				size(img.size), pow2Size(Max(size >> CVAR(opengl)::renderTextureDown, 1))
+				size(img.size), pow2Size(Max(size >> *CVAR(opengl)::renderTextureDown, 1))
 			{
 				// FIXME: texture size calculations are duplicated in tex.cpp
 				if (!haveArbTextureNonPowerOfTwo)

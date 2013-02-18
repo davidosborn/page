@@ -43,7 +43,7 @@ namespace page
 		+--------------------------*/
 
 		StderrSink::StderrSink() :
-			streambuf(*(CVAR(logSync) ? std::cout.rdbuf() : std::cerr.rdbuf())) {}
+			streambuf(*(*CVAR(logSync) ? std::cout.rdbuf() : std::cerr.rdbuf())) {}
 
 		/*----------------------+
 		| Stream implementation |

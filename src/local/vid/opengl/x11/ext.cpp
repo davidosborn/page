@@ -137,7 +137,7 @@ namespace page
 										broken = true;
 										ext->have = false;
 									}
-									if (CVAR(logVerbose))
+									if (*CVAR(logVerbose))
 									{
 										log::Indenter indenter;
 										std::cout << "missing function " << proc->name << std::endl;

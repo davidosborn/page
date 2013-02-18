@@ -97,7 +97,7 @@ namespace page
 			bool ShaderMaterialResources::Check()
 			{
 				return
-					CVAR(opengl)::renderShader &&
+					*CVAR(opengl)::renderShader &&
 					haveArbFragmentShader &&
 					haveArbShaderObjects &&
 					haveArbVertexShader;

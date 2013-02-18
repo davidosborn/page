@@ -642,12 +642,12 @@ namespace page
 
 					bool Check() const
 					{
-						return CVAR(opengl)::renderComposite;
+						return *CVAR(opengl)::renderComposite;
 					}
 					RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const
 					{
 						return new RenderTargetPool(
-							size >> CVAR(opengl)::renderCompositeDown,
+							size >> *CVAR(opengl)::renderCompositeDown,
 							GL_RGB, 1, depthFramebufferFlag);
 					}
 				};
@@ -658,12 +658,12 @@ namespace page
 
 					bool Check() const
 					{
-						return CVAR(opengl)::renderComposite;
+						return *CVAR(opengl)::renderComposite;
 					}
 					RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const
 					{
 						return new RenderTargetPool(
-							size >> CVAR(opengl)::renderCompositeDown,
+							size >> *CVAR(opengl)::renderCompositeDown,
 							GL_RGBA, 1, depthFramebufferFlag);
 					}
 				};
@@ -696,7 +696,7 @@ namespace page
 						if (initer.Check())
 						{
 							boost::optional<log::Indenter> indenter;
-							if (CVAR(logVerbose))
+							if (*CVAR(logVerbose))
 							{
 								std::cout << "creating " << initer.name << " program" << std::endl;
 								indenter = boost::in_place();
@@ -723,7 +723,7 @@ namespace page
 					if (initer.Check())
 					{
 						boost::optional<log::Indenter> indenter;
-						if (CVAR(logVerbose))
+						if (*CVAR(logVerbose))
 						{
 							std::cout << "creating " << initer.name << " texture" << std::endl;
 							indenter = boost::in_place();
@@ -796,7 +796,7 @@ namespace page
 						if (initer.Check())
 						{
 							boost::optional<log::Indenter> indenter;
-							if (CVAR(logVerbose))
+							if (*CVAR(logVerbose))
 							{
 								std::cout << "creating " << initer.name << " render-target pool" << std::endl;
 								indenter = boost::in_place();

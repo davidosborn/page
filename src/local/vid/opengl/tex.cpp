@@ -51,7 +51,7 @@ namespace page
 				GLuint MakeTextureFromData(const res::Image::Data &data, const math::Vector<2, unsigned> &size, GLint internalFormat, GLenum format, GLenum type, bool mipmap, const math::Vector<2, bool> clamp)
 				{
 					// determine compatible size
-					math::Vector<2, GLsizei> texSize(Max(size >> CVAR(opengl)::renderTextureDown, 1));
+					math::Vector<2, GLsizei> texSize(Max(size >> *CVAR(opengl)::renderTextureDown, 1));
 					if (!haveArbTextureNonPowerOfTwo)
 						std::transform(texSize.begin(), texSize.end(), texSize.begin(), math::Pow2Ceil);
 					res::Image::Data newData;
@@ -94,7 +94,7 @@ namespace page
 					if (glGenTextures(1, &tex), glGetError())
 						THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to generate texture")))
 					glBindTexture(GL_TEXTURE_2D, tex);
-					if (mipmap && CVAR(opengl)::renderTextureMipmap)
+					if (mipmap && *CVAR(opengl)::renderTextureMipmap)
 					{
 						if (haveSgisGenerateMipmap)
 						{
@@ -126,7 +126,7 @@ namespace page
 						if (clamp.y) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 						// HACK: to prevent interpolation at edges, disable
 						// linear filtering
-						if (mipmap && CVAR(opengl)::renderTextureMipmap)
+						if (mipmap && *CVAR(opengl)::renderTextureMipmap)
 						{
 							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);

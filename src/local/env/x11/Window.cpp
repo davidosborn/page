@@ -70,11 +70,11 @@ namespace page
 						boost::errinfo_api_function("XOpenDisplay")))
 				// create window
 				// FIXME: XCreateWindow expects the position of the window frame
-				// while CVAR(windowPosition) is the position of the window client area
+				// while *CVAR(windowPosition) is the position of the window client area
 				screen = DefaultScreen(display);
 				if (!(w = XCreateWindow(display, RootWindow(display, screen),
-					CVAR(windowPosition).x, CVAR(windowPosition).y,
-					CVAR(windowSize).x, CVAR(windowSize).y, 0,
+					CVAR(windowPosition)->x, CVAR(windowPosition)->y,
+					CVAR(windowSize)->x, CVAR(windowSize)->y, 0,
 					CopyFromParent, // depth
 					InputOutput,    // class
 					CopyFromParent, // visual
@@ -110,7 +110,7 @@ namespace page
 				XSetWMName(display, w, &name);
 				XFlush(display);
 				// initialize fullscreen mode
-				if (CVAR(windowFullscreen))
+				if (*CVAR(windowFullscreen))
 				{
 					try
 					{
@@ -150,7 +150,7 @@ namespace page
 					XEvent event;
 					XNextEvent(display, &event);
 #ifdef DEBUG
-					if (CVAR(logVerbose))
+					if (*CVAR(logVerbose))
 					{
 						std::cout << "X11 event: " << util::x11::GetEventTypeName(event.type) << std::endl;
 						log::Indenter indenter;

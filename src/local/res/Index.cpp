@@ -50,7 +50,7 @@ namespace page
 		// constructors
 		Index::Index()
 		{
-			for (const auto &source : CVAR(resourceSources)) AddSource(source);
+			for (const auto &source : *CVAR(resourceSources)) AddSource(source);
 			for (const auto &source :  opt::resourceSources) AddSource(source);
 		}
 

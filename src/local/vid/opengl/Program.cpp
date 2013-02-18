@@ -231,7 +231,7 @@ namespace page
 					Uniform uniform = {name, size, type, location};
 					uniforms.insert(std::make_pair(name, uniform));
 				}
-				if (CVAR(logVerbose))
+				if (*CVAR(logVerbose))
 				{
 					std::cout << "enumerating uniforms" << std::endl;
 					log::Indenter indenter;
@@ -288,7 +288,7 @@ namespace page
 				glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
 				if (!status)
 				{
-					if (CVAR(logVerbose))
+					if (*CVAR(logVerbose))
 					{
 						std::clog << "compile error" << std::endl;
 						log::Indenter indenter;

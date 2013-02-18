@@ -84,7 +84,7 @@ namespace page
 
 			// construct/destroy
 			Window::Window(const std::string &title) :
-				alive(false), min(false), full(CVAR(windowFullscreen)),
+				alive(false), min(false), full(*CVAR(windowFullscreen)),
 				waitFocus(false), moving(false), sizing(false),
 				muteFocus(false), muteMove(false), muteSize(false),
 				clientBitmap(NULL)
@@ -104,15 +104,15 @@ namespace page
 					}
 					style = WS_POPUP;
 					rect.left = rect.top = 0;
-					rect.right  = CVAR(videoResolution).x;
-					rect.bottom = CVAR(videoResolution).y;
+					rect.right  = CVAR(videoResolution)->x;
+					rect.bottom = CVAR(videoResolution)->y;
 				}
 				else
 				{
 					InitWindowed:
 					style = WS_OVERLAPPEDWINDOW;
-					rect.right  = (rect.left = CVAR(windowPosition).x) + CVAR(windowSize).x;
-					rect.bottom = (rect.top  = CVAR(windowPosition).y) + CVAR(windowSize).y;
+					rect.right  = (rect.left = CVAR(windowPosition)->x) + CVAR(windowSize)->x;
+					rect.bottom = (rect.top  = CVAR(windowPosition)->y) + CVAR(windowSize)->y;
 					AdjustWindowRectEx(&rect, style, FALSE, WS_EX_APPWINDOW);
 				}
 				// create window
@@ -132,7 +132,7 @@ namespace page
 				LeaveCriticalSection(&GetCriticalSection());
 				// show window
 				SetForegroundWindow(hwnd);
-				ShowWindow(hwnd, CVAR(windowMaximized) ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL);
+				ShowWindow(hwnd, *CVAR(windowMaximized) ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL);
 				if (GetForegroundWindow() != hwnd) waitFocus = true;
 				// process immediate messages
 				MSG msg;
@@ -214,14 +214,14 @@ namespace page
 					DEVMODE dm = {};
 					dm.dmSize       = sizeof dm;
 					dm.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT;
-					dm.dmPelsWidth  = CVAR(videoResolution).x;
-					dm.dmPelsHeight = CVAR(videoResolution).y;
+					dm.dmPelsWidth  = CVAR(videoResolution)->x;
+					dm.dmPelsHeight = CVAR(videoResolution)->y;
 
 					// maintain refresh rate
 					if (HDC hdc = GetDC(NULL))
 					{
-						if (GetDeviceCaps(hdc, HORZRES) == CVAR(vidResolution).x &&
-							GetDeviceCaps(hdc, VERTRES) == CVAR(vidResolution).y)
+						if (GetDeviceCaps(hdc, HORZRES) == CVAR(videoResolution)->x &&
+							GetDeviceCaps(hdc, VERTRES) == CVAR(videoResolution)->y)
 						{
 							dm.dmFields |= DM_DISPLAYFREQUENCY;
 							dm.dmDisplayFrequency = GetDeviceCaps(hdc, VREFRESH);
@@ -253,7 +253,7 @@ namespace page
 					}
 					SetWindowLongPtr(hwnd, GWL_STYLE, WS_POPUP);
 					muteMove = muteSize = false;
-					SetWindowPos(hwnd, 0, 0, 0, CVAR(videoResolution).x, CVAR(videoResolution).y, SWP_SHOWWINDOW | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
+					SetWindowPos(hwnd, 0, 0, 0, CVAR(videoResolution)->x, CVAR(videoResolution)->y, SWP_SHOWWINDOW | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
 					SetForegroundWindow(hwnd);
 				}
 				else
@@ -270,13 +270,13 @@ namespace page
 						throw;
 					}
 					RECT rect;
-					rect.right  = (rect.left = CVAR(windowPosition).x) + CVAR(windowSize).x;
-					rect.bottom = (rect.top  = CVAR(windowPosition).y) + CVAR(windowSize).y;
+					rect.right  = (rect.left = CVAR(windowPosition)->x) + CVAR(windowSize)->x;
+					rect.bottom = (rect.top  = CVAR(windowPosition)->y) + CVAR(windowSize)->y;
 					AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_APPWINDOW);
 					SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 					muteMove = muteSize = false;
 					SetWindowPos(hwnd, 0, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOOWNERZORDER | SWP_NOZORDER);
-					ShowWindow(hwnd, CVAR(windowMaximized) ? SW_SHOWMAXIMIZED : SW_SHOW);
+					ShowWindow(hwnd, *CVAR(windowMaximized) ? SW_SHOWMAXIMIZED : SW_SHOW);
 					SetForegroundWindow(hwnd);
 				}
 				muteFocus = muteMove = muteSize = false;
@@ -353,7 +353,7 @@ namespace page
 					if (alive && !min && !muteMove && !moving && wparam != 0x83008300)
 					{
 						math::Vector<2, int> newPos(GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
-						if (!CVAR(windowMaximized) && !full) CVAR(windowPosition) = newPos;
+						if (!*CVAR(windowMaximized) && !full) CVAR(windowPosition) = newPos;
 						moveSig(newPos);
 					}
 					break;
@@ -364,7 +364,7 @@ namespace page
 					if (alive && !min && !muteSize && !sizing && wparam != SIZE_MINIMIZED)
 					{
 						math::Vector<2, unsigned> newSize(LOWORD(lparam), HIWORD(lparam));
-						if (!CVAR(windowMaximized) && !full) CVAR(windowSize) = newSize;
+						if (!*CVAR(windowMaximized) && !full) CVAR(windowSize) = newSize;
 						sizeSig(newSize);
 					}
 					break;

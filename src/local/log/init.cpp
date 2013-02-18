@@ -67,9 +67,9 @@ namespace page
 							outRootSink = std::make_shared<BranchableStream>(),
 							errRootSink = std::make_shared<BranchableStream>();
 
-						if (CVAR(logConsole))
+						if (*CVAR(logConsole))
 						{
-							if (CVAR(logConsoleSpawn))
+							if (*CVAR(logConsoleSpawn))
 							{
 								auto consoleSink(std::make_shared<ConsoleSink>(PACKAGE_NAME " log"));
 								outRootSink->Attach(consoleSink);
@@ -81,9 +81,9 @@ namespace page
 								errRootSink->Attach(std::make_shared<StderrSink>());
 							}
 						}
-						if (CVAR(logFile))
+						if (*CVAR(logFile))
 						{
-							auto fileSink(std::make_shared<FileSink>(absolute(CVAR(logFilePath), CVAR(installPath))));
+							auto fileSink(std::make_shared<FileSink>(absolute(*CVAR(logFilePath), *CVAR(installPath))));
 							outRootSink->Attach(fileSink);
 							errRootSink->Attach(fileSink);
 						}

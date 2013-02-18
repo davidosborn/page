@@ -43,7 +43,7 @@ namespace page
 		{
 			std::cout << "system information" << std::endl;
 			log::Indenter indenter;
-			if (CVAR(logHost))
+			if (*CVAR(logHost))
 			{
 				try
 				{

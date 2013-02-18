@@ -42,7 +42,7 @@ namespace page
 			Drawable *MakeDrawable(const res::Mesh &mesh, bool dynamic)
 			{
 				return
-					CVAR(opengl)::renderVbo && haveArbVertexBufferObject ?
+					*CVAR(opengl)::renderVbo && haveArbVertexBufferObject ?
 					static_cast<Drawable *>(new VertexBuffer(mesh,
 						dynamic ? GL_DYNAMIC_DRAW_ARB : GL_STATIC_DRAW_ARB)) :
 					static_cast<Drawable *>(new VertexArray(mesh));

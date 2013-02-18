@@ -262,7 +262,7 @@ namespace page
 		// deferred initialization
 		void Driver::Init()
 		{
-			SetVolume(CVAR(audioVolume));
+			SetVolume(*CVAR(audioVolume));
 		}
 
 		// inspiration access

@@ -37,6 +37,6 @@
 	 * @return The value of the specified configuration variable from the
 	 *         default @c State.
 	 */
-#	define CVAR(x) (*GLOBAL(::page::cfg::State).x)
+#	define CVAR(x) (GLOBAL(::page::cfg::State).x)
 
 #endif

@@ -31,8 +31,6 @@
 #ifndef    page_local_util_class_Monostate_hpp
 #   define page_local_util_class_Monostate_hpp
 
-#	define GLOBAL(x) (x::GetGlobalInstance())
-
 namespace page
 {
 	namespace util
@@ -52,5 +50,7 @@ namespace page
 		};
 	}
 }
+
+#	define GLOBAL(x) (x::GetGlobalInstance())
 
 #endif

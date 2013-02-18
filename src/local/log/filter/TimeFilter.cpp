@@ -65,7 +65,7 @@ namespace page
 			}
 
 			// generate prefix using time string
-			if (CVAR(logTimeChange))
+			if (*CVAR(logTimeChange))
 			{
 				std::string r;
 				if (timeChanged)

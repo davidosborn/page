@@ -89,7 +89,7 @@ namespace page
 		Stream::~Stream()
 		{
 			// print statistics
-			if (CVAR(logVerbose))
+			if (*CVAR(logVerbose))
 			{
 				// FIXME: implement
 			}

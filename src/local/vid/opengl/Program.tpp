@@ -82,7 +82,7 @@ namespace page
 				glGetObjectParameterivARB(program, GL_OBJECT_LINK_STATUS_ARB, &status);
 				if (!status)
 				{
-					if (CVAR(logVerbose))
+					if (*CVAR(logVerbose))
 					{
 						std::clog << "link error" << std::endl;
 						log::Indenter indenter;

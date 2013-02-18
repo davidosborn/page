@@ -71,7 +71,7 @@ namespace page
 		void PrintStats()
 		{
 			// print statistics
-			if (CVAR(logStats))
+			if (*CVAR(logStats))
 			{
 				// FIXME: implement
 			}

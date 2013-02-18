@@ -163,11 +163,11 @@ namespace page
 				typedef phys::Scene::View<phys::Light>::Type Lights;
 				Lights lights(scene.GetInfluentialLights(GetFrustum()));
 				// select rendering path
-				if (CVAR(opengl)::renderShader && res.HasShaderMaterial())
+				if (*CVAR(opengl)::renderShader && res.HasShaderMaterial())
 				{
 					// perform shadow mapping
 					util::Optional<ShadowAttachment> shadowAttachment;
-					if (CVAR(opengl)::renderShadow && res.HasShadow())
+					if (*CVAR(opengl)::renderShadow && res.HasShadow())
 					{
 						math::Vector<2, unsigned> shadowRenderTargetSize(
 							res.GetShadow().GetRenderTargetPool().GetSize());
@@ -194,7 +194,7 @@ namespace page
 					// FIXME: implement
 					// draw emissive and specular glow
 					// TEST: disabled until we actually need emissive/specular
-/*					if (CVAR(opengl)::renderGlow &&
+/*					if (*CVAR(opengl)::renderGlow &&
 						res.HasProgram(Resources::convolutionFilter5hProgram) &&
 						res.HasProgram(Resources::convolutionFilter5vProgram) &&
 						res.HasRenderTargetPool(Resources::rgbBlurRenderTargetPool))
@@ -228,7 +228,7 @@ namespace page
 						GetBase().Fill(glowRes.GetBuffer(), 1);
 					}*/
 					// draw outlines
-					if (CVAR(opengl)::renderOutline &&
+					if (*CVAR(opengl)::renderOutline &&
 						res.HasShaderOutline() &&
 						res.HasProgram(Resources::normalProgram))
 					{
@@ -283,7 +283,7 @@ namespace page
 						// FIXME: implement; render opaque if opacity >= 50%
 					}
 					// draw outlines
-					if (CVAR(opengl)::renderOutline)
+					if (*CVAR(opengl)::renderOutline)
 					{
 						glDisable(GL_LIGHTING);
 						glDisable(GL_ALPHA_TEST);
@@ -293,10 +293,10 @@ namespace page
 					}
 				}
 				// draw debug overlays
-				if (CVAR(debugDrawTrack) && scene.HasTrack()) Draw(scene.GetTrack());
-				if (CVAR(debugDrawCollision)) Draw(scene.GetVisibleCollidables(GetFrustum()));
-				if (CVAR(debugDrawBounds)) DrawBounds(forms);
-				if (CVAR(debugDrawSkeleton)) DrawSkeleton(forms);
+				if (*CVAR(debugDrawTrack) && scene.HasTrack()) Draw(scene.GetTrack());
+				if (*CVAR(debugDrawCollision)) Draw(scene.GetVisibleCollidables(GetFrustum()));
+				if (*CVAR(debugDrawBounds)) DrawBounds(forms);
+				if (*CVAR(debugDrawSkeleton)) DrawSkeleton(forms);
 			}
 
 			// mesh rendering
@@ -305,14 +305,14 @@ namespace page
 				using std::bind;
 				using namespace std::placeholders;
 				Draw(form, bind(&ViewContext::PrepShaderMaterial, this, _1, _2, type, shadow),
-					CVAR(opengl)::renderMultipass && type != shadowShaderType);
+					*CVAR(opengl)::renderMultipass && type != shadowShaderType);
 			}
 			void ViewContext::Draw(const phys::Form &form, FixedType type)
 			{
 				using std::bind;
 				using namespace std::placeholders;
 				Draw(form, bind(&ViewContext::PrepFixedMaterial, this, _1, _2, type),
-					CVAR(opengl)::renderMultipass && type != zcullFixedType);
+					*CVAR(opengl)::renderMultipass && type != zcullFixedType);
 			}
 			void ViewContext::Draw(const phys::Scene::View<phys::Form>::Type &forms, ShaderType type, const util::Optional<ShadowAttachment> &shadow)
 			{
@@ -799,7 +799,7 @@ namespace page
 					default: assert(!"invalid shadow type");
 				}
 				// blur shadow map
-				if (CVAR(opengl)::renderShadowBlur)
+				if (*CVAR(opengl)::renderShadowBlur)
 				{
 					const Program
 						*blurhProgram = 0,
@@ -1038,7 +1038,7 @@ namespace page
 				// implementation changes, this function may be forgotten
 				const Resources &res(GetBase().GetResources());
 				return
-					CVAR(opengl)::renderGlow &&
+					*CVAR(opengl)::renderGlow &&
 					res.HasProgram(Resources::convolutionFilter5hProgram) &&
 					res.HasProgram(Resources::convolutionFilter5vProgram) &&
 					res.HasRenderTargetPool(Resources::rgbBlurRenderTargetPool);

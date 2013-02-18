@@ -118,7 +118,7 @@ namespace page
 			if (scene.music)
 			{
 				boost::optional<log::Indenter> indenter;
-				if (CVAR(logVerbose))
+				if (*CVAR(logVerbose))
 				{
 					std::cout << "playing music: " << scene.music.GetSource() << std::endl;
 					indenter = boost::in_place();

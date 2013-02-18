@@ -42,7 +42,7 @@ namespace page
 
 		FileSink::FileSink(const boost::filesystem::path &path)
 		{
-			auto absPath = absolute(path, CVAR(installPath));
+			auto absPath = absolute(path, *CVAR(installPath));
 			fs.open(absPath.string());
 			if (!fs)
 			{

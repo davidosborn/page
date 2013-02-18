@@ -101,7 +101,7 @@ namespace page
 						else assert(!"no compatible color format");
 						// select filtering mode
 						RenderTargetPool::Flags flags = depthFramebufferFlag;
-						if (CVAR(opengl)::renderShadowFilter)
+						if (*CVAR(opengl)::renderShadowFilter)
 							flags = static_cast<RenderTargetPool::Flags>(
 								flags | filterFramebufferFlag);
 						// create best compatible render-target pool
@@ -116,7 +116,7 @@ namespace page
 								if (flags & filterFramebufferFlag)
 								{
 									err::ReportWarning(e);
-									if (CVAR(logVerbose))
+									if (*CVAR(logVerbose))
 										std::cout << "falling back to unfiltered mode" << std::endl;
 									flags = static_cast<RenderTargetPool::Flags>(
 										flags ^ filterFramebufferFlag);
@@ -178,7 +178,7 @@ namespace page
 						else assert(!"no compatible color format");
 						// select filtering mode
 						RenderTargetPool::Flags flags = depthFramebufferFlag;
-						if (CVAR(opengl)::renderShadowFilter)
+						if (*CVAR(opengl)::renderShadowFilter)
 							flags = static_cast<RenderTargetPool::Flags>(
 								flags | filterFramebufferFlag);
 						// create best compatible render-target pool
@@ -193,7 +193,7 @@ namespace page
 								if (flags & filterFramebufferFlag)
 								{
 									err::ReportWarning(e);
-									if (CVAR(logVerbose))
+									if (*CVAR(logVerbose))
 										std::cout << "falling back to unfiltered mode" << std::endl;
 									flags = static_cast<RenderTargetPool::Flags>(
 										flags ^ filterFramebufferFlag);
@@ -227,7 +227,7 @@ namespace page
 					const TypeIniter &initer(**iter);
 					// FIXME: C++0x with strong enums won't need this
 					// static_cast (N2347)
-					if (initer.type == static_cast<ShadowResources::Type>(CVAR(opengl)::renderShadowType))
+					if (initer.type == static_cast<ShadowResources::Type>(*CVAR(opengl)::renderShadowType))
 					{
 						std::rotate(initers.begin(), iter, iter + 1);
 						break;
@@ -244,7 +244,7 @@ namespace page
 					{
 						// create program
 						boost::optional<log::Indenter> indenter;
-						if (CVAR(logVerbose))
+						if (*CVAR(logVerbose))
 						{
 							std::cout << "creating program" << std::endl;
 							indenter = boost::in_place();
@@ -259,7 +259,7 @@ namespace page
 							throw;
 						}
 						// create render-target pool
-						if (CVAR(logVerbose))
+						if (*CVAR(logVerbose))
 						{
 							indenter = boost::none;
 							std::cout << "creating render-target pool" << std::endl;
@@ -268,7 +268,7 @@ namespace page
 						try
 						{
 							renderTargetPool.reset(initer.MakeRenderTargetPool(
-								renderTargetSize >> CVAR(opengl)::renderShadowDown));
+								renderTargetSize >> *CVAR(opengl)::renderShadowDown));
 						}
 						catch (const std::exception &e)
 						{
@@ -310,7 +310,7 @@ namespace page
 				// NOTE: this should be enough to ensure compatibility with at
 				// least one shadow type
 				return
-					CVAR(opengl)::renderShadow &&
+					*CVAR(opengl)::renderShadow &&
 					haveArbFragmentShader &&
 					haveArbShaderObjects &&
 					haveArbVertexShader &&

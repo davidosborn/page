@@ -233,14 +233,14 @@ namespace page
 			if (clipStream)
 			{
 				deltaTime += clipDeltaTime;
-				if (deltaTime < 1.f / CVAR(clipFrameRate))
+				if (deltaTime < 1.f / *CVAR(clipFrameRate))
 				{
 					clipDeltaTime = deltaTime;
 					deltaTime = 0;
 				}
 				else
 				{
-					deltaTime = 1.f / CVAR(clipFrameRate);
+					deltaTime = 1.f / *CVAR(clipFrameRate);
 					clipDeltaTime = 0;
 				}
 			}
@@ -294,11 +294,11 @@ namespace page
 					try
 					{
 						timer->Pause();
-						std::string path(util::ExpandPath(CVAR(screenshotFilePath) + '*'));
+						std::string path(util::ExpandPath(*CVAR(screenshotFilePath) + '*'));
 						path.erase(path.size() - 1);
 						Save(
-							wnd->GetVideoDriver().RenderImage(CVAR(screenshotSize)),
-							path, CVAR(screenshotFormat));
+							wnd->GetVideoDriver().RenderImage(*CVAR(screenshotSize)),
+							path, *CVAR(screenshotFormat));
 						timer->Resume();
 					}
 					catch (const std::exception &e)
@@ -312,13 +312,13 @@ namespace page
 				{
 					std::cout << "recording clip" << std::endl;
 					log::Indenter indenter;
-					std::string path(util::ExpandPath(CVAR(clipFilePath) + '*'));
+					std::string path(util::ExpandPath(*CVAR(clipFilePath) + '*'));
 					path.erase(path.size() - 1);
 					clipStream.reset(new clip::Stream(path,
-						CVAR(clipFormat),
-						CVAR(clipSize),
-						CVAR(clipFrameRate),
-						clipQuality = CVAR(clipQuality)));
+						*CVAR(clipFormat),
+						*CVAR(clipSize),
+						*CVAR(clipFrameRate),
+						clipQuality = *CVAR(clipQuality)));
 					clipDeltaTime = 0;
 				}
 				else

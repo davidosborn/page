@@ -109,7 +109,7 @@ namespace page
 				{
 					assert(datum.repair);
 					boost::optional<log::Indenter> indenter;
-					if (CVAR(logCache) && CVAR(logCacheUpdate))
+					if (*CVAR(logCache) && *CVAR(logCacheUpdate))
 					{
 						std::cout << "updating cached " << name << std::endl;
 						indenter = boost::in_place();
@@ -130,7 +130,7 @@ namespace page
 				return datum.data;
 			}
 			log::GetStats().IncCacheMisses();
-			if (CVAR(logCache) && CVAR(logVerbose))
+			if (*CVAR(logCache) && *CVAR(logVerbose))
 				std::cout << "cache missing " << name << std::endl;
 			return std::shared_ptr<const void>();
 		}
@@ -139,7 +139,7 @@ namespace page
 		void StoreRaw(const std::string &sig, const std::string &name, const std::shared_ptr<const void> &data, const std::type_info &type, const std::function<void ()> &repair)
 		{
 			boost::optional<log::Indenter> indenter;
-			if (CVAR(logCache))
+			if (*CVAR(logCache))
 			{
 				std::cout << "caching " << name << std::endl;
 				indenter = boost::in_place();
@@ -152,7 +152,7 @@ namespace page
 		void Invalidate(const std::string &sig, const std::string &name)
 		{
 			boost::optional<log::Indenter> indenter;
-			if (CVAR(logCache) && CVAR(logCacheUpdate) && CVAR(logVerbose))
+			if (*CVAR(logCache) && *CVAR(logCacheUpdate) && *CVAR(logVerbose))
 			{
 				std::cout << "invalidating cached " << name << std::endl;
 				indenter = boost::in_place();
@@ -170,7 +170,7 @@ namespace page
 		void Purge()
 		{
 			boost::optional<log::Indenter> indenter;
-			if (CVAR(logCache))
+			if (*CVAR(logCache))
 			{
 				std::cout << "purging cache" << std::endl;
 				indenter = boost::in_place();
@@ -181,7 +181,7 @@ namespace page
 		void Purge(const std::string &sig, const std::string &name)
 		{
 			boost::optional<log::Indenter> indenter;
-			if (CVAR(logCache))
+			if (*CVAR(logCache))
 			{
 				std::cout << "purging cached " << name << std::endl;
 				indenter = boost::in_place();
@@ -206,7 +206,7 @@ namespace page
 				if (duration < count - datum.atime && datum.data.unique())
 				{
 					boost::optional<log::Indenter> indenter;
-					if (CVAR(logCache) && CVAR(logVerbose))
+					if (*CVAR(logCache) && *CVAR(logVerbose))
 					{
 						std::cout << "cached " << datum.name << " timed out" << std::endl;
 						indenter = boost::in_place();

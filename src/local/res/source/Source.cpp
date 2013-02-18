@@ -172,7 +172,7 @@ namespace page
 		{
 			std::string path(CatPath(rootPath, node.path));
 			// filter path
-			for (const auto &filter : CVAR(resourceExcludes))
+			for (const auto &filter : *CVAR(resourceExcludes))
 			{
 				/**
 				 * @todo GCC does not implement @c regex_search yet, so we
@@ -184,7 +184,7 @@ namespace page
 			}
 			// print path
 			boost::optional<log::Indenter> indenter;
-			if (CVAR(logVerbose))
+			if (*CVAR(logVerbose))
 			{
 				std::cout << (!node.path.empty() ? path : std::string(".")) << std::endl;
 				indenter = boost::in_place();
