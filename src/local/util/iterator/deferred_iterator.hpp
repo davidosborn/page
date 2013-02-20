@@ -39,6 +39,11 @@ namespace page
 {
 	namespace util
 	{
+		/**
+		 * An iterator that wraps another iterator, returning the other iterator
+		 * when it is dereferenced.  Essentially, it simulates an additional
+		 * level of indirection.
+		 */
 		template <typename Iterator> struct deferred_iterator :
 			iterator_adapter<deferred_iterator<Iterator>, Iterator,
 				typename std::iterator_traits<Iterator>::iterator_category, Iterator,

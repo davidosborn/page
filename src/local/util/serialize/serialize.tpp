@@ -33,7 +33,7 @@
 #include <utility> // forward, move
 
 #include "../iterator/range.hpp"
-#include "../string_convert.hpp" // Convert
+#include "../string/convert.hpp" // Convert
 #include "../tuple.hpp" // tuple_{,pop_}front
 
 namespace page

@@ -31,9 +31,10 @@
 #include <algorithm> // equal, find{,_if{,_not}}
 #include <iterator> // back_inserter, istreambuf_iterator
 #include <tuple>
-#include "algorithm/stdext.hpp" // copy_until
-#include "serialize/deserialize_string.hpp" // Deserialize
-#include "serialize/serialize_string.hpp" // Serialize
+
+#include "../algorithm/stdext.hpp" // copy_until
+#include "../serialize/deserialize_string.hpp" // Deserialize
+#include "../serialize/serialize_string.hpp" // Serialize
 
 namespace page
 {

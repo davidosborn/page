@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#ifndef    page_local_util_string_string_hpp
-#   define page_local_util_string_string_hpp
+#ifndef    page_local_util_string_operations_hpp
+#   define page_local_util_string_operations_hpp
 
 #	include <istream> // basic_istream
 #	include <limits> // numeric_limits
@@ -234,5 +234,5 @@ namespace page
 	}
 }
 
-#	include "string.tpp"
+#	include "operations.tpp"
 #endif

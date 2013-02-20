@@ -33,8 +33,9 @@
 
 #	include <cstddef> // nullptr_t
 #	include <functional> // function
-#	include "NonCopyable.hpp"
-#	include "Optional.hpp"
+
+#	include "../NonCopyable.hpp"
+#	include "../Optional.hpp"
 
 namespace page
 {

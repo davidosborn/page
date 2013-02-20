@@ -47,7 +47,7 @@ namespace page
 			typename deferred_iterator<Iterator>::reference
 			deferred_iterator<Iterator>::Dereference() const
 		{
-			return base();
+			return this->base();
 		}
 
 		// reverse arithmetic

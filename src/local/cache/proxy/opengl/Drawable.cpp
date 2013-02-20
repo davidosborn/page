@@ -30,7 +30,7 @@
 
 #include <memory> // unique_ptr
 
-#include "../../../util/StringBuilder.hpp"
+#include "../../../util/string/StringBuilder.hpp"
 #include "../../../vid/opengl/Drawable.hpp"
 #include "../Skin.hpp"
 #include "Drawable.hpp"

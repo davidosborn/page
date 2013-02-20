@@ -102,5 +102,5 @@ namespace page
 	}
 }
 
-#	include "string_convert.tpp"
+#	include "convert.tpp"
 #endif

@@ -32,7 +32,8 @@
 #   define page_local_util_raii_ScopeGuard_hpp
 
 #	include <functional> // function
-#	include "NonCopyable.hpp"
+
+#	include "../NonCopyable.hpp"
 
 namespace page
 {

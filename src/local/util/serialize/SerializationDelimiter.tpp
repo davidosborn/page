@@ -31,7 +31,7 @@
 #include <algorithm> // find
 #include <iterator> // begin, end
 
-#include "../string_convert.hpp" // Convert
+#include "../string/convert.hpp" // Convert
 
 namespace page
 {

@@ -31,7 +31,7 @@
 #ifndef    page_local_util_Cloneable_hpp
 #   define page_local_util_Cloneable_hpp
 
-#	include "copy_ptr.hpp"
+#	include "raii/copy_ptr.hpp"
 
 namespace page
 {

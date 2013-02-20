@@ -42,7 +42,7 @@
 #include "../res/Index.hpp" // GetIndex, Index::Open
 #include "../res/Stream.hpp" // Stream::{~Stream,GetLine}
 #include "functional/locale.hpp" // isspace_function
-#include "string.hpp" // Partition, Split
+#include "string/operations.hpp" // Partition, Split
 
 namespace page
 {

@@ -37,7 +37,7 @@
 #include "../algorithm/stdext.hpp" // copy_until
 #include "../iterator/range.hpp"
 #include "../iterator/repeat_iterator.hpp"
-#include "../string_convert.hpp" // Convert
+#include "../string/convert.hpp" // Convert
 #include "../tuple.hpp" // tuple_{,pop_}front
 #include "../type_traits/iterator.hpp" // output_iterator_value_type
 #include "skip.hpp"
