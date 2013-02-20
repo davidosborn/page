@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#ifndef    page_local_util_copy_ptr_hpp
-#   define page_local_util_copy_ptr_hpp
+#ifndef    page_local_util_raii_copy_ptr_hpp
+#   define page_local_util_raii_copy_ptr_hpp
 
 #	include <cstddef> // nullptr_t
 #	include <functional> // function

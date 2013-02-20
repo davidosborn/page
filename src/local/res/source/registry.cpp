@@ -31,6 +31,7 @@
 #include <algorithm> // lower_bound
 #include <cassert>
 #include <vector>
+
 #include "../../err/Exception.hpp"
 #include "function.hpp" // SourceFactory
 

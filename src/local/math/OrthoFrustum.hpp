@@ -32,6 +32,7 @@
 #   define page_local_math_OrthoFrustum_hpp
 
 #	include <iosfwd> // [io]stream
+
 #	include "Frustum.hpp"
 #	include "fwd.hpp" // OrthoFrustum
 #	include "Matrix.hpp"

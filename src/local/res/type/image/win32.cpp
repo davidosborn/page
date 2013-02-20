@@ -29,6 +29,7 @@
  */
 
 #include <windows.h>
+
 #include "../../../err/Exception.hpp"
 #include "../Image.hpp"
 

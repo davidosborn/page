@@ -32,7 +32,9 @@
 #   define page_local_vid_opengl_Framebuffer_hpp
 
 #	include <vector>
+
 #	include <GL/gl.h> // GL{enum,uint}
+
 #	include "../../math/Vector.hpp"
 #	include "../../util/NonCopyable.hpp"
 #	include "FramebufferFlags.hpp"

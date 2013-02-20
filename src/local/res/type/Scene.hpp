@@ -32,6 +32,7 @@
 #   define page_local_res_type_Scene_hpp
 
 #	include <vector>
+
 #	include "../../cache/proxy/Resource.hpp"
 #	include "../../math/Color.hpp" // RgbColor
 #	include "../../math/Quat.hpp"

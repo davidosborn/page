@@ -35,6 +35,7 @@
 
 #	include <functional> // result_of
 #	include <iterator> // input_iterator_tag, iterator_traits
+
 #	include "../Optional.hpp"
 #	include "iterator_adapter.hpp"
 

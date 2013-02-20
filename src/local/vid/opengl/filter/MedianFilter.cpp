@@ -29,7 +29,9 @@
  */
 
 #include <cassert>
+
 #include <GL/gl.h>
+
 #include "../ext.hpp" // ARB_shader_objects
 #include "../Framebuffer.hpp" // Framebuffer::GetPow2Size
 #include "../Program.hpp" // Bind, Program::GetUniform

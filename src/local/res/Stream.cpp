@@ -31,8 +31,9 @@
 #include <algorithm> // min
 #include <cassert>
 #include <cstring> // memcpy
+
 #include "../err/Exception.hpp"
-#include "../util/string.hpp" // NormEndl
+#include "../util/string/operations.hpp" // NormEndl
 #include "Stream.hpp"
 
 namespace page

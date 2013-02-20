@@ -30,9 +30,10 @@
 
 #include <algorithm> // equal, find_if_not
 #include <iostream> // clog
+
 #include "../../../log/manip.hpp" // Warning
 #include "../../../util/functional/locale.hpp" // isspace_function
-#include "../../../util/string.hpp" // Partition, Trim{Leading,Trailing}
+#include "../../../util/string/operations.hpp" // Partition, Trim{Leading,Trailing}
 #include "../../Stream.hpp" // Stream::GetLine
 #include "LineIterator.hpp"
 

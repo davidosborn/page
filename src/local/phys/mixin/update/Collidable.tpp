@@ -33,6 +33,7 @@
 #include <cmath> // abs, signbit
 #include <utility> // pair
 #include <vector>
+
 #include "../../../math/intersect.hpp" // CapsuleSegmentIntersect, SweptCircleSegmentIntersectWeightTangent
 #include "../../../util/iterator/chain_iterator.hpp"
 #include "../../../util/iterator/range.hpp"

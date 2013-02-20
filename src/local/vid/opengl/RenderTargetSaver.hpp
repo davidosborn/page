@@ -36,6 +36,7 @@
 #   define page_local_vid_opengl_RenderTargetSaver_hpp
 
 #	include <GL/gl.h> // GL{enum,{,u}int}
+
 #	include "../../util/StateSaver.hpp"
 
 namespace page

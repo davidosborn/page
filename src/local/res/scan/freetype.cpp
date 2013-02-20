@@ -30,6 +30,7 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H // FT_Done_Face, FT_Face, FT_Open_Face
+
 #include "../../util/lexical_cast.hpp"
 #include "../adapt/freetype.hpp" // GetLib, OpenArgs
 #include "../fmt/freetype/sub.hpp"

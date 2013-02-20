@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../cache/Proxy.hpp"
 #include "Form.hpp"
 

@@ -31,13 +31,10 @@
 #ifndef    page_local_clip_encoder_TheoraEncoder_hpp
 #   define page_local_clip_encoder_TheoraEncoder_hpp
 
-	// C++
 #	include <vector>
 
-	// Theora
 #	include <theora/theora.h>
 
-	// local
 #	include "../../math/Vector.hpp"
 #	include "Encoder.hpp"
 

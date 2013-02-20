@@ -29,7 +29,9 @@
  */
 
 #include <cassert>
+
 #include <GL/gl.h>
+
 #include "../blend.hpp" // ColorBlendFunc
 #include "AlphaFilter.hpp"
 

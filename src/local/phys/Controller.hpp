@@ -32,6 +32,7 @@
 #   define page_local_phys_Controller_hpp
 
 #	include <vector>
+
 #	include "../util/Cloneable.hpp"
 #	include "Frame.hpp"
 

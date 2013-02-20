@@ -35,6 +35,7 @@
 #	include <iosfwd> // [io]stream
 #	include <iterator> // reverse_iterator
 #	include <type_traits> // enable_if
+
 #	include "../util/iterator/proxy_iterator.hpp"
 #	include "../util/iterator/step_iterator.hpp"
 #	include "Aabb.hpp"

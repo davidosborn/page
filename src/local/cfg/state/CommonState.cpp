@@ -28,14 +28,11 @@
  * of this software.
  */
 
-// C++
 #include <algorithm> // max, min
 #include <functional> // bind
 
-// Boost
 #include <boost/filesystem/operations.hpp> // absolute
 
-// local
 #include "../../util/pp.hpp" // STRINGIZE
 #include "CommonState.hpp"
 

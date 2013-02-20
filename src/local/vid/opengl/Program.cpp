@@ -44,7 +44,7 @@
 #include "../../log/Indenter.hpp"
 #include "../../util/opengl/shader.hpp" // GetUniformTypeName
 #include "../../util/opengl/string.hpp" // Native, String
-#include "../../util/string.hpp" // Trim
+#include "../../util/string/operations.hpp" // Trim
 #include "ext.hpp" // ARB_{{fragment,vertex}shader,shader_objects}
 #include "Program.hpp"
 

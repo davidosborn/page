@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_VertexBuffer_hpp
 
 #	include <GL/gl.h> // GLenum, GLuint
+
 #	include "Drawable.hpp"
 
 namespace page

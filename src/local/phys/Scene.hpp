@@ -38,10 +38,11 @@
 #	include <memory> // shared_ptr
 #	include <unordered_map> // unordered_multimap
 #	include <vector>
+
 #	include "../cache/fwd.hpp" // Proxy
 #	include "../math/fwd.hpp" // Vector, ViewFrustum
 #	include "../res/type/CameraSet.hpp" // CameraSet::Cameras
-#	include "../util/copy_ptr.hpp"
+#	include "../util/raii/copy_ptr.hpp"
 #	include "attrib/Ambient.hpp"
 #	include "Form.hpp" // Form::Part
 #	include "mixin/Controllable.hpp"

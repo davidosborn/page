@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // reverse
+
 #include "endian.hpp" // Endian
 
 namespace page

@@ -28,47 +28,20 @@
  * of this software.
  */
 
-#ifndef    page_local_util_path_hpp
-#   define page_local_util_path_hpp
+#ifndef    page_local_util_path_extension_hpp
+#   define page_local_util_path_extension_hpp
 
-	// C++
 #	include <utility> // pair
 
-	// Boost
 #	include <boost/filesystem/path.hpp>
 
-	// local
-#	include "type_traits/container.hpp" // is_range
-#	include "type_traits/sfinae.hpp" // ENABLE_IF
+#	include "../type_traits/container.hpp" // is_range
+#	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
 namespace page
 {
 	namespace util
 	{
-		/*------------------+
-		| path manipulation |
-		+------------------*/
-
-		/**
-		 * Parse and expand the special symbols in a path.
-		 *
-		 * Supports all of the symbols supported by strftime, as well as the
-		 * following extensions:
-		 *
-		 * %i A number that is incremented each time the file is saved.  The
-		 *    function inserts the lowest number that will not conflict with an
-		 *    existing filename.  An optional width modifier may be specified
-		 *    immediately after the percent sign, which must be an unsigned
-		 *    decimal integer.  Multiple incremental symbols form an overflow
-		 *    cascade, where the last one increments first.  If no unique
-		 *    incremental filename is found, an exception is thrown.
-		 */
-		boost::filesystem::path ExpandPath(const boost::filesystem::path &);
-
-		/*-----------------------+
-		| extension manipulation |
-		+-----------------------*/
-
 		/**
 		 * Return the path's extension, without the leading dot character.  If
 		 * the path has multiple extensions, return the one at the specified
@@ -123,5 +96,5 @@ namespace page
 	}
 }
 
-#	include "path.tpp"
+#	include "extension.tpp"
 #endif

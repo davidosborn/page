@@ -32,6 +32,7 @@
 #include <cassert>
 #include <functional> // bind, mem_fun_ref
 #include <iterator> // back_inserter
+
 #include "../../phys/Bounds.hpp"
 #include "../../res/type/Model.hpp"
 #include "../../util/functional/pointer.hpp" // dereference

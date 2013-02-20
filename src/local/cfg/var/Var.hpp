@@ -31,10 +31,8 @@
 #ifndef    page_local_cfg_var_Var_hpp
 #   define page_local_cfg_var_Var_hpp
 
-	// C++
 #	include <functional> // function
 
-	// local
 #	include "BasicVar.hpp"
 
 namespace page

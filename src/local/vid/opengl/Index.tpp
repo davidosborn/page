@@ -29,6 +29,7 @@
  */
 
 #include <iterator> // distance
+
 #include "../../res/type/Mesh.hpp"
 
 namespace page

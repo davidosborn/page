@@ -28,10 +28,8 @@
  * of this software.
  */
 
-// C++
 #include <string>
 
-// X11
 #include <X11/Xlib.h> // Bad*
 
 namespace page

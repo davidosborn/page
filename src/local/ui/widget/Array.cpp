@@ -30,6 +30,7 @@
 
 #include <algorithm> // max
 #include <functional> // bind
+
 #include "../../res/type/Theme.hpp" // Theme::margin
 #include "../../vid/DrawContext.hpp" // DrawContext::{FrameSaver,PushFrame}
 #include "../DrawContext.hpp"

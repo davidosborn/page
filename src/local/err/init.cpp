@@ -32,7 +32,6 @@
 #include <exception> // set_terminate, set_unexpected
 #include <iostream> // cerr
 
-// local
 #include "../log/manip.hpp" // Clear
 #include "../util/init_priority.hpp" // LOG_INIT_PRIORITY
 #include "../wnd/message.hpp" // Message

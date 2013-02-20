@@ -34,6 +34,7 @@
 #   define page_local_script_native_move_hpp
 
 #	include <string>
+
 #	include "../../game/Character.hpp"
 #	include "../../math/fwd.hpp" // Vector
 

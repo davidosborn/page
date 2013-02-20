@@ -31,7 +31,6 @@
 #ifndef    page_local_err_report_hpp
 #   define page_local_err_report_hpp
 
-	// C++
 #	include <exception>
 
 namespace page

@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // find
+
 #include "Pose.hpp"
 
 namespace page

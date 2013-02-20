@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_ViewContext_hpp
 
 #	include <functional> // function
+
 #	include "../../math/fwd.hpp" // OrthoFrustum
 #	include "../../math/Matrix.hpp"
 #	include "../../phys/Form.hpp" // Form::Part

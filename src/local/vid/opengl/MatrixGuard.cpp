@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "ext.hpp" // ARB_multitexture
 #include "get.hpp" // GetInteger
 #include "matrix.hpp" // {Pop,Push}Matrix

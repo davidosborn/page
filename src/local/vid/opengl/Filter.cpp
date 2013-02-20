@@ -29,6 +29,7 @@
  */
 
 #include <GL/gl.h>
+
 #include "blend.hpp" // {Alpha,Color}BlendFunc
 #include "DrawContext.hpp" // DrawContext->vid::DrawContext
 #include "ext.hpp" // EXT_blend_func_separate

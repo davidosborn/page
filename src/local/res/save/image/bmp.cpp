@@ -30,6 +30,7 @@
 
 #include <climits> // CHAR_BIT
 #include <ostream>
+
 #include "../../../err/Exception.hpp"
 #include "../../../util/endian.hpp" // TransformEndian
 #include "../../fmt/bmp.hpp"

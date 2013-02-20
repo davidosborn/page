@@ -33,6 +33,7 @@
 
 #	include <functional> // result_of
 #	include <iterator> // iterator_traits
+
 #	include "iterator_adapter.hpp"
 
 namespace page

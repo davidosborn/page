@@ -30,10 +30,8 @@
 
 #include <cassert>
 
-// Win32
 #include <windows.h>
 
-// local
 #include "../../err/Exception.hpp"
 #include "../../util/win32/string.hpp" // Native
 #include "../msg.hpp" // MessageType

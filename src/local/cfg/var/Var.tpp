@@ -28,10 +28,8 @@
  * of this software.
  */
 
-// C++
 #include <cassert>
 
-// local
 #include "State.hpp" // State::{Get,Set,Unset}Var
 
 namespace page

@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <memory> // {shared,unique}_ptr
+
 #include "../../../adapt/freetype.hpp" // GetLib, OpenArgs
 #include "../../../fmt/freetype/sub.hpp"
 #include "../../../pipe/Pipe.hpp" // Pipe::Open

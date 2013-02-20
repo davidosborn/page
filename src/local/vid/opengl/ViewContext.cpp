@@ -31,7 +31,9 @@
 #include <algorithm> // min
 #include <cassert>
 #include <cmath> // cos, sin
+
 #include <GL/gl.h>
+
 #include "../../cache/proxy/Aabb.hpp"
 #include "../../cache/proxy/opengl/Drawable.hpp"
 #include "../../cache/proxy/opengl/Texture.hpp"

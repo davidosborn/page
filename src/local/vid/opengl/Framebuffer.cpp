@@ -30,6 +30,7 @@
 
 #include <algorithm> // transform
 #include <cassert>
+
 #include "../../err/Exception.hpp"
 #include "../../math/pow2.hpp" // Pow2Ceil
 #include "../../wnd/Window.hpp" // Window::GetSize

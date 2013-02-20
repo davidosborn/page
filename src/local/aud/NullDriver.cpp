@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "NullDriver.hpp"
 
 namespace page

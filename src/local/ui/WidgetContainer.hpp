@@ -33,6 +33,7 @@
 
 #	include <memory> // shared_ptr
 #	include <vector>
+
 #	include "../math/fwd.hpp" // Vector
 
 namespace page

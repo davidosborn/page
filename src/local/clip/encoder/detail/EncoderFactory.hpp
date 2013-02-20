@@ -31,10 +31,8 @@
 #ifndef    page_local_clip_encoder_detail_EncoderFactory_hpp
 #   define page_local_clip_encoder_detail_EncoderFactory_hpp
 
-	// Boost
 #	include <boost/filesystem/path.hpp>
 
-	// local
 #	include "../../../math/fwd.hpp"
 #	include "../../../util/factory/EncoderFactory.hpp"
 

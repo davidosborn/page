@@ -30,7 +30,6 @@
 
 #include <iostream>
 
-// local
 #include "../cfg/vars.hpp"
 #include "../log/Indenter.hpp"
 #include "info.hpp"

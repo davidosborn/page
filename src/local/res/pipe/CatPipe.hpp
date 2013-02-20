@@ -32,6 +32,7 @@
 #   define page_local_res_pipe_CatPipe_hpp
 
 #	include <memory> // shared_ptr
+
 #	include "Pipe.hpp"
 
 namespace page

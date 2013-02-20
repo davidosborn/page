@@ -32,7 +32,7 @@
 #   define page_local_cache_proxy_opengl_Texture_hpp
 
 #	include "../../../math/Vector.hpp"
-#	include "../../../util/copy_ptr.hpp"
+#	include "../../../util/raii/copy_ptr.hpp"
 #	include "../../../vid/opengl/TextureFlags.hpp"
 #	include "../../../vid/opengl/TextureFormat.hpp"
 #	include "../../Proxy.hpp"

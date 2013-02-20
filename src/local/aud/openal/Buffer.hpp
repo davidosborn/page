@@ -32,6 +32,7 @@
 #   define page_local_aud_openal_Buffer_hpp
 
 #	include <AL/al.h> // ALuint
+
 #	include "../../cache/fwd.hpp" // Proxy
 #	include "../../util/NonCopyable.hpp"
 

@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_Vertex_hpp
 
 #	include <vector>
+
 #	include <GL/gl.h> // GLfloat
 
 namespace page

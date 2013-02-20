@@ -29,6 +29,7 @@
  */
 
 #include <GL/gl.h>
+
 #include "../../cache/proxy/opengl/Texture.hpp"
 #include "../../math/Vector.hpp"
 #include "../../wnd/Window.hpp" // Window::GetSize

@@ -33,7 +33,6 @@
 
 #	include <string>
 
-	// Boost
 #	include <boost/filesystem/path.hpp>
 #	include <boost/optional.hpp>
 

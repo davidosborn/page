@@ -33,6 +33,7 @@
 #include <cstdint> // int{32,64}_t
 #include <cstdlib> // abs
 #include <limits> // numeric_limits
+
 #include "ArithmeticConversion.hpp"
 
 namespace page

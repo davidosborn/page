@@ -30,6 +30,7 @@
 
 #include <algorithm> // max, min
 #include <cmath> // copysign, sqrt
+
 #include "float.hpp" // Inf
 #include "interp.hpp" // Lerp
 #include "Plane.hpp"

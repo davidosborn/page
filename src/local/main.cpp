@@ -30,7 +30,6 @@
 
 #include <iostream> // cout
 
-// local
 #include "cfg/State.hpp"
 #include "err/report.hpp" // ReportError, std::exception
 #include "game/Game.hpp" // Game::{{,~}Game,Run}

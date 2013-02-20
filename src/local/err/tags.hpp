@@ -33,10 +33,8 @@
 
 #	include <string>
 
-	// Boost
 #	include <boost/exception/error_info.hpp>
 
-	// local
 #	include "Tag.hpp"
 
 namespace page

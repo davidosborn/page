@@ -31,12 +31,13 @@
 #include <cassert>
 #include <iostream> // clog
 #include <vector>
+
 #include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"
 #include "../../log/Indenter.hpp"
 #include "../../res/type/opengl/Shader.hpp" // Shader::{source,type}
 #include "../../util/iterator/indirect_iterator.hpp"
-#include "../../util/shared_handle.hpp"
+#include "../../util/raii/shared_handle.hpp"
 #include "ext.hpp" // ARB_shader_objects
 
 namespace page

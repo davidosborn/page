@@ -9,7 +9,6 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
- *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,36 +27,14 @@
  * of this software.
  */
 
-#ifndef    page_local_util_ScopeGuard_hpp
-#   define page_local_util_ScopeGuard_hpp
-
-#	include <functional> // function
-#	include "NonCopyable.hpp"
+#ifndef    page_local_sys_process_hpp
+#   define page_local_sys_process_hpp
 
 namespace page
 {
-	namespace util
+	namespace sys
 	{
-		/**
-		 * A generic scope-guard to ensure RAII consistency.
-		 *
-		 * @ingroup scope-guard
-		 */
-		struct ScopeGuard : NonCopyable
-		{
-			typedef std::function<void ()> Callback;
-
-			// constructor/destructor
-			ScopeGuard(const Callback & = nullptr);
-			~ScopeGuard();
-
-			// modifiers
-			void Release();
-			void Reset(const Callback & = nullptr);
-
-			private:
-			Callback cb;
-		};
+		void Sleep();
 	}
 }
 

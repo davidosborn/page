@@ -32,8 +32,8 @@
 #   define page_local_phys_Sound_hpp
 
 #	include "../cache/fwd.hpp" // Proxy
-#	include "../util/copy_ptr.hpp"
 #	include "../util/Identifiable.hpp"
+#	include "../util/raii/copy_ptr.hpp"
 #	include "attrib/Position.hpp"
 #	include "attrib/Volume.hpp"
 #	include "mixin/Controllable.hpp"

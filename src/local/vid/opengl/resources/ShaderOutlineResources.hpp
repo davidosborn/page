@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_resources_ShaderOutlineResources_hpp
 
 #	include <memory> // unique_ptr
+
 #	include "../../../math/fwd.hpp" // Vector
 #	include "../../../util/NonCopyable.hpp"
 

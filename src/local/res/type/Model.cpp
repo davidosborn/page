@@ -31,6 +31,7 @@
 #include <algorithm> // remove_if
 #include <functional> // bind, logical_not
 #include <iostream> // clog
+
 #include "../../log/manip.hpp" // Warning
 #include "../../util/functional/member.hpp" // make_member_of
 #include "Model.hpp"

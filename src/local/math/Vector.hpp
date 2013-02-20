@@ -36,6 +36,7 @@
 #	include <iosfwd> // [io]stream
 #	include <iterator> // reverse_iterator
 #	include <type_traits> // enable_if, is_integral
+
 #	include "ArithmeticConversion.hpp"
 #	include "float.hpp" // Real
 #	include "fwd.hpp" // defaultType, Vector

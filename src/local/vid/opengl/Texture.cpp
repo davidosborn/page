@@ -30,6 +30,7 @@
 
 #include <algorithm> // transform
 #include <cassert>
+
 #include "../../cfg/vars.hpp"
 #include "../../math/Color.hpp" // RgbaColor
 #include "../../math/pow2.hpp" // Pow2Ceil

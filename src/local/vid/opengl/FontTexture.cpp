@@ -30,6 +30,7 @@
 
 #include <algorithm> // transform
 #include <cctype> // isspace
+
 #include "../../err/Exception.hpp"
 #include "../../math/pow2.hpp" // Pow2Ceil
 #include "../../res/type/Font.hpp"

@@ -33,6 +33,7 @@
 
 #	include <memory> // shared_ptr
 #	include <string>
+
 #	include "../Widget.hpp"
 
 namespace page

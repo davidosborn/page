@@ -31,10 +31,8 @@
 #ifndef    page_local_util_functional_pointer_hpp
 #   define page_local_util_functional_pointer_hpp
 
-	// C++
 #	include <memory> // addressof
 
-	// local
 #	include "../type_traits/pointer.hpp" // remove_indirection
 
 namespace page

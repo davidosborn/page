@@ -30,7 +30,8 @@
 
 #include <algorithm> // min
 #include <cassert>
-#include "../../util/unique_ptr.hpp"
+#include <memory> // unique_ptr
+
 #include "../Stream.hpp"
 #include "CatPipe.hpp"
 
@@ -53,7 +54,7 @@ namespace page
 				void DoSeek(unsigned);
 
 				private:
-				util::unique_ptr<Stream> first, second;
+				std::unique_ptr<Stream> first, second;
 			};
 
 			CatStream::CatStream(const Pipe &first, const Pipe &second) :

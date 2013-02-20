@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // max
+
 #include "../log/stats.hpp" // GetStats, Stats::IncFrame
 #include "../math/float.hpp" // Inf
 #include "Timer.hpp"

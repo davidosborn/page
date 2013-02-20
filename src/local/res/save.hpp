@@ -32,6 +32,7 @@
 #   define page_local_res_save_hpp
 
 #	include <string>
+
 #	include "../util/typeinfo.hpp" // GetTypeId, std::type_info
 
 namespace page

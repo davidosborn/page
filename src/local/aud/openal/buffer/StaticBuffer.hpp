@@ -31,7 +31,7 @@
 #ifndef    page_local_aud_openal_buffer_StaticBuffer_hpp
 #   define page_local_aud_openal_buffer_StaticBuffer_hpp
 
-#	include "../../../util/copy_ptr.hpp"
+#	include "../../../util/raii/copy_ptr.hpp"
 #	include "../Buffer.hpp"
 
 namespace page

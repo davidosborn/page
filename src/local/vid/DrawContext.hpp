@@ -33,6 +33,7 @@
 
 #	include <stack>
 #	include <memory> // shared_ptr
+
 #	include "../math/Aabb.hpp"
 #	include "../math/fwd.hpp" // ViewFrustum
 #	include "../res/type/Font.hpp" // TextAlign

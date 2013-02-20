@@ -32,6 +32,7 @@
 #   define page_local_game_Entity_hpp
 
 #	include <string>
+
 #	include "../phys/Body.hpp"
 
 namespace page

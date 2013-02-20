@@ -31,13 +31,10 @@
 #ifndef    page_local_cfg_state_BasicState_hpp
 #   define page_local_cfg_state_BasicState_hpp
 
-	// C++
 #	include <list>
 
-	// Boost
 #	include <boost/range/adaptor/indirected.hpp>
 
-	// local
 #	include "../../util/class/copy_move.hpp" // DEFINE_{COPY,MOVE}
 
 namespace page

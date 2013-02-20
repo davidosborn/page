@@ -33,6 +33,7 @@
 
 #	include <GL/gl.h>
 #	include <GL/wglext.h>
+
 #	include <windows.h> // HDC
 
 namespace page

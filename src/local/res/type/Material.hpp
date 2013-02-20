@@ -32,6 +32,7 @@
 #   define page_local_res_type_Material_hpp
 
 #	include <vector>
+
 #	include "../../cache/proxy/Resource.hpp"
 #	include "../../math/Color.hpp" // Rgb{,a}Color
 #	include "../../math/Vector.hpp"

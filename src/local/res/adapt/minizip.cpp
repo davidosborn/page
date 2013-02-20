@@ -29,6 +29,7 @@
  */
 
 #include <minizip/unzip.h>
+
 #include "../../err/Exception.hpp"
 #include "../pipe/Pipe.hpp"
 #include "../Stream.hpp"

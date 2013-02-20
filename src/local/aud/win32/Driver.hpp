@@ -33,6 +33,7 @@
 
 #	include <windows.h> // CALLBACK, DWORD_PTR, mmsystem.h, UINT
 #	include <mmsystem.h> // HWAVEOUT
+
 #	include "../Driver.hpp"
 
 namespace page

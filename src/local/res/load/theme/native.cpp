@@ -32,7 +32,7 @@
 #include <memory> // {shared,unique}_ptr
 
 #include "../../../util/lexical_cast.hpp"
-#include "../../../util/string.hpp" // Partition
+#include "../../../util/string/operations.hpp" // Partition
 #include "../../adapt/text.hpp" // CheckSig
 #include "../../adapt/text/extract.hpp" // Extract
 #include "../../adapt/text/Parser.hpp"

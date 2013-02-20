@@ -34,6 +34,7 @@
 #   define page_local_phys_Skin_hpp
 
 #	include <vector>
+
 #	include "../math/Vector.hpp"
 #	include "attrib/Pose.hpp" // Pose::Bone
 

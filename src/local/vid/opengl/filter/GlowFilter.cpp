@@ -29,7 +29,9 @@
  */
 
 #include <cassert>
+
 #include <GL/gl.h>
+
 #include "../../../math/interp.hpp" // HermiteConvolutionKernel
 #include "../blend.hpp" // ColorBlendFunc
 #include "../ext.hpp" // ARB_shader_objects

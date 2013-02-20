@@ -32,7 +32,8 @@
 #   define page_local_cache_proxy_win32_Cursor_hpp
 
 #	include <windows.h> // HCURSOR
-#	include "../../../util/copy_ptr.hpp"
+
+#	include "../../../util/raii/copy_ptr.hpp"
 #	include "../../Proxy.hpp"
 
 namespace page

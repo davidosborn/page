@@ -32,7 +32,7 @@
 #   define page_local_aud_Sound_hpp
 
 #	include "../cache/fwd.hpp" // Proxy
-#	include "../util/copy_ptr.hpp"
+#	include "../util/raii/copy_ptr.hpp"
 
 namespace page
 {

@@ -31,7 +31,6 @@
 #include <functional> // bind
 #include <iostream> // cout
 
-// local
 #include "../aud/Driver.hpp" // Driver::~Driver
 #include "../aud/NullDriver.hpp" // NullDriver::NullDriver
 #include "../inp/Driver.hpp" // Driver::~Driver

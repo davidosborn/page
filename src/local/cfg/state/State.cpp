@@ -28,16 +28,13 @@
  * of this software.
  */
 
-// C++
 #include <algorithm> // max
 #include <iomanip> // setw
 #include <ostream> // basic_ostream
 
-// Boost
 #include <boost/filesystem.hpp> // absolute
 #include <boost/io/ios_state.hpp> // basic_ios_all_saver
 
-// local
 #include "../../log/Indenter.hpp"
 #include "../source/FileSource.hpp"
 #include "../source/Source.hpp" // Source::Open{Reader,Writer}

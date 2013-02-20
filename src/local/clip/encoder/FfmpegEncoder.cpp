@@ -28,13 +28,11 @@
  * of this software.
  */
 
-// FFmpeg
 extern "C"
 {
 	#include <libavformat/avformat.h>
 }
 
-// local
 #include "../../err/Exception.hpp"
 #include "../../math/Vector.hpp"
 #include "../../util/init_priority.hpp" // REG_INIT_PRIORITY

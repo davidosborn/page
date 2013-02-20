@@ -31,7 +31,9 @@
 #include <exception> // exception
 #include <iostream> // cerr
 #include <string>
+
 #include <windows.h>
+
 #include "../util/pp.hpp" // STRINGIZE
 
 namespace

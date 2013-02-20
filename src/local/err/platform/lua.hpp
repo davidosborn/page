@@ -31,10 +31,8 @@
 #ifndef    page_local_err_platform_lua_hpp
 #   define page_local_err_platform_lua_hpp
 
-	// C++
 #	include <exception>
 
-	// Lua
 #	include <lua.hpp> // lua_State, luaL_error
 
 namespace page

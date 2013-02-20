@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <ostream>
+
 #include "../cache.hpp" // Fetch, Invalidate, Purge, Store
 #include "../util/lexical_cast.hpp"
 #include "../util/typeinfo.hpp" // GetTypeId

@@ -32,6 +32,7 @@
 #   define page_local_util_win32_string_hpp
 
 #	include <string>
+
 #	include <windows.h> // TCHAR
 
 namespace page

@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../../../err/Exception.hpp"
 #include "../../../res/type/Sound.hpp" // Sound::{decoder,frequency}, GetDuration
 #include "../../../res/type/sound/AudioDecoder.hpp" // AudioDecoder::Open

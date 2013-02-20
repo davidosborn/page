@@ -30,7 +30,9 @@
 
 #include <iostream> // cout
 #include <string>
+
 #include <GL/gl.h> // glGetString
+
 #include "../../cfg/domain.hpp" // ScopedDomain
 #include "../../cfg/vars.hpp"
 #include "../../log/Indenter.hpp"

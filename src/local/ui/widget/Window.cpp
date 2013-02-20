@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // count, max
+
 #include "../../res/type/Font.hpp" // Font::{lineHeight,maxBearing}, GetMaxLineWidth
 #include "../../res/type/Theme.hpp" // GetThickness, Theme::window
 #include "../../vid/DrawContext.hpp" // DrawContext::{FrameSaver,PushFrame}

@@ -33,6 +33,7 @@
 
 #	include <memory> // shared_ptr
 #	include <string>
+
 #	include "../../util/endian.hpp" // Endian
 #	include "Pipe.hpp"
 

@@ -32,6 +32,7 @@
 #   define page_local_script_python_ScopedRef_hpp
 
 #	include <Python.h> // PyObject
+
 #	include "../../util/NonCopyable.hpp"
 
 namespace page

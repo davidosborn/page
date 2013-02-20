@@ -32,6 +32,7 @@
 #   define page_local_wnd_win32_Window_hpp
 
 #	include <windows.h> // HWND, LPARAM, LRESULT, UINT, WPARAM
+
 #	include "../Window.hpp"
 
 namespace page

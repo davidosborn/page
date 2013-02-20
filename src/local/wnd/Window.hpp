@@ -33,6 +33,7 @@
 
 #	include <memory> // unique_ptr
 #	include <string>
+
 #	include "../math/Vector.hpp"
 #	include "../util/NonCopyable.hpp"
 #	include "../util/Signal.hpp"

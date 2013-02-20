@@ -32,6 +32,7 @@
 #   define page_local_util_x11_event_hpp
 
 #	include <string>
+
 #	include <X11/X.h> // XEvent
 
 namespace page

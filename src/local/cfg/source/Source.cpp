@@ -28,11 +28,9 @@
  * of this software.
  */
 
-// C++
 #include <algorithm> // copy
 #include <iterator> // back_inserter
 
-// local
 #include "../../err/Exception.hpp"
 #include "../../util/io/separated_istream_iterator.hpp"
 #include "Source.hpp"

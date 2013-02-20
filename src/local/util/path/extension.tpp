@@ -28,70 +28,31 @@
  * of this software.
  */
 
-#ifndef    page_local_util_StringBuilder_hpp
-#   define page_local_util_StringBuilder_hpp
-
-#	include <sstream> // basic_{ostringstream,string}
-
-#	include "class/copy_move.hpp" // MAKE_UNCOPYABLE
+#include <algorithm> // find
 
 namespace page
 {
 	namespace util
 	{
-		/**
-		 * An alternative to std::basic_ostringstream, which allows you to write
-		 * one-liners, since the insertion operator returns the complete type.
-		 */
-		template <
-			typename Char       = char,
-			typename CharTraits = std::char_traits<Char>>
-		class StringBuilder
+		template <typename InputRange>
+			boost::filesystem::path WithExtension(
+				const boost::filesystem::path &path,
+				InputRange extensions,
+				ENABLE_IF_IMPL((is_range<InputRange>::value)))
 		{
-			/*------+
-			| types |
-			+------*/
+			return WithExtension(path, extensions.begin(), extensions.end());
+		}
 
-			public:
-			typedef std::basic_string<Char, CharTraits> String;
-
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
-
-			public:
-			StringBuilder() = default;
-
-			/*----------------------+
-			| copy & move semantics |
-			+----------------------*/
-
-			MAKE_UNCOPYABLE(StringBuilder)
-
-			/*-----------+
-			| operations |
-			+-----------*/
-
-			public:
-			template <typename T>
-				StringBuilder &operator <<(T &&);
-
-			/*------------+
-			| conversions |
-			+------------*/
-
-			public:
-			operator String() const;
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			std::basic_ostringstream<Char, CharTraits> ss;
-		};
+		template <typename InputIterator>
+			boost::filesystem::path WithExtension(
+				const boost::filesystem::path &path,
+				InputIterator firstExtension,
+				InputIterator lastExtension)
+		{
+			if (firstExtension != lastExtension &&
+				std::find(firstExtension, lastExtension, GetExtension(path)) == lastExtension)
+					return AddExtension(path, *firstExtension);
+			return path;
+		}
 	}
 }
-
-#	include "StringBuilder.tpp"
-#endif

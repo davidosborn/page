@@ -32,6 +32,7 @@
 #   define page_local_util_iterator_deferred_iterator_hpp
 
 #	include <iterator> // iterator_traits
+
 #	include "iterator_adapter.hpp"
 
 namespace page
@@ -78,5 +79,5 @@ namespace page
 	}
 }
 
-#	include "deferred_iterator.hpp"
+#	include "deferred_iterator.tpp"
 #endif

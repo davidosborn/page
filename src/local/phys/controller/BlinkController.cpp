@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../../math/Axan.hpp"
 #include "../../math/float.hpp" // DegToRad
 #include "../../math/interp.hpp" // LinearInterp

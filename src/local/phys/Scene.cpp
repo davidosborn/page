@@ -32,6 +32,7 @@
 #include <cassert>
 #include <functional> // hash
 #include <iterator> // back_inserter
+
 #include "../cache/Proxy.hpp" // hash(Proxy)
 #include "../math/Euler.hpp"
 #include "../math/float.hpp" // DegToRad
@@ -51,9 +52,9 @@
 #include "Emitter.hpp"
 #include "Light.hpp"
 #include "mixin/Controllable.hpp" // UpdateControllables
+#include "mixin/Trackable.hpp" // Trackable::{GetTrackFaceIndex,HasTrackFace}
 #include "mixin/update/Collidable.hpp" // UpdateCollidables
 #include "mixin/update/Trackable.hpp" // UpdateTrackables
-#include "mixin/Trackable.hpp" // Trackable::{GetTrackFaceIndex,HasTrackFace}
 #include "Particle.hpp"
 #include "Scene.hpp"
 #include "Sound.hpp"

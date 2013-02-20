@@ -32,6 +32,7 @@
 #   define page_local_game_Character_hpp
 
 #	include <memory> // shared_ptr
+
 #	include "Entity.hpp"
 
 namespace page

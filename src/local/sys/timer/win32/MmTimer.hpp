@@ -32,6 +32,7 @@
 #   define page_local_sys_timer_win32_MmTimer_hpp
 
 #	include <windows.h> // DWORD
+
 #	include "../../Timer.hpp"
 
 namespace page

@@ -29,7 +29,9 @@
  */
 
 #include <utility> // pair
+
 #include <lua.hpp>
+
 #include "../math/Euler.hpp"
 #include "../math/Vector.hpp"
 

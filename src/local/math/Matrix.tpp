@@ -34,6 +34,7 @@
 #include <functional> // bind, divides, logical_{and,not,or}, minus, multiplies, negate, plus
 #include <istream>
 #include <ostream>
+
 #include "../math/float.hpp" // Near
 #include "../util/algorithm/stdext.hpp" // transform_n
 #include "Axan.hpp"

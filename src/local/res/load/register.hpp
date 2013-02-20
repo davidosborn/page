@@ -32,6 +32,7 @@
 #   define page_local_res_load_register_hpp
 
 #	include <string>
+
 #	include "../../util/typeinfo.hpp" // GetTypeId, std::type_info
 #	include "function.hpp" // GetLoaderFunction
 #	include "registry.hpp" // RegisterLoader

@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <unordered_map>
+
 #include "../../err/Exception.hpp"
 #include "registry.hpp" // MachineFactory
 

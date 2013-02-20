@@ -32,6 +32,7 @@
 #   define page_local_sys_timer_ClockTimer_hpp
 
 #	include <ctime> // clock_t
+
 #	include "../Timer.hpp"
 
 namespace page

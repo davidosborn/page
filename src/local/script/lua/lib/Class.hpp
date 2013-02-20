@@ -33,6 +33,7 @@
 
 #	include <functional> // function
 #	include <memory> // shared_ptr
+
 #	include <lua.hpp> // lua_State
 
 namespace page

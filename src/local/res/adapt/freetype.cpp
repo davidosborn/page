@@ -31,6 +31,7 @@
 #include <cmath> // floor
 #include <cstdlib> // ldiv
 #include <utility> // move
+
 #include "../../err/Exception.hpp"
 #include "../pipe/Pipe.hpp"
 #include "../Stream.hpp"

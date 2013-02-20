@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <cstddef> // offsetof
+
 #include "ext.hpp" // ARB_{multitexture,vertex_shader}
 #include "Vertex.hpp" // Vertex{,Format}
 

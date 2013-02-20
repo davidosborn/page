@@ -32,6 +32,7 @@
 #   define page_local_math_Plane_hpp
 
 #	include <iosfwd> // [io]stream
+
 #	include "fwd.hpp" // Plane
 #	include "Vector.hpp"
 

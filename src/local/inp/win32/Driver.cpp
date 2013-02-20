@@ -33,7 +33,9 @@
 #include <cstdlib> // abs
 #include <functional> // bind
 #include <unordered_map>
+
 #include <windows.h>
+
 #include "../../cache/proxy/win32/Cursor.hpp"
 #include "../../err/Exception.hpp"
 #include "../../math/Aabb.hpp"

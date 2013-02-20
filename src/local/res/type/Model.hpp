@@ -33,6 +33,7 @@
 
 #	include <string>
 #	include <vector>
+
 #	include "../../cache/proxy/Resource.hpp"
 
 namespace page

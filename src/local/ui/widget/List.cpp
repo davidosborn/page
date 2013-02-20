@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // min
+
 #include "../../res/type/Font.hpp" // Font::lineHeight
 #include "../../res/type/Theme.hpp" // GetThickness, Theme::{list,scale}
 #include "../DrawContext.hpp"

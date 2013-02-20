@@ -32,6 +32,7 @@
 #   define page_local_game_Game_hpp
 
 #	include <memory> // unique_ptr
+
 #	include "../inp/Key.hpp"
 #	include "../util/NonCopyable.hpp"
 

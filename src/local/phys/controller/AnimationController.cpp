@@ -31,6 +31,7 @@
 #include <algorithm> // copy
 #include <cmath> // fmod
 #include <iterator> // back_inserter
+
 #include "AnimationController.hpp"
 
 namespace page

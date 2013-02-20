@@ -35,10 +35,12 @@
 
 #	include <string>
 #	include <unordered_map>
+
 #	include <GL/gl.h> // GL{enum,int}, glext.h
 #	include <GL/glext.h> // GLhandleARB
+
 #	include "../../util/NonCopyable.hpp"
-#	include "../../util/unique_handle.hpp"
+#	include "../../util/raii/unique_handle.hpp"
 
 namespace page
 {

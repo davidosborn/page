@@ -31,6 +31,7 @@
 #include <algorithm> // max, min
 #include <functional> // bind
 #include <iostream> // cout
+
 #include "../aud/Driver.hpp"
 #include "../cache.hpp" // Purge, Update
 #include "../cfg/vars.hpp"
@@ -42,9 +43,9 @@
 #include "../res/Index.hpp" // GetIndex, Index::Refresh
 #include "../res/save.hpp" // Save
 #include "../script/Driver.hpp"
-#include "../sys/proc.hpp" // Sleep
-#include "../sys/Timer.hpp" // MakeTimer, Timer::{GetDelta,Update}
-#include "../util/path.hpp" // ExpandPath
+#include "../sys/process.hpp" // Sleep
+#include "../sys/timer/Timer.hpp" // MakeTimer, Timer::{GetDelta,Update}
+#include "../util/path/expand.hpp" // ExpandPath
 #include "../util/pp.hpp" // STRINGIZE
 #include "../vid/Driver.hpp"
 #include "../wnd/Window.hpp"
@@ -233,14 +234,14 @@ namespace page
 			if (clipStream)
 			{
 				deltaTime += clipDeltaTime;
-				if (deltaTime < 1.f / *CVAR(clipFrameRate))
+				if (deltaTime < 1.f / *CVAR(clipFramerate))
 				{
 					clipDeltaTime = deltaTime;
 					deltaTime = 0;
 				}
 				else
 				{
-					deltaTime = 1.f / *CVAR(clipFrameRate);
+					deltaTime = 1.f / *CVAR(clipFramerate);
 					clipDeltaTime = 0;
 				}
 			}
@@ -294,11 +295,10 @@ namespace page
 					try
 					{
 						timer->Pause();
-						std::string path(util::ExpandPath(*CVAR(screenshotFilePath) + '*'));
-						path.erase(path.size() - 1);
 						Save(
 							wnd->GetVideoDriver().RenderImage(*CVAR(screenshotSize)),
-							path, *CVAR(screenshotFormat));
+							util::ExpandPath(*CVAR(screenshotFilePath), util::ExpandFlags::withImplicitWildcardSuffix),
+							*CVAR(screenshotFormat));
 						timer->Resume();
 					}
 					catch (const std::exception &e)
@@ -316,8 +316,8 @@ namespace page
 					path.erase(path.size() - 1);
 					clipStream.reset(new clip::Stream(path,
 						*CVAR(clipFormat),
-						*CVAR(clipSize),
-						*CVAR(clipFrameRate),
+						*CVAR(clipVideoResolution),
+						*CVAR(clipFramerate),
 						clipQuality = *CVAR(clipQuality)));
 					clipDeltaTime = 0;
 				}

@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <functional> // bind
+
 #include "RenderTarget.hpp"
 #include "RenderTargetPool.hpp"
 

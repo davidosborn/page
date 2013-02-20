@@ -35,7 +35,6 @@
 #	include <ostream> // basic_ostream
 #	include <vector>
 
-	// Boost
 #	include <boost/mpl/back_inserter.hpp>
 #	include <boost/mpl/copy.hpp>
 #	include <boost/mpl/count_if.hpp>
@@ -53,7 +52,6 @@
 #	include <boost/mpl/unpack.hpp>
 #	include <boost/mpl/vector.hpp>
 
-	// local
 #	include "../util/io/separated_ostream_iterator.hpp"
 #	include "../util/type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT_1
 

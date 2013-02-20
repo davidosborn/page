@@ -34,8 +34,9 @@
 #	include <cstddef> // ptrdiff_t, size_t
 #	include <iosfwd> // [io]stream
 #	include <iterator> // reverse_iterator
-#	include "Plane.hpp"
+
 #	include "fwd.hpp" // Frustum, Matrix
+#	include "Plane.hpp"
 
 namespace page
 {

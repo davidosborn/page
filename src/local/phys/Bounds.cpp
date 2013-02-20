@@ -31,16 +31,17 @@
 #include <algorithm> // find, max, min, transform, unique
 #include <functional> // mem_fun_ref
 #include <iterator> // back_inserter
+
 #include "../math/float.hpp" // Inf
 #include "../math/interp.hpp" // Lerp
 #include "../math/intersect.hpp" // ClosestPointOnLineWeight
 #include "../math/Matrix.hpp"
 #include "../res/type/Mesh.hpp"
 #include "../res/type/Model.hpp"
-#include "../util/copy_ptr.hpp"
 #include "../util/functional/pointer.hpp" // dereference
 #include "../util/iterator/indirect_iterator.hpp"
 #include "../util/iterator/member_iterator.hpp"
+#include "../util/raii/copy_ptr.hpp"
 #include "attrib/Pose.hpp"
 #include "Bounds.hpp"
 

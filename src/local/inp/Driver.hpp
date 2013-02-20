@@ -33,6 +33,7 @@
 
 #	include <memory> // shared_ptr
 #	include <vector>
+
 #	include "../math/fwd.hpp" // Euler
 #	include "../math/Vector.hpp"
 #	include "../util/NonCopyable.hpp"

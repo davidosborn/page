@@ -33,13 +33,15 @@
 #include <functional> // bind
 #include <iostream> // cout
 #include <string>
+
 #include <GL/gl.h>
+
 #include "../../err/Exception.hpp"
 #include "../../err/platform/opengl.hpp" // CheckError
 #include "../../log/Indenter.hpp"
 #include "../../math/Color.hpp" // RgbaColor
 #include "../../math/Vector.hpp"
-#include "../../util/string.hpp" // Trim
+#include "../../util/string/operations.hpp" // Trim
 #include "../../wnd/Window.hpp" // Window::{GetSize,{focus,size}Sig}
 #include "ClientAttribGuard.hpp"
 #include "DrawContext.hpp" // DrawContext::DrawContext

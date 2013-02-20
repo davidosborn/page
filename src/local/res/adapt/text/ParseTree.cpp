@@ -29,8 +29,9 @@
  */
 
 #include <stack>
+
 #include "../../../err/Exception.hpp"
-#include "../../../util/string.hpp" // Partition
+#include "../../../util/string/operations.hpp" // Partition
 #include "LineIterator.hpp"
 #include "ParseTree.hpp"
 

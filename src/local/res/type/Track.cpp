@@ -33,6 +33,7 @@
 #include <deque>
 #include <functional> // bind, less
 #include <iostream> // clog
+
 #include "../../err/Exception.hpp"
 #include "../../log/manip.hpp" // Warning
 #include "../../math/float.hpp" // Near

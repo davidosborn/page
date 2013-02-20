@@ -31,6 +31,7 @@
 #include <functional> // bind
 #include <memory> // shared_ptr
 #include <string>
+
 #include "../../../err/lua.hpp" // CATCH_LUA_ERRORS, CheckError, luaL_dostring_unprotected
 #include "../../../game/Object.hpp"
 #include "../../Router.hpp" // Router::{MakeObject,Remove}

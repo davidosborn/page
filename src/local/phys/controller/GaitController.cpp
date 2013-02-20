@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <cmath> // copysign
+
 #include "../../math/Axan.hpp"
 #include "../../math/float.hpp" // RadToDeg
 #include "../attrib/PositionOrientation.hpp" // PositionOrientation::Get{Force,Normal}

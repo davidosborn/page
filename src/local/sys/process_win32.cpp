@@ -9,7 +9,6 @@
  *
  * 1. Redistributions in source form must retain the above copyright notice,
  *    this list of conditions, and the following disclaimer.
- *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions, and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution, and in the same
@@ -28,35 +27,15 @@
  * of this software.
  */
 
-#include <algorithm> // find
+#include <windows.h> // Sleep
 
 namespace page
 {
-	namespace util
+	namespace sys
 	{
-		/*-----------------------+
-		| extension manipulation |
-		+-----------------------*/
-
-		template <typename InputRange>
-			boost::filesystem::path WithExtension(
-				const boost::filesystem::path &path,
-				InputRange extensions,
-				ENABLE_IF_IMPL((is_range<InputRange>::value)))
+		void Sleep()
 		{
-			return WithExtension(path, extensions.begin(), extensions.end());
-		}
-
-		template <typename InputIterator>
-			boost::filesystem::path WithExtension(
-				const boost::filesystem::path &path,
-				InputIterator firstExtension,
-				InputIterator lastExtension)
-		{
-			if (firstExtension != lastExtension &&
-				std::find(firstExtension, lastExtension, GetExtension(path)) == lastExtension)
-					return AddExtension(path, *firstExtension);
-			return path;
+			::Sleep(0);
 		}
 	}
 }

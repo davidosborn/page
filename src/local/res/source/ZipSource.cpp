@@ -29,14 +29,16 @@
  */
 
 #include <fstream>
+
 #include <zip.h>
+
 #include "../../sys/file.hpp"
 #include "../adapt/zip.hpp" // ZipError
 #include "../fmt/zip.hpp" // sig
 #include "../path.hpp" // NormPath
 #include "../pipe/ZipPipe.hpp"
-#include "ZipSource.hpp"
 #include "register.hpp" // REGISTER_SOURCE
+#include "ZipSource.hpp"
 
 namespace page
 {

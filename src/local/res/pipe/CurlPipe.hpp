@@ -32,7 +32,9 @@
 #   define page_local_res_pipe_CurlPipe_hpp
 
 #	include <string>
+
 #	include <curl/curl.h>
+
 #	include "../pipe/Pipe.hpp"
 
 namespace page

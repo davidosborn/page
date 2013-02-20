@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_x11_Driver_hpp
 
 #	include <GL/glx.h> // GLXContext
+
 #	include "../Driver.hpp"
 
 namespace page

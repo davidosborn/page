@@ -32,8 +32,9 @@
 #   define page_local_res_adapt_flac_hpp
 
 #	include <functional> // function
+#	include <memory> // unique_ptr
+
 #	include <FLAC/stream_decoder.h> // FLAC__{Frame,int32,StreamDecoder{,State}}
-#	include "../../util/unique_ptr.hpp"
 
 namespace page
 {
@@ -50,7 +51,7 @@ namespace page
 			// streaming
 			bool Check(const Pipe &);
 			typedef std::function<void (const FLAC__StreamDecoder *, const FLAC__Frame *, const FLAC__int32 *const buffers[])> WriteCallback;
-			typedef util::unique_ptr<FLAC__StreamDecoder> File;
+			typedef std::unique_ptr<FLAC__StreamDecoder> File;
 			File Open(const Pipe &, const WriteCallback &);
 		}
 

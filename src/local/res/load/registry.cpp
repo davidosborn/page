@@ -31,9 +31,10 @@
 #include <iterator> // back_inserter
 #include <unordered_map> // unordered_multimap
 #include <vector>
+
 #include "../../err/Exception.hpp"
 #include "../../util/iterator/range.hpp"
-#include "../../util/path.hpp" // GetExt
+#include "../../util/path/extension.hpp" // GetExtension
 #include "../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "../Node.hpp"
 #include "function.hpp" // GetLoaderFunction, LoadFunction
@@ -103,7 +104,7 @@ namespace page
 							err::errinfo_subject(node.mime)))
 				}
 				// check extension
-				std::string ext(util::GetExt(node.path));
+				std::string ext(util::GetExtension(node.path));
 				if (!ext.empty())
 				{
 					auto range(util::make_range(type.exts.equal_range(ext)));

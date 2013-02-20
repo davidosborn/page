@@ -33,10 +33,11 @@
 #include <cstdlib> // exit
 #include <iostream> // cout
 #include <tuple> // tie
+
 #include "opt.hpp" // Cfg{Sources,Vars}, ResSources
 #include "sys/file.hpp" // BaseName
 #include "util/pp.hpp" // STRINGIZE
-#include "util/string.hpp" // Partition
+#include "util/string/operations.hpp" // Partition
 
 namespace page
 {

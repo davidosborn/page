@@ -32,7 +32,9 @@
 #   define page_local_vid_opengl_MatrixGuard_hpp
 
 #	include <stack>
+
 #	include <GL/gl.h> // GLenum
+
 #	include "../../util/NonCopyable.hpp"
 
 namespace page

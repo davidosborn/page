@@ -33,11 +33,9 @@
 #include <string>
 #include <vector>
 
-// Boost
 #include <boost/filesystem/path.hpp>
 #include <boost/optional.hpp>
 
-// Win32
 #include <shlobj.h> // SHGetFolderPath
 #include <windows.h>
 
@@ -46,9 +44,8 @@
 #	define SHGFP_TYPE_CURRENT 0
 #endif
 
-// local
 #include "../err/Exception.hpp"
-#include "../util/string.hpp" // Trim
+#include "../util/string/operations.hpp" // Trim
 #include "../util/win32/string.hpp" // Narrow, Native, String
 
 namespace page

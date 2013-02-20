@@ -31,8 +31,8 @@
 #ifndef    page_local_phys_attrib_PositionOrientation_hpp
 #   define page_local_phys_attrib_PositionOrientation_hpp
 
-#	include "Position.hpp"
 #	include "Orientation.hpp"
+#	include "Position.hpp"
 
 namespace page
 {

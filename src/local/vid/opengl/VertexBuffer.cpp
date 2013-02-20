@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../../err/Exception.hpp"
 #include "../../res/type/Mesh.hpp"
 #include "ClientAttribGuard.hpp"

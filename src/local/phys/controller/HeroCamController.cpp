@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // max, min
+
 #include "../../inp/Driver.hpp" // Driver::Get{Lift,Rotation,Zoom}
 #include "../../math/Aabb.hpp"
 #include "../../math/Quat.hpp"

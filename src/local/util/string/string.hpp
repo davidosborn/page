@@ -28,15 +28,16 @@
  * of this software.
  */
 
-#ifndef    page_local_util_string_hpp
-#   define page_local_util_string_hpp
+#ifndef    page_local_util_string_string_hpp
+#   define page_local_util_string_string_hpp
 
 #	include <istream> // basic_istream
 #	include <limits> // numeric_limits
 #	include <string> // basic_string, char_traits
 #	include <utility> // pair
-#	include "serialize/DeserializationDelimiter.hpp"
-#	include "serialize/SequenceDeserializationFlags.hpp"
+
+#	include "../serialize/DeserializationDelimiter.hpp"
+#	include "../serialize/SequenceDeserializationFlags.hpp"
 
 namespace page
 {

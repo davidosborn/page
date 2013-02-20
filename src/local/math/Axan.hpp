@@ -32,6 +32,7 @@
 #   define page_local_math_Axan_hpp
 
 #	include <iosfwd> // [io]stream
+
 #	include "ArithmeticConversion.hpp"
 #	include "fwd.hpp" // Axan, Euler, Matrix, Quat, Vector
 #	include "Vector.hpp"

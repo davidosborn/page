@@ -32,7 +32,9 @@
 #   define page_local_aud_openal_Channel_hpp
 
 #	include <memory> // shared_ptr
+
 #	include <AL/al.h> // ALuint
+
 #	include "../../cache/fwd.hpp" // Proxy
 #	include "../Channel.hpp"
 

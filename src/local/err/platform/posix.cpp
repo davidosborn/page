@@ -28,11 +28,9 @@
  * of this software.
  */
 
-// C++
 #include <cerrno>
 #include <cstring> // strerror
 
-// local
 #include "../Exception.hpp"
 
 namespace page

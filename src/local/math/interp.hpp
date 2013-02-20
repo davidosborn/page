@@ -32,6 +32,7 @@
 #   define page_local_math_interp_hpp
 
 #	include <array>
+
 #	include "Quat.hpp"
 
 namespace page

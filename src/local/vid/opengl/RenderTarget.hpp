@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_RenderTarget_hpp
 
 #	include <GL/gl.h> // GL{enum,uint}
+
 #	include "../../util/NonCopyable.hpp"
 
 namespace page

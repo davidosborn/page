@@ -32,6 +32,7 @@
 #   define page_local_aud_openal_Driver_hpp
 
 #	include <AL/alc.h> // ALC{context,device}
+
 #	include "../Driver.hpp"
 
 namespace page

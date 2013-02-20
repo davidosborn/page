@@ -28,14 +28,12 @@
  * of this software.
  */
 
-// C++
 #include <exception>
 #include <iostream> // c{err,log}
 
-// Boost
 #include <boost/exception/diagnostic_information.hpp>
 
-// local
+#include "../log/Indenter.hpp"
 #include "../log/manip.hpp" // Error, Warning
 #include "../wnd/message.hpp" // Message
 

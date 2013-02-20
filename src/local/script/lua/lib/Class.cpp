@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <vector>
+
 #include "../../../err/lua.hpp" // CATCH_LUA_ERRORS, CheckError
 #include "../../../util/pp.hpp" // STRINGIZE
 #include "Class.hpp"

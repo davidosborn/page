@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // max, min
+
 #include "../math/interp.hpp" // HermiteScale
 #include "../vid/DrawContext.hpp" // DrawContext::{alphaFilter,GetFilterCaps,PushAlphaFilter}
 #include "DrawContext.hpp" // DrawContext::GetBase

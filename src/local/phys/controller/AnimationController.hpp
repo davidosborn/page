@@ -33,6 +33,7 @@
 
 #	include <string>
 #	include <vector>
+
 #	include "../../res/type/Animation.hpp" // Animation::{Bones,Vertices}
 #	include "../Controller.hpp"
 #	include "animation/Interpolator.hpp"

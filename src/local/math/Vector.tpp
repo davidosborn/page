@@ -34,6 +34,7 @@
 #include <cstdlib> // abs
 #include <functional> // bind, {bit,logical}_{and,not,or}, divides, {,not_}equal_to, {greater,less}{,_equal}, minus, multiplies, negate, plus
 #include <numeric> // accumulate, inner_product
+
 #include "../util/algorithm/select.hpp" // select
 #include "../util/algorithm/stdext.hpp" // transform_n
 #include "../util/functional/operator.hpp" // bit_sh[lr], modulus

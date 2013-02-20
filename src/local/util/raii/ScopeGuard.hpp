@@ -28,61 +28,37 @@
  * of this software.
  */
 
-#ifndef    page_local_util_unique_ptr_hpp
-#   define page_local_util_unique_ptr_hpp
+#ifndef    page_local_util_raii_ScopeGuard_hpp
+#   define page_local_util_raii_ScopeGuard_hpp
 
-#	include <cstddef> // nullptr_t
 #	include <functional> // function
-#	include <memory> // {auto,unique}_ptr
+#	include "NonCopyable.hpp"
 
 namespace page
 {
 	namespace util
 	{
 		/**
-		 * A modified version of @c std::unique_ptr, with a hard-coded deleter
-		 * type.
+		 * A generic scope-guard to ensure RAII consistency.
 		 *
-		 * @note This class supports incomplete types.
-		 * @note The deleter may be initialized to @c nullptr on construction,
-		 *       in which case it will not be executed on destruction.
-		 *
-		 * @ingroup smart-pointer
+		 * @ingroup scope-guard
 		 */
-		template <typename T> struct unique_ptr :
-			std::unique_ptr<T, std::function<void (T *)>>
+		struct ScopeGuard : NonCopyable
 		{
-			typedef std::unique_ptr<T, std::function<void (T *)>> Base;
-			typedef typename Base::pointer pointer;
-			typedef typename Base::element_type element_type;
-			typedef typename Base::deleter_type deleter_type;
-			typedef std::function<void (const T *)> const_deleter_type;
+			typedef std::function<void ()> Callback;
 
-			// constructors
-			unique_ptr();
-			explicit unique_ptr(pointer);
-			unique_ptr(pointer, deleter_type);
-			unique_ptr(std::nullptr_t);
-			unique_ptr(unique_ptr &&);
-			template <typename U> unique_ptr(std::auto_ptr<U> &&);
-			template <typename U, typename D> unique_ptr(std::unique_ptr<U, D> &&);
+			// constructor/destructor
+			ScopeGuard(const Callback & = nullptr);
+			~ScopeGuard();
 
-			// destructor
-			~unique_ptr();
-
-			// observers
-			const_deleter_type get_const_deleter() const;
-
-			// disable copy from lvalue
-			unique_ptr(const unique_ptr &) = delete;
-			unique_ptr &operator =(const unique_ptr &) = delete;
+			// modifiers
+			void Release();
+			void Reset(const Callback & = nullptr);
 
 			private:
-			// deleter
-			class ConstDeleterAdapter;
+			Callback cb;
 		};
 	}
 }
 
-#	include "unique_ptr.tpp"
 #endif

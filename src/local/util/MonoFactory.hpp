@@ -31,11 +31,9 @@
 #ifndef    page_local_util_MonoFactory_hpp
 #   define page_local_util_MonoFactory_hpp
 
-	// C++
 #	include <functional> // function
 #	include <memory> // unique_ptr
 
-	// local
 #	include "class/Monostate.hpp"
 
 namespace page

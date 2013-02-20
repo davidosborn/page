@@ -33,6 +33,7 @@
 
 #	include <GL/glx.h>
 #	include <GL/glxext.h>
+
 #	include <X11/Xlib.h> // Display
 
 namespace page

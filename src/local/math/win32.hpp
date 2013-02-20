@@ -32,6 +32,7 @@
 #   define page_local_math_win32_hpp
 
 #	include <windows.h> // LONG, POINT, RECT
+
 #	include "Aabb.hpp"
 #	include "Vector.hpp"
 

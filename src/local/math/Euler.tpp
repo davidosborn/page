@@ -32,6 +32,7 @@
 #include <cmath> // a{sin,tan2}, cos, sin
 #include <istream>
 #include <ostream>
+
 #include "Axan.hpp"
 #include "float.hpp" // DegTo{Rad,Rev}, Pi, RadTo{Deg,Rev}, RevTo{Deg,Rad}
 #include "Matrix.hpp"

@@ -29,6 +29,7 @@
  */
 
 #include <string>
+
 #include <GL/gl.h> // GLenum
 #include <GL/glext.h> // GL_*_ARB
 

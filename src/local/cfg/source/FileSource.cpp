@@ -28,17 +28,14 @@
  * of this software.
  */
 
-// C++
 #include <algorithm> // find{,_if_not}
 #include <unordered_map>
 
-// Boost
 #include <boost/filesystem/fstream.hpp> // [io]fstream
 
-// local
 #include "../../err/Exception.hpp"
-#include "../../util/string.hpp" // Partition, Trim
-#include "../../util/StringBuilder.hpp"
+#include "../../util/string/operations.hpp" // Partition, Trim
+#include "../../util/string/StringBuilder.hpp"
 #include "FileSource.hpp"
 
 namespace page

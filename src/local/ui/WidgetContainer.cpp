@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "Widget.hpp" // Widget::Set{Clone,MinSize,Position,Visible}
 #include "WidgetContainer.hpp"
 

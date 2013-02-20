@@ -28,13 +28,11 @@
  * of this software.
  */
 
-// Win32
 #include <windows.h>
 
-// local
-#include "Console.hpp"
 #include "../../err/Exception.hpp"
 #include "../../util/win32/string.hpp" // Native, String
+#include "Console.hpp"
 
 namespace page
 {

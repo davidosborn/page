@@ -29,6 +29,7 @@
  */
 
 #include <climits> // CHAR_BIT
+
 #include "../../err/Exception.hpp"
 #include "../../wnd/win32/Window.hpp" // Window->wnd::Window
 #include "Driver.hpp"

@@ -32,6 +32,7 @@
 #   define page_local_res_scan_registry_hpp
 
 #	include <string>
+
 #	include "function.hpp" // ScanFunction
 #	include "callback.hpp" // ScanCallback
 

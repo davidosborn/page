@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../../../vid/opengl/Texture.hpp"
 #include "Texture.hpp"
 

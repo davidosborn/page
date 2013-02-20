@@ -28,12 +28,12 @@
  * of this software.
  */
 
-#ifndef    page_local_util_unique_handle_hpp
-#   define page_local_util_unique_handle_hpp
+#ifndef    page_local_util_raii_shared_handle_hpp
+#   define page_local_util_raii_shared_handle_hpp
 
 #	include <cstddef> // nullptr_t
 #	include <functional> // function
-#	include "NonCopyable.hpp"
+#	include <memory> // shared_ptr
 #	include "Optional.hpp"
 
 namespace page
@@ -41,7 +41,11 @@ namespace page
 	namespace util
 	{
 		/**
-		 * Unique handle wrapper with custom deleter.
+		 * Shared handle wrapper with custom deleter.
+		 *
+		 * @note Inspired by discussions on the Boost mailing list.
+		 * @see http://lists.boost.org/Archives/boost/2003/02/44741.php
+		 * @see http://lists.boost.org/Archives/boost/2003/07/49827.php
 		 *
 		 * @note This class supports incomplete types.
 		 * @note The deleter may be initialized to @c nullptr on construction,
@@ -49,26 +53,17 @@ namespace page
 		 *
 		 * @ingroup smart-pointer
 		 */
-		template <typename T> struct unique_handle : NonCopyable
+		template <typename T> struct shared_handle
 		{
 			typedef T handle_type;
 			typedef std::function<void (handle_type)> deleter_type;
 
 			// constructors
-			unique_handle();
-			explicit unique_handle(handle_type);
-			unique_handle(handle_type, deleter_type);
-			explicit unique_handle(std::nullptr_t);
-			unique_handle(std::nullptr_t, deleter_type);
-			unique_handle(unique_handle &&);
-			template <typename U> unique_handle(unique_handle<U> &&);
-
-			// assignment
-			unique_handle &operator =(unique_handle &&);
-			template <typename U> unique_handle &operator =(unique_handle<U> &&);
-
-			// destructor
-			~unique_handle();
+			shared_handle();
+			explicit shared_handle(handle_type);
+			shared_handle(handle_type, deleter_type);
+			explicit shared_handle(std::nullptr_t);
+			shared_handle(std::nullptr_t, deleter_type);
 
 			// observers
 			handle_type &operator  *() noexcept; const handle_type &operator  *() const noexcept;
@@ -78,29 +73,30 @@ namespace page
 			explicit operator bool() const noexcept;
 
 			// modifiers
-			handle_type release() noexcept;
 			void reset();
 			void reset(handle_type);
 			void reset(handle_type, deleter_type);
 			void reset(std::nullptr_t);
 			void reset(std::nullptr_t, deleter_type);
-			void swap(unique_handle &) noexcept;
+			void swap(shared_handle &) noexcept;
 
 			private:
 			class DefaultDeleter;
+			class DeleterAdapter;
 
-			Optional<handle_type> handle;
+			// FIXME: using shared_ptr necessitates a redundant heap allocation
+			std::shared_ptr<handle_type> handle;
 			deleter_type deleter;
 		};
 
 		// factory functions
-		template <typename T> unique_handle<T> make_unique_handle(T);
-		template <typename T> unique_handle<T> make_unique_handle(T, typename unique_handle<T>::deleter_type);
+		template <typename T> shared_handle<T> make_shared_handle(T);
+		template <typename T> shared_handle<T> make_shared_handle(T, typename shared_handle<T>::deleter_type);
 
 		// specialized algorithms
-		template <typename T> void swap(unique_handle<T> &, unique_handle<T> &) noexcept;
+		template <typename T> void swap(shared_handle<T> &, shared_handle<T> &) noexcept;
 	}
 }
 
-#	include "unique_handle.tpp"
+#	include "shared_handle.tpp"
 #endif

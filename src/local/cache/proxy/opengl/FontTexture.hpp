@@ -32,7 +32,8 @@
 #   define page_local_cache_proxy_opengl_FontTexture_hpp
 
 #	include <GL/gl.h> // GLuint
-#	include "../../../util/copy_ptr.hpp"
+
+#	include "../../../util/raii/copy_ptr.hpp"
 #	include "../../Proxy.hpp"
 
 namespace page

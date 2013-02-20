@@ -29,6 +29,7 @@
  */
 
 #include <iostream> // clog
+
 #include "../../err/Exception.hpp"
 #include "../../log/manip.hpp" // Warning
 #include "../Stream.hpp"

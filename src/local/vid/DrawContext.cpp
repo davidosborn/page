@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../wnd/Window.hpp" // Window::GetSize
 #include "DrawContext.hpp"
 #include "Driver.hpp" // Driver::GetWindow

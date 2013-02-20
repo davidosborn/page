@@ -30,6 +30,7 @@
 
 #include <algorithm> // min
 #include <cstring> // memset
+
 #include "../../err/Exception.hpp"
 #include "../Stream.hpp"
 #include "NullPipe.hpp"

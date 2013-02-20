@@ -31,6 +31,7 @@
 #include <algorithm> // max
 #include <cassert>
 #include <unordered_map>
+
 #include "../../util/lang.hpp" // GetPhonemes
 #include "../attrib/Pose.hpp"
 #include "LipsyncController.hpp"

@@ -34,6 +34,7 @@
 #	include <array>
 #	include <queue>
 #	include <vector>
+
 #	include "../../math/Vector.hpp"
 
 namespace page

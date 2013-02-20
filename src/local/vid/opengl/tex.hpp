@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_tex_hpp
 
 #	include <GL/gl.h> // GL{enum,{,u}int}
+
 #	include "../../math/Vector.hpp"
 #	include "../../res/type/Image.hpp" // Image::Channels
 

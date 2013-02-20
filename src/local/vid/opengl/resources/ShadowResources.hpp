@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_resources_ShadowResources_hpp
 
 #	include <memory> // unique_ptr
+
 #	include "../../../cfg/vars.hpp"
 #	include "../../../util/NonCopyable.hpp"
 

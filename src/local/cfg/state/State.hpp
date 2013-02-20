@@ -31,12 +31,10 @@
 #ifndef    page_local_cfg_state_State_hpp
 #   define page_local_cfg_state_State_hpp
 
-	// C++
 #	include <list>
 #	include <memory> // shared_ptr
 #	include <ostream> // basic_ostream
 
-	// local
 #	include "../../util/class/Monostate.hpp"
 #	include "CommonState.hpp"
 

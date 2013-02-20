@@ -28,7 +28,6 @@
  * of this software.
  */
 
-// C++
 #include <cassert>
 #include <functional> // function
 #include <iostream> // cout
@@ -37,10 +36,8 @@
 #include <typeinfo> // type_info
 #include <unordered_map>
 
-// Boost
 #include <boost/optional.hpp>
 
-// local
 #include "cfg/vars.hpp"
 #include "err/report.hpp" // ReportWarning, std::exception
 #include "log/Indenter.hpp"

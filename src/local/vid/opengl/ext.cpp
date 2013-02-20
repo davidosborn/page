@@ -38,14 +38,14 @@
 
 #include <boost/io/ios_state.hpp> // ios_all_saver
 
+#define GLEXT_PURE
+#include <GL/glext.h>
+
 #include "../../cfg/vars.hpp"
 #include "../../log/Indenter.hpp"
 #include "../../util/pp.hpp" // STRINGIZE
 #include "../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "ext.hpp" // GetProcAddress, ProcAddress
-
-#define GLEXT_PURE
-#include <GL/glext.h>
 
 namespace page
 {

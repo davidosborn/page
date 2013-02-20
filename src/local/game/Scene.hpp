@@ -32,6 +32,7 @@
 #   define page_local_game_Scene_hpp
 
 #	include <memory> // unique_ptr
+
 #	include "../aud/Driver.hpp" // SoundProxy
 #	include "../cache/proxy/Resource.hpp"
 #	include "../phys/Scene.hpp"

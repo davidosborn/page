@@ -33,8 +33,6 @@
 #include <cassert>
 #include <stack>
 #include <vector>
-#include "../util/Optional.hpp"
-#include "ext.hpp" // ARB_{multitexture,shader_objects}, EXT_{blend_func_separate,framebuffer_object}
 
 #define GL_PURE
 #include <GL/gl.h>
@@ -46,6 +44,9 @@
 #	define GLU_PURE
 #	include <GL/glu.h>
 #endif
+
+#include "../util/Optional.hpp"
+#include "ext.hpp" // ARB_{multitexture,shader_objects}, EXT_{blend_func_separate,framebuffer_object}
 
 namespace page
 {

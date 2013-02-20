@@ -35,6 +35,7 @@
 #   define page_local_phys_controller_LipsyncController_hpp
 
 #	include <string>
+
 #	include "TargetController.hpp"
 
 namespace page

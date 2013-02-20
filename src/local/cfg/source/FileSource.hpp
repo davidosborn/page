@@ -31,10 +31,8 @@
 #ifndef    page_local_cfg_source_FileSource_hpp
 #   define page_local_cfg_source_FileSource_hpp
 
-	// Boost
 #	include <boost/filesystem.hpp> // path
 
-	// local
 #	include "Source.hpp"
 
 namespace page

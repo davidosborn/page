@@ -30,17 +30,14 @@
 
 #include <string>
 
-// Boost
 #include <boost/filesystem/path.hpp>
 #include <boost/optional.hpp>
 
-// POSIX
 #include <pwd.h> // getpwuid
 #include <stdlib.h> // getenv
 #include <sys/utsname.h> // uname
 #include <unistd.h> // get{hostname,login,uid}
 
-// local
 #include "../err/Exception.hpp"
 
 namespace page

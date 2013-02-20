@@ -33,6 +33,7 @@
 
 #	include <memory> // {shared,weak}_ptr
 #	include <vector>
+
 #	include "../Controller.hpp" // Controller::Layer
 #	include "../Frame.hpp"
 

@@ -38,6 +38,7 @@
 #	include <functional> // function
 #	include <memory> // {shared,weak}_ptr
 #	include <vector>
+
 #	include "NonCopyable.hpp"
 
 namespace page

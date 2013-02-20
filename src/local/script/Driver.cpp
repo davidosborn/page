@@ -29,8 +29,9 @@
  */
 
 #include <cassert>
-#include "Driver.hpp"
+
 #include "../res/type/Script.hpp" // Script::format
+#include "Driver.hpp"
 #include "Machine.hpp" // Machine::Open
 #include "machine/registry.hpp" // MakeMachine
 #include "Process.hpp" // Process::Continue

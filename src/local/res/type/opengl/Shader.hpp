@@ -32,6 +32,7 @@
 #   define page_local_res_type_opengl_Shader_hpp
 
 #	include <string>
+
 #	include <GL/gl.h> // GLenum
 
 namespace page

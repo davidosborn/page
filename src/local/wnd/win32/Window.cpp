@@ -29,7 +29,9 @@
  */
 
 #include <unordered_map>
+
 #include <windowsx.h> // GET_[XY]_LPARAM
+
 #include "../../aud/Driver.hpp" // MakeDriver
 #include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"

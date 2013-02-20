@@ -36,6 +36,7 @@
 #	include <string>
 #	include <unordered_map>
 #	include <vector>
+
 #	include "../../math/Matrix.hpp"
 #	include "../../res/type/Skeleton.hpp" // Skeleton::Bone
 #	include "../../util/Identifiable.hpp"

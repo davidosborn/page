@@ -29,7 +29,9 @@
  */
 
 #include <cassert>
+
 #include <GL/gl.h>
+
 #include "ext.hpp" // EXT_blend_func_separate
 #include "get.hpp" // GetInteger
 

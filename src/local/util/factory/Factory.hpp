@@ -31,19 +31,16 @@
 #ifndef    page_local_util_factory_Factory_hpp
 #   define page_local_util_factory_Factory_hpp
 
-	// C++
 #	include <functional> // function
 #	include <list>
 #	include <memory> // unique_ptr
 #	include <type_traits> // is_void
 
-	// Boost
 #	include <boost/mpl/if.hpp>
 #	include <boost/mpl/push_front.hpp>
 #	include <boost/mpl/unpack.hpp>
 #	include <boost/mpl/vector.hpp>
 
-	// local
 #	include "../class/Monostate.hpp"
 #	include "../container/reference_vector.hpp"
 #	include "../functional/factory.hpp" // factory_function

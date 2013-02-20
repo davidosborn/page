@@ -29,6 +29,7 @@
  */
 
 #include <cmath> // fmod
+
 #include "../cache/Proxy.hpp"
 #include "../res/type/Sound.hpp" // GetDuration
 #include "Sound.hpp"

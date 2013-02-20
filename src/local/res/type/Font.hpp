@@ -34,6 +34,7 @@
 #	include <string>
 #	include <unordered_map>
 #	include <vector>
+
 #	include "../../math/Vector.hpp"
 #	include "Image.hpp"
 

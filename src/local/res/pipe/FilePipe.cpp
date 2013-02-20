@@ -29,6 +29,7 @@
  */
 
 #include <fstream>
+
 #include "../../err/Exception.hpp"
 #include "../../sys/file.hpp" // FileSize, IsFile
 #include "../Stream.hpp"

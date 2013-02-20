@@ -45,7 +45,7 @@ namespace page
 		Sound *LoadFlacSound(const std::shared_ptr<const Pipe> &pipe)
 		{
 			assert(pipe);
-			const std::unique_ptr<FLAC__StreamDecoder> sd(Open(*pipe, 0));
+			const auto sd(Open(*pipe, 0));
 			if (!sd) return 0;
 			const std::unique_ptr<Sound> sound(new Sound);
 			sound->channels = FlacDecoder::LimitChannels(FLAC__stream_decoder_get_channels(sd.get()));

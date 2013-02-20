@@ -29,7 +29,9 @@
  */
 
 #include <cassert>
+
 #include <GL/gl.h>
+
 #include "ext.hpp" // ARB_multitexture
 #include "get.hpp" // GetInteger
 

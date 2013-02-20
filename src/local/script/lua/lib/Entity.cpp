@@ -34,8 +34,8 @@
 #include "../../../math/Quat.hpp"
 #include "../../../math/Vector.hpp"
 #include "../../../util/lua.hpp" // Get{Euler,{,Horizontal}Vector}, Push
-#include "Entity.hpp"
 #include "Class.hpp" // Class::{GetInstance,RegisterProperties}
+#include "Entity.hpp"
 
 namespace page
 {

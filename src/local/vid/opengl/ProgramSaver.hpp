@@ -36,6 +36,7 @@
 
 #	include <GL/gl.h> // glext.h
 #	include <GL/glext.h> // GLhandleARB
+
 #	include "../../util/StateSaver.hpp"
 
 namespace page

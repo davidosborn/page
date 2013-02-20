@@ -29,7 +29,9 @@
  */
 
 #include <algorithm> // copy
+
 #include <windows.h>
+
 #include "../../../err/Exception.hpp"
 #include "../../../math/Vector.hpp"
 #include "../Cursor.hpp"

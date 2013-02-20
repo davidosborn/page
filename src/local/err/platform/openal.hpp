@@ -31,10 +31,8 @@
 #ifndef    page_local_err_platform_openal_hpp
 #   define page_local_err_platform_openal_hpp
 
-	// C++
 #	include <string>
 
-	// OpenAL
 #	include <AL/al.h> // ALenum
 
 namespace page

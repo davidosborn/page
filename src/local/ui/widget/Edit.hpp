@@ -32,6 +32,7 @@
 #   define page_local_ui_widget_Edit_hpp
 
 #	include <string>
+
 #	include "../../util/Signal.hpp"
 #	include "../Widget.hpp"
 

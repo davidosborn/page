@@ -31,7 +31,9 @@
 #include <climits> // CHAR_BIT
 #include <functional> // bind
 #include <vector>
+
 #include <X11/Xutil.h> // XLookupString
+
 #include "../../util/algorithm/stdext.hpp" // for_each_if
 #include "../../util/functional/locale.hpp" // isprint_function
 #include "../../wnd/x11/Window.hpp"

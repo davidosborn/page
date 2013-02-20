@@ -34,6 +34,7 @@
 #include <cmath> // fmod
 #include <cstdlib> // abs
 #include <vector>
+
 #include "../../math/Aabb.hpp"
 #include "../../util/bit.hpp" // BitCopy
 #include "Image.hpp"

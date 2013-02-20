@@ -31,16 +31,13 @@
 #ifndef    page_local_clip_Stream_hpp
 #   define page_local_clip_Stream_hpp
 
-	// C++
 #	include <memory> // unique_ptr
 #	include <string>
 #	include <vector>
 
-	// Boost
 #	include <boost/filesystem/fstream.hpp> // ofstream
 #	include <boost/filesystem/path.hpp>
 
-	// local
 #	include "../math/Vector.hpp"
 #	include "../util/class/copy_move.hpp" // MAKE_UNCOPYABLE
 

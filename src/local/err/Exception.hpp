@@ -34,7 +34,6 @@
 #	include <exception>
 #	include <string>
 
-	// Boost
 #	include <boost/exception/all.hpp>
 #	include <boost/mpl/back_inserter.hpp>
 #	include <boost/mpl/copy.hpp>
@@ -43,7 +42,6 @@
 #	include <boost/mpl/unpack.hpp>
 #	include <boost/mpl/vector.hpp>
 
-	// local
 #	include "Tag.hpp"
 
 namespace page

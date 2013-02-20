@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <climits> // CHAR_BIT
+
 #include "register.hpp" // REGISTER_TYPE
 #include "Sound.hpp"
 

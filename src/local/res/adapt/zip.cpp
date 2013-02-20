@@ -29,6 +29,7 @@
  */
 
 #include <zip.h>
+
 #include "../../err/Exception.hpp
 
 namespace page

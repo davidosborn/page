@@ -29,7 +29,8 @@
  */
 
 #include <cassert>
-#include "../../util/unique_ptr.hpp"
+#include <memory> // unique_ptr
+
 #include "../Stream.hpp"
 #include "EndianPipe.hpp"
 
@@ -53,7 +54,7 @@ namespace page
 				void DoSeek(unsigned);
 
 				private:
-				util::unique_ptr<Stream> super;
+				std::unique_ptr<Stream> super;
 				unsigned pos;
 				std::string format;
 				util::Endian srcEndian, destEndian;

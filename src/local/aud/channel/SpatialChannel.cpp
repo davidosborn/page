@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // max
+
 #include "../../math/float.hpp" // DecibelToLinear, Inf
 #include "../../math/interp.hpp" // HermiteScale
 #include "../../phys/Sound.hpp" // Sound->util::Identifiable, Sound::Get{PlayPosition,Volume}

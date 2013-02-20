@@ -32,6 +32,7 @@
 #   define page_local_script_machine_registry_hpp
 
 #	include <functional> // function
+
 #	include "../../res/type/script/ScriptFormat.hpp"
 
 namespace page

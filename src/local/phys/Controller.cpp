@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // max, min
+
 #include "../math/interp.hpp" // HermiteScale
 #include "Controller.hpp"
 

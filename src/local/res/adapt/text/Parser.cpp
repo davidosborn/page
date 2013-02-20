@@ -30,10 +30,11 @@
 
 #include <algorithm> // transform
 #include <iostream> // clog
+
 #include "../../../err/Exception.hpp"
 #include "../../../log/manip.hpp" // Warning
 #include "../../../util/functional/locale.hpp" // tolower_function
-#include "../../../util/string.hpp" // Join
+#include "../../../util/string/operations.hpp" // Join
 #include "Parser.hpp"
 
 namespace page

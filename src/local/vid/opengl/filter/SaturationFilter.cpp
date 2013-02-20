@@ -29,7 +29,9 @@
  */
 
 #include <cassert>
+
 #include <GL/gl.h>
+
 #include "../ext.hpp" // ARB_shader_objects
 #include "../Program.hpp" // Bind, Program::GetUniform
 #include "../ProgramSaver.hpp"

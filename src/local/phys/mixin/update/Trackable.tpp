@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../Trackable.hpp"
 
 namespace page

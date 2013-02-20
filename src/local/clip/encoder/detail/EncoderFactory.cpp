@@ -28,17 +28,14 @@
  * of this software.
  */
 
-// C++
 #include <iostream> // clog
 
-// Boost
 #include <boost/range/adaptor/transformed.hpp>
 
-// local
 #include "../../../err/Exception.hpp"
 #include "../../../log/manip.hpp" // Warning
 #include "../../../util/functional/factory.hpp" // constructor_function
-#include "../../../util/path.hpp" // {Get,With}Extension
+#include "../../../util/path/extension.hpp" // {Get,With}Extension
 #include "EncoderFactory.hpp"
 
 namespace page

@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#include "Shader.hpp"
 #include "../register.hpp" // REGISTER_TYPE
+#include "Shader.hpp"
 
 namespace page
 {

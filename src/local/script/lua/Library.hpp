@@ -32,6 +32,7 @@
 #   define page_local_script_lua_Library_hpp
 
 #	include <lua.hpp> // lua_State
+
 #	include "../../util/NonCopyable.hpp"
 #	include "lib/Base.hpp"
 #	include "lib/Character.hpp"

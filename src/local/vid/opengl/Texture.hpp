@@ -32,6 +32,7 @@
 #   define page_local_vid_opengl_Texture_hpp
 
 #	include <GL/gl.h> // GLuint
+
 #	include "../../math/fwd.hpp" // RgbaColor
 #	include "../../math/Vector.hpp"
 #	include "../../util/NonCopyable.hpp"

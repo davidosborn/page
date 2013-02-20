@@ -32,6 +32,7 @@
 #   define page_local_res_adapt_zip_hpp
 
 #	include <cerrno>
+
 #	include <zip.h> // zip, zip_file
 
 namespace page

@@ -32,6 +32,7 @@
 #   define page_local_util_opengl_string_hpp
 
 #	include <string>
+
 #	include <GL/gl.h> // glext.h
 #	include <GL/glext.h> // GLcharARB
 

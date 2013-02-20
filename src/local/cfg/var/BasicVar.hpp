@@ -30,7 +30,6 @@
 #ifndef    page_local_cfg_var_BasicVar_hpp
 #   define page_local_cfg_var_BasicVar_hpp
 
-	// C++
 #	include <iosfwd> // {,w}[io]stream
 #	include <istream> // basic_istream
 #	include <ostream> // basic_ostream

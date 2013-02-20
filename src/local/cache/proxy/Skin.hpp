@@ -31,8 +31,8 @@
 #ifndef    page_local_cache_proxy_Skin_hpp
 #   define page_local_cache_proxy_Skin_hpp
 
-#	include "../../util/copy_ptr.hpp"
 #	include "../../util/Identifiable.hpp" // Identifiable::Id
+#	include "../../util/raii/copy_ptr.hpp"
 #	include "../Proxy.hpp"
 
 namespace page

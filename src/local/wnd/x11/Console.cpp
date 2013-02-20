@@ -28,12 +28,10 @@
  * of this software.
  */
 
-// X11
 #include <X11/Xlib.h>
 
-// local
-#include "Console.hpp"
 #include "../../err/Exception.hpp"
+#include "Console.hpp"
 
 namespace page
 {

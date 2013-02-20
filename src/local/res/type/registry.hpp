@@ -33,6 +33,7 @@
 
 #	include <string>
 #	include <typeinfo> // type_info
+
 #	include "../../util/Deleter.hpp" // Deleter
 #	include "function.hpp" // PostLoadFunction
 

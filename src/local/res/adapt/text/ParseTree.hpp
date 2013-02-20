@@ -33,7 +33,8 @@
 
 #	include <string>
 #	include <vector>
-#	include "../../../util/copy_ptr.hpp"
+
+#	include "../../../util/raii/copy_ptr.hpp"
 
 namespace page
 {

@@ -29,6 +29,7 @@
  */
 
 #include <X11/Xlib.h>
+
 #include "../../../err/Exception.hpp"
 #include "../../../wnd/x11/Window.hpp" // Window::Get{Display,Screen}
 #include "Driver.hpp"

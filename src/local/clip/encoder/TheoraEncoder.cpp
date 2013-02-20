@@ -28,11 +28,9 @@
  * of this software.
  */
 
-// C++
 #include <cstdlib> // {,s}rand
 #include <ctime> // time
 
-// local
 #include "../../err/Exception.hpp"
 #include "../../math/algorithm.hpp" // RgbToYcbcr420
 #include "../../util/init_priority.hpp" // REG_INIT_PRIORITY

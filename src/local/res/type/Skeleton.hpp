@@ -33,6 +33,7 @@
 
 #	include <string>
 #	include <vector>
+
 #	include "../../math/Quat.hpp"
 #	include "../../math/Vector.hpp"
 

@@ -29,6 +29,7 @@
  */
 
 #include <windows.h>
+
 #include "../../../err/Exception.hpp"
 #include "../../../wnd/win32/Window.hpp" // Window::GetHwnd
 #include "Driver.hpp"

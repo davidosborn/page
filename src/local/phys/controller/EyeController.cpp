@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../attrib/Pose.hpp"
 #include "../mixin/Controllable.hpp" // dynamic_cast
 #include "../mixin/Positionable.hpp" // Positionable::GetPosition

@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../../phys/aabb.hpp" // MakeAabb
 #include "../../phys/attrib/Pose.hpp" // Pose->util::Identifiable, Pose::dirty{Pose,Transform}Sig
 #include "../../phys/Bounds.hpp" // Bounds::bones

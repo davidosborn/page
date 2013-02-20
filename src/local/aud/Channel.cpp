@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // min
+
 #include "../math/float.hpp" // LinearToDecibel
 #include "../math/interp.hpp" // HermiteScale
 #include "Channel.hpp"

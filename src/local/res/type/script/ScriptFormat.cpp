@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "ScriptFormat.hpp"
 
 namespace page

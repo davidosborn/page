@@ -31,10 +31,8 @@
 #ifndef    page_local_util_factory_Criterion_hpp
 #   define page_local_util_factory_Criterion_hpp
 
-	// C++
 #	include <unordered_set>
 
-	// local
 #	include "../algorithm/contains.hpp"
 
 namespace page

@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <cstdint> // uint{16,8}_t
+
 #include "hash.hpp" // combine_hash_function::operator ()
 
 // for SuperFastHash

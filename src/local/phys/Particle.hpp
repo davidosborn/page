@@ -36,8 +36,8 @@
 #	include "attrib/Diffuse.hpp"
 #	include "attrib/Emissive.hpp"
 #	include "attrib/Material.hpp"
-#	include "attrib/Position.hpp"
 #	include "attrib/Opacity.hpp"
+#	include "attrib/Position.hpp"
 #	include "attrib/Size.hpp"
 #	include "attrib/Specular.hpp"
 

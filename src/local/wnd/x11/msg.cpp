@@ -30,10 +30,8 @@
 
 #include <cassert>
 
-// X11
 #include <X11/Xlib.h>
 
-// local
 #include "../../err/Exception.hpp"
 #include "../msg.hpp" // MessageType
 

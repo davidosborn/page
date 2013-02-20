@@ -34,6 +34,7 @@
 #	include <cstddef> // ptrdiff_t, size_t
 #	include <iosfwd> // [io]stream
 #	include <iterator> // reverse_iterator
+
 #	include "ArithmeticConversion.hpp"
 #	include "fwd.hpp" // {,Hsv,Rgb,Rgba,Ycbcr}Color, defaultType
 #	include "Matrix.hpp"

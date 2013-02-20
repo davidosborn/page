@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // sort
+
 #include "Animation.hpp"
 #include "register.hpp" // REGISTER_TYPE
 

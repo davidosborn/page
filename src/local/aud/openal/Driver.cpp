@@ -30,11 +30,13 @@
 
 #include <iostream> // cout
 #include <string>
+
 #include <AL/al.h>
+
 #include "../../err/Exception.hpp"
 #include "../../log/Indenter.hpp"
 #include "../../math/float.hpp" // DecibelToLinear
-#include "../../util/string.hpp" // Trim
+#include "../../util/string/operations.hpp" // Trim
 #include "channel/AmbientChannel.hpp" // AmbientChannel::AmbientChannel
 #include "channel/SpatialChannel.hpp" // SpatialChannel::SpatialChannel
 #include "Driver.hpp"

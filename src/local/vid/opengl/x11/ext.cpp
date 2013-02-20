@@ -36,6 +36,7 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
+
 #include <GL/glx.h>
 #include <GL/glxext.h>
 

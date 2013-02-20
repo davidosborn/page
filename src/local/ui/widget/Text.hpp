@@ -32,8 +32,9 @@
 #   define page_local_ui_widget_Text_hpp
 
 #	include <string>
+
 #	include "../../math/Color.hpp" // RgbaColor
-#	include "../../util/copy_ptr.hpp"
+#	include "../../util/raii/copy_ptr.hpp"
 #	include "../../util/Signal.hpp"
 #	include "../Widget.hpp"
 

@@ -32,7 +32,9 @@
 #   define page_local_vid_opengl_FontTexture_hpp
 
 #	include <unordered_map>
+
 #	include <GL/gl.h> // GLuint
+
 #	include "../../math/Aabb.hpp"
 
 namespace page

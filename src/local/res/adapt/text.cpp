@@ -29,7 +29,8 @@
  */
 
 #include <string>
-#include "../../util/string.hpp" // TrimLeading
+
+#include "../../util/string/operations.hpp" // TrimLeading
 #include "../Stream.hpp"
 
 namespace page

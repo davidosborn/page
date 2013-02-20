@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../cache/Proxy.hpp"
 #include "../cfg/vars.hpp"
 #include "channel/AmbientChannel.hpp"

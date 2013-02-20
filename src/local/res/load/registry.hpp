@@ -33,6 +33,7 @@
 
 #	include <string>
 #	include <typeinfo> // type_info
+
 #	include "function.hpp" // GetLoaderFunction, LoadFunction
 
 namespace page

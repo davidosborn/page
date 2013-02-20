@@ -34,6 +34,7 @@
 #	include <cstddef> // size_t
 #	include <iosfwd> // [io]stream
 #	include <iterator> // iterator_traits, reverse_iterator
+
 #	include "ArithmeticConversion.hpp"
 #	include "Vector.hpp"
 

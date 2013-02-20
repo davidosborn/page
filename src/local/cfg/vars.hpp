@@ -36,6 +36,12 @@
 	/**
 	 * @return The value of the specified configuration variable from the
 	 *         default @c State.
+	 *
+	 * @note To access the value of a variable, use:
+	 *       @code *CVAR(name) @endcode
+	 *
+	 * @note To change the value of a variable, use:
+	 *       @code CVAR(name)[source] = value @endcode
 	 */
 #	define CVAR(x) (GLOBAL(::page::cfg::State).x)
 

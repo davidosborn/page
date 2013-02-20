@@ -1,3 +1,9 @@
+Make a script to check the #include order.
+
+Get rid of util/serialize!
+
+Gotta get rid of util::unique_ptr and friends.
+
 Design functions to support both ranges and iterator-pairs, but prefer ranges.
 
 The constructor for clip::Stream takes the path and format in such a way that it isn't very configurable which Encoder is selected.  Like it would be better if we could select the best encoder according to a more flexible criteria.

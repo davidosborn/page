@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // max
+
 #include "Light.hpp"
 
 namespace page

@@ -36,6 +36,7 @@
 #   define page_local_res_type_Image_hpp
 
 #	include <vector>
+
 #	include "../../math/Vector.hpp"
 #	include "../../util/AlignedAllocator.hpp"
 

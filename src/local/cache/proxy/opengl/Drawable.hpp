@@ -32,8 +32,8 @@
 #   define page_local_cache_proxy_opengl_Drawable_hpp
 
 #	include "../../../phys/Form.hpp" // Form::Part
-#	include "../../../util/copy_ptr.hpp"
 #	include "../../../util/Identifiable.hpp" // Identifiable::Id
+#	include "../../../util/raii/copy_ptr.hpp"
 #	include "../../Proxy.hpp"
 
 namespace page

@@ -32,6 +32,7 @@
 #   define page_local_res_adapt_freetype_hpp
 
 #	include <memory> // unique_ptr
+
 #	include <ft2build.h>
 #	include FT_FREETYPE_H // FT_Open_Args
 

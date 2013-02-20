@@ -28,9 +28,11 @@
  * of this software.
  */
 
-#include <GL/gl.h>
 #include <stack>
 #include <unordered_map>
+
+#include <GL/gl.h>
+
 #include "../../math/Matrix.hpp"
 #include "get.hpp" // GetInteger
 

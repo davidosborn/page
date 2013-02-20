@@ -30,8 +30,9 @@
 
 #include <algorithm> // min
 #include <cassert>
+#include <memory> // unique_ptr
+
 #include "../../err/Exception.hpp"
-#include "../../util/unique_ptr.hpp"
 #include "../Stream.hpp"
 #include "SubPipe.hpp"
 
@@ -54,7 +55,7 @@ namespace page
 				void DoSeek(unsigned);
 
 				private:
-				util::unique_ptr<Stream> super;
+				std::unique_ptr<Stream> super;
 				unsigned pos, off, size;
 			};
 

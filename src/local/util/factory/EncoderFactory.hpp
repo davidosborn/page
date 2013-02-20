@@ -31,11 +31,9 @@
 #ifndef    page_local_util_factory_EncoderFactory_hpp
 #   define page_local_util_factory_EncoderFactory_hpp
 
-	// C++
 #	include <string>
 #	include <unordered_set>
 
-	// local
 #	include "Factory.hpp"
 
 namespace page

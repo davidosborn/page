@@ -33,6 +33,7 @@
 
 #	include <memory> // shared_ptr
 #	include <vector>
+
 #	include "../cache/fwd.hpp" // Proxy
 #	include "../util/NonCopyable.hpp"
 

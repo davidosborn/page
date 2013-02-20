@@ -32,6 +32,7 @@
 #   define page_local_inp_win32_Driver_hpp
 
 #	include <windows.h> // DWORD, HWND, LONG, LPARAM, UINT{,_PTR}, WPARAM
+
 #	include "../Driver.hpp"
 
 namespace page

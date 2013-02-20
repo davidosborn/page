@@ -29,6 +29,7 @@
  */
 
 #include <string>
+
 #include <X11/Xlib.h>
 
 namespace page

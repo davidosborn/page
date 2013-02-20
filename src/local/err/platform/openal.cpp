@@ -28,13 +28,10 @@
  * of this software.
  */
 
-// C++
 #include <string>
 
-// OpenAL
 #include <AL/al.h> // ALenum, alGetError
 
-// local
 #include "../Exception.hpp"
 
 namespace page

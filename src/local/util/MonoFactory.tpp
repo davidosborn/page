@@ -28,10 +28,8 @@
  * of this software.
  */
 
-// C++
 #include <utility> // forward
 
-// local
 #include "../err/Exception.hpp"
 
 namespace page

@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../../../math/float.hpp" // DecibelToLinear
 #include "../../../math/Vector.hpp"
 #include "../../../phys/Sound.hpp" // Sound::Get{IsLooping,Orientation,{,Play}Position,Sound,Velocity}

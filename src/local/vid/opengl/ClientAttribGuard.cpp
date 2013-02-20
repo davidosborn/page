@@ -29,7 +29,9 @@
  */
 
 #include <cassert>
+
 #include <GL/gl.h>
+
 #include "ClientAttribGuard.hpp"
 #include "get.hpp" // GetInteger
 

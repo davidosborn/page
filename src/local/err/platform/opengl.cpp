@@ -28,16 +28,13 @@
  * of this software.
  */
 
-// C++
 #include <string>
 
-// OpenGL
 #include <GL/gl.h> // GLenum, glGetError
 #ifdef HAVE_GLU
 #	include <GL/glu.h> // gluErrorString
 #endif
 
-// local
 #include "../Exception.hpp"
 
 namespace page

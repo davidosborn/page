@@ -32,6 +32,7 @@
 #   define page_local_res_source_DirSource_hpp
 
 #	include <unordered_map>
+
 #	include "Source.hpp"
 
 namespace page

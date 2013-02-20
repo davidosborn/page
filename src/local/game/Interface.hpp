@@ -32,6 +32,7 @@
 #   define page_local_game_Interface_hpp
 
 #	include <memory> // shared_ptr
+
 #	include "../ui/Interface.hpp"
 
 namespace page

@@ -30,6 +30,7 @@
 
 #include <algorithm> // max
 #include <cassert>
+
 #include "Controllable.hpp"
 
 namespace page

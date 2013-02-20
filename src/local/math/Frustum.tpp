@@ -31,6 +31,7 @@
 #include <algorithm> // copy, fill, swap_ranges, transform
 #include <istream>
 #include <ostream>
+
 #include "Matrix.hpp"
 
 namespace page

@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#include "ProgramSaver.hpp"
 #include "ext.hpp" // ARB_shader_objects
+#include "ProgramSaver.hpp"
 
 namespace page
 {

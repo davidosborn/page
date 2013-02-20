@@ -29,12 +29,12 @@
  */
 
 #include "../../sys/i386.hpp"
+#include "i386/3dnow.hpp"
+#include "i386/3dnowext.hpp"
 #include "i386/mmx.hpp"
 #include "i386/sse.hpp"
 #include "i386/sse2.hpp"
 #include "i386/sse3.hpp"
-#include "i386/3dnow.hpp"
-#include "i386/3dnowext.hpp"
 
 namespace page
 {

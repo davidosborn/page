@@ -32,6 +32,7 @@
 #   define page_local_script_lua_Process_hpp
 
 #	include <lua.hpp> // lua_State
+
 #	include "../Process.hpp"
 
 namespace page

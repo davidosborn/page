@@ -30,6 +30,7 @@
 
 #include <algorithm> // min
 #include <cstring> // memcpy
+
 #include "../../err/Exception.hpp"
 #include "../Stream.hpp"
 #include "MemPipe.hpp"

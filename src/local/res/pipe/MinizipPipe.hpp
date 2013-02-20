@@ -32,7 +32,9 @@
 #   define page_local_res_pipe_MinizipPipe_hpp
 
 #	include <memory> // shared_ptr
+
 #	include <minizip/unzip.h> // unz_file_pos
+
 #	include "Pipe.hpp"
 
 namespace page

@@ -29,7 +29,9 @@
  */
 
 #include <iterator> // back_inserter
+
 #include <GL/gl.h>
+
 #include "../../res/type/Mesh.hpp"
 #include "ClientAttribGuard.hpp"
 #include "VertexArray.hpp"

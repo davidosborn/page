@@ -35,6 +35,7 @@
 #   define page_local_phys_controller_TargetController_hpp
 
 #	include <vector>
+
 #	include "../Controller.hpp"
 
 namespace page

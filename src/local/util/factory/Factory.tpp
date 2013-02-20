@@ -28,14 +28,12 @@
  * of this software.
  */
 
-// C++
 #include <algorithm> // upper_bound
 #include <functional> // bind, greater
 
-// local
+#include "../../err/Exception.hpp"
 #include "../functional/member.hpp" // member_of
 #include "../functional/pointer.hpp" // address_of
-#include "../../err/Exception.hpp"
 
 namespace page
 {

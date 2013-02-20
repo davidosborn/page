@@ -1842,8 +1842,8 @@ local/script/Machine
 local/script/machine/registry
 local/script/Process
 local/script/Router
-local/sys
-local/sys/file
+local/sys/info
+local/sys/process
 local/sys/Timer
 local/ui/DrawContext
 local/ui/Interface
@@ -1865,8 +1865,9 @@ local/util/Identifiable
 local/util/ios
 local/util/lang
 local/util/locale
-local/util/path
-local/util/ScopeGuard
+local/util/path/expand
+local/util/path/extension
+local/util/raii/ScopeGuard
 local/util/Signal
 local/vid/draw
 local/vid/DrawContext
@@ -2061,9 +2062,8 @@ fi
 if [ "$with_posix" = yes ]; then
 	add_cxx_sources <<\EOF
 local/err/platform/posix
-local/sys/posix
-local/sys/posix/file
-local/sys/posix/proc
+local/sys/info_posix
+local/sys/process_posix
 EOF
 fi
 
@@ -2094,9 +2094,8 @@ local/cfg/source/win32/RegistrySource
 local/math/win32
 local/res/type/cursor/win32
 local/res/type/image/win32
-local/sys/win32
-local/sys/win32/file
-local/sys/win32/proc
+local/sys/info_win32
+local/sys/process_win32
 local/util/win32/string
 local/wnd/win32/Console
 local/wnd/win32/msg

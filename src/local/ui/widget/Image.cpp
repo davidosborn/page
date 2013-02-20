@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // max, min
+
 #include "../../cache/Proxy.hpp"
 #include "../../math/interp.hpp" // HermiteScale
 #include "../../res/type/Image.hpp" // Image::size

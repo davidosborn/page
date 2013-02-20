@@ -32,7 +32,9 @@
 #   define page_local_util_lua_hpp
 
 #	include <utility>
+
 #	include <lua.hpp>
+
 #	include "../math/fwd.hpp" // Euler, Vector
 
 namespace page

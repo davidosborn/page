@@ -31,9 +31,11 @@
 #include <algorithm> // transform
 #include <cassert>
 #include <climits> // CHAR_BIT
+
 #ifdef HAVE_GLU
 #	include <GL/glu.h> // gluBuild2DMipmaps, gluScaleImage
 #endif
+
 #include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"
 #include "../../math/pow2.hpp" // Pow2Ceil

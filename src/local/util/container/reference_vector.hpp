@@ -31,13 +31,10 @@
 #ifndef    page_local_util_container_reference_vector_hpp
 #   define page_local_util_container_reference_vector_hpp
 
-	// C++
 #	include <vector>
 
-	// Boost
 #	include <boost/iterator/indirect_iterator.hpp>
 
-	// local
 #	include "../class/copy_move.hpp" // DEFINE_{COPY,MOVE}
 
 namespace page

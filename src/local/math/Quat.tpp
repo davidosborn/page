@@ -33,6 +33,7 @@
 #include <cmath> // cos, sin, sqrt
 #include <functional> // bind, divides, minus, multiplies, plus, negate
 #include <numeric> // inner_product
+
 #include "../math/float.hpp" // Near
 #include "../util/algorithm/stdext.hpp" // find_not
 #include "../util/functional/operator.hpp" // modulus

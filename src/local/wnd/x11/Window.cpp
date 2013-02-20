@@ -30,11 +30,9 @@
 
 #include <array>
 
-// X11
 #include <X11/Xatom.h> // XA_STRING
 #include <X11/Xutil.h> // XSetWMName, XTextProperty
 
-// local
 #include "../../aud/Driver.hpp" // MakeDriver
 #include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"

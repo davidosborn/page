@@ -36,8 +36,8 @@
 #include "../adapt/minizip.hpp" // MakeZlibFileFuncDef
 #include "../fmt/zip.hpp" // sig
 #include "../Node.hpp"
-#include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../pipe/MinizipPipe.hpp"
+#include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../Stream.hpp"
 #include "register.hpp" // REGISTER_SCANNER
 

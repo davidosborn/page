@@ -32,6 +32,7 @@
 #   define page_local_res_pipe_Pipe_hpp
 
 #	include <vector>
+
 #	include "../util/StateSaver.hpp"
 
 namespace page

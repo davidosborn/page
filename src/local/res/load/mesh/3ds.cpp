@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <memory> // shared_ptr
+
 #include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../Stream.hpp"
 #include "../../type/Mesh.hpp"

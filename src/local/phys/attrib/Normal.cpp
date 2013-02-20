@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "Normal.hpp"
 
 namespace page

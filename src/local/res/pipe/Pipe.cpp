@@ -62,7 +62,7 @@ namespace page
 
 				private:
 				const Pipe &pipe;
-				util::unique_ptr<Stream> stream;
+				std::unique_ptr<Stream> stream;
 				unsigned pos, size;
 			};
 

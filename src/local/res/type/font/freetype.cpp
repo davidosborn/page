@@ -31,8 +31,10 @@
 #include <cassert>
 #include <climits> // CHAR_BIT
 #include <vector>
+
 #include <ft2build.h>
 #include FT_OUTLINE_H
+
 #include "../../../err/Exception.hpp"
 #include "../../adapt/freetype.hpp" // FloatToFrac, GetLib
 #include "../Font.hpp" // Font::Glyph::Outline

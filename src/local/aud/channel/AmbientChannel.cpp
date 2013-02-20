@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // max, min
+
 #include "../../math/float.hpp" // DecibelToLinear
 #include "../../math/interp.hpp" // HermiteScale
 #include "../Sound.hpp" // Sound::{Get{FadeDuration,Level,Volume},IsStopping}

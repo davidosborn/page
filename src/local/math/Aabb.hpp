@@ -32,6 +32,7 @@
 #   define page_local_math_Aabb_hpp
 
 #	include <iosfwd> // [io]stream
+
 #	include "ArithmeticConversion.hpp"
 #	include "float.hpp" // Real
 #	include "fwd.hpp" // Aabb, defaultType

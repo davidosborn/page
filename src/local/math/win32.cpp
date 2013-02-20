@@ -30,6 +30,7 @@
 
 #include <windows.h> // LONG, POINT, RECT
 #include <windowsx.h> // GET_[XY]_LPARAM
+
 #include "Aabb.hpp"
 #include "Vector.hpp"
 

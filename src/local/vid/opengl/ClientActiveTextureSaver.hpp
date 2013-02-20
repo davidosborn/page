@@ -35,6 +35,7 @@
 #   define page_local_vid_opengl_ClientActiveTextureSaver_hpp
 
 #	include <GL/gl.h> // GLenum
+
 #	include "../../util/StateSaver.hpp"
 
 namespace page

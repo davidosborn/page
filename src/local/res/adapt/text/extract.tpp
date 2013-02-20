@@ -30,9 +30,10 @@
 
 #include <algorithm> // fill
 #include <iterator> // iterator_traits
+
 #include "../../../err/Exception.hpp"
 #include "../../../util/lexical_cast.hpp"
-#include "../../../util/string.hpp" // Partition
+#include "../../../util/string/operations.hpp" // Partition
 
 namespace page
 {

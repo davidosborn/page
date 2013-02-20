@@ -31,15 +31,12 @@
 #ifndef    page_local_cfg_source_Source_hpp
 #   define page_local_cfg_source_Source_hpp
 
-	// C++
 #	include <memory> // unique_ptr
 #	include <string>
 #	include <vector>
 
-	// Boost
 #	include <boost/optional.hpp>
 
-	// local
 #	include "../../util/class/copy_move.hpp" // MAKE_UNCOPYABLE
 
 namespace page

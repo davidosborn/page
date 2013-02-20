@@ -28,48 +28,70 @@
  * of this software.
  */
 
-#include <utility> // move
+#ifndef    page_local_util_string_StringBuilder_hpp
+#   define page_local_util_string_StringBuilder_hpp
+
+#	include <sstream> // basic_{ostringstream,string}
+
+#	include "../class/copy_move.hpp" // MAKE_UNCOPYABLE
 
 namespace page
 {
 	namespace util
 	{
-		// deleter
-		template <typename T> struct unique_ptr<T>::ConstDeleterAdapter
+		/**
+		 * An alternative to std::basic_ostringstream, which allows you to write
+		 * one-liners, since the insertion operator returns the complete type.
+		 */
+		template <
+			typename Char       = char,
+			typename CharTraits = std::char_traits<Char>>
+		class StringBuilder
 		{
-			explicit ConstDeleterAdapter(deleter_type deleter) :
-				deleter(deleter) {}
+			/*------+
+			| types |
+			+------*/
 
-			void operator ()(const T *p) const
-			{
-				deleter(const_cast<T *>(p));
-			}
+			public:
+			typedef std::basic_string<Char, CharTraits> String;
+
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
+			StringBuilder() = default;
+
+			/*----------------------+
+			| copy & move semantics |
+			+----------------------*/
+
+			MAKE_UNCOPYABLE(StringBuilder)
+
+			/*-----------+
+			| operations |
+			+-----------*/
+
+			public:
+			template <typename T>
+				StringBuilder &operator <<(T &&);
+
+			/*------------+
+			| conversions |
+			+------------*/
+
+			public:
+			operator String() const;
+
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
-			deleter_type deleter;
+			std::basic_ostringstream<Char, CharTraits> ss;
 		};
-
-		// constructors
-		template <typename T> unique_ptr<T>::unique_ptr() : Base() {}
-		template <typename T> unique_ptr<T>::unique_ptr(pointer p) : Base(p) {}
-		template <typename T> unique_ptr<T>::unique_ptr(pointer p, deleter_type deleter) : Base(p, deleter) {}
-		template <typename T> unique_ptr<T>::unique_ptr(std::nullptr_t) : Base(nullptr) {}
-		template <typename T> unique_ptr<T>::unique_ptr(unique_ptr &&other) : Base(std::move(other)) {}
-		template <typename T> template <typename U> unique_ptr<T>::unique_ptr(std::auto_ptr<U> &&other) : Base(std::move(other)) {}
-		template <typename T> template <typename U, typename D> unique_ptr<T>::unique_ptr(std::unique_ptr<U, D> &&other) : Base(std::move(other)) {}
-
-		// destructor
-		template <typename T> unique_ptr<T>::~unique_ptr()
-		{
-			deleter_type deleter(this->get_deleter());
-			if (deleter != nullptr) deleter(this->get());
-			this->release();
-		}
-
-		// observers
-		template <typename T> typename unique_ptr<T>::const_deleter_type unique_ptr<T>::get_const_deleter() const
-		{
-			return ConstDeleterAdapter(this->get_deleter());
-		}
 	}
 }
+
+#	include "StringBuilder.tpp"
+#endif

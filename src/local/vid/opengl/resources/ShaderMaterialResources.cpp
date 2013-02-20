@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+
 #include "../../../cache/proxy/Resource.hpp"
 #include "../../../cfg/vars.hpp"
 #include "../ext.hpp" // ARB_{{fragment,vertex}_shader,shader_objects}

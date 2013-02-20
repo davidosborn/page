@@ -36,8 +36,8 @@
 #	include "../cache/fwd.hpp" // Proxy
 #	include "../res/type/Model.hpp" // Model::Part
 #	include "../res/type/Scene.hpp" // Scene::Form
-#	include "../util/copy_ptr.hpp"
 #	include "../util/Identifiable.hpp"
+#	include "../util/raii/copy_ptr.hpp"
 #	include "attrib/Deformation.hpp"
 #	include "attrib/Material.hpp"
 #	include "attrib/Mesh.hpp"

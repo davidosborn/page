@@ -33,6 +33,7 @@
  */
 
 #include <cassert>
+
 #include "Signal.hpp"
 
 namespace page

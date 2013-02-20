@@ -33,6 +33,7 @@
 #include <cmath> // acos, cos, sin, sqrt
 #include <istream>
 #include <ostream>
+
 #include "Euler.hpp"
 #include "float.hpp" // Near
 #include "Matrix.hpp"

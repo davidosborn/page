@@ -33,6 +33,7 @@
 
 #	include <array>
 #	include <memory> // {unique,shared}_ptr
+
 #	include "../../math/fwd.hpp" // Vector
 #	include "../../util/NonCopyable.hpp"
 

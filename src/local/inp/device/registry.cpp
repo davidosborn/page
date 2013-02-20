@@ -31,6 +31,7 @@
 #include <cassert>
 #include <iostream> // cout
 #include <vector>
+
 #include "../../log/Indenter.hpp"
 #include "../Device.hpp" // Device::~Device
 #include "registry.hpp" // DeviceFactory, Devices

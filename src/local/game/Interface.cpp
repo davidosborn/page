@@ -29,6 +29,7 @@
  */
 
 #include <string>
+
 #include "../cache/proxy/Resource.hpp"
 #include "../log/stats.hpp" // GetStats, Stats::Get*
 #include "../res/Index.hpp" // GetIndex, Index::Load

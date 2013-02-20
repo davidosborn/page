@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // min
+
 #include "../math/Euler.hpp"
 #include "../math/float.hpp" // DegToRad
 #include "../math/interp.hpp" // HermiteScale

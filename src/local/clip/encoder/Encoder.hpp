@@ -31,10 +31,8 @@
 #ifndef    page_local_clip_encoder_Encoder_hpp
 #   define page_local_clip_encoder_Encoder_hpp
 
-	// C++
 #	include <vector>
 
-	// local
 #	include "../../util/class/copy_move.hpp" // MAKE_UNCOPYABLE
 #	include "detail/EncoderFactory.hpp"
 

@@ -32,6 +32,7 @@
 #   define page_local_math_intersect_hpp
 
 #	include <utility> // pair
+
 #	include "fwd.hpp" // Plane
 #	include "Vector.hpp"
 

@@ -33,7 +33,9 @@
 #include <cstring> // strlen
 #include <ctime> // localtime, time
 #include <vector>
+
 #include <png.h>
+
 #include "../../../util/pp.hpp" // STRINGIZE
 #include "../../adapt/png.hpp" // WriteInfo
 #include "../../type/Image.hpp"

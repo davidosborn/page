@@ -32,6 +32,7 @@
 #   define page_local_math_ViewFrustum_hpp
 
 #	include <iosfwd> // [io]stream
+
 #	include "float.hpp" // Pi
 #	include "Frustum.hpp"
 #	include "fwd.hpp" // ViewFrustum

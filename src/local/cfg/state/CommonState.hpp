@@ -34,11 +34,9 @@
 #	include <string>
 #	include <vector>
 
-	// Boost
 #	include <boost/filesystem/path.hpp>
 #	include <boost/regex.hpp>
 
-	// local
 #	include "../../math/Vector.hpp"
 #	include "../var/Var.hpp"
 #	include "BasicState.hpp"

@@ -32,6 +32,7 @@
 #   define page_local_res_pipe_ZipPipe_hpp
 
 #	include <string>
+
 #	include "Pipe.hpp"
 
 namespace page

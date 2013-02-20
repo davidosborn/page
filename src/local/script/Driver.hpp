@@ -34,6 +34,7 @@
 #	include <memory> // shared_ptr
 #	include <unordered_map>
 #	include <vector>
+
 #	include "../res/type/script/ScriptFormat.hpp"
 #	include "../util/NonCopyable.hpp"
 #	include "Router.hpp"

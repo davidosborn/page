@@ -32,6 +32,7 @@
 #   define page_local_res_type_Script_hpp
 
 #	include <string>
+
 #	include "script/ScriptFormat.hpp"
 
 namespace page

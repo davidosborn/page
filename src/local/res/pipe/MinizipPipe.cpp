@@ -30,6 +30,7 @@
 
 #include <algorithm> // min
 #include <cassert>
+
 #include "../../err/Exception.hpp"
 #include "../../util/buffer.hpp" // GetDirtyBuffer
 #include "../adapt/minizip.hpp" // MakeZlibFileFuncDef

@@ -32,6 +32,7 @@
 #   define page_local_res_type_Object_hpp
 
 #	include <string>
+
 #	include "../../cache/proxy/Resource.hpp"
 
 namespace page

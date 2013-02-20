@@ -28,11 +28,9 @@
  * of this software.
  */
 
-// Boost
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 
-// local
 #include "../functional/pointer.hpp" // address_of
 
 namespace page

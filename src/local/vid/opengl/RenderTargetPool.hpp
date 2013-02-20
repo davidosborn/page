@@ -33,7 +33,9 @@
 
 #	include <memory> // shared_ptr
 #	include <queue>
+
 #	include <GL/gl.h> // GL{enum,uint}
+
 #	include "../../math/fwd.hpp" // Vector
 #	include "../../util/NonCopyable.hpp"
 #	include "Framebuffer.hpp"

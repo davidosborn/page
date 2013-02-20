@@ -32,6 +32,7 @@
 #   define page_local_wnd_x11_Window_hpp
 
 #	include <X11/Xlib.h> // Atom, Display, Window, XEvent
+
 #	include "../Window.hpp"
 
 namespace page

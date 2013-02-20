@@ -28,15 +28,12 @@
  * of this software.
  */
 
-// C++
 #include <cassert>
 #include <functional> // bind
 #include <iostream> // cout
 
-// Boost
 #include <boost/filesystem/operations.hpp>
 
-// local
 #include "../cfg/vars.hpp"
 #include "../err/Exception.hpp"
 #include "../res/type/Image.hpp"

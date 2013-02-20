@@ -32,15 +32,15 @@
 #   define page_local_util_string_convert_hpp
 
 #	include <string> // allocator, basic_string, char_traits
-#	include "Flags.hpp"
+
+#	include "../Flags.hpp"
 
 namespace page
 {
 	namespace util
 	{
 		/**
-		 * A collection of bit-flags for modifying the behaviour of the Convert
-		 * function.
+		 * A collection of bit-flags for modifying the behaviour of @c Convert.
 		 */
 		struct ConvertFlags : Flags
 		{
