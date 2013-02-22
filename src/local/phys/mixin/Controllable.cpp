@@ -80,7 +80,7 @@ namespace page
 		}
 		void Controllable::RemoveController(const ControllerProxy &controller)
 		{
-			RemoveController(controller.lock());
+			RemoveController(controller.Lock());
 		}
 		void Controllable::RemoveController(const std::shared_ptr<Controller> &controller)
 		{

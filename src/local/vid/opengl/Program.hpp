@@ -44,7 +44,7 @@
 
 namespace page
 {
-	namespace res {namespace opengl { class Shader; }}
+	namespace res { namespace opengl { class Shader; }}
 
 	namespace vid
 	{

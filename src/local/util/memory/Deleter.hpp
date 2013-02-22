@@ -28,35 +28,57 @@
  * of this software.
  */
 
-// shared_ptr compatible deleter
+#ifndef    page_local_util_memory_Deleter_hpp
+#   define page_local_util_memory_Deleter_hpp
 
-#ifndef    page_local_util_Deleter_hpp
-#   define page_local_util_Deleter_hpp
-
-#	include <functional> // function
+#	include <memory> // shared_ptr
 
 namespace page
 {
 	namespace util
 	{
-		namespace detail
+		/**
+		 * A function object containing a generic deleter, for use with
+		 * @c shared_ptr and @c unique_ptr.
+		 */
+		typedef std::function<void (const void *)> Deleter;
+
+		/**
+		 * A default deleter.
+		 *
+		 * @note This deleter takes a pointer-to-void to provide compatibility
+		 *       with @c Deleter.
+		 */
+		template <typename T>
+			struct DefaultDeleter
 		{
-			template <typename T> static void Delete(const void *p)
+			typedef const void *argument_type;
+			typedef void result_type;
+
+			void operator ()(const void *p) const
 			{
 				delete static_cast<const T *>(p);
 			}
-			template <typename T> static void DeleteNull(const void *) {}
-		}
+		};
 
-		typedef std::function<void (const void *)> Deleter;
+		/**
+		 * A no-op deleter.
+		 */
+		struct NopDeleter
+		{
+			typedef const void *argument_type;
+			typedef void result_type;
 
-		template <typename T> inline Deleter GetDeleter()
+			void operator ()(const void *) const {}
+		};
+
+		/**
+		 * @return A @c std::shared_ptr representation of a static instance.
+		 */
+		template <typename T>
+			std::shared_ptr<T> Share(T &p)
 		{
-			return Deleter(detail::Delete<T>);
-		}
-		template <typename T> inline Deleter GetNullDeleter()
-		{
-			return Deleter(detail::DeleteNull<T>);
+			return std::shared_ptr<T>(&p, NopDeleter());
 		}
 	}
 }

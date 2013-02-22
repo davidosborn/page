@@ -44,7 +44,7 @@ namespace page
 		// construct
 		GaitController::GaitController(const attrib::PositionOrientation &body, const cache::Proxy<res::Gait> &gait) :
 			AnimationTargetController(postCollisionLayer, false), body(body),
-			gait(gait.lock()), state(noState), stride(0) {}
+			gait(gait.Lock()), state(noState), stride(0) {}
 
 		// clone
 		GaitController *GaitController::Clone() const

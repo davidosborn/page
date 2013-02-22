@@ -35,8 +35,8 @@
 #	include <string>
 
 #	include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo, std::type_info
-#	include "../../util/Deleter.hpp" // Deleter, GetDeleter
 #	include "../../util/functional/cast.hpp" // reinterpret_cast_function
+#	include "../../util/memory/Deleter.hpp" // {,Default}Deleter
 #	include "function.hpp" // PostLoadFunction, Referenceable
 #	include "registry.hpp" // RegisterType
 
@@ -48,7 +48,7 @@ namespace page
 		namespace \
 		{ \
 			TypeRegisterer _reg##type( \
-				util::GetIncompleteTypeInfo<type>(), name, util::GetDeleter<type>(), \
+				util::GetIncompleteTypeInfo<type>(), name, util::DefaultDeleter<type>(), \
 				postLoad ? \
 				std::bind( \
 					std::function<void (type &)>(postLoad), \

@@ -146,8 +146,8 @@ namespace page
 
 		FileSource::FileSource(const boost::filesystem::path &path) :
 			Source(
-				util::StringBuilder<>() << "file:/" << absolute(path).generic_string(),
-				util::StringBuilder<>() << "file at '" << absolute(path).string() << "'"),
+				util::StringBuilder() << "file:/" << absolute(path).generic_string(),
+				util::StringBuilder() << "file at '" << absolute(path).string() << "'"),
 			path(absolute(path)) {}
 
 		/*----------------------+

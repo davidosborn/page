@@ -28,7 +28,7 @@
  * of this software.
  */
 
-#include "../../../util/lexical_cast.hpp"
+#include "../../../util/string/StringBuilder.hpp"
 #include "../../../vid/opengl/FontTexture.hpp"
 #include "FontTexture.hpp"
 
@@ -38,34 +38,46 @@ namespace page
 	{
 		namespace opengl
 		{
-			// construct
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
 			FontTexture::FontTexture(const Proxy<res::Font> &font, unsigned fontSize) :
 				font(font.Copy()), fontSize(fontSize) {}
 
-			// clone
+			/*------+
+			| clone |
+			+------*/
+
 			FontTexture *FontTexture::Clone() const
 			{
 				return new FontTexture(*this);
 			}
 
-			// attributes
+			/*----------+
+			| observers |
+			+----------*/
+
 			std::string FontTexture::GetType() const
 			{
 				return "font texture";
 			}
+
 			std::string FontTexture::GetSource() const
 			{
-				return font->GetSource() + ':' +
-					util::lexical_cast<std::string>(fontSize);
+				return util::StringBuilder() <<
+					font->GetSource() << ':' << fontSize;
 			}
 
-			// dependency satisfaction
 			FontTexture::operator bool() const
 			{
 				return *font;
 			}
 
-			// instantiation
+			/*--------------+
+			| instantiation |
+			+--------------*/
+
 			FontTexture::Instance FontTexture::Make() const
 			{
 				return Instance(new vid::opengl::FontTexture(**font, fontSize));

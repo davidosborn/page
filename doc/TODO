@@ -1,3 +1,7 @@
+Consider using type-erasure (described in detail in doc/misc) to create classes with no visible members in the header.
+
+Remember to never return by pointer (such as MakeCursor), but always std::unique_ptr.
+
 Replace util::lexical_cast with the Boost version.
 
 In game/Game.cpp, where we call Save(...), we convert the path to a string with boost::filesystem::path::native, but we shouldn't have to do this once the resource module is updated.

@@ -38,7 +38,8 @@ namespace page
 {
 	namespace cache
 	{
-		template <typename T> struct IndirectProxy : Proxy<T>
+		template <typename T>
+			class IndirectProxy : public Proxy<T>
 		{
 			// FIXME: implement
 

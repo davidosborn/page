@@ -30,45 +30,57 @@
 
 #include "../../phys/attrib/Pose.hpp" // Pose->util::Identifiable
 #include "../../phys/Skin.hpp"
-#include "../../util/lexical_cast.hpp"
+#include "../../util/string/StringBuilder.hpp"
 #include "Skin.hpp"
 
 namespace page
 {
 	namespace cache
 	{
-		// construct
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
 		Skin::Skin(const Proxy<res::Mesh> &mesh, const phys::attrib::Pose &pose) :
 			mesh(mesh.Copy()), poseId(pose.GetId()) {}
 
-		// clone
+		/*------+
+		| clone |
+		+------*/
+
 		Skin *Skin::Clone() const
 		{
 			return new Skin(*this);
 		}
 
-		// attributes
+		/*----------+
+		| observers |
+		+----------*/
+
 		std::string Skin::GetType() const
 		{
 			return "skin";
 		}
+
 		std::string Skin::GetSource() const
 		{
-			return mesh->GetSource() + ':' +
-				util::lexical_cast<std::string>(poseId);
+			return util::StringBuilder() <<
+				mesh->GetSource() << ':' << poseId;
 		}
 
-		// dependency satisfaction
 		Skin::operator bool() const
 		{
 			return *mesh && util::Identifiable::FromId(poseId);
 		}
 
-		// instantiation
+		/*--------------+
+		| instantiation |
+		+--------------*/
+
 		Skin::Instance Skin::Make() const
 		{
-			return Instance(new phys::Skin(**mesh,
-				util::ReferenceFromId<phys::attrib::Pose>(poseId)));
+			return std::make_shared<phys::Skin>(**mesh,
+				util::ReferenceFromId<phys::attrib::Pose>(poseId));
 		}
 	}
 }

@@ -29,7 +29,7 @@
  */
 
 #include <algorithm> // transform
-#include <functional> // mem_fun_ref
+#include <functional> // mem_fn
 #include <iterator> // back_inserter, begin, end
 
 namespace page
@@ -49,7 +49,7 @@ namespace page
 				ENABLE_IF_IMPL((util::is_iterator<MeshInputIterator>::value)))
 		{
 			std::transform(firstMesh, lastMesh, std::back_inserter(meshes),
-				std::mem_fun_ref(&Proxy<res::Mesh>::Copy));
+				std::mem_fn(&Proxy<res::Mesh>::Copy));
 
 			PostInit();
 		}
@@ -70,7 +70,7 @@ namespace page
 					skeleton(skeleton.Copy())
 		{
 			std::transform(firstMesh, lastMesh, std::back_inserter(meshes),
-				std::mem_fun_ref(&Proxy<res::Mesh>::Copy));
+				std::mem_fn(&Proxy<res::Mesh>::Copy));
 
 			PostInit();
 		}

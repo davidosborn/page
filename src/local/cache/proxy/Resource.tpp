@@ -36,34 +36,52 @@ namespace page
 {
 	namespace cache
 	{
-		// construct
-		template <typename T> Resource<T>::Resource(const std::string &path) :
-			path(path) {}
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-		// clone
-		template <typename T> Resource<T> *Resource<T>::Clone() const
+		template <typename T>
+			Resource<T>::Resource(const std::string &path) :
+				path(path) {}
+
+		/*------+
+		| clone |
+		+------*/
+
+		template <typename T>
+			Resource<T> *Resource<T>::Clone() const
 		{
 			return new Resource<T>(*this);
 		}
 
-		// attributes
-		template <typename T> std::string Resource<T>::GetType() const
+		/*----------+
+		| observers |
+		+----------*/
+
+		template <typename T>
+			std::string Resource<T>::GetType() const
 		{
 			return res::GetRegisteredTypeName(util::GetIncompleteTypeInfo<T>());
 		}
-		template <typename T> std::string Resource<T>::GetSource() const
+
+		template <typename T>
+			std::string Resource<T>::GetSource() const
 		{
 			return path;
 		}
 
-		// dependency satisfaction
-		template <typename T> Resource<T>::operator bool() const
+		template <typename T>
+			Resource<T>::operator bool() const
 		{
 			return !path.empty();
 		}
 
-		// instantiation
-		template <typename T> typename Resource<T>::Instance Resource<T>::Make() const
+		/*--------------+
+		| instantiation |
+		+--------------*/
+
+		template <typename T>
+			typename Resource<T>::Instance Resource<T>::Make() const
 		{
 			return res::GetIndex().Load<T>(path);
 		}

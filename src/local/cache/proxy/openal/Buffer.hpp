@@ -44,26 +44,51 @@ namespace page
 	{
 		namespace openal
 		{
-			struct Buffer : Proxy<ALuint>
+			/**
+			 * A proxy representing an OpenAL buffer in the cache.
+			 */
+			class Buffer : public Proxy<ALuint>
 			{
-				using Proxy<ALuint>::Instance;
+				/*------+
+				| types |
+				+------*/
 
-				// construct
+				public:
+				typedef typename Proxy<ALuint>::Instance Instance;
+			
+				/*--------------------------+
+				| constructors & destructor |
+				+--------------------------*/
+
+				public:
 				explicit Buffer(const Proxy<res::Sound> &);
 
-				// clone
-				Buffer *Clone() const;
+				/*------+
+				| clone |
+				+------*/
 
-				// attributes
-				std::string GetType() const;
-				std::string GetSource() const;
+				public:
+				Buffer *Clone() const override;
 
-				// dependency satisfaction
-				operator bool() const;
+				/*----------+
+				| observers |
+				+----------*/
+
+				public:
+				std::string GetType() const override;
+				std::string GetSource() const override;
+				operator bool() const override;
+
+				/*--------------+
+				| instantiation |
+				+--------------*/
 
 				private:
-				// instantiation
-				Instance Make() const;
+				Instance Make() const override;
+
+				/*-------------+
+				| data members |
+				+-------------*/
 
 				private:
 				util::copy_ptr<cache::Proxy<res::Sound>> sound;

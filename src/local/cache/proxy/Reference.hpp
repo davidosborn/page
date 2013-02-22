@@ -40,36 +40,71 @@ namespace page
 {
 	namespace cache
 	{
-		template <typename T> struct Reference : Proxy<T>
+		/**
+		 * A facade of @c Proxy that provides access to a object by reference
+		 * that is not in the cache.
+		 */
+		template <typename T>
+			class Reference : public Proxy<T>
 		{
-			// HACK: GCC doesn't support using typename (bug #14258)
-			typedef typename Proxy<T>::Instance Instance;
+			/*------+
+			| types |
+			+------*/
 
-			// construct
+			public:
+			typedef typename Proxy<T>::Instance Instance;
+		
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
 			explicit Reference(const T &);
 			explicit Reference(const Instance & = Instance());
 
-			// clone
-			Reference<T> *Clone() const;
+			/*------+
+			| clone |
+			+------*/
 
-			// access
-			Instance lock() const;
+			public:
+			Reference<T> *Clone() const override;
 
-			// attributes
-			std::string GetType() const;
-			std::string GetSource() const;
+			/*-------+
+			| access |
+			+-------*/
 
-			// dependency satisfaction
-			operator bool() const;
+			public:
+			Instance Lock() const override;
 
-			// modifiers
-			void Invalidate() const;
-			void Purge() const;
+			/*----------+
+			| observers |
+			+----------*/
+
+			public:
+			std::string GetType() const override;
+			std::string GetSource() const override;
+			operator bool() const override;
+
+			/*----------+
+			| modifiers |
+			+----------*/
+
+			public:
+			void Invalidate() const override;
+			void Purge() const override;
+
+			/*--------------+
+			| instantiation |
+			+--------------*/
 
 			private:
-			// instantiation
-			Instance Make() const;
+			Instance Make() const override;
 
+			/*-------------+
+			| data members |
+			+-------------*/
+
+			private:
 			Instance instance;
 			std::string source;
 		};

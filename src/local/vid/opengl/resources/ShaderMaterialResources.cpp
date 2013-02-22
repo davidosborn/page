@@ -57,40 +57,40 @@ namespace page
 					switch (res.GetShadow().GetType())
 					{
 						case Resources::Shadow::exponentialType:
-						return cache::opengl::Program(
+						return cache::opengl::Program({
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render.fs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render.vs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render-shadow.fs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render-shadow.vs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render-shadow-exponential.fs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-diffuse.fs"),
-							cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-mask.fs"));
+							cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-mask.fs")});
 						break;
 						case Resources::Shadow::packedType:
 						// FIXME: implement
 						break;
 						case Resources::Shadow::varianceType:
-						return cache::opengl::Program(
+						return cache::opengl::Program({
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render.fs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render.vs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render-shadow.fs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render-shadow.vs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/render-shadow-variance.fs"),
 							cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-diffuse.fs"),
-							cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-mask.fs"));
+							cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-mask.fs")});
 						break;
 						default: assert(!"invalid shadow type");
 					}
 				}
 				else
 				{
-					return cache::opengl::Program(
+					return cache::opengl::Program({
 						cache::Resource<res::opengl::Shader>("shader/glsl/render/render.fs"),
 						cache::Resource<res::opengl::Shader>("shader/glsl/render/render.vs"),
 						cache::Resource<res::opengl::Shader>("shader/glsl/render/render-shadow-none.fs"),
 						cache::Resource<res::opengl::Shader>("shader/glsl/render/render-shadow-none.vs"),
 						cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-diffuse.fs"),
-						cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-mask.fs"));
+						cache::Resource<res::opengl::Shader>("shader/glsl/render/sample-mask.fs")});
 				}
 			}
 

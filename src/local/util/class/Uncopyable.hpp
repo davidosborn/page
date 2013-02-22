@@ -43,6 +43,13 @@ namespace page
 		template <typename Derived>
 			class Uncopyable
 		{
+			public:
+			/**
+			 * It is necessary to explicitly declare the default constructor
+			 * because it will not be provided by default.
+			 */
+			Uncopyable() = default;
+
 			MAKE_UNCOPYABLE(Uncopyable)
 		};
 	}

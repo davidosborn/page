@@ -29,6 +29,7 @@
  */
 
 #include <cassert>
+#include <sstream> // ostringstream
 
 #include "../../../vid/opengl/Texture.hpp"
 #include "Texture.hpp"
@@ -39,52 +40,64 @@ namespace page
 	{
 		namespace opengl
 		{
-			// construct
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
 			Texture::Texture(const Proxy<res::Image> &image, vid::opengl::TextureFormat format, vid::opengl::TextureFlags flags, const math::Vector<2, bool> &clamp) :
 				image(image.Copy()), format(format), flags(flags), clamp(clamp) {}
 
-			// clone
+			/*------+
+			| clone |
+			+------*/
+
 			Texture *Texture::Clone() const
 			{
 				return new Texture(*this);
 			}
 
-			// attributes
+			/*----------+
+			| observers |
+			+----------*/
+
 			std::string Texture::GetType() const
 			{
 				return "texture";
 			}
+
 			std::string Texture::GetSource() const
 			{
-				std::string source(image->GetSource());
+				std::ostringstream ss(image->GetSource());
 				switch (format)
 				{
 					case vid::opengl::defaultTextureFormat: break;
-					case vid::opengl::alphaTextureFormat:     source += ":alpha";     break;
-					case vid::opengl::luminanceTextureFormat: source += ":luminance"; break;
+					case vid::opengl::alphaTextureFormat:     ss << ":alpha";     break;
+					case vid::opengl::luminanceTextureFormat: ss << ":luminance"; break;
 					default: assert(!"invalid texture format");
 				}
-				if (flags & vid::opengl::filterTextureFlag) source += ":filter";
-				if (flags & vid::opengl::mipmapTextureFlag) source += ":mipmap";
+				if (flags & vid::opengl::filterTextureFlag) ss << ":filter";
+				if (flags & vid::opengl::mipmapTextureFlag) ss << ":mipmap";
 				if (Any(clamp))
 				{
-					source += ":clamp";
-					if      (!clamp.x) source += ".y";
-					else if (!clamp.y) source += ".x";
+					ss << ":clamp";
+					if      (!clamp.x) ss << ".y";
+					else if (!clamp.y) ss << ".x";
 				}
-				return source;
+				return ss.str();
 			}
 
-			// dependency satisfaction
 			Texture::operator bool() const
 			{
 				return *image;
 			}
 
-			// instantiation
+			/*--------------+
+			| instantiation |
+			+--------------*/
+
 			Texture::Instance Texture::Make() const
 			{
-				return Instance(new vid::opengl::Texture(**image, format, flags, clamp));
+				return std::make_shared<vid::opengl::Texture>(**image, format, flags, clamp);
 			}
 		}
 	}

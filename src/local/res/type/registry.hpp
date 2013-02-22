@@ -34,7 +34,7 @@
 #	include <string>
 #	include <typeinfo> // type_info
 
-#	include "../../util/Deleter.hpp" // Deleter
+#	include "../../util/memory/Deleter.hpp" // Deleter
 #	include "function.hpp" // PostLoadFunction
 
 namespace page

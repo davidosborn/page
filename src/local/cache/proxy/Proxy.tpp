@@ -44,7 +44,7 @@ namespace page
 		+--------------------------*/
 
 		template <typename T>
-			Proxy<T>::Proxy(const Repair &repair) :
+			Proxy<T>::Proxy(const RepairFunction &repair) :
 				repair(repair) {}
 
 		template <typename T>
@@ -69,11 +69,11 @@ namespace page
 		template <typename T>
 			const T *Proxy<T>::get() const
 		{
-			return lock().get();
+			return Lock().get();
 		}
 
 		template <typename T>
-			typename Proxy<T>::Instance Proxy<T>::lock() const
+			typename Proxy<T>::Instance Proxy<T>::Lock() const
 		{
 			assert(*this);
 			Instance instance(reference.lock());

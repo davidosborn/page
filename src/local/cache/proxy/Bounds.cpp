@@ -30,7 +30,7 @@
 
 #include <algorithm> // copy, find, sort, transform, unique
 #include <cassert>
-#include <functional> // bind, mem_fun_ref
+#include <functional> // bind, mem_fn
 #include <iterator> // back_inserter
 #include <sstream> // ostringstream
 
@@ -57,7 +57,7 @@ namespace page
 				util::make_member_iterator(model.parts.begin(), &res::Model::Part::mesh),
 				util::make_member_iterator(model.parts.end(),   &res::Model::Part::mesh),
 				std::back_inserter(meshes),
-				std::mem_fun_ref(&Proxy<res::Mesh>::Copy));
+				std::mem_fn(&Proxy<res::Mesh>::Copy));
 
 			if (pose && model.skeleton)
 				skeleton = model.skeleton.Copy();
@@ -94,9 +94,9 @@ namespace page
 			std::ostringstream ss;
 			std::copy(
 				util::make_call_iterator(util::make_indirect_iterator(meshes.begin()),
-					std::mem_fun_ref(&Proxy<res::Mesh>::GetSource)),
+					std::mem_fn(&Proxy<res::Mesh>::GetSource)),
 				util::make_call_iterator(util::make_indirect_iterator(meshes.end()),
-					std::mem_fun_ref(&Proxy<res::Mesh>::GetSource)),
+					std::mem_fn(&Proxy<res::Mesh>::GetSource)),
 				util::separated_ostream_iterator<std::string>(ss, ','));
 
 			if (skeleton)
@@ -126,14 +126,14 @@ namespace page
 
 		Bounds::Instance Bounds::Make() const
 		{
-			return Instance(skeleton ?
-				new phys::Bounds(
+			return skeleton ?
+				std::make_shared<phys::Bounds>(
 					util::make_indirect_iterator(util::make_indirect_iterator(meshes.begin())),
 					util::make_indirect_iterator(util::make_indirect_iterator(meshes.end())),
 					**skeleton) :
-				new phys::Bounds(
+				std::make_shared<phys::Bounds>(
 					util::make_indirect_iterator(util::make_indirect_iterator(meshes.begin())),
-					util::make_indirect_iterator(util::make_indirect_iterator(meshes.end()))));
+					util::make_indirect_iterator(util::make_indirect_iterator(meshes.end())));
 		}
 
 		/*---------------+

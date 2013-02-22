@@ -44,7 +44,7 @@ namespace page
 			// construct/destroy
 			StaticBuffer::StaticBuffer(ALuint source, const cache::Proxy<res::Sound> &sound, bool loop, float playPosition) :
 				source(source), buffer(cache::openal::Buffer(sound).Copy()),
-				lock(buffer->lock())
+				lock(buffer->Lock())
 			{
 				alSourcei(source, AL_BUFFER, *lock);
 				alSourcei(source, AL_LOOPING, loop);

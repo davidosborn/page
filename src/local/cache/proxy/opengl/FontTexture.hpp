@@ -39,33 +39,59 @@
 namespace page
 {
 	namespace res { class Font; }
-	namespace vid {namespace opengl { class FontTexture; }}
+	namespace vid { namespace opengl { class FontTexture; }}
 
 	namespace cache
 	{
 		namespace opengl
 		{
-			struct FontTexture : Proxy<vid::opengl::FontTexture>
+			/**
+			 * A proxy representing a font texture in the cache.
+			 */
+			class FontTexture : public Proxy<vid::opengl::FontTexture>
 			{
-				using Proxy<vid::opengl::FontTexture>::Instance;
+				/*------+
+				| types |
+				+------*/
 
-				// construct
+				public:
+				typedef typename Proxy<vid::opengl::FontTexture>::Instance Instance;
+			
+				/*--------------------------+
+				| constructors & destructor |
+				+--------------------------*/
+
+				public:
 				explicit FontTexture(const Proxy<res::Font> &, unsigned fontSize);
 
-				// clone
-				FontTexture *Clone() const;
+				/*------+
+				| clone |
+				+------*/
 
-				// attributes
-				std::string GetType() const;
-				std::string GetSource() const;
+				public:
+				FontTexture *Clone() const override;
 
-				// dependency satisfaction
-				operator bool() const;
+				/*----------+
+				| observers |
+				+----------*/
+
+				public:
+				std::string GetType() const override;
+				std::string GetSource() const override;
+				operator bool() const override;
+
+				/*--------------+
+				| instantiation |
+				+--------------*/
 
 				private:
-				// instantiation
-				Instance Make() const;
+				Instance Make() const override;
 
+				/*-------------+
+				| data members |
+				+-------------*/
+
+				private:
 				util::copy_ptr<Proxy<res::Font>> font;
 				unsigned fontSize;
 			};

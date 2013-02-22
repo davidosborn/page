@@ -44,27 +44,53 @@ namespace page
 	{
 		namespace win32
 		{
-			struct Cursor : Proxy<HCURSOR>
+			/**
+			 * A proxy representing a cursor in the cache.
+			 */
+			class Cursor : public Proxy<HCURSOR>
 			{
-				using Proxy<HCURSOR>::Instance;
+				/*------+
+				| types |
+				+------*/
 
-				// construct
+				public:
+				typedef typename Proxy<HCURSOR>::Instance Instance;
+			
+				/*--------------------------+
+				| constructors & destructor |
+				+--------------------------*/
+
+				public:
 				explicit Cursor(const Proxy<res::Cursor> &, unsigned size);
 
-				// clone
-				Cursor *Clone() const;
+				/*------+
+				| clone |
+				+------*/
 
-				// attributes
-				std::string GetType() const;
-				std::string GetSource() const;
+				public:
+				Cursor *Clone() const override;
 
-				// dependency satisfaction
-				operator bool() const;
+				/*----------+
+				| observers |
+				+----------*/
+
+				public:
+				std::string GetType() const override;
+				std::string GetSource() const override;
+				operator bool() const override;
+
+				/*--------------+
+				| instantiation |
+				+--------------*/
 
 				private:
-				// instantiation
-				Instance Make() const;
+				Instance Make() const override;
 
+				/*-------------+
+				| data members |
+				+-------------*/
+
+				private:
 				util::copy_ptr<Proxy<res::Cursor>> cursor;
 				unsigned size;
 			};

@@ -40,17 +40,29 @@
 namespace page
 {
 	namespace res { class Image; }
-	namespace vid {namespace opengl { class Texture; }}
+	namespace vid { namespace opengl { class Texture; }}
 
 	namespace cache
 	{
 		namespace opengl
 		{
-			struct Texture : Proxy<vid::opengl::Texture>
+			/**
+			 * A proxy representing a texture in the cache.
+			 */
+			class Texture : public Proxy<vid::opengl::Texture>
 			{
-				using Proxy<vid::opengl::Texture>::Instance;
+				/*------+
+				| types |
+				+------*/
 
-				// construct
+				public:
+				typedef typename Proxy<vid::opengl::Texture>::Instance Instance;
+			
+				/*--------------------------+
+				| constructors & destructor |
+				+--------------------------*/
+
+				public:
 				explicit Texture(const Proxy<res::Image> &,
 					vid::opengl::TextureFormat = vid::opengl::defaultTextureFormat,
 					vid::opengl::TextureFlags =
@@ -59,20 +71,34 @@ namespace page
 							vid::opengl::mipmapTextureFlag),
 					const math::Vector<2, bool> &clamp = false);
 
-				// clone
-				Texture *Clone() const;
+				/*------+
+				| clone |
+				+------*/
 
-				// attributes
-				std::string GetType() const;
-				std::string GetSource() const;
+				public:
+				Texture *Clone() const override;
 
-				// dependency satisfaction
-				operator bool() const;
+				/*----------+
+				| observers |
+				+----------*/
+
+				public:
+				std::string GetType() const override;
+				std::string GetSource() const override;
+				operator bool() const override;
+
+				/*--------------+
+				| instantiation |
+				+--------------*/
 
 				private:
-				// instantiation
-				Instance Make() const;
+				Instance Make() const override;
 
+				/*-------------+
+				| data members |
+				+-------------*/
+
+				private:
 				util::copy_ptr<Proxy<res::Image>> image;
 				vid::opengl::TextureFormat format;
 				vid::opengl::TextureFlags flags;

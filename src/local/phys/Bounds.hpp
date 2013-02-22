@@ -49,6 +49,10 @@ namespace page
 
 	namespace phys
 	{
+		/**
+		 * A bounding skeleton.  Each bone defines a capsule boundary that
+		 * should enclose a mesh when attached to the associated skeleton.
+		 */
 		struct Bounds
 		{
 			// construct

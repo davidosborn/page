@@ -33,7 +33,7 @@
 
 #	include <sstream> // basic_{ostringstream,string}
 
-#	include "../class/copy_move.hpp" // MAKE_UNCOPYABLE
+#	include "../class/Uncopyable.hpp"
 
 namespace page
 {
@@ -44,9 +44,10 @@ namespace page
 		 * one-liners, since the insertion operator returns the complete type.
 		 */
 		template <
-			typename Char       = char,
+			typename Char,
 			typename CharTraits = std::char_traits<Char>>
-		class StringBuilder
+				class BasicStringBuilder :
+					public util::Uncopyable<BasicStringBuilder<Char, CharTraits>>
 		{
 			/*------+
 			| types |
@@ -55,26 +56,13 @@ namespace page
 			public:
 			typedef std::basic_string<Char, CharTraits> String;
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
-
-			public:
-			StringBuilder() = default;
-
-			/*----------------------+
-			| copy & move semantics |
-			+----------------------*/
-
-			MAKE_UNCOPYABLE(StringBuilder)
-
 			/*-----------+
 			| operations |
 			+-----------*/
 
 			public:
 			template <typename T>
-				StringBuilder &operator <<(T &&);
+				BasicStringBuilder &operator <<(T &&);
 
 			/*------------+
 			| conversions |
@@ -90,6 +78,9 @@ namespace page
 			private:
 			std::basic_ostringstream<Char, CharTraits> ss;
 		};
+
+		typedef BasicStringBuilder<char>    StringBuilder;
+		typedef BasicStringBuilder<wchar_t> WideStringBuilder;
 	}
 }
 

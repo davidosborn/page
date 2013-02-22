@@ -28,7 +28,7 @@
  * of this software.
  */
 
-#include "../util/memory.hpp" // Share
+#include "../util/memory/Deleter.hpp" // Share
 #include "filter/IndentFilterState.hpp"
 #include "Indenter.hpp"
 

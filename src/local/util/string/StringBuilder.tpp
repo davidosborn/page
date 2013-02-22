@@ -40,7 +40,8 @@ namespace page
 
 		template <typename Char, typename CharTraits>
 			template <typename T>
-				auto StringBuilder<Char, CharTraits>::operator <<(T &&arg) -> StringBuilder &
+				BasicStringBuilder<Char, CharTraits> &
+				BasicStringBuilder<Char, CharTraits>::operator <<(T &&arg)
 		{
 			ss << std::forward<T>(arg);
 			return *this;
@@ -51,7 +52,7 @@ namespace page
 		+------------*/
 
 		template <typename Char, typename CharTraits>
-			StringBuilder<Char, CharTraits>::operator String() const
+			BasicStringBuilder<Char, CharTraits>::operator String() const
 		{
 			return ss.str();
 		}

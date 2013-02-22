@@ -47,28 +47,62 @@ namespace page
 
 	namespace cache
 	{
-		struct Aabb : Proxy<math::Aabb<3>>
+		/**
+		 * A proxy representing an axis-aligned bounding-box in the cache.
+		 */
+		class Aabb : public Proxy<math::Aabb<3>>
 		{
-			using Proxy<math::Aabb<3>>::Instance;
+			/*------+
+			| types |
+			+------*/
 
-			// construct
+			public:
+			typedef typename Proxy<math::Aabb<3>>::Instance Instance;
+		
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
+			/**
+			 * Creates a proxy for an AABB around an optionally-posed form.
+			 */
 			explicit Aabb(const phys::Form &, bool pose = true);
+
+			/**
+			 * Creates a proxy for an AABB around an optionally-posed bounding-
+			 * skeleton
+			 */
 			Aabb(const Proxy<phys::Bounds> &, const phys::attrib::Pose &);
 
-			// clone
-			Aabb *Clone() const;
+			/*------+
+			| clone |
+			+------*/
 
-			// attributes
-			std::string GetType() const;
-			std::string GetSource() const;
+			public:
+			Aabb *Clone() const override;
 
-			// dependency satisfaction
-			operator bool() const;
+			/*----------+
+			| observers |
+			+----------*/
+
+			public:
+			std::string GetType() const override;
+			std::string GetSource() const override;
+			operator bool() const override;
+
+			/*--------------+
+			| instantiation |
+			+--------------*/
 
 			private:
-			// instantiation
-			Instance Make() const;
+			Instance Make() const override;
 
+			/*-------------+
+			| data members |
+			+-------------*/
+
+			private:
 			util::copy_ptr<Proxy<phys::Bounds>> bounds;
 			util::Identifiable::Id id;
 		};

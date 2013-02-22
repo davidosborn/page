@@ -34,7 +34,7 @@
 #include "../../phys/attrib/Pose.hpp" // Pose->util::Identifiable, Pose::dirty{Pose,Transform}Sig
 #include "../../phys/Bounds.hpp" // Bounds::bones
 #include "../../phys/Form.hpp" // Form::GetModel
-#include "../../util/lexical_cast.hpp"
+#include "../../util/string/StringBuilder.hpp"
 #include "Aabb.hpp"
 #include "Bounds.hpp"
 
@@ -42,9 +42,12 @@ namespace page
 {
 	namespace cache
 	{
+		/*--------+
+		| deleter |
+		+--------*/
+
 		namespace
 		{
-			// deleter
 			void Delete(const math::Aabb<3> *aabb, util::Connection &poseCon, util::Connection &transformCon)
 			{
 				poseCon.Disconnect();
@@ -53,36 +56,49 @@ namespace page
 			}
 		}
 
-		// construct
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
 		Aabb::Aabb(const phys::Form &form, bool pose) :
 			Aabb(Bounds((assert(form.GetModel()), *form.GetModel()), pose), form) {}
+
 		Aabb::Aabb(const Proxy<phys::Bounds> &bounds, const phys::attrib::Pose &pose) :
 			bounds(bounds.Copy()), id(pose.GetId()) {}
 
-		// clone
+		/*------+
+		| clone |
+		+------*/
+
 		Aabb *Aabb::Clone() const
 		{
 			return new Aabb(*this);
 		}
 
-		// attributes
+		/*----------+
+		| observers |
+		+----------*/
+
 		std::string Aabb::GetType() const
 		{
 			return "AABB";
 		}
+
 		std::string Aabb::GetSource() const
 		{
-			return bounds->GetSource() + ':' +
-				util::lexical_cast<std::string>(id);
+			return util::StringBuilder() <<
+				bounds->GetSource() << ':' << id;
 		}
 
-		// dependency satisfaction
 		Aabb::operator bool() const
 		{
 			return *bounds && util::Identifiable::FromId(id);
 		}
 
-		// instantiation
+		/*--------------+
+		| instantiation |
+		+--------------*/
+
 		Aabb::Instance Aabb::Make() const
 		{
 			phys::attrib::Pose &pose(util::ReferenceFromId<phys::attrib::Pose>(id));

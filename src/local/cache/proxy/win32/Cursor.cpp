@@ -29,7 +29,7 @@
  */
 
 #include "../../../res/type/cursor/win32.hpp" // MakeWin32Cursor
-#include "../../../util/lexical_cast.hpp"
+#include "../../../util/string/StringBuilder.hpp"
 #include "Cursor.hpp"
 
 namespace page
@@ -38,6 +38,10 @@ namespace page
 	{
 		namespace win32
 		{
+			/*--------+
+			| deleter |
+			+--------*/
+
 			namespace
 			{
 				void Deleter(const HCURSOR *cursor)
@@ -47,37 +51,49 @@ namespace page
 				}
 			}
 
-			// construct
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
 			Cursor::Cursor(const Proxy<res::Cursor> &cursor, unsigned size) :
 				cursor(cursor.Copy()), size(size) {}
 
-			// clone
+			/*------+
+			| clone |
+			+------*/
+
 			Cursor *Cursor::Clone() const
 			{
 				return new Cursor(*this);
 			}
 
-			// attributes
+			/*----------+
+			| observers |
+			+----------*/
+
 			std::string Cursor::GetType() const
 			{
 				return "win32 cursor";
 			}
+
 			std::string Cursor::GetSource() const
 			{
-				return cursor->GetSource() + ':' +
-					util::lexical_cast<std::string>(size);
+				return util::StringBuilder() <<
+					cursor->GetSource() << ':' << size;
 			}
 
-			// dependency satisfaction
 			Cursor::operator bool() const
 			{
 				return *cursor;
 			}
 
-			// instantiation
+			/*--------------+
+			| instantiation |
+			+--------------*/
+
 			Cursor::Instance Cursor::Make() const
 			{
-				return Instance(new HCURSOR(res::win32::MakeWin32Cursor(**cursor, size)));
+				return Instance(new HCURSOR(res::win32::MakeWin32Cursor(**cursor, size)), Deleter);
 			}
 		}
 	}

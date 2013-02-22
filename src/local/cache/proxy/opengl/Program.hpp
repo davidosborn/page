@@ -31,58 +31,93 @@
 #ifndef    page_local_cache_proxy_opengl_Program_hpp
 #   define page_local_cache_proxy_opengl_Program_hpp
 
-#	include <type_traits> // enable_if
 #	include <vector>
 
 #	include "../../../util/raii/copy_ptr.hpp"
-#	include "../../../util/type_traits/iterator.hpp" // is_iterator_over
+#	include "../../../util/type_traits/container.hpp" // is_range
+#	include "../../../util/type_traits/iterator.hpp" // is_iterator
+#	include "../../../util/type_traits/sfinae.hpp" // ENABLE_IF
 #	include "../Proxy.hpp"
 
 namespace page
 {
-	namespace res {namespace opengl { class Shader; }}
-	namespace vid {namespace opengl { class Program; }}
+	namespace res { namespace opengl { class Shader; }}
+	namespace vid { namespace opengl { class Program; }}
 
 	namespace cache
 	{
 		namespace opengl
 		{
-			struct Program : Proxy<vid::opengl::Program>
+			/**
+			 * A proxy representing a shader program in the cache.
+			 */
+			class Program : public Proxy<vid::opengl::Program>
 			{
-				using Proxy<vid::opengl::Program>::Instance;
+				/*------+
+				| types |
+				+------*/
 
-				// construct
-				explicit Program(const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				Program(const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &, const Proxy<res::opengl::Shader> &);
-				template <typename InputIterator> Program(InputIterator first, InputIterator last, typename std::enable_if<util::is_iterator_over<InputIterator, Proxy<res::opengl::Shader>>::value>::type * = 0);
+				public:
+				typedef typename Proxy<vid::opengl::Program>::Instance Instance;
+			
+				/*--------------------------+
+				| constructors & destructor |
+				+--------------------------*/
 
-				// clone
-				Program *Clone() const;
+				public:
+				/**
+				 * Creates a proxy for the program from a range of shaders.
+				 */
+				template <typename ShaderInputRange>
+					explicit Program(
+						ShaderInputRange,
+						ENABLE_IF((util::is_range<ShaderInputRange>::value)));
 
-				// attributes
-				std::string GetType() const;
-				std::string GetSource() const;
+				/**
+				 * Creates a proxy for the program from a range of shaders.
+				 */
+				template <typename ShaderInputIterator>
+					Program(
+						ShaderInputIterator first,
+						ShaderInputIterator last,
+						ENABLE_IF((util::is_iterator<ShaderInputIterator>::value)));
 
-				// dependency satisfaction
-				operator bool() const;
+				/*------+
+				| clone |
+				+------*/
+
+				public:
+				Program *Clone() const override;
+
+				/*----------+
+				| observers |
+				+----------*/
+
+				public:
+				std::string GetType() const override;
+				std::string GetSource() const override;
+				operator bool() const override;
+
+				/*--------------+
+				| instantiation |
+				+--------------*/
 
 				private:
-				// initialization
+				Instance Make() const override;
+
+				/*---------------+
+				| initialization |
+				+---------------*/
+
+				private:
 				void PostInit();
 
-				// instantiation
-				Instance Make() const;
+				/*-------------+
+				| data members |
+				+-------------*/
 
-				typedef std::vector<util::copy_ptr<Proxy<res::opengl::Shader>>> Shaders;
-				Shaders shaders;
+				private:
+				std::vector<util::copy_ptr<Proxy<res::opengl::Shader>>> shaders;
 			};
 		}
 	}

@@ -46,27 +46,53 @@ namespace page
 
 	namespace cache
 	{
-		struct Skin : Proxy<phys::Skin>
+		/**
+		 * A proxy representing an instance of @c phys::Skin in the cache.
+		 */
+		class Skin : public Proxy<phys::Skin>
 		{
-			using Proxy<phys::Skin>::Instance;
+			/*------+
+			| types |
+			+------*/
 
-			// construct
+			public:
+			typedef typename Proxy<phys::Skin>::Instance Instance;
+		
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
 			Skin(const Proxy<res::Mesh> &, const phys::attrib::Pose &);
 
-			// clone
-			Skin *Clone() const;
+			/*------+
+			| clone |
+			+------*/
 
-			// attributes
-			std::string GetType() const;
-			std::string GetSource() const;
+			public:
+			Skin *Clone() const override;
 
-			// dependency satisfaction
-			operator bool() const;
+			/*----------+
+			| observers |
+			+----------*/
+
+			public:
+			std::string GetType() const override;
+			std::string GetSource() const override;
+			operator bool() const override;
+
+			/*--------------+
+			| instantiation |
+			+--------------*/
 
 			private:
-			// instantiation
-			Instance Make() const;
+			Instance Make() const override;
 
+			/*-------------+
+			| data members |
+			+-------------*/
+
+			private:
 			util::copy_ptr<Proxy<res::Mesh>> mesh;
 			util::Identifiable::Id poseId;
 		};

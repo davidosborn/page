@@ -29,8 +29,8 @@
  */
 
 #include <algorithm> // transform
-#include <functional> // mem_fun_ref
-#include <iterator> // back_inserter
+#include <functional> // mem_fn
+#include <iterator> // back_inserter, begin, end
 
 namespace page
 {
@@ -38,11 +38,25 @@ namespace page
 	{
 		namespace opengl
 		{
-			// construct
-			template <typename InputIterator> Program::Program(InputIterator first, InputIterator last, typename std::enable_if<util::is_iterator_over<InputIterator, Proxy<res::opengl::Shader>>::value>::type *)
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			template <typename ShaderInputRange>
+				Program::Program(
+					ShaderInputRange shaders,
+					ENABLE_IF_IMPL((util::is_range<ShaderInputRange>::value))) :
+						Program(std::begin(shaders), std::end(shaders)) {}
+
+			template <typename ShaderInputIterator>
+				Program::Program(
+					ShaderInputIterator firstShader,
+					ShaderInputIterator lastShader,
+					ENABLE_IF_IMPL((util::is_iterator<ShaderInputIterator>::value)))
 			{
-				std::transform(first, last, std::back_inserter(shaders),
-					std::mem_fun_ref(&Proxy<res::opengl::Shader>::Copy));
+				std::transform(firstShader, lastShader, std::back_inserter(shaders),
+					std::mem_fn(&Proxy<res::opengl::Shader>::Copy));
+
 				PostInit();
 			}
 		}

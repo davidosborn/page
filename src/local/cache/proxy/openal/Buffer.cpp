@@ -46,6 +46,10 @@ namespace page
 	{
 		namespace openal
 		{
+			/*--------+
+			| deleter |
+			+--------*/
+
 			namespace
 			{
 				void Deleter(const ALuint *buffer)
@@ -55,33 +59,45 @@ namespace page
 				}
 			}
 
-			// construct
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
 			Buffer::Buffer(const Proxy<res::Sound> &sound) :
 				sound(sound.Copy()) {}
 
-			// clone
+			/*------+
+			| clone |
+			+------*/
+
 			Buffer *Buffer::Clone() const
 			{
 				return new Buffer(*this);
 			}
 
-			// attributes
+			/*----------+
+			| observers |
+			+----------*/
+
 			std::string Buffer::GetType() const
 			{
 				return "audio buffer";
 			}
+
 			std::string Buffer::GetSource() const
 			{
 				return sound->GetSource();
 			}
 
-			// dependency satisfaction
 			Buffer::operator bool() const
 			{
 				return *sound;
 			}
 
-			// instantiation
+			/*--------------+
+			| instantiation |
+			+--------------*/
+
 			Buffer::Instance Buffer::Make() const
 			{
 				ALuint buffer;

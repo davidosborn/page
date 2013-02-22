@@ -29,44 +29,56 @@
  */
 
 #include "../../res/type/Font.hpp" // GetCharImage
-#include "../../util/lexical_cast.hpp"
+#include "../../util/string/StringBuilder.hpp"
 #include "GlyphImage.hpp"
 
 namespace page
 {
 	namespace cache
 	{
-		// construct
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
 		GlyphImage::GlyphImage(const Proxy<res::Font> &font, char ch, unsigned size) :
 			font(font.Copy()), ch(ch), size(size) {}
 
-		// clone
+		/*------+
+		| clone |
+		+------*/
+
 		GlyphImage *GlyphImage::Clone() const
 		{
 			return new GlyphImage(*this);
 		}
 
-		// attributes
+		/*----------+
+		| observers |
+		+----------*/
+
 		std::string GlyphImage::GetType() const
 		{
 			return "glyph image";
 		}
+
 		std::string GlyphImage::GetSource() const
 		{
-			return font->GetSource() + ':' + ch + ':' +
-				util::lexical_cast<std::string>(size);
+			return util::StringBuilder() <<
+				font->GetSource() << ':' << ch << ':' << size;
 		}
 
-		// dependency satisfaction
 		GlyphImage::operator bool() const
 		{
 			return *font;
 		}
 
-		// instantiation
+		/*--------------+
+		| instantiation |
+		+--------------*/
+
 		GlyphImage::Instance GlyphImage::Make() const
 		{
-			return Instance(new res::Image(GetCharImage(**font, ch, size)));
+			return std::make_shared<res::Image>(GetCharImage(**font, ch, size));
 		}
 	}
 }

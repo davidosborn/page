@@ -68,14 +68,14 @@ namespace page
 			/**
 			 * A function that will recreate an invalidated object.
 			 */
-			typedef std::function<void (T &)> Repair;
+			typedef std::function<void (T &)> RepairFunction;
 
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
 
 			public:
-			explicit Proxy(const Repair & = 0);
+			explicit Proxy(const RepairFunction & = 0);
 
 			virtual ~Proxy();
 
@@ -93,7 +93,7 @@ namespace page
 			 *
 			 * @note This function is virtual for @c Reference.
 			 */
-			virtual Instance lock() const;
+			virtual Instance Lock() const;
 
 			/*----------+
 			| observers |
@@ -195,7 +195,7 @@ namespace page
 
 			private:
 			mutable std::weak_ptr<const T> reference;
-			Repair repair;
+			RepairFunction repair;
 		};
 
 		/*------------------------------+

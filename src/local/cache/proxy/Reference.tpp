@@ -28,53 +28,83 @@
  * of this software.
  */
 
-#include "../../util/Deleter.hpp" // GetNullDeleter
+#include "../../util/memory/Deleter.hpp" // Share
 
 namespace page
 {
 	namespace cache
 	{
-		// construct
-		template <typename T> Reference<T>::Reference(const T &reference) :
-			instance(&reference, util::GetNullDeleter<T>()) {}
-		template <typename T> Reference<T>::Reference(const Instance &instance) :
-			instance(instance) {}
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-		// clone
-		template <typename T> Reference<T> *Reference<T>::Clone() const
+		template <typename T>
+			Reference<T>::Reference(const T &reference) :
+				instance(util::Share(reference)) {}
+
+		template <typename T>
+			Reference<T>::Reference(const Instance &instance) :
+				instance(instance) {}
+
+		/*------+
+		| clone |
+		+------*/
+
+		template <typename T>
+			Reference<T> *Reference<T>::Clone() const
 		{
 			return new Reference<T>(*this);
 		}
 
-		// access
-		template <typename T> typename Reference<T>::Instance Reference<T>::lock() const
+		/*-------+
+		| access |
+		+-------*/
+
+		template <typename T>
+			typename Reference<T>::Instance Reference<T>::Lock() const
 		{
 			assert(*this);
 			return instance;
 		}
 
-		// attributes
-		template <typename T> std::string Reference<T>::GetType() const
+		/*----------+
+		| observers |
+		+----------*/
+
+		template <typename T>
+			std::string Reference<T>::GetType() const
 		{
 			return "reference";
 		}
-		template <typename T> std::string Reference<T>::GetSource() const
+
+		template <typename T>
+			std::string Reference<T>::GetSource() const
 		{
 			return *this ? "nowhere" : "";
 		}
 
-		// dependency satisfaction
-		template <typename T> Reference<T>::operator bool() const
+		template <typename T>
+			Reference<T>::operator bool() const
 		{
 			return instance;
 		}
 
-		// modifiers
-		template <typename T> void Reference<T>::Invalidate() const {}
-		template <typename T> void Reference<T>::Purge() const {}
+		/*----------+
+		| modifiers |
+		+----------*/
 
-		// instantiation
-		template <typename T> typename Reference<T>::Instance Reference<T>::Make() const
+		template <typename T>
+			void Reference<T>::Invalidate() const {}
+
+		template <typename T>
+			void Reference<T>::Purge() const {}
+
+		/*--------------+
+		| instantiation |
+		+--------------*/
+
+		template <typename T>
+			typename Reference<T>::Instance Reference<T>::Make() const
 		{
 			assert(!"should never be called");
 			return instance;

@@ -550,10 +550,10 @@ namespace page
 		{
 			for (res::Scene::Forms::const_iterator form(scene.forms.begin()); form != scene.forms.end(); ++form)
 				Insert(std::shared_ptr<Form>(new Form(*form)));
-			if (scene.track) track = scene.track.lock();
+			if (scene.track) track = scene.track.Lock();
 			if (scene.cameraSet)
 			{
-				cameraSet = scene.cameraSet.lock();
+				cameraSet = scene.cameraSet.Lock();
 				cameraSetCamera = cameraSet->cameras.end();
 			}
 			// initialize atmospherics

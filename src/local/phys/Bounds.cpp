@@ -29,7 +29,7 @@
  */
 
 #include <algorithm> // find, max, min, transform, unique
-#include <functional> // mem_fun_ref
+#include <functional> // mem_fn
 #include <iterator> // back_inserter
 
 #include "../math/float.hpp" // Inf
@@ -64,7 +64,7 @@ namespace page
 				util::make_member_iterator(model.parts.begin(), &res::Model::Part::mesh),
 				util::make_member_iterator(model.parts.end(),   &res::Model::Part::mesh),
 				std::back_inserter(meshes),
-				std::mem_fun_ref(&cache::Proxy<res::Mesh>::Copy));
+				std::mem_fn(&cache::Proxy<res::Mesh>::Copy));
 			using namespace std::placeholders;
 			meshes.erase(
 				std::unique(meshes.begin(), meshes.end(),

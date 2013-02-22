@@ -28,13 +28,14 @@
  * of this software.
  */
 
-#include <algorithm> // find, sort
-#include <functional> // bind, mem_fun_ref
+#include <algorithm> // copy, find, sort
+#include <functional> // bind, mem_fn
+#include <sstream> // ostringstream
 
 #include "../../../util/functional/pointer.hpp" // dereference
 #include "../../../util/iterator/call_iterator.hpp"
 #include "../../../util/iterator/indirect_iterator.hpp"
-#include "../../../util/serialize/serialize_string.hpp" // Serialize
+#include "../../../util/io/separated_ostream_iterator.hpp"
 #include "../../../vid/opengl/Program.hpp"
 #include "Program.hpp"
 
@@ -44,130 +45,36 @@ namespace page
 	{
 		namespace opengl
 		{
-			// construct
-			Program::Program(const Proxy<res::opengl::Shader> &shader) :
-				shaders(1, shader.Copy()) {}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2)
-			{
-				shaders.reserve(2);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				PostInit();
-			}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2, const Proxy<res::opengl::Shader> &shader3)
-			{
-				shaders.reserve(3);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				shaders.push_back(shader3.Copy());
-				PostInit();
-			}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2, const Proxy<res::opengl::Shader> &shader3, const Proxy<res::opengl::Shader> &shader4)
-			{
-				shaders.reserve(4);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				shaders.push_back(shader3.Copy());
-				shaders.push_back(shader4.Copy());
-				PostInit();
-			}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2, const Proxy<res::opengl::Shader> &shader3, const Proxy<res::opengl::Shader> &shader4, const Proxy<res::opengl::Shader> &shader5)
-			{
-				shaders.reserve(5);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				shaders.push_back(shader3.Copy());
-				shaders.push_back(shader4.Copy());
-				shaders.push_back(shader5.Copy());
-				PostInit();
-			}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2, const Proxy<res::opengl::Shader> &shader3, const Proxy<res::opengl::Shader> &shader4, const Proxy<res::opengl::Shader> &shader5, const Proxy<res::opengl::Shader> &shader6)
-			{
-				shaders.reserve(6);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				shaders.push_back(shader3.Copy());
-				shaders.push_back(shader4.Copy());
-				shaders.push_back(shader5.Copy());
-				shaders.push_back(shader6.Copy());
-				PostInit();
-			}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2, const Proxy<res::opengl::Shader> &shader3, const Proxy<res::opengl::Shader> &shader4, const Proxy<res::opengl::Shader> &shader5, const Proxy<res::opengl::Shader> &shader6, const Proxy<res::opengl::Shader> &shader7)
-			{
-				shaders.reserve(7);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				shaders.push_back(shader3.Copy());
-				shaders.push_back(shader4.Copy());
-				shaders.push_back(shader5.Copy());
-				shaders.push_back(shader6.Copy());
-				shaders.push_back(shader7.Copy());
-				PostInit();
-			}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2, const Proxy<res::opengl::Shader> &shader3, const Proxy<res::opengl::Shader> &shader4, const Proxy<res::opengl::Shader> &shader5, const Proxy<res::opengl::Shader> &shader6, const Proxy<res::opengl::Shader> &shader7, const Proxy<res::opengl::Shader> &shader8)
-			{
-				shaders.reserve(8);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				shaders.push_back(shader3.Copy());
-				shaders.push_back(shader4.Copy());
-				shaders.push_back(shader5.Copy());
-				shaders.push_back(shader6.Copy());
-				shaders.push_back(shader7.Copy());
-				shaders.push_back(shader8.Copy());
-				PostInit();
-			}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2, const Proxy<res::opengl::Shader> &shader3, const Proxy<res::opengl::Shader> &shader4, const Proxy<res::opengl::Shader> &shader5, const Proxy<res::opengl::Shader> &shader6, const Proxy<res::opengl::Shader> &shader7, const Proxy<res::opengl::Shader> &shader8, const Proxy<res::opengl::Shader> &shader9)
-			{
-				shaders.reserve(9);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				shaders.push_back(shader3.Copy());
-				shaders.push_back(shader4.Copy());
-				shaders.push_back(shader5.Copy());
-				shaders.push_back(shader6.Copy());
-				shaders.push_back(shader7.Copy());
-				shaders.push_back(shader8.Copy());
-				shaders.push_back(shader9.Copy());
-				PostInit();
-			}
-			Program::Program(const Proxy<res::opengl::Shader> &shader1, const Proxy<res::opengl::Shader> &shader2, const Proxy<res::opengl::Shader> &shader3, const Proxy<res::opengl::Shader> &shader4, const Proxy<res::opengl::Shader> &shader5, const Proxy<res::opengl::Shader> &shader6, const Proxy<res::opengl::Shader> &shader7, const Proxy<res::opengl::Shader> &shader8, const Proxy<res::opengl::Shader> &shader9, const Proxy<res::opengl::Shader> &shader10)
-			{
-				shaders.reserve(10);
-				shaders.push_back(shader1.Copy());
-				shaders.push_back(shader2.Copy());
-				shaders.push_back(shader3.Copy());
-				shaders.push_back(shader4.Copy());
-				shaders.push_back(shader5.Copy());
-				shaders.push_back(shader6.Copy());
-				shaders.push_back(shader7.Copy());
-				shaders.push_back(shader8.Copy());
-				shaders.push_back(shader9.Copy());
-				shaders.push_back(shader10.Copy());
-				PostInit();
-			}
+			/*------+
+			| clone |
+			+------*/
 
-			// clone
 			Program *Program::Clone() const
 			{
 				return new Program(*this);
 			}
 
-			// attributes
+			/*----------+
+			| observers |
+			+----------*/
+
 			std::string Program::GetType() const
 			{
 				return "program";
 			}
+
 			std::string Program::GetSource() const
 			{
-				return util::Serialize<char>(
+				std::ostringstream ss;
+				std::copy(
 					util::make_call_iterator(util::make_indirect_iterator(shaders.begin()),
-						std::mem_fun_ref(&Proxy<res::opengl::Shader>::GetSource)),
+						std::mem_fn(&Proxy<res::opengl::Shader>::GetSource)),
 					util::make_call_iterator(util::make_indirect_iterator(shaders.end()),
-						std::mem_fun_ref(&Proxy<res::opengl::Shader>::GetSource)), ',');
+						std::mem_fn(&Proxy<res::opengl::Shader>::GetSource)),
+					util::separated_ostream_iterator<std::string>(ss, ','));
+				return ss.str();
 			}
 
-			// dependency satisfaction
 			Program::operator bool() const
 			{
 				return std::find(
@@ -176,25 +83,32 @@ namespace page
 					false).base() == shaders.end();
 			}
 
-			// initialization
-			void Program::PostInit()
-			{
-				// ensure pointers are valid
-				assert(std::find(shaders.begin(), shaders.end(), nullptr) == shaders.end());
-				// sort shaders by source
-				using namespace std::placeholders;
-				std::sort(shaders.begin(), shaders.end(),
-					bind(Proxy<res::opengl::Shader>::CompareSource(),
-						bind(util::dereference<util::copy_ptr<Proxy<res::opengl::Shader>>>(), _1),
-						bind(util::dereference<util::copy_ptr<Proxy<res::opengl::Shader>>>(), _2)));
-			}
+			/*--------------+
+			| instantiation |
+			+--------------*/
 
-			// instantiation
 			Program::Instance Program::Make() const
 			{
 				return Instance(new vid::opengl::Program(
 					util::make_indirect_iterator(util::make_indirect_iterator(shaders.begin())),
 					util::make_indirect_iterator(util::make_indirect_iterator(shaders.end()))));
+			}
+
+			/*---------------+
+			| initialization |
+			+---------------*/
+
+			void Program::PostInit()
+			{
+				// ensure pointers are valid
+				assert(std::find(shaders.begin(), shaders.end(), nullptr) == shaders.end());
+
+				// sort shaders by source
+				using namespace std::placeholders;
+				sort(shaders.begin(), shaders.end(),
+					bind(Proxy<res::opengl::Shader>::CompareSource(),
+						bind(util::dereference<util::copy_ptr<Proxy<res::opengl::Shader>>>(), _1),
+						bind(util::dereference<util::copy_ptr<Proxy<res::opengl::Shader>>>(), _2)));
 			}
 		}
 	}

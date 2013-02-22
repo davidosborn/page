@@ -44,27 +44,53 @@ namespace page
 
 	namespace cache
 	{
-		struct GlyphImage : Proxy<res::Image>
+		/**
+		 * A proxy representing a glyph image in the cache.
+		 */
+		class GlyphImage : public Proxy<res::Image>
 		{
-			using Proxy<res::Image>::Instance;
+			/*------+
+			| types |
+			+------*/
 
-			// construct
+			public:
+			typedef typename Proxy<res::Image>::Instance Instance;
+		
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
 			GlyphImage(const Proxy<res::Font> &, char ch, unsigned size);
 
-			// clone
-			GlyphImage *Clone() const;
+			/*------+
+			| clone |
+			+------*/
 
-			// attributes
-			std::string GetType() const;
-			std::string GetSource() const;
+			public:
+			GlyphImage *Clone() const override;
 
-			// dependency satisfaction
-			operator bool() const;
+			/*----------+
+			| observers |
+			+----------*/
+
+			public:
+			std::string GetType() const override;
+			std::string GetSource() const override;
+			operator bool() const override;
+
+			/*--------------+
+			| instantiation |
+			+--------------*/
 
 			private:
-			// instantiation
-			Instance Make() const;
+			Instance Make() const override;
 
+			/*-------------+
+			| data members |
+			+-------------*/
+
+			private:
 			util::copy_ptr<Proxy<res::Font>> font;
 			char ch;
 			unsigned size;

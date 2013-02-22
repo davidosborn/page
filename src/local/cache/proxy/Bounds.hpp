@@ -51,63 +51,77 @@ namespace page
 
 	namespace cache
 	{
+		/**
+		 * A proxy representing a bounding skeleton in the cache.
+		 */
 		class Bounds : public Proxy<phys::Bounds>
 		{
+			/*------+
+			| types |
+			+------*/
+
+			public:
+			typedef typename Proxy<phys::Bounds>::Instance Instance;
+		
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
 
 			public:
 			/**
-			 * Creates a bounding box around an optionally-posed model.
+			 * Creates a proxy for a bounding skeleton around an optionally-
+			 * posed model.
 			 */
 			explicit Bounds(const res::Model &, bool pose = true);
 
 			/**
-			 * Creates a bounding box around a mesh.
+			 * Creates a proxy for a bounding skeleton around a mesh.
 			 */
 			explicit Bounds(const Proxy<res::Mesh> &);
 
 			/**
-			 * Creates a bounding box around a mesh posed to a skeleton.
+			 * Creates a proxy for a bounding skeleton around a mesh posed to a
+			 * skeleton.
 			 */
 			Bounds(
 				const Proxy<res::Mesh> &,
 				const Proxy<res::Skeleton> &);
 
 			/**
-			 * Creates a bounding box around a range of meshes.
+			 * Creates a proxy for a bounding skeleton around a range of meshes.
 			 */
 			template <typename MeshInputRange>
 				explicit Bounds(
-					MeshInputRange meshes,
+					MeshInputRange,
 					ENABLE_IF((util::is_range<MeshInputRange>::value)));
 
 			/**
-			 * Creates a bounding box around a range of meshes.
+			 * Creates a proxy for a bounding skeleton around a range of meshes.
 			 */
 			template <typename MeshInputIterator>
 				Bounds(
-					MeshInputIterator firstMesh,
-					MeshInputIterator lastMesh,
+					MeshInputIterator first,
+					MeshInputIterator last,
 					ENABLE_IF((util::is_iterator<MeshInputIterator>::value)));
 
 			/**
-			 * Creates a bounding box around a range of meshes posed to a skeleton.
+			 * Creates a proxy for a bounding skeleton around a range of meshes
+			 * posed to a skeleton.
 			 */
 			template <typename MeshInputRange>
 				Bounds(
-					MeshInputRange meshes,
+					MeshInputRange,
 					const Proxy<res::Skeleton> &,
 					ENABLE_IF((util::is_range<MeshInputRange>::value)));
 
 			/**
-			 * Creates a bounding box around a range of meshes posed to a skeleton.
+			 * Creates a proxy for a bounding skeleton around a range of meshes
+			 * posed to a skeleton.
 			 */
 			template <typename MeshInputIterator>
 				Bounds(
-					MeshInputIterator firstMesh,
-					MeshInputIterator lastMesh,
+					MeshInputIterator first,
+					MeshInputIterator last,
 					const Proxy<res::Skeleton> &,
 					ENABLE_IF((util::is_iterator<MeshInputIterator>::value)));
 

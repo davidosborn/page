@@ -41,23 +41,31 @@ namespace page
 	{
 		namespace opengl
 		{
+			/*----------+
+			| callbacks |
+			+----------*/
+
 			namespace
 			{
-				// callbacks
 				void Delete(const vid::opengl::Drawable *drawable, util::Connection &con)
 				{
 					con.Disconnect();
 					delete drawable;
 				}
+
 				void Repair(vid::opengl::Drawable &drawable, const Skin &skin)
 				{
 					drawable.Update(*skin);
 				}
 			}
 
-			// construct
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
 			Drawable::Drawable(const Proxy<res::Mesh> &mesh) :
 				mesh(mesh.Copy()), partId(0) {}
+
 			Drawable::Drawable(const phys::Form::Part &part) :
 				Proxy<vid::opengl::Drawable>(
 					std::bind(opengl::Repair,
@@ -65,29 +73,39 @@ namespace page
 						Skin(part.GetMesh(), part.GetForm()))),
 				mesh(part.GetMesh().Copy()), partId(part.GetId()) {}
 
-			// clone
+			/*------+
+			| clone |
+			+------*/
+
 			Drawable *Drawable::Clone() const
 			{
 				return new Drawable(*this);
 			}
 
-			// attributes
+			/*----------+
+			| observers |
+			+----------*/
+
 			std::string Drawable::GetType() const
 			{
 				return "drawable";
 			}
+
 			std::string Drawable::GetSource() const
 			{
-				return util::StringBuilder<>() << mesh->GetSource() << ':' << partId;
+				return util::StringBuilder() <<
+					mesh->GetSource() << ':' << partId;
 			}
 
-			// dependency satisfaction
 			Drawable::operator bool() const
 			{
 				return *mesh;
 			}
 
-			// instantiation
+			/*--------------+
+			| instantiation |
+			+--------------*/
+
 			Drawable::Instance Drawable::Make() const
 			{
 				if (partId)

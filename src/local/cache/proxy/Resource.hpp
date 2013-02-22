@@ -37,28 +37,54 @@ namespace page
 {
 	namespace cache
 	{
-		template <typename T> struct Resource : Proxy<T>
+		/**
+		 * A proxy representing a resource in the cache.
+		 */
+		template <typename T>
+			class Resource : public Proxy<T>
 		{
-			// HACK: GCC doesn't support using typename (bug #14258)
+			/*------+
+			| types |
+			+------*/
+
+			public:
 			typedef typename Proxy<T>::Instance Instance;
 
-			// construct
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
 			explicit Resource(const std::string &path = "");
 
-			// clone
-			Resource<T> *Clone() const;
+			/*------+
+			| clone |
+			+------*/
 
-			// attributes
-			std::string GetType() const;
-			std::string GetSource() const;
+			public:
+			Resource<T> *Clone() const override;
 
-			// dependency satisfaction
-			operator bool() const;
+			/*----------+
+			| observers |
+			+----------*/
+
+			public:
+			std::string GetType() const override;
+			std::string GetSource() const override;
+			operator bool() const override;
+
+			/*--------------+
+			| instantiation |
+			+--------------*/
 
 			private:
-			// instantiation
-			Instance Make() const;
+			Instance Make() const override;
 
+			/*-------------+
+			| data members |
+			+-------------*/
+
+			private:
 			std::string path;
 		};
 	}
