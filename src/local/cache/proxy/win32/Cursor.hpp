@@ -34,7 +34,7 @@
 #	include <windows.h> // HCURSOR
 
 #	include "../../../util/raii/copy_ptr.hpp"
-#	include "../../Proxy.hpp"
+#	include "../Proxy.hpp"
 
 namespace page
 {

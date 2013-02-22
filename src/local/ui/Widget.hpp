@@ -32,7 +32,7 @@
 #   define page_local_ui_Widget_hpp
 
 #	include "../math/Vector.hpp"
-#	include "../util/Cloneable.hpp"
+#	include "../util/class/Cloneable.hpp"
 
 namespace page
 {

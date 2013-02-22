@@ -30,23 +30,48 @@
 
 #include <algorithm> // transform
 #include <functional> // mem_fun_ref
-#include <iterator> // back_inserter
+#include <iterator> // back_inserter, begin, end
 
 namespace page
 {
 	namespace cache
 	{
-		template <typename MeshIterator> Bounds::Bounds(MeshIterator first, MeshIterator last)
+		template <typename MeshInputRange>
+			Bounds::Bounds(
+				MeshInputRange meshes,
+				ENABLE_IF_IMPL((util::is_range<MeshInputRange>::value))) :
+					Bounds(std::begin(meshes), std::end(meshes)) {}
+
+		template <typename MeshInputIterator>
+			Bounds::Bounds(
+				MeshInputIterator firstMesh,
+				MeshInputIterator lastMesh,
+				ENABLE_IF_IMPL((util::is_iterator<MeshInputIterator>::value)))
 		{
-			std::transform(first, last, std::back_inserter(meshes),
+			std::transform(firstMesh, lastMesh, std::back_inserter(meshes),
 				std::mem_fun_ref(&Proxy<res::Mesh>::Copy));
+
 			PostInit();
 		}
-		template <typename MeshIterator> Bounds::Bounds(MeshIterator first, MeshIterator last, const Proxy<res::Skeleton> &skeleton) :
-			skeleton(skeleton.Copy())
+
+		template <typename MeshInputRange>
+			Bounds::Bounds(
+				MeshInputRange meshes,
+				const Proxy<res::Skeleton> &,
+				ENABLE_IF_IMPL((util::is_range<MeshInputRange>::value))) :
+					Bounds(std::begin(meshes), std::end(meshes)) {}
+
+		template <typename MeshInputIterator>
+			Bounds::Bounds(
+				MeshInputIterator firstMesh,
+				MeshInputIterator lastMesh,
+				const Proxy<res::Skeleton> &skeleton,
+				ENABLE_IF_IMPL((util::is_iterator<MeshInputIterator>::value))) :
+					skeleton(skeleton.Copy())
 		{
-			std::transform(first, last, std::back_inserter(meshes),
+			std::transform(firstMesh, lastMesh, std::back_inserter(meshes),
 				std::mem_fun_ref(&Proxy<res::Mesh>::Copy));
+
 			PostInit();
 		}
 	}

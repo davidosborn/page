@@ -28,25 +28,29 @@
  * of this software.
  */
 
-#include <algorithm> // find, sort, transform, unique
+#include <algorithm> // copy, find, sort, transform, unique
 #include <cassert>
 #include <functional> // bind, mem_fun_ref
 #include <iterator> // back_inserter
+#include <sstream> // ostringstream
 
 #include "../../phys/Bounds.hpp"
 #include "../../res/type/Model.hpp"
 #include "../../util/functional/pointer.hpp" // dereference
+#include "../../util/io/separated_ostream_iterator.hpp"
 #include "../../util/iterator/call_iterator.hpp"
 #include "../../util/iterator/indirect_iterator.hpp"
 #include "../../util/iterator/member_iterator.hpp"
-#include "../../util/serialize/serialize_string.hpp" // Serialize
 #include "Bounds.hpp"
 
 namespace page
 {
 	namespace cache
 	{
-		// construct
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
 		Bounds::Bounds(const res::Model &model, bool pose)
 		{
 			std::transform(
@@ -54,70 +58,72 @@ namespace page
 				util::make_member_iterator(model.parts.end(),   &res::Model::Part::mesh),
 				std::back_inserter(meshes),
 				std::mem_fun_ref(&Proxy<res::Mesh>::Copy));
-			if (pose && model.skeleton) skeleton = model.skeleton.Copy();
+
+			if (pose && model.skeleton)
+				skeleton = model.skeleton.Copy();
+
 			PostInit();
 		}
+
 		Bounds::Bounds(const Proxy<res::Mesh> &mesh) :
 			Bounds(&mesh, &mesh + 1) {}
+
 		Bounds::Bounds(const Proxy<res::Mesh> &mesh, const Proxy<res::Skeleton> &skeleton) :
 			Bounds(&mesh, &mesh + 1, skeleton) {}
 
-		// clone
+		/*------+
+		| clone |
+		+------*/
+
 		Bounds *Bounds::Clone() const
 		{
 			return new Bounds(*this);
 		}
 
-		// attributes
+		/*----------+
+		| observers |
+		+----------*/
+
 		std::string Bounds::GetType() const
 		{
 			return "bounds";
 		}
+
 		std::string Bounds::GetSource() const
 		{
-			std::string source(util::Serialize<char>(
+			std::ostringstream ss;
+			std::copy(
 				util::make_call_iterator(util::make_indirect_iterator(meshes.begin()),
 					std::mem_fun_ref(&Proxy<res::Mesh>::GetSource)),
 				util::make_call_iterator(util::make_indirect_iterator(meshes.end()),
-					std::mem_fun_ref(&Proxy<res::Mesh>::GetSource)), ','));
+					std::mem_fun_ref(&Proxy<res::Mesh>::GetSource)),
+				util::separated_ostream_iterator<std::string>(ss, ','));
+
 			if (skeleton)
 				// NOTE: using alternate separator to differentiate from mesh
-				source += std::string("+") + skeleton->GetSource();
-			return source;
+				ss << '+' << skeleton->GetSource();
+
+			return ss.str();
 		}
 
-		// dependency satisfaction
 		Bounds::operator bool() const
 		{
-			bool valid = std::find(
+			if (std::find(
 				util::make_indirect_iterator(meshes.begin()),
 				util::make_indirect_iterator(meshes.end()),
-				false).base() == meshes.end();
-			if (skeleton) valid = valid && *skeleton;
-			return valid;
+				false).base() != meshes.end())
+					return false;
+
+			if (skeleton && !*skeleton)
+				return false;
+
+			return true;
 		}
 
-		// initialization
-		void Bounds::PostInit()
-		{
-			// ensure pointers are valid
-			assert(std::find(meshes.begin(), meshes.end(), nullptr) == meshes.end());
-			// sort meshes by source
-			using namespace std::placeholders;
-			std::sort(meshes.begin(), meshes.end(),
-				bind(CompareProxySource<res::Mesh>(),
-					bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _1),
-					bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _2)));
-			// remove duplicate meshes
-			meshes.erase(
-				std::unique(meshes.begin(), meshes.end(),
-					bind(CompareProxySource<res::Mesh>(),
-						bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _1),
-						bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _2))),
-				meshes.end());
-		}
+		/*--------------+
+		| instantiation |
+		+--------------*/
 
-		// instantiation
 		Bounds::Instance Bounds::Make() const
 		{
 			return Instance(skeleton ?
@@ -128,6 +134,31 @@ namespace page
 				new phys::Bounds(
 					util::make_indirect_iterator(util::make_indirect_iterator(meshes.begin())),
 					util::make_indirect_iterator(util::make_indirect_iterator(meshes.end()))));
+		}
+
+		/*---------------+
+		| initialization |
+		+---------------*/
+
+		void Bounds::PostInit()
+		{
+			// ensure pointers are valid
+			assert(std::find(meshes.begin(), meshes.end(), nullptr) == meshes.end());
+
+			// sort meshes by source
+			using namespace std::placeholders;
+			sort(meshes.begin(), meshes.end(),
+				bind(Proxy<res::Mesh>::CompareSource(),
+					bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _1),
+					bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _2)));
+
+			// remove duplicate meshes
+			meshes.erase(
+				unique(meshes.begin(), meshes.end(),
+					bind(Proxy<res::Mesh>::CompareSource(),
+						bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _1),
+						bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _2))),
+				meshes.end());
 		}
 	}
 }

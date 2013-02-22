@@ -33,7 +33,7 @@
 #include <functional> // hash
 #include <iterator> // back_inserter
 
-#include "../cache/Proxy.hpp" // hash(Proxy)
+#include "../cache/proxy/Proxy.hpp" // hash(Proxy)
 #include "../math/Euler.hpp"
 #include "../math/float.hpp" // DegToRad
 #include "../math/Plane.hpp"

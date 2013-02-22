@@ -34,7 +34,7 @@
 #ifndef    page_local_cache_proxy_Reference_hpp
 #   define page_local_cache_proxy_Reference_hpp
 
-#	include "../Proxy.hpp"
+#	include "Proxy.hpp"
 
 namespace page
 {

@@ -33,7 +33,7 @@
 
 #	include <string>
 
-#	include "../util/typeinfo.hpp" // GetTypeId, std::type_info
+#	include "../util/class/typeinfo.hpp" // GetIncompleteTypeInfo, std::type_info
 
 namespace page
 {
@@ -59,7 +59,7 @@ namespace page
 				const std::string &path,
 				const std::string &format)
 		{
-			Save(static_cast<const void *>(&resource), util::GetTypeId<T>(), path, format);
+			Save(static_cast<const void *>(&resource), util::GetIncompleteTypeInfo<T>(), path, format);
 		}
 	}
 }

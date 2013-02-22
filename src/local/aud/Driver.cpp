@@ -30,7 +30,7 @@
 
 #include <cassert>
 
-#include "../cache/Proxy.hpp"
+#include "../cache/proxy/Proxy.hpp"
 #include "../cfg/vars.hpp"
 #include "channel/AmbientChannel.hpp"
 #include "channel/SpatialChannel.hpp"

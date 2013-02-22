@@ -1655,7 +1655,7 @@ local/aud/channel/SpatialChannel
 local/aud/Driver
 local/aud/NullDriver
 local/aud/Sound
-local/cache
+local/cache/Cache
 local/cache/proxy/Aabb
 local/cache/proxy/Bounds
 local/cache/proxy/GlyphImage
@@ -1699,7 +1699,7 @@ local/log/sink/ConsoleSink
 local/log/sink/FileSink
 local/log/sink/StderrSink
 local/log/sink/StdoutSink
-local/log/stats
+local/log/Stats
 local/log/stream/BranchableStream
 local/log/stream/BufferStream
 local/log/stream/Stream

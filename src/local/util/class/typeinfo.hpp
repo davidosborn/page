@@ -28,23 +28,29 @@
  * of this software.
  */
 
-#include "util/typeinfo.hpp" // GetTypeId
+#ifndef    page_local_util_typeinfo_hpp
+#   define page_local_util_typeinfo_hpp
+
+#	include <typeinfo> // type_info, typeid
 
 namespace page
 {
-	namespace cache
+	namespace util
 	{
-		// fetch
-		template <typename T> inline std::shared_ptr<const T> Fetch(const std::string &sig, const std::string &name)
+		/**
+		 * An alternative to @c typeid which permits the identification of
+		 * incomplete types.
+		 *
+		 * @note This function returns an instance of @c std::type_info that is
+		 *       not comparable with any external use of @c typeid.
+		 */
+		template <typename T>
+			const std::type_info &GetIncompleteTypeInfo()
 		{
-			return std::static_pointer_cast<const T>(
-				FetchRaw(sig, name, util::GetTypeId<T>()));
-		}
-
-		// store
-		template <typename T> inline void Store(const std::string &sig, const std::string &name, const std::shared_ptr<const T> &data, const std::function<void ()> &repair)
-		{
-			StoreRaw(sig, name, data, util::GetTypeId<T>(), repair);
+			class Local {};
+			return typeid (Local);
 		}
 	}
 }
+
+#endif

@@ -34,7 +34,7 @@
 #	include "../../math/fwd.hpp" // Aabb
 #	include "../../util/Identifiable.hpp" // Identifiable::Id
 #	include "../../util/raii/copy_ptr.hpp"
-#	include "../Proxy.hpp"
+#	include "Proxy.hpp"
 
 namespace page
 {

@@ -33,7 +33,7 @@
 #include <iostream> // cout
 
 #include "../aud/Driver.hpp"
-#include "../cache.hpp" // Purge, Update
+#include "../cache/Cache.hpp" // Cache::{Purge,Update}
 #include "../cfg/vars.hpp"
 #include "../clip/Stream.hpp"
 #include "../err/report.hpp" // ReportWarning, std::exception
@@ -132,7 +132,7 @@ namespace page
 		}
 		Game::~Game()
 		{
-			cache::Purge();
+			GLOBAL(cache::Cache).Purge();
 			// FIXME: clipStream may print statistics here if still recording
 		}
 
@@ -167,7 +167,7 @@ namespace page
 							wnd->GetVideoDriver().Update();
 							wnd->GetAudioDriver().Update(deltaTime);
 							UpdateRecording();
-							cache::Update(deltaTime);
+							GLOBAL(cache::Cache).Update(deltaTime);
 						}
 					}
 					else sys::Sleep();
@@ -297,7 +297,7 @@ namespace page
 						timer->Pause();
 						Save(
 							wnd->GetVideoDriver().RenderImage(*CVAR(screenshotSize)),
-							util::ExpandPath(*CVAR(screenshotFilePath), util::ExpandFlags::withImplicitWildcardSuffix),
+							util::ExpandPath(*CVAR(screenshotFilePath), util::ExpandFlags::withImplicitWildcardSuffix).native(),
 							*CVAR(screenshotFormat));
 						timer->Resume();
 					}

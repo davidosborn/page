@@ -30,7 +30,7 @@
 
 #include <algorithm> // max
 
-#include "../log/stats.hpp" // GetStats, Stats::IncFrame
+#include "../log/Stats.hpp"
 #include "../math/float.hpp" // Inf
 #include "Timer.hpp"
 
@@ -63,7 +63,7 @@ namespace page
 			if (!paused) delta += Step();
 			elapsed += delta;
 			queue = 0;
-			log::GetStats().IncFrame(delta);
+			GLOBAL(log::Stats).IncFrame(delta);
 		}
 
 		// modifiers

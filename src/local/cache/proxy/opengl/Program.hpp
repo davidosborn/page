@@ -36,7 +36,7 @@
 
 #	include "../../../util/raii/copy_ptr.hpp"
 #	include "../../../util/type_traits/iterator.hpp" // is_iterator_over
-#	include "../../Proxy.hpp"
+#	include "../Proxy.hpp"
 
 namespace page
 {

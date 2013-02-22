@@ -28,7 +28,7 @@
  * of this software.
  */
 
-#include "../../cache/Proxy.hpp"
+#include "../../cache/proxy/Proxy.hpp"
 #include "../../res/type/Sound.hpp" // GetSize
 #include "Buffer.hpp"
 #include "buffer/StaticBuffer.hpp"

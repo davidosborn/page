@@ -28,19 +28,30 @@
  * of this software.
  */
 
-#ifndef    page_local_log_stats_hpp
-#   define page_local_log_stats_hpp
+#ifndef    page_local_log_Stats_hpp
+#   define page_local_log_Stats_hpp
+
+#	include "../util/class/Monostate.hpp"
 
 namespace page
 {
 	namespace log
 	{
-		struct Stats
+		class Stats :
+			public util::Monostate<Stats>
 		{
-			// construct
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
+
+			public:
 			Stats();
 
-			// state
+			/*----------+
+			| observers |
+			+----------*/
+
+			public:
 			unsigned GetRunTime() const;
 			unsigned GetFrameCount() const;
 			float GetFrameRate() const;
@@ -48,19 +59,27 @@ namespace page
 			unsigned GetCacheMisses() const;
 			float GetCacheCoherence() const;
 
-			// modifiers
+			/*----------+
+			| modifiers |
+			+----------*/
+
+			public:
 			void IncFrame(float deltaTime);
 			void IncCacheTries();
 			void IncCacheMisses();
 			void Reset();
 
-			private:
-			unsigned runTime, frameCount, cacheTries, cacheMisses;
-			float frameRate;
-		};
+			/*-------------+
+			| data members |
+			+-------------*/
 
-		// global access
-		Stats &GetStats();
+			private:
+			unsigned runTime     = 0;
+			unsigned frameCount  = 0;
+			unsigned cacheTries  = 0;
+			unsigned cacheMisses = 0;
+			float    frameRate   = 0;
+		};
 	}
 }
 

@@ -35,7 +35,7 @@
 #	include "../../../util/raii/copy_ptr.hpp"
 #	include "../../../vid/opengl/TextureFlags.hpp"
 #	include "../../../vid/opengl/TextureFormat.hpp"
-#	include "../../Proxy.hpp"
+#	include "../Proxy.hpp"
 
 namespace page
 {

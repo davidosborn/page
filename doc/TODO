@@ -1,3 +1,7 @@
+Replace util::lexical_cast with the Boost version.
+
+In game/Game.cpp, where we call Save(...), we convert the path to a string with boost::filesystem::path::native, but we shouldn't have to do this once the resource module is updated.
+
 Get rid of util/serialize!
 
 Gotta get rid of util::unique_ptr and friends.

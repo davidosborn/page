@@ -31,7 +31,7 @@
 #ifndef    page_local_phys_controller_GaitController_hpp
 #   define page_local_phys_controller_GaitController_hpp
 
-#	include "../../cache/Proxy.hpp" // Proxy::Instance
+#	include "../../cache/proxy/Proxy.hpp" // Proxy::Instance
 #	include "../../res/type/Gait.hpp" // Gait::State
 #	include "AnimationTargetController.hpp"
 

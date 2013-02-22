@@ -29,186 +29,187 @@
  */
 
 #include <cassert>
-#include <functional> // function
 #include <iostream> // cout
-#include <memory> // shared_ptr
-#include <string>
-#include <typeinfo> // type_info
-#include <unordered_map>
 
 #include <boost/optional.hpp>
 
-#include "cfg/vars.hpp"
-#include "err/report.hpp" // ReportWarning, std::exception
-#include "log/Indenter.hpp"
-#include "log/stats.hpp" // GetStats, Stats::Inc{Misses,Tries}
+#include "../cfg/vars.hpp"
+#include "../err/report.hpp" // ReportWarning, std::exception
+#include "../log/Indenter.hpp"
+#include "../log/Stats.hpp"
+#include "Cache.hpp"
 
 namespace page
 {
 	namespace cache
 	{
-		namespace
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		Cache::Cache(const detail::CacheTime &lifetime) :
+			lifetime(lifetime) {}
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		std::shared_ptr<const void>
+			Cache::Fetch(
+				const std::string &signature,
+				const std::string &name,
+				const std::type_info &type) const
 		{
-			// counter
-			struct Count
-			{
-				float time;
-				unsigned frame;
-			};
-			const Count duration = {4, 8};
-			Count count;
+			GLOBAL(log::Stats).IncCacheTries();
 
-			// counter operators
-			inline Count operator -(const Count &a, const Count &b)
+			// look for a matching datum
+			auto iter(pool.find(signature));
+			if (iter != pool.end())
 			{
-				Count r =
-				{
-					a.time  - b.time,
-					a.frame - b.frame
-				};
-				return r;
-			}
-			inline bool operator <(const Count &a, const Count &b)
-			{
-				return
-					a.time  < b.time &&
-					a.frame < b.frame;
-			}
-
-			// storage
-			struct Datum
-			{
-				std::string name;
-				std::shared_ptr<const void> data;
-				const std::type_info *type;
-				std::function<void ()> repair;
-				mutable Count atime;
-				mutable bool dirty;
-			};
-			typedef std::unordered_map<std::string, Datum> Cache;
-			inline Cache &GetCache()
-			{
-				static Cache cache;
-				return cache;
-			}
-		}
-
-		// fetch
-		std::shared_ptr<const void> FetchRaw(const std::string &sig, const std::string &name, const std::type_info &type)
-		{
-			log::GetStats().IncCacheTries();
-			Cache::iterator iter(GetCache().find(sig));
-			if (iter != GetCache().end())
-			{
-				const Datum &datum(iter->second);
+				const auto &datum(iter->second);
 				assert(*datum.type == type);
-				if (datum.dirty)
+
+				// if the datum is invalid, we need to repair it
+				if (datum.invalid)
 				{
 					assert(datum.repair);
+
+					// write to the log
 					boost::optional<log::Indenter> indenter;
 					if (*CVAR(logCache) && *CVAR(logCacheUpdate))
 					{
 						std::cout << "updating cached " << name << std::endl;
 						indenter = boost::in_place();
 					}
+
+					// attempt to repair the invalid datum
 					try
 					{
 						datum.repair();
+						datum.invalid = false;
 					}
 					catch (const std::exception &e)
 					{
 						err::ReportWarning(e);
-						GetCache().erase(iter);
-						return std::shared_ptr<const void>();
+						const_cast<decltype(pool) &>(pool).erase(iter);
+						return nullptr;
 					}
-					datum.dirty = false;
 				}
-				datum.atime = count;
+
+				// update the access time and return the data
+				datum.atime = time;
 				return datum.data;
 			}
-			log::GetStats().IncCacheMisses();
+
+			// no matching datum was found
+			GLOBAL(log::Stats).IncCacheMisses();
 			if (*CVAR(logCache) && *CVAR(logVerbose))
 				std::cout << "cache missing " << name << std::endl;
-			return std::shared_ptr<const void>();
+			return nullptr;
 		}
 
-		// store
-		void StoreRaw(const std::string &sig, const std::string &name, const std::shared_ptr<const void> &data, const std::type_info &type, const std::function<void ()> &repair)
+		/*----------+
+		| modifiers |
+		+----------*/
+
+		void Cache::Store(
+			const std::string &signature,
+			const std::string &name,
+			const std::shared_ptr<const void> &data,
+			const std::type_info &type,
+			const std::function<void ()> &repair)
 		{
+			// write to the log
 			boost::optional<log::Indenter> indenter;
 			if (*CVAR(logCache))
 			{
 				std::cout << "caching " << name << std::endl;
 				indenter = boost::in_place();
 			}
-			Datum datum = {name, data, &type, repair, count};
-			GetCache().insert(std::make_pair(sig, datum));
+
+			pool.insert(std::make_pair(signature, Datum(name, data, type, repair, time)));
 		}
 
-		// invalidation
-		void Invalidate(const std::string &sig, const std::string &name)
+		void Cache::Invalidate(
+			const std::string &signature,
+			const std::string &name)
 		{
+			// write to the log
 			boost::optional<log::Indenter> indenter;
 			if (*CVAR(logCache) && *CVAR(logCacheUpdate) && *CVAR(logVerbose))
 			{
 				std::cout << "invalidating cached " << name << std::endl;
 				indenter = boost::in_place();
 			}
-			Cache::iterator iter(GetCache().find(sig));
-			if (iter != GetCache().end())
+
+			auto iter(pool.find(signature));
+			if (iter != pool.end())
 			{
-				Datum &datum(iter->second);
-				if (datum.repair) datum.dirty = true;
-				else GetCache().erase(iter);
+				auto &datum(iter->second);
+				if (datum.repair) datum.invalid = true;
+				else pool.erase(iter);
 			}
 		}
 
-		// purge
-		void Purge()
+		void Cache::Purge()
 		{
+			// write to the log
 			boost::optional<log::Indenter> indenter;
 			if (*CVAR(logCache))
 			{
 				std::cout << "purging cache" << std::endl;
 				indenter = boost::in_place();
 			}
-			GetCache().clear();
-			count = Count();
+
+			pool.clear();
+			time = {};
 		}
-		void Purge(const std::string &sig, const std::string &name)
+
+		void Cache::Purge(
+			const std::string &signature,
+			const std::string &name)
 		{
+			// write to the log
 			boost::optional<log::Indenter> indenter;
 			if (*CVAR(logCache))
 			{
 				std::cout << "purging cached " << name << std::endl;
 				indenter = boost::in_place();
 			}
-			GetCache().erase(sig);
+
+			pool.erase(signature);
 		}
-		void PurgeResource(const std::string &path)
+
+		void Cache::PurgeResource(const std::string &path)
 		{
 			// FIXME: implement
 		}
 
-		// update
-		void Update(float deltaTime)
+		/*-------+
+		| update |
+		+-------*/
+
+		void Cache::Update(float deltaTime)
 		{
-			// update counter
-			count.time += deltaTime;
-			++count.frame;
+			// update current time
+			time.time += deltaTime;
+			++time.frame;
+
 			// drop expired datums
-			for (Cache::iterator iter(GetCache().begin()); iter != GetCache().end();)
+			for (auto iter(pool.begin()); iter != pool.end();)
 			{
 				Datum &datum(iter->second);
-				if (duration < count - datum.atime && datum.data.unique())
+				if (time - datum.atime > lifetime && datum.data.unique())
 				{
+					// write to the log
 					boost::optional<log::Indenter> indenter;
 					if (*CVAR(logCache) && *CVAR(logVerbose))
 					{
 						std::cout << "cached " << datum.name << " timed out" << std::endl;
 						indenter = boost::in_place();
 					}
-					GetCache().erase(iter++);
+
+					pool.erase(iter++);
 				}
 				else ++iter;
 			}

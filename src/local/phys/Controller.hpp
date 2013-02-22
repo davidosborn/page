@@ -33,7 +33,7 @@
 
 #	include <vector>
 
-#	include "../util/Cloneable.hpp"
+#	include "../util/class/Cloneable.hpp"
 #	include "Frame.hpp"
 
 namespace page

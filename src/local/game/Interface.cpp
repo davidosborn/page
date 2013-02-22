@@ -31,7 +31,7 @@
 #include <string>
 
 #include "../cache/proxy/Resource.hpp"
-#include "../log/stats.hpp" // GetStats, Stats::Get*
+#include "../log/Stats.hpp"
 #include "../res/Index.hpp" // GetIndex, Index::Load
 #include "../res/type/Image.hpp"
 #include "../ui/widget/Array.hpp"
@@ -128,12 +128,12 @@ namespace page
 		{
 			if (statWindow->IsVisible())
 			{
-				const log::Stats &stats(log::GetStats());
+				const auto &stats(GLOBAL(log::Stats));
 				// FIXME: update running time
-				statFrameCount->SetText(util::lexical_cast<std::string>(stats.GetFrameCount()));
-				statFrameRate->SetText(util::lexical_cast<std::string>(unsigned(std::floor(stats.GetFrameRate() + .5f))) + " f/s");
-				statCacheTries->SetText(util::lexical_cast<std::string>(stats.GetCacheTries()));
-				statCacheMisses->SetText(util::lexical_cast<std::string>(stats.GetCacheMisses()));
+				statFrameCount    ->SetText(util::lexical_cast<std::string>(stats.GetFrameCount()));
+				statFrameRate     ->SetText(util::lexical_cast<std::string>(unsigned(std::floor(stats.GetFrameRate() + .5f))) + " f/s");
+				statCacheTries    ->SetText(util::lexical_cast<std::string>(stats.GetCacheTries()));
+				statCacheMisses   ->SetText(util::lexical_cast<std::string>(stats.GetCacheMisses()));
 				statCacheCoherence->SetText(util::lexical_cast<std::string>(unsigned(std::floor(stats.GetCacheCoherence() * 100 + .5f))) + "%");
 			}
 			ui::Interface::Update(deltaTime);

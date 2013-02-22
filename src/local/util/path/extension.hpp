@@ -36,6 +36,7 @@
 #	include <boost/filesystem/path.hpp>
 
 #	include "../type_traits/container.hpp" // is_range
+#	include "../type_traits/iterator.hpp" // is_iterator
 #	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
 namespace page
@@ -92,7 +93,8 @@ namespace page
 			boost::filesystem::path WithExtension(
 				const boost::filesystem::path &path,
 				InputIterator firstExtension,
-				InputIterator lastExtension);
+				InputIterator lastExtension,
+				ENABLE_IF((is_iterator<InputIterator>::value)));
 	}
 }
 

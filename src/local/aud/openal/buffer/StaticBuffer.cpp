@@ -30,7 +30,7 @@
 
 #include <cassert>
 
-#include "../../../cache/Proxy.hpp"
+#include "../../../cache/proxy/Proxy.hpp"
 #include "../../../cache/proxy/openal/Buffer.hpp"
 #include "../../../res/type/Sound.hpp" // GetDuration
 #include "StaticBuffer.hpp"

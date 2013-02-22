@@ -28,21 +28,38 @@
  * of this software.
  */
 
-#ifndef    page_local_util_typeinfo_hpp
-#   define page_local_util_typeinfo_hpp
-
-#	include <typeinfo> // type_info, typeid
+#include "../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
 
 namespace page
 {
-	namespace util
+	namespace cache
 	{
-		// allows identification of incomplete types
-		template <typename T> inline const std::type_info &GetTypeId()
+		/*----------+
+		| observers |
+		+----------*/
+
+		template <typename T>
+			std::shared_ptr<const T>
+				Cache::Fetch(
+					const std::string &signature,
+					const std::string &name) const
 		{
-			return typeid (T *);
+			return std::static_pointer_cast<const T>(
+				Fetch(signature, name, util::GetIncompleteTypeInfo<T>()));
+		}
+
+		/*----------+
+		| modifiers |
+		+----------*/
+
+		template <typename T>
+			void Cache::Store(
+				const std::string &signature,
+				const std::string &name,
+				const std::shared_ptr<const T> &data,
+				const std::function<void ()> &repair)
+		{
+			Store(signature, name, data, util::GetIncompleteTypeInfo<T>(), repair);
 		}
 	}
 }
-
-#endif

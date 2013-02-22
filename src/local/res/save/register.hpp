@@ -34,8 +34,8 @@
 #	include <functional> // bind
 #	include <string>
 
+#	include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo, std::type_info
 #	include "../../util/functional/cast.hpp" // reinterpret_cast_function
-#	include "../../util/typeinfo.hpp" // GetTypeId, std::type_info
 #	include "function.hpp" // Referenceable, SaveFunction
 #	include "registry.hpp" // RegisterSaver
 
@@ -47,7 +47,7 @@ namespace page
 		namespace \
 		{ \
 			SaverRegisterer _reg##save( \
-				util::GetTypeId<type>(), \
+				util::GetIncompleteTypeInfo<type>(), \
 				std::bind( \
 					std::function<void (const type &, std::ostream &)>(save), \
 					std::bind( \

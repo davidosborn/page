@@ -31,47 +31,61 @@
 #include <cassert>
 #include <ostream>
 
-#include "../cache.hpp" // Fetch, Invalidate, Purge, Store
-#include "../util/lexical_cast.hpp"
-#include "../util/typeinfo.hpp" // GetTypeId
-#include "Proxy.hpp"
+#include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
+#include "../../util/lexical_cast.hpp"
+#include "../Cache.hpp"
 
 namespace page
 {
 	namespace cache
 	{
-		// construct/destroy
-		template <typename T> Proxy<T>::Proxy(const Repair &repair) :
-			repair(repair) {}
-		template <typename T> Proxy<T>::~Proxy() {}
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-		// access
-		template <typename T> const T &Proxy<T>::operator *() const
+		template <typename T>
+			Proxy<T>::Proxy(const Repair &repair) :
+				repair(repair) {}
+
+		template <typename T>
+			Proxy<T>::~Proxy() {}
+
+		/*-------+
+		| access |
+		+-------*/
+
+		template <typename T>
+			const T &Proxy<T>::operator *() const
 		{
 			return *get();
 		}
-		template <typename T> const T *Proxy<T>::operator ->() const
+
+		template <typename T>
+			const T *Proxy<T>::operator ->() const
 		{
 			return get();
 		}
-		template <typename T> const T *Proxy<T>::get() const
+
+		template <typename T>
+			const T *Proxy<T>::get() const
 		{
 			return lock().get();
 		}
-		template <typename T> typename Proxy<T>::Instance Proxy<T>::lock() const
+
+		template <typename T>
+			typename Proxy<T>::Instance Proxy<T>::lock() const
 		{
 			assert(*this);
 			Instance instance(reference.lock());
 			if (!instance)
 			{
-				std::string
-					sig(GetSignature()),
-					name(util::lexical_cast<std::string>(*this));
-				if (!(instance = Fetch<T>(sig, name)))
+				auto sig(GetSignature());
+				auto name(util::lexical_cast<std::string>(*this));
+				if (!(instance = GLOBAL(Cache).Fetch<T>(sig, name)))
 				{
 					instance = Make();
 					assert(instance);
-					Store(sig, name, instance, repair ?
+					GLOBAL(Cache).Store(sig, name, instance, repair ?
 						std::bind(repair, std::ref(*std::const_pointer_cast<T>(instance))) :
 						std::function<void ()>());
 				}
@@ -82,71 +96,83 @@ namespace page
 			return instance;
 		}
 
-		// attributes
-		template <typename T> std::string Proxy<T>::GetSignature() const
+		/*----------+
+		| observers |
+		+----------*/
+
+		template <typename T>
+			std::string Proxy<T>::GetSignature() const
 		{
-			return util::GetTypeId<T>().name() + GetType() + GetSource();
+			return util::GetIncompleteTypeInfo<T>().name() + GetType() + GetSource();
 		}
 
-		// modifiers
-		template <typename T> void Proxy<T>::Invalidate() const
+		template <typename T>
+			std::function<void ()> Proxy<T>::GetInvalidate() const
 		{
-			std::string
-				sig(GetSignature()),
-				name(util::lexical_cast<std::string>(*this));
-			cache::Invalidate(sig, name);
-		}
-		template <typename T> void Proxy<T>::Purge() const
-		{
-			std::string
-				sig(GetSignature()),
-				name(util::lexical_cast<std::string>(*this));
-			cache::Purge(sig, name);
-		}
-
-		// function objects
-		template <typename T> std::function<void ()> Proxy<T>::GetInvalidate() const
-		{
-			std::string
-				sig(GetSignature()),
-				name(util::lexical_cast<std::string>(*this));
-			return std::bind(cache::Invalidate, sig, name);
-		}
-		template <typename T> std::function<void ()> Proxy<T>::GetPurge() const
-		{
-			std::string
-				sig(GetSignature()),
-				name(util::lexical_cast<std::string>(*this));
 			return std::bind(
-				static_cast<void (*)(const std::string &, const std::string &)>(cache::Purge),
-				sig, name);
+				&Cache::Invalidate,
+				&GLOBAL(Cache),
+				GetSignature(),
+				util::lexical_cast<std::string>(*this));
 		}
 
-		// comparison
-		template <typename T> bool CompareProxyType<T>::operator ()(const Proxy<T> &a, const Proxy<T> &b) const
+		template <typename T>
+			std::function<void ()> Proxy<T>::GetPurge() const
+		{
+			return std::bind(
+				static_cast<void (*)(const std::string &, const std::string &)>(&Cache::Purge),
+				&GLOBAL(Cache),
+				GetSignature(),
+				util::lexical_cast<std::string>(*this));
+		}
+
+		/*----------+
+		| modifiers |
+		+----------*/
+
+		template <typename T>
+			void Proxy<T>::Invalidate() const
+		{
+			std::string
+				sig(GetSignature()),
+				name(util::lexical_cast<std::string>(*this));
+			GLOBAL(Cache).Invalidate(sig, name);
+		}
+		template <typename T>
+			void Proxy<T>::Purge() const
+		{
+			std::string
+				sig(GetSignature()),
+				name(util::lexical_cast<std::string>(*this));
+			GLOBAL(Cache).Purge(sig, name);
+		}
+
+		/*-----------+
+		| comparison |
+		+-----------*/
+
+		template <typename T>
+			bool Proxy<T>::CompareType::operator ()(const Proxy<T> &a, const Proxy<T> &b) const
 		{
 			return a.GetType() < b.GetType();
 		}
-		template <typename T> bool CompareProxySource<T>::operator ()(const Proxy<T> &a, const Proxy<T> &b) const
+
+		template <typename T>
+			bool Proxy<T>::CompareSource::operator ()(const Proxy<T> &a, const Proxy<T> &b) const
 		{
 			return a.GetSource() < b.GetSource();
 		}
 
-		// stream insertion
-		template <typename T> std::ostream &operator <<(std::ostream &os, const Proxy<T> &proxy)
+		/*------------------------------+
+		| stream insertion & extraction |
+		+------------------------------*/
+
+		template <typename T>
+			std::ostream &operator <<(std::ostream &os, const Proxy<T> &proxy)
 		{
 			return proxy ?
 				os << proxy.GetType() << " from " << proxy.GetSource() :
 				os << "invalid " << proxy.GetType();
 		}
-	}
-}
-
-namespace std
-{
-	// hash specialization
-	template <typename T> size_t hash< ::page::cache::Proxy<T>>::operator ()(const ::page::cache::Proxy<T> &proxy) const
-	{
-		return hash<string>()(::page::util::lexical_cast<string>(proxy));
 	}
 }

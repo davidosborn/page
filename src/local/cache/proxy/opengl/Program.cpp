@@ -184,7 +184,7 @@ namespace page
 				// sort shaders by source
 				using namespace std::placeholders;
 				std::sort(shaders.begin(), shaders.end(),
-					bind(CompareProxySource<res::opengl::Shader>(),
+					bind(Proxy<res::opengl::Shader>::CompareSource(),
 						bind(util::dereference<util::copy_ptr<Proxy<res::opengl::Shader>>>(), _1),
 						bind(util::dereference<util::copy_ptr<Proxy<res::opengl::Shader>>>(), _2)));
 			}

@@ -29,6 +29,7 @@
  */
 
 #include <algorithm> // find
+#include <iterator> // begin, end
 
 namespace page
 {
@@ -40,14 +41,15 @@ namespace page
 				InputRange extensions,
 				ENABLE_IF_IMPL((is_range<InputRange>::value)))
 		{
-			return WithExtension(path, extensions.begin(), extensions.end());
+			return WithExtension(path, std::begin(extensions), std::end(extensions));
 		}
 
 		template <typename InputIterator>
 			boost::filesystem::path WithExtension(
 				const boost::filesystem::path &path,
 				InputIterator firstExtension,
-				InputIterator lastExtension)
+				InputIterator lastExtension,
+				ENABLE_IF_IMPL((is_iterator<InputIterator>::value)))
 		{
 			if (firstExtension != lastExtension &&
 				std::find(firstExtension, lastExtension, GetExtension(path)) == lastExtension)

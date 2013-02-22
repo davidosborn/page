@@ -28,56 +28,24 @@
  * of this software.
  */
 
-#ifndef    page_local_cache_hpp
-#   define page_local_cache_hpp
+#ifndef    page_local_util_class_Uncopyable_hpp
+#   define page_local_util_class_Uncopyable_hpp
 
-#	include <functional> // function
-#	include <memory> // shared_ptr
-#	include <string>
-#	include <typeinfo> // type_info
+#	include "copy_move.hpp"
 
 namespace page
 {
-	namespace cache
+	namespace util
 	{
-		// fetch
-		std::shared_ptr<const void> FetchRaw(
-			const std::string &signature,
-			const std::string &name,
-			const std::type_info &);
-		template <typename T>
-			std::shared_ptr<const T> Fetch(
-				const std::string &signature,
-				const std::string &name);
-
-		// store
-		void StoreRaw(
-			const std::string &signature,
-			const std::string &name,
-			const std::shared_ptr<const void> &,
-			const std::type_info &,
-			const std::function<void ()> &repair = 0);
-		template <typename T>
-			void Store(
-				const std::string &signature,
-				const std::string &name,
-				const std::shared_ptr<const T> &data,
-				const std::function<void ()> &repair = 0);
-
-		// invalidation
-		void Invalidate(
-			const std::string &signature,
-			const std::string &name);
-
-		// purge
-		void Purge();
-		void Purge(const std::string &signature, const std::string &name);
-		void PurgeResource(const std::string &path);
-
-		// update
-		void Update(float deltaTime);
+		/**
+		 * Makes the derived class "uncopyable" (ISO/IEC n3242 8.4.3.3).
+		 */
+		template <typename Derived>
+			class Uncopyable
+		{
+			MAKE_UNCOPYABLE(Uncopyable)
+		};
 	}
 }
 
-#	include "cache.tpp"
 #endif

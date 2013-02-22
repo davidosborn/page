@@ -33,7 +33,7 @@
 
 #	include <string>
 
-#	include "../../util/typeinfo.hpp" // GetTypeId, std::type_info
+#	include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo, std::type_info
 #	include "function.hpp" // GetLoaderFunction
 #	include "registry.hpp" // RegisterLoader
 
@@ -42,7 +42,7 @@ namespace page
 	namespace res
 	{
 #	define REGISTER_LOADER(type, load, ext, mime, tag, inspect) \
-		namespace { LoaderRegisterer _reg##load(util::GetTypeId<type>(), load, ext, mime, tag, inspect); }
+		namespace { LoaderRegisterer _reg##load(util::GetIncompleteTypeInfo<type>(), load, ext, mime, tag, inspect); }
 
 		struct LoaderRegisterer
 		{

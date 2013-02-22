@@ -34,7 +34,10 @@
 #	include <vector>
 
 #	include "../../util/raii/copy_ptr.hpp"
-#	include "../Proxy.hpp"
+#	include "../../util/type_traits/container.hpp" // is_range
+#	include "../../util/type_traits/iterator.hpp" // is_iterator
+#	include "../../util/type_traits/sfinae.hpp" // ENABLE_IF
+#	include "Proxy.hpp"
 
 namespace page
 {
@@ -48,45 +51,102 @@ namespace page
 
 	namespace cache
 	{
-		struct Bounds : Proxy<phys::Bounds>
+		class Bounds : public Proxy<phys::Bounds>
 		{
-			using Proxy<phys::Bounds>::Instance;
+			/*--------------------------+
+			| constructors & destructor |
+			+--------------------------*/
 
-			// construct
+			public:
+			/**
+			 * Creates a bounding box around an optionally-posed model.
+			 */
 			explicit Bounds(const res::Model &, bool pose = true);
+
+			/**
+			 * Creates a bounding box around a mesh.
+			 */
 			explicit Bounds(const Proxy<res::Mesh> &);
+
+			/**
+			 * Creates a bounding box around a mesh posed to a skeleton.
+			 */
 			Bounds(
 				const Proxy<res::Mesh> &,
 				const Proxy<res::Skeleton> &);
-			template <typename MeshIterator>
+
+			/**
+			 * Creates a bounding box around a range of meshes.
+			 */
+			template <typename MeshInputRange>
+				explicit Bounds(
+					MeshInputRange meshes,
+					ENABLE_IF((util::is_range<MeshInputRange>::value)));
+
+			/**
+			 * Creates a bounding box around a range of meshes.
+			 */
+			template <typename MeshInputIterator>
 				Bounds(
-					MeshIterator first,
-					MeshIterator last);
-			template <typename MeshIterator>
+					MeshInputIterator firstMesh,
+					MeshInputIterator lastMesh,
+					ENABLE_IF((util::is_iterator<MeshInputIterator>::value)));
+
+			/**
+			 * Creates a bounding box around a range of meshes posed to a skeleton.
+			 */
+			template <typename MeshInputRange>
 				Bounds(
-					MeshIterator first,
-					MeshIterator last,
-					const Proxy<res::Skeleton> &);
+					MeshInputRange meshes,
+					const Proxy<res::Skeleton> &,
+					ENABLE_IF((util::is_range<MeshInputRange>::value)));
 
-			// clone
-			Bounds *Clone() const;
+			/**
+			 * Creates a bounding box around a range of meshes posed to a skeleton.
+			 */
+			template <typename MeshInputIterator>
+				Bounds(
+					MeshInputIterator firstMesh,
+					MeshInputIterator lastMesh,
+					const Proxy<res::Skeleton> &,
+					ENABLE_IF((util::is_iterator<MeshInputIterator>::value)));
 
-			// attributes
-			std::string GetType() const;
-			std::string GetSource() const;
+			/*------+
+			| clone |
+			+------*/
 
-			// dependency satisfaction
-			operator bool() const;
+			public:
+			Bounds *Clone() const override;
+
+			/*----------+
+			| observers |
+			+----------*/
+
+			public:
+			std::string GetType() const override;
+			std::string GetSource() const override;
+			operator bool() const override;
+
+			/*--------------+
+			| instantiation |
+			+--------------*/
+
+			public:
+			Instance Make() const override;
+
+			/*---------------+
+			| initialization |
+			+---------------*/
 
 			private:
-			// initialization
 			void PostInit();
 
-			// instantiation
-			Instance Make() const;
+			/*-------------+
+			| data members |
+			+-------------*/
 
-			typedef std::vector<util::copy_ptr<Proxy<res::Mesh>>> Meshes;
-			Meshes meshes;
+			private:
+			std::vector<util::copy_ptr<Proxy<res::Mesh>>> meshes;
 			util::copy_ptr<Proxy<res::Skeleton>> skeleton;
 		};
 	}

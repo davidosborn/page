@@ -28,7 +28,7 @@
  * of this software.
  */
 
-#include "../cache/Proxy.hpp"
+#include "../cache/proxy/Proxy.hpp"
 #include "../math/float.hpp" // DegToRad
 #include "../res/type/Image.hpp" // Image::size
 #include "../vid/DrawContext.hpp" // DrawContext::{Draw{Quad,Text},Get{Frame,PixelLogicalBox}}

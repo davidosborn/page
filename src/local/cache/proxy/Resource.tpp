@@ -30,7 +30,7 @@
 
 #include "../../res/Index.hpp" // GetIndex, Index::Load
 #include "../../res/type/registry.hpp" // GetRegisteredTypeName
-#include "../../util/typeinfo.hpp" // GetTypeId
+#include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
 
 namespace page
 {
@@ -49,7 +49,7 @@ namespace page
 		// attributes
 		template <typename T> std::string Resource<T>::GetType() const
 		{
-			return res::GetRegisteredTypeName(util::GetTypeId<T>());
+			return res::GetRegisteredTypeName(util::GetIncompleteTypeInfo<T>());
 		}
 		template <typename T> std::string Resource<T>::GetSource() const
 		{
