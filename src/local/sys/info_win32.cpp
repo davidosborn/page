@@ -45,8 +45,9 @@
 #endif
 
 #include "../err/Exception.hpp"
+#include "../util/string/convert.hpp"
 #include "../util/string/operations.hpp" // Trim
-#include "../util/win32/string.hpp" // Narrow, Native, String
+#include "../util/string/StringBuilder.hpp"
 
 namespace page
 {
@@ -60,6 +61,7 @@ namespace page
 				KEY_READ, &key) != ERROR_SUCCESS)
 					THROW((err::Exception<err::SysModuleTag, err::Win32PlatformTag>("failed to open registry key") <<
 						boost::errinfo_api_function("RegOpenKeyEx")))
+
 			std::vector<BYTE> buffer(32);
 			DWORD type, size = buffer.size();
 			LONG result;
@@ -72,10 +74,15 @@ namespace page
 			if (type != REG_SZ)
 				THROW((err::Exception<err::SysModuleTag, err::Win32PlatformTag>("registry value type mismatch") <<
 					boost::errinfo_api_function("RegQueryValueEx")))
-			return util::TrimLeading(util::win32::Narrow(util::win32::String(
-				reinterpret_cast<LPTSTR>(&*buffer.begin()), std::find(
+
+			std::basic_string<TCHAR> s(
 				reinterpret_cast<LPTSTR>(&*buffer.begin()),
-				reinterpret_cast<LPTSTR>(&*buffer.end()), TEXT('\0')))));
+				std::find(
+					reinterpret_cast<LPTSTR>(&*buffer.begin()),
+					reinterpret_cast<LPTSTR>(&*buffer.end()),
+					TEXT('\0')));
+
+			return util::Convert<char>(util::TrimLeading(s));
 		}
 
 		std::string GetOs()
@@ -118,7 +125,7 @@ namespace page
 					case 4:
 					switch (vi.dwMinorVersion)
 					{
-						case 0: base = "Windows 95"; break;
+						case 0:  base = "Windows 95"; break;
 						case 10: base = "Windows 98"; break;
 						case 90: base = "Windows Me"; break;
 					}
@@ -126,13 +133,12 @@ namespace page
 				}
 				break;
 			}
-			std::ostringstream ss;
-			ss << base <<
+			return util::StringBuilder() <<
+				base <<
 				" " << vi.dwMajorVersion <<
 				"." << vi.dwMinorVersion <<
 				"." << LOWORD(vi.dwBuildNumber) <<
-				" " << util::win32::Narrow(util::win32::String(vi.szCSDVersion));
-			return ss.str();
+				" " << util::Convert<char>(vi.szCSDVersion);
 		}
 
 		std::string GetHostname()
@@ -146,7 +152,7 @@ namespace page
 						boost::errinfo_api_function("GetComputerName")))
 				buffer.resize(size + 1);
 			}
-			return util::win32::Narrow(util::win32::String(buffer.begin(), buffer.begin() + size));
+			return util::Convert<char>(std::basic_string<TCHAR>(buffer.begin(), buffer.begin() + size));
 		}
 
 		std::string GetUsername()
@@ -160,7 +166,7 @@ namespace page
 						boost::errinfo_api_function("GetUserName")))
 				buffer.resize(size);
 			}
-			return util::win32::Narrow(util::win32::String(buffer.begin(), buffer.begin() + size - 1));
+			return util::Convert<char>(std::basic_string<TCHAR>(buffer.begin(), buffer.begin() + size - 1));
 		}
 
 		boost::filesystem::path GetHome()
@@ -169,12 +175,12 @@ namespace page
 			if (FAILED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, &*buffer.begin())))
 				THROW((err::Exception<err::SysModuleTag, err::Win32PlatformTag>("failed to get \"Application Data\" directory") <<
 					boost::errinfo_api_function("SHGetFolderPath")))
-			return util::win32::Narrow(util::win32::String(&*buffer.begin()));
+			return util::Convert<char>(&*buffer.begin());
 		}
 
 		boost::optional<std::string> GetEnvVar(const std::string &name)
 		{
-			util::win32::String tname(util::win32::Native(name));
+			auto tname(util::Convert<TCHAR>(name));
 			std::vector<TCHAR> buffer(32);
 			for (;;)
 			{
@@ -190,7 +196,7 @@ namespace page
 				if (result <= buffer.size()) break;
 				buffer.resize(result);
 			}
-			return boost::in_place(util::win32::Narrow(util::win32::String(&*buffer.begin())));
+			return boost::in_place(util::Convert<char>(&*buffer.begin()));
 		}
 	}
 }

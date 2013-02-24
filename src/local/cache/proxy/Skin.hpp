@@ -57,7 +57,7 @@ namespace page
 
 			public:
 			typedef typename Proxy<phys::Skin>::Instance Instance;
-		
+
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/

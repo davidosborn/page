@@ -1,12 +1,13 @@
+Clean up util/serialize, integrate with util/io, and start using it.
+It could maybe be used in places where std::copy and util::separated_[io]stream_iterator are currently used.
+
+-------------
+
 Consider using type-erasure (described in detail in doc/misc) to create classes with no visible members in the header.
 
 Remember to never return by pointer (such as MakeCursor), but always std::unique_ptr.
 
-Replace util::lexical_cast with the Boost version.
-
 In game/Game.cpp, where we call Save(...), we convert the path to a string with boost::filesystem::path::native, but we shouldn't have to do this once the resource module is updated.
-
-Get rid of util/serialize!
 
 Gotta get rid of util::unique_ptr and friends.
 

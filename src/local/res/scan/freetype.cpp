@@ -31,7 +31,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H // FT_Done_Face, FT_Face, FT_Open_Face
 
-#include "../../util/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
+
 #include "../adapt/freetype.hpp" // GetLib, OpenArgs
 #include "../fmt/freetype/sub.hpp"
 #include "../Node.hpp"
@@ -54,7 +55,7 @@ namespace page
 					fmt::Header header = {i};
 					std::shared_ptr<Pipe> headerPipe(new MemPipe(&header, sizeof header));
 					cb(Node(std::shared_ptr<Pipe>(new CatPipe(headerPipe, pipe)),
-						util::lexical_cast<std::string>(i), "", fmt::tag, false));
+						boost::lexical_cast<std::string>(i), "", fmt::tag, false));
 				}
 				FT_Done_Face(face);
 				return true;

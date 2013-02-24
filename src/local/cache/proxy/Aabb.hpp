@@ -58,7 +58,7 @@ namespace page
 
 			public:
 			typedef typename Proxy<math::Aabb<3>>::Instance Instance;
-		
+
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/

@@ -53,7 +53,7 @@ namespace page
 
 			public:
 			typedef typename Proxy<T>::Instance Instance;
-		
+
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/

@@ -28,33 +28,22 @@
  * of this software.
  */
 
-#ifndef    page_local_util_lexical_cast_hpp
-#   define page_local_util_lexical_cast_hpp
+#include <cassert>
+
+#include <X11/Xlib.h>
+
+#include "../../err/Exception.hpp"
+#include "../message.hpp" // MessageType
 
 namespace page
 {
-	namespace util
+	namespace wnd
 	{
-		/**
-		 * A type-casting interface for lexical transformation (particularly
-		 * (de)serialization), inspired by Kevlin Henney's boost/lexical_cast.
-		 */
-		template <typename To, typename From>
-			To lexical_cast(const From &);
-
-		/**
-		 * A functional wrapper around the @c lexical_cast function.
-		 */
-		template <typename To, typename From>
-			struct lexical_cast_function
+		void Message(const std::string &s, MessageType type, const std::string &title)
 		{
-			inline To operator ()(const From &a) const
-			{
-				return lexical_cast<To>(a);
-			}
-		};
+			// FIXME: set icon depending on message type
+			// FIXME: implement; see
+			// http://www.faqs.org/faqs/x-faq/part7/section-8.html
+		}
 	}
 }
-
-#	include "lexical_cast.tpp"
-#endif

@@ -2007,7 +2007,6 @@ local/res/load/opengl/shader/FragmentShader
 local/res/load/opengl/shader/VertexShader
 local/res/type/opengl/Shader
 local/util/opengl/shader
-local/util/opengl/string
 local/vid/opengl/activeTexture
 local/vid/opengl/ActiveTextureSaver
 local/vid/opengl/AttribGuard
@@ -2096,9 +2095,8 @@ local/res/type/cursor/win32
 local/res/type/image/win32
 local/sys/info_win32
 local/sys/process_win32
-local/util/win32/string
 local/wnd/win32/Console
-local/wnd/win32/msg
+local/wnd/win32/message
 local/wnd/win32/Window
 EOF
 fi
@@ -2108,7 +2106,7 @@ if [ "$with_x" = yes ]; then
 local/err/platform/x11
 local/util/x11/event
 local/wnd/x11/Console
-local/wnd/x11/msg
+local/wnd/x11/message
 local/wnd/x11/Window
 EOF
 fi

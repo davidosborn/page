@@ -36,6 +36,7 @@
 #include <sstream> // ostringstream
 
 #include <boost/filesystem/path.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "../../err/Exception.hpp"
 
@@ -50,7 +51,7 @@ namespace page
 				// FIXME: implement; add a wildcard to the end of the path here,
 				// and then remove it again before returning the result
 			}
-		
+
 			/*std::string expPath(path);
 			// remove null characters
 			expPath.erase(std::remove(expPath.begin(), expPath.end(), '\0'), expPath.end());
@@ -86,7 +87,7 @@ namespace page
 				for (unsigned n = 0;; n++)
 				{
 					std::string incPath(expPath);
-					std::string ns(lexical_cast<std::string>(n));
+					std::string ns(boost::lexical_cast<std::string>(n));
 					for (std::streamsize i = incPath.size() - 1;
 						(i = incPath.rfind('\0', i)) != std::string::npos; i--)
 					{
@@ -103,7 +104,7 @@ namespace page
 						}
 						else
 						{
-							unsigned width = lexical_cast<unsigned>(incPath.substr(j, k - j));
+							unsigned width = boost::lexical_cast<unsigned>(incPath.substr(j, k - j));
 							if (width < ns.size())
 							{
 								std::streamsize nsi = ns.size() - width;

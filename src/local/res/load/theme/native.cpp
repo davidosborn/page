@@ -31,7 +31,8 @@
 #include <cassert>
 #include <memory> // {shared,unique}_ptr
 
-#include "../../../util/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
+
 #include "../../../util/string/operations.hpp" // Partition
 #include "../../adapt/text.hpp" // CheckSig
 #include "../../adapt/text/extract.hpp" // Extract
@@ -71,7 +72,7 @@ namespace page
 			}
 			void OnListBackgroundScale(Theme &theme, const std::string &value)
 			{
-				theme.list.background.scale = util::lexical_cast<bool>(value);
+				theme.list.background.scale = boost::lexical_cast<bool>(value);
 			}
 			void OnListDecoration(Theme &theme, const std::string &)
 			{
@@ -79,11 +80,11 @@ namespace page
 			}
 			void OnListDecorationAngle(Theme &theme, const std::string &value)
 			{
-				theme.list.decorations.back().angle = util::lexical_cast<float>(value);
+				theme.list.decorations.back().angle = boost::lexical_cast<float>(value);
 			}
 			void OnListDecorationBackground(Theme &theme, const std::string &value)
 			{
-				theme.list.decorations.back().background = util::lexical_cast<bool>(value);
+				theme.list.decorations.back().background = boost::lexical_cast<bool>(value);
 			}
 			void OnListDecorationCenter(Theme &theme, const std::string &value)
 			{
@@ -202,11 +203,11 @@ namespace page
 			}
 			void OnListHighlightScale(Theme &theme, const std::string &value)
 			{
-				theme.list.highlight.scale = util::lexical_cast<bool>(value);
+				theme.list.highlight.scale = boost::lexical_cast<bool>(value);
 			}
 			void OnListMargin(Theme &theme, const std::string &value)
 			{
-				theme.list.margin = util::lexical_cast<float>(value);
+				theme.list.margin = boost::lexical_cast<float>(value);
 			}
 			void OnListSeparator(Theme &theme, const std::string &value)
 			{
@@ -227,7 +228,7 @@ namespace page
 					util::Partitioned part(util::Partition(value));
 					theme.list.text.font = cache::Resource<Font>(part.first);
 					if (!part.second.empty())
-						theme.list.text.size = util::lexical_cast<float>(part.second);
+						theme.list.text.size = boost::lexical_cast<float>(part.second);
 				}
 			}
 			void OnListTextFont(Theme &theme, const std::string &value)
@@ -236,15 +237,15 @@ namespace page
 			}
 			void OnListTextSize(Theme &theme, const std::string &value)
 			{
-				theme.list.text.size = util::lexical_cast<float>(value);
+				theme.list.text.size = boost::lexical_cast<float>(value);
 			}
 			void OnMargin(Theme &theme, const std::string &value)
 			{
-				theme.margin = util::lexical_cast<float>(value);
+				theme.margin = boost::lexical_cast<float>(value);
 			}
 			void OnScale(Theme &theme, const std::string &value)
 			{
-				theme.scale = util::lexical_cast<float>(value);
+				theme.scale = boost::lexical_cast<float>(value);
 			}
 			void OnText(Theme &theme, const std::string &value)
 			{
@@ -253,7 +254,7 @@ namespace page
 					util::Partitioned part(util::Partition(value));
 					theme.text.font = cache::Resource<Font>(part.first);
 					if (!part.second.empty())
-						theme.text.size = util::lexical_cast<float>(part.second);
+						theme.text.size = boost::lexical_cast<float>(part.second);
 				}
 			}
 			void OnTextFont(Theme &theme, const std::string &value)
@@ -262,7 +263,7 @@ namespace page
 			}
 			void OnTextSize(Theme &theme, const std::string &value)
 			{
-				theme.text.size = util::lexical_cast<float>(value);
+				theme.text.size = boost::lexical_cast<float>(value);
 			}
 			void OnWindowBackground(Theme &theme, const std::string &value)
 			{
@@ -282,7 +283,7 @@ namespace page
 			}
 			void OnWindowBackgroundScale(Theme &theme, const std::string &value)
 			{
-				theme.window.background.scale = util::lexical_cast<bool>(value);
+				theme.window.background.scale = boost::lexical_cast<bool>(value);
 			}
 			void OnWindowDecoration(Theme &theme, const std::string &)
 			{
@@ -290,11 +291,11 @@ namespace page
 			}
 			void OnWindowDecorationAngle(Theme &theme, const std::string &value)
 			{
-				theme.window.decorations.back().angle = util::lexical_cast<float>(value);
+				theme.window.decorations.back().angle = boost::lexical_cast<float>(value);
 			}
 			void OnWindowDecorationBackground(Theme &theme, const std::string &value)
 			{
-				theme.window.decorations.back().background = util::lexical_cast<bool>(value);
+				theme.window.decorations.back().background = boost::lexical_cast<bool>(value);
 			}
 			void OnWindowDecorationCenter(Theme &theme, const std::string &value)
 			{
@@ -397,7 +398,7 @@ namespace page
 			}
 			void OnWindowMargin(Theme &theme, const std::string &value)
 			{
-				theme.window.margin = util::lexical_cast<float>(value);
+				theme.window.margin = boost::lexical_cast<float>(value);
 			}
 			void OnWindowTitle(Theme &theme, const std::string &value)
 			{
@@ -406,7 +407,7 @@ namespace page
 					util::Partitioned part(util::Partition(value));
 					theme.window.title.text.font = cache::Resource<Font>(part.first);
 					if (!part.second.empty())
-						theme.window.title.text.size = util::lexical_cast<float>(part.second);
+						theme.window.title.text.size = boost::lexical_cast<float>(part.second);
 				}
 			}
 			void OnWindowTitleBackground(Theme &theme, const std::string &value)
@@ -427,7 +428,7 @@ namespace page
 			}
 			void OnWindowTitleBackgroundScale(Theme &theme, const std::string &value)
 			{
-				theme.window.background.scale = util::lexical_cast<bool>(value);
+				theme.window.background.scale = boost::lexical_cast<bool>(value);
 			}
 			void OnWindowTitleText(Theme &theme, const std::string &value)
 			{
@@ -436,7 +437,7 @@ namespace page
 					util::Partitioned part(util::Partition(value));
 					theme.window.title.text.font = cache::Resource<Font>(part.first);
 					if (!part.second.empty())
-						theme.window.title.text.size = util::lexical_cast<float>(part.second);
+						theme.window.title.text.size = boost::lexical_cast<float>(part.second);
 				}
 			}
 			void OnWindowTitleTextFont(Theme &theme, const std::string &value)
@@ -445,7 +446,7 @@ namespace page
 			}
 			void OnWindowTitleTextSize(Theme &theme, const std::string &value)
 			{
-				theme.window.title.text.size = util::lexical_cast<float>(value);
+				theme.window.title.text.size = boost::lexical_cast<float>(value);
 			}
 
 			// parser factory

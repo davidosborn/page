@@ -31,7 +31,8 @@
 #include <cassert>
 #include <memory> // {shared,unique}_ptr
 
-#include "../../../util/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
+
 #include "../../adapt/text.hpp" // CheckSig
 #include "../../adapt/text/Parser.hpp"
 #include "../../fmt/native/gait.hpp"
@@ -53,7 +54,7 @@ namespace page
 			}
 			void OnRunStride(Gait &gait, const std::string &value)
 			{
-				gait.run.stride = util::lexical_cast<float>(value);
+				gait.run.stride = boost::lexical_cast<float>(value);
 			}
 			void OnSneakAnimation(Gait &gait, const std::string &value)
 			{
@@ -61,7 +62,7 @@ namespace page
 			}
 			void OnSneakStride(Gait &gait, const std::string &value)
 			{
-				gait.sneak.stride = util::lexical_cast<float>(value);
+				gait.sneak.stride = boost::lexical_cast<float>(value);
 			}
 			void OnTurnAnimation(Gait &gait, const std::string &value)
 			{
@@ -69,7 +70,7 @@ namespace page
 			}
 			void OnTurnStride(Gait &gait, const std::string &value)
 			{
-				gait.turn.stride = util::lexical_cast<float>(value);
+				gait.turn.stride = boost::lexical_cast<float>(value);
 			}
 			void OnWalkAnimation(Gait &gait, const std::string &value)
 			{
@@ -77,7 +78,7 @@ namespace page
 			}
 			void OnWalkStride(Gait &gait, const std::string &value)
 			{
-				gait.walk.stride = util::lexical_cast<float>(value);
+				gait.walk.stride = boost::lexical_cast<float>(value);
 			}
 
 			// parser factory

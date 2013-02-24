@@ -28,28 +28,32 @@
  * of this software.
  */
 
-#ifndef    page_local_util_win32_string_hpp
-#   define page_local_util_win32_string_hpp
+#include <cassert>
 
-#	include <string>
+#include <windows.h>
 
-#	include <windows.h> // TCHAR
+#include "../../err/Exception.hpp"
+#include "../../util/string/convert.hpp"
+#include "../message.hpp" // MessageType
 
 namespace page
 {
-	namespace util
+	namespace wnd
 	{
-		namespace win32
+		void Message(const std::string &s, MessageType type, const std::string &title)
 		{
-			typedef std::basic_string<TCHAR> String;
-
-			// character conversion
-			String Native(const std::string &);
-			String Native(const std::wstring &);
-			std::string Narrow(const String &);
-			std::wstring Widen(const String &);
+			UINT icon;
+			switch (type)
+			{
+				case infoMessage:    icon = MB_ICONINFORMATION; break;
+				case errorMessage:   icon = MB_ICONERROR;       break;
+				case warningMessage: icon = MB_ICONWARNING;     break;
+				default: assert(!"invalid message type");
+			}
+			if (!MessageBox(NULL, util::Convert<TCHAR>(s).c_str(),
+				util::Convert<TCHAR>(title).c_str(), icon | MB_OK | MB_TASKMODAL))
+					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to create message box") <<
+						boost::errinfo_api_function("MessageBox")))
 		}
 	}
 }
-
-#endif

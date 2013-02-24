@@ -31,15 +31,17 @@
 #include <algorithm> // fill
 #include <iterator> // iterator_traits
 
+#include <boost/lexical_cast.hpp>
+
 #include "../../../err/Exception.hpp"
-#include "../../../util/lexical_cast.hpp"
 #include "../../../util/string/operations.hpp" // Partition
 
 namespace page
 {
 	namespace res
 	{
-		template <typename OutputIterator> void Extract(const std::string &value, OutputIterator iter, OutputIterator end)
+		template <typename OutputIterator>
+			void Extract(const std::string &value, OutputIterator iter, OutputIterator end)
 		{
 			if (iter == end)
 			{
@@ -53,7 +55,7 @@ namespace page
 			{
 				for (;; part = util::Partition(part.second))
 				{
-					*iter = util::lexical_cast<Type>(part.first);
+					*iter = boost::lexical_cast<Type>(part.first);
 					if (++iter == end) break;
 					if (part.second.empty())
 						THROW((err::Exception<err::ResModuleTag, err::FormatTag>("not enough arguments")))
@@ -61,7 +63,7 @@ namespace page
 				if (!part.second.empty())
 					THROW((err::Exception<err::ResModuleTag, err::FormatTag>("too many arguments")))
 			}
-			else std::fill(iter, end, util::lexical_cast<Type>(part.first));
+			else std::fill(iter, end, boost::lexical_cast<Type>(part.first));
 		}
 		template <typename Container> void Extract(const std::string &value, Container &container)
 		{

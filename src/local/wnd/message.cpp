@@ -37,7 +37,7 @@ namespace page
 {
 	namespace wnd
 	{
-		void Message(const std::string &msg, MessageType type)
+		void Message(const std::string &s, MessageType type)
 		{
 			std::string title;
 			switch (type)
@@ -47,7 +47,7 @@ namespace page
 				case MessageType::warning: title = STRINGIZE(NAME) " warning"; break;
 				default: assert(!"invalid message type");
 			}
-			Message(msg, type, title);
+			Message(s, type, title);
 		}
 	}
 }

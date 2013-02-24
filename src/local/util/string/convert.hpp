@@ -33,59 +33,22 @@
 
 #	include <string> // allocator, basic_string, char_traits
 
-#	include "../Flags.hpp"
-
 namespace page
 {
 	namespace util
 	{
 		/**
-		 * A collection of bit-flags for modifying the behaviour of @c Convert.
-		 */
-		struct ConvertFlags : Flags
-		{
-			enum
-			{
-				/**
-				 * Indicates that the string has a variable-width encoding, such
-				 * as UTF-8 or UTF-16, rather than a fixed-width encoding, such
-				 * as ASCII or UCS-2.
-				 *
-				 * @verbatim
-				 *
-				 * Type     | Fixed-width Encoding | Variable-width Encoding
-				 * ---------+----------------------+------------------------
-				 * char     | ASCII-7              | UTF-8
-				 * wchar_t  | UCS-2/UCS-4          | UTF-16/UTF-32
-				 * char16_t | UCS-2                | UTF-16
-				 * char32_t | UCS-4                | UTF-32
-				 *
-				 * @endverbatim
-				 */
-				variableWidth = 0x01
-			};
-		};
-
-		/**
-		 * Convert a string to a different character encoding, with the same
-		 * flags for input and output.
-		 *
-		 * @throw err::Exception<err::ConversionTag>
-		 */
-		template <
-			typename ToChar,
-			typename ToCharTraits = std::char_traits<ToChar>,
-			typename ToAllocator  = std::allocator<ToChar>,
-			typename FromChar,
-			typename FromCharTraits,
-			typename FromAllocator>
-			std::basic_string<ToChar, ToCharTraits, ToAllocator> Convert(
-				const std::basic_string<FromChar, FromCharTraits, FromAllocator> &,
-				typename ConvertFlags::Type = ConvertFlags::none);
-
-		/**
 		 * Convert a string to a different character encoding.
 		 *
+		 * @verbatim
+		 * Type     | Encoding
+		 * ---------+---------
+		 * char     | UTF-8
+		 * wchar_t  | UCS-2/UCS-4
+		 * char16_t | UTF-16
+		 * char32_t | UTF-32
+		 * @endverbatim
+		 *
 		 * @throw err::Exception<err::ConversionTag>
 		 */
 		template <
@@ -95,10 +58,21 @@ namespace page
 			typename FromChar,
 			typename FromCharTraits,
 			typename FromAllocator>
-			std::basic_string<ToChar, ToCharTraits, ToAllocator> Convert(
-				const std::basic_string<FromChar, FromCharTraits, FromAllocator> &,
-				typename ConvertFlags::Type fromFlags,
-				typename ConvertFlags::Type   toFlags);
+				std::basic_string<ToChar, ToCharTraits, ToAllocator>
+				Convert(const std::basic_string<FromChar, FromCharTraits, FromAllocator> &);
+
+		/**
+		 * @copydoc Convert
+		 */
+		template <
+			typename ToChar,
+			typename ToCharTraits = std::char_traits<ToChar>,
+			typename ToAllocator  = std::allocator<ToChar>,
+			typename FromChar,
+			typename FromCharTraits = std::char_traits<FromChar>,
+			typename FromAllocator  = std::allocator<FromChar>>
+				std::basic_string<ToChar, ToCharTraits, ToAllocator>
+				Convert(const FromChar *);
 	}
 }
 

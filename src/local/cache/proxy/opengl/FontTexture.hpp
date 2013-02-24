@@ -56,7 +56,7 @@ namespace page
 
 				public:
 				typedef typename Proxy<vid::opengl::FontTexture>::Instance Instance;
-			
+
 				/*--------------------------+
 				| constructors & destructor |
 				+--------------------------*/

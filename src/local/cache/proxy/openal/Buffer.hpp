@@ -55,7 +55,7 @@ namespace page
 
 				public:
 				typedef typename Proxy<ALuint>::Instance Instance;
-			
+
 				/*--------------------------+
 				| constructors & destructor |
 				+--------------------------*/

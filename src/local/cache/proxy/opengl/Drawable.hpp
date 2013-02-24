@@ -57,7 +57,7 @@ namespace page
 
 				public:
 				typedef typename Proxy<vid::opengl::Drawable>::Instance Instance;
-			
+
 				/*--------------------------+
 				| constructors & destructor |
 				+--------------------------*/

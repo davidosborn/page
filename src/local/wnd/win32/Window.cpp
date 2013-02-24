@@ -38,7 +38,7 @@
 #include "../../inp/Driver.hpp" // MakeDriver
 #include "../../res/type/image/win32.hpp" // MakeBitmap
 #include "../../util/pp.hpp" // STRINGIZE
-#include "../../util/win32/string.hpp" // Native
+#include "../../util/string/convert.hpp"
 #include "../../vid/Driver.hpp" // Driver::RenderImage, MakeDriver
 #include "../../win32/resource.h" // IDI_ICON
 #include "Window.hpp"
@@ -121,7 +121,7 @@ namespace page
 				EnterCriticalSection(&GetCriticalSection());
 				lastWindow = this;
 				if (!(hwnd = CreateWindowEx(WS_EX_APPWINDOW, GetClass(),
-					util::win32::Native(title).c_str(), style,
+					util::Convert<TCHAR>(title).c_str(), style,
 					rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top,
 					0, 0, reinterpret_cast<HINSTANCE>(GetModuleHandle(0)), 0)))
 				{

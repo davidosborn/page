@@ -55,7 +55,7 @@ namespace page
 
 			public:
 			typedef typename Proxy<res::Image>::Instance Instance;
-		
+
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/

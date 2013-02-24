@@ -28,17 +28,19 @@
  * of this software.
  */
 
+#include <locale>
+
 #include "../../err/Exception.hpp"
 
 namespace page
 {
 	namespace util
 	{
-		// Convert
 		namespace detail
 		{
 			template <typename From, typename To>
 				class ConvertImpl;
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -46,23 +48,15 @@ namespace page
 					std::basic_string<char, FromCharTraits, FromAllocator>,
 					std::basic_string<char,   ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char,   ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					if ((fromFlags & ConvertFlags::variableWidth) ==
-						(  toFlags & ConvertFlags::variableWidth))
-					{
-						return from;
-					}
-					else
-					{
-						// FIXME: implement
-						THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
-					}
+					return from; // identity
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -70,17 +64,15 @@ namespace page
 					std::basic_string<char,  FromCharTraits, FromAllocator>,
 					std::basic_string<wchar_t, ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<wchar_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char,  FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<wchar_t, ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					// http://en.cppreference.com/w/cpp/locale/wstring_convert
-					// http://stackoverflow.com/questions/7232710/convert-between-string-u16string-u32string
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(from);
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -88,15 +80,15 @@ namespace page
 					std::basic_string<char,   FromCharTraits, FromAllocator>,
 					std::basic_string<char16_t, ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char16_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char,   FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char16_t, ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().from_bytes(from);
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -104,15 +96,15 @@ namespace page
 					std::basic_string<char,   FromCharTraits, FromAllocator>,
 					std::basic_string<char32_t, ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char32_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char,   FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char32_t, ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(from);
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -120,15 +112,15 @@ namespace page
 					std::basic_string<wchar_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char,      ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<wchar_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<wchar_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char,      ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(from);
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -136,15 +128,15 @@ namespace page
 					std::basic_string<wchar_t, FromCharTraits, FromAllocator>,
 					std::basic_string<wchar_t,   ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<wchar_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<wchar_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<wchar_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<wchar_t,   ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return from; // identity
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -152,15 +144,15 @@ namespace page
 					std::basic_string<wchar_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char16_t,  ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char16_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<wchar_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<wchar_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char16_t,  ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return std::wstring_convert<std::codecvt_utf16<wchar_t>, wchar_t>().to_bytes(from);
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -168,15 +160,17 @@ namespace page
 					std::basic_string<wchar_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char32_t,  ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char32_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<wchar_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<wchar_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char32_t,  ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					// UCS-2 -> UTF-8 -> UTF-32
+					return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(
+						std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(from));
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -184,15 +178,15 @@ namespace page
 					std::basic_string<char16_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char,       ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char16_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char16_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char,       ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().to_bytes(from);
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -200,15 +194,15 @@ namespace page
 					std::basic_string<char16_t, FromCharTraits, FromAllocator>,
 					std::basic_string<wchar_t,    ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<wchar_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char16_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char16_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<wchar_t,    ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return std::wstring_convert<std::codecvt_utf16<wchar_t>, wchar_t>().from_bytes(from);
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -216,15 +210,15 @@ namespace page
 					std::basic_string<char16_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char16_t,   ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char16_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char16_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char16_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char16_t,   ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return from; // identity
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -232,15 +226,17 @@ namespace page
 					std::basic_string<char16_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char32_t,   ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char32_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char16_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char16_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char32_t,   ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					// UTF-16 -> UTF-8 -> UTF-32
+					return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(
+						std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().to_bytes(from));
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -248,15 +244,15 @@ namespace page
 					std::basic_string<char32_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char,       ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char32_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char32_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char,       ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from);
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -264,15 +260,17 @@ namespace page
 					std::basic_string<char32_t, FromCharTraits, FromAllocator>,
 					std::basic_string<wchar_t,    ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<wchar_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char32_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char32_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<wchar_t,    ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					// UTF-32 -> UTF-8 -> UCS-2
+					return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(
+						std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from));
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -280,15 +278,17 @@ namespace page
 					std::basic_string<char32_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char16_t,   ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char16_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char32_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char32_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char16_t,   ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					// UTF-32 -> UTF-8 -> UTF-16
+					return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().from_bytes(
+						std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from));
 				}
 			};
+
 			template <
 				typename FromCharTraits, typename FromAllocator,
 				typename   ToCharTraits, typename   ToAllocator>
@@ -296,37 +296,43 @@ namespace page
 					std::basic_string<char32_t, FromCharTraits, FromAllocator>,
 					std::basic_string<char32_t,   ToCharTraits,   ToAllocator>>
 			{
-				static std::basic_string<char32_t, ToCharTraits, ToAllocator> Apply(
-					const std::basic_string<char32_t, FromCharTraits, FromAllocator> &from,
-					typename ConvertFlags::Type fromFlags,
-					typename ConvertFlags::Type   toFlags)
+				typedef std::basic_string<char32_t, FromCharTraits, FromAllocator> From;
+				typedef std::basic_string<char32_t,   ToCharTraits,   ToAllocator>   To;
+
+				static To Apply(const From &from)
 				{
-					// FIXME: implement
-					THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+					return from; // identity
 				}
 			};
 		}
+
 		template <
 			typename   ToChar, typename   ToCharTraits, typename   ToAllocator,
 			typename FromChar, typename FromCharTraits, typename FromAllocator>
-			std::basic_string<ToChar, ToCharTraits, ToAllocator> Convert(
-				const std::basic_string<FromChar, FromCharTraits, FromAllocator> &from,
-				typename ConvertFlags::Type flags = ConvertFlags::none)
+				std::basic_string<ToChar, ToCharTraits, ToAllocator>
+				Convert(const std::basic_string<FromChar, FromCharTraits, FromAllocator> &from)
 		{
-			return Convert<ToChar, ToCharTraits, ToAllocator>(from, flags, flags);
+			try
+			{
+				return detail::ConvertImpl<
+					std::basic_string<FromChar, FromCharTraits, FromAllocator>,
+					std::basic_string<  ToChar,   ToCharTraits,   ToAllocator>>::
+					Apply(from);
+			}
+			catch (const std::range_error &)
+			{
+				THROW((err::Exception<err::UtilModuleTag, err::ConversionTag>()))
+			}
 		}
+
 		template <
 			typename   ToChar, typename   ToCharTraits, typename   ToAllocator,
 			typename FromChar, typename FromCharTraits, typename FromAllocator>
-			std::basic_string<ToChar, ToCharTraits, ToAllocator> Convert(
-				const std::basic_string<FromChar, FromCharTraits, FromAllocator> &from,
-				typename ConvertFlags::Type fromFlags = ConvertFlags::none,
-				typename ConvertFlags::Type   toFlags = ConvertFlags::none)
+				std::basic_string<ToChar, ToCharTraits, ToAllocator>
+				Convert(const FromChar *from)
 		{
-			return detail::ConvertImpl<
-				std::basic_string<FromChar, FromCharTraits, FromAllocator>,
-				std::basic_string<  ToChar,   ToCharTraits,   ToAllocator>>::
-				Apply(from, fromFlags, toFlags);
+			return Convert<ToChar, ToCharTraits, ToAllocator>(
+				std::basic_string<FromChar, FromCharTraits, FromAllocator>(from));
 		}
 	}
 }

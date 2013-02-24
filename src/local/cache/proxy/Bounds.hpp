@@ -62,7 +62,7 @@ namespace page
 
 			public:
 			typedef typename Proxy<phys::Bounds>::Instance Instance;
-		
+
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/

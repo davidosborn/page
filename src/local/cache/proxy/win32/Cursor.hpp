@@ -55,7 +55,7 @@ namespace page
 
 				public:
 				typedef typename Proxy<HCURSOR>::Instance Instance;
-			
+
 				/*--------------------------+
 				| constructors & destructor |
 				+--------------------------*/

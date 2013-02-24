@@ -44,6 +44,7 @@
 #include "../../log/Indenter.hpp"
 #include "../../util/opengl/shader.hpp" // GetUniformTypeName
 #include "../../util/opengl/string.hpp" // Native, String
+#include "../../util/opengl/string/StringBuilder.hpp"
 #include "../../util/string/operations.hpp" // Trim
 #include "ext.hpp" // ARB_{{fragment,vertex}shader,shader_objects}
 #include "Program.hpp"
@@ -249,7 +250,7 @@ namespace page
 							uniform.location
 						};
 						if (uniform.size > 1)
-							row.name += std::string("[") + util::lexical_cast<std::string>(uniform.size) + ']';
+							row.name += util::StringBuilder() << '[' << uniform.size << ']';
 						table.push_back(row);
 					}
 
@@ -280,7 +281,7 @@ namespace page
 				GLhandleARB shader = glCreateShaderObjectARB(type);
 				if (!shader)
 					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("failed to create shader object")))
-				util::opengl::String ns(util::opengl::Native(source));
+				auto ns(util::Convert<GLcharARB>(source));
 				const GLcharARB *src = ns.c_str();
 				glShaderSourceARB(shader, 1, &src, 0);
 				glCompileShaderARB(shader);

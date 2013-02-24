@@ -31,8 +31,9 @@
 #include <cassert>
 #include <ostream>
 
+#include <boost/lexical_cast.hpp>
+
 #include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
-#include "../../util/lexical_cast.hpp"
 #include "../Cache.hpp"
 
 namespace page
@@ -80,7 +81,7 @@ namespace page
 			if (!instance)
 			{
 				auto sig(GetSignature());
-				auto name(util::lexical_cast<std::string>(*this));
+				auto name(boost::lexical_cast<std::string>(*this));
 				if (!(instance = GLOBAL(Cache).Fetch<T>(sig, name)))
 				{
 					instance = Make();
@@ -113,7 +114,7 @@ namespace page
 				&Cache::Invalidate,
 				&GLOBAL(Cache),
 				GetSignature(),
-				util::lexical_cast<std::string>(*this));
+				boost::lexical_cast<std::string>(*this));
 		}
 
 		template <typename T>
@@ -123,7 +124,7 @@ namespace page
 				static_cast<void (*)(const std::string &, const std::string &)>(&Cache::Purge),
 				&GLOBAL(Cache),
 				GetSignature(),
-				util::lexical_cast<std::string>(*this));
+				boost::lexical_cast<std::string>(*this));
 		}
 
 		/*----------+
@@ -135,7 +136,7 @@ namespace page
 		{
 			std::string
 				sig(GetSignature()),
-				name(util::lexical_cast<std::string>(*this));
+				name(boost::lexical_cast<std::string>(*this));
 			GLOBAL(Cache).Invalidate(sig, name);
 		}
 		template <typename T>
@@ -143,7 +144,7 @@ namespace page
 		{
 			std::string
 				sig(GetSignature()),
-				name(util::lexical_cast<std::string>(*this));
+				name(boost::lexical_cast<std::string>(*this));
 			GLOBAL(Cache).Purge(sig, name);
 		}
 

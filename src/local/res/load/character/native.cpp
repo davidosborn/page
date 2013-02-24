@@ -31,7 +31,8 @@
 #include <cassert>
 #include <memory> // {shared,unique}_ptr
 
-#include "../../../util/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
+
 #include "../../adapt/text.hpp" // CheckSig
 #include "../../adapt/text/Parser.hpp"
 #include "../../fmt/native/character.hpp"
@@ -85,11 +86,11 @@ namespace page
 			}
 			void OnRadius(Character &character, const std::string &value)
 			{
-				character.radius = util::lexical_cast<float>(value);
+				character.radius = boost::lexical_cast<float>(value);
 			}
 			void OnScale(Character &character, const std::string &value)
 			{
-				character.scale = util::lexical_cast<float>(value);
+				character.scale = boost::lexical_cast<float>(value);
 			}
 
 			// parser factory

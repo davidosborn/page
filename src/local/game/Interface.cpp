@@ -30,6 +30,8 @@
 
 #include <string>
 
+#include <boost/lexical_cast.hpp>
+
 #include "../cache/proxy/Resource.hpp"
 #include "../log/Stats.hpp"
 #include "../res/Index.hpp" // GetIndex, Index::Load
@@ -40,7 +42,6 @@
 #include "../ui/widget/List.hpp"
 #include "../ui/widget/Text.hpp"
 #include "../ui/widget/Window.hpp"
-#include "../util/lexical_cast.hpp"
 #include "Interface.hpp"
 
 namespace page
@@ -130,11 +131,11 @@ namespace page
 			{
 				const auto &stats(GLOBAL(log::Stats));
 				// FIXME: update running time
-				statFrameCount    ->SetText(util::lexical_cast<std::string>(stats.GetFrameCount()));
-				statFrameRate     ->SetText(util::lexical_cast<std::string>(unsigned(std::floor(stats.GetFrameRate() + .5f))) + " f/s");
-				statCacheTries    ->SetText(util::lexical_cast<std::string>(stats.GetCacheTries()));
-				statCacheMisses   ->SetText(util::lexical_cast<std::string>(stats.GetCacheMisses()));
-				statCacheCoherence->SetText(util::lexical_cast<std::string>(unsigned(std::floor(stats.GetCacheCoherence() * 100 + .5f))) + "%");
+				statFrameCount    ->SetText(boost::lexical_cast<std::string>(stats.GetFrameCount()));
+				statFrameRate     ->SetText(boost::lexical_cast<std::string>(unsigned(std::floor(stats.GetFrameRate() + .5f))) + " f/s");
+				statCacheTries    ->SetText(boost::lexical_cast<std::string>(stats.GetCacheTries()));
+				statCacheMisses   ->SetText(boost::lexical_cast<std::string>(stats.GetCacheMisses()));
+				statCacheCoherence->SetText(boost::lexical_cast<std::string>(unsigned(std::floor(stats.GetCacheCoherence() * 100 + .5f))) + "%");
 			}
 			ui::Interface::Update(deltaTime);
 		}

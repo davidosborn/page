@@ -31,7 +31,8 @@
 #include <cassert>
 #include <memory> // {shared,unique}_ptr
 
-#include "../../../util/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
+
 #include "../../adapt/text.hpp" // CheckSig
 #include "../../adapt/text/extract.hpp" // Extract
 #include "../../adapt/text/Parser.hpp"
@@ -74,7 +75,7 @@ namespace page
 			}
 			void OnPassAmbientTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().ambient.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().ambient.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassDiffuseColor(Material &mat, const std::string &value)
 			{
@@ -98,7 +99,7 @@ namespace page
 			}
 			void OnPassDiffuseTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().diffuse.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().diffuse.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassEmissiveColor(Material &mat, const std::string &value)
 			{
@@ -122,7 +123,7 @@ namespace page
 			}
 			void OnPassEmissiveTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().emissive.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().emissive.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassFresnelColor(Material &mat, const std::string &value)
 			{
@@ -146,11 +147,11 @@ namespace page
 			}
 			void OnPassFresnelPowerTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().fresnel.power.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().fresnel.power.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassFresnelPowerValue(Material &mat, const std::string &value)
 			{
-				mat.passes.back().fresnel.power.value = util::lexical_cast<float>(value);
+				mat.passes.back().fresnel.power.value = boost::lexical_cast<float>(value);
 			}
 			void OnPassFresnelTexture(Material &mat, const std::string &value)
 			{
@@ -170,7 +171,7 @@ namespace page
 			}
 			void OnPassFresnelTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().fresnel.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().fresnel.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassGlossTexture(Material &mat, const std::string &value)
 			{
@@ -190,11 +191,11 @@ namespace page
 			}
 			void OnPassGlossTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().gloss.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().gloss.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassGlossValue(Material &mat, const std::string &value)
 			{
-				mat.passes.back().gloss.value = util::lexical_cast<float>(value);
+				mat.passes.back().gloss.value = boost::lexical_cast<float>(value);
 			}
 			void OnPassMaskTexture(Material &mat, const std::string &value)
 			{
@@ -214,11 +215,11 @@ namespace page
 			}
 			void OnPassMaskTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().mask.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().mask.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassMaskValue(Material &mat, const std::string &value)
 			{
-				mat.passes.back().mask.value = util::lexical_cast<float>(value);
+				mat.passes.back().mask.value = boost::lexical_cast<float>(value);
 			}
 			void OnPassNormalTexture(Material &mat, const std::string &value)
 			{
@@ -238,7 +239,7 @@ namespace page
 			}
 			void OnPassNormalTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().normal.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().normal.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassSpecularColor(Material &mat, const std::string &value)
 			{
@@ -262,11 +263,11 @@ namespace page
 			}
 			void OnPassSpecularPowerTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().specular.power.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().specular.power.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 			void OnPassSpecularPowerValue(Material &mat, const std::string &value)
 			{
-				mat.passes.back().specular.power.value = util::lexical_cast<float>(value);
+				mat.passes.back().specular.power.value = boost::lexical_cast<float>(value);
 			}
 			void OnPassSpecularTexture(Material &mat, const std::string &value)
 			{
@@ -286,7 +287,7 @@ namespace page
 			}
 			void OnPassSpecularTextureUv(Material &mat, const std::string &value)
 			{
-				mat.passes.back().specular.texture.uvIndex = util::lexical_cast<unsigned>(value);
+				mat.passes.back().specular.texture.uvIndex = boost::lexical_cast<unsigned>(value);
 			}
 
 			// parser factory
