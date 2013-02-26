@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. "$0/../include/config.sh"
+. "$0/../../bash/config.sh"
 
 IFS=$'\n'
 

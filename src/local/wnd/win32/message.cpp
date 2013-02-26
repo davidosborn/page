@@ -29,11 +29,13 @@
  */
 
 #include <cassert>
+#include <locale>
+
+#include <boost/locale/encoding.hpp> // to_utf
 
 #include <windows.h>
 
 #include "../../err/Exception.hpp"
-#include "../../util/string/convert.hpp"
 #include "../message.hpp" // MessageType
 
 namespace page
@@ -50,8 +52,10 @@ namespace page
 				case warningMessage: icon = MB_ICONWARNING;     break;
 				default: assert(!"invalid message type");
 			}
-			if (!MessageBox(NULL, util::Convert<TCHAR>(s).c_str(),
-				util::Convert<TCHAR>(title).c_str(), icon | MB_OK | MB_TASKMODAL))
+			if (!MessageBox(NULL,
+				boost::locale::conv::to_utf<TCHAR>(s, std::locale()).c_str(),
+				boost::locale::conv::to_utf<TCHAR>(title, std::locale()).c_str(),
+				icon | MB_OK | MB_TASKMODAL))
 					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to create message box") <<
 						boost::errinfo_api_function("MessageBox")))
 		}

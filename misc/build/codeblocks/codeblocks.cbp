@@ -1,0 +1,3601 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Portable Adventure Game Engine" />
+		<Option makefile_is_custom="1" />
+		<Option execution_dir="../../../build/" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<MakeCommands>
+			<Build command="$make -f $makefile" />
+			<CompileFile command="$make -f $makefile $file" />
+			<Clean command="$make -f $makefile clean" />
+			<DistClean command="$make -f $makefile distclean$target" />
+			<AskRebuildNeeded command="$make -q -f $makefile" />
+			<SilentBuild command="$make -f $makefile &gt; $(CMD_NULL)" />
+		</MakeCommands>
+		<Build>
+			<Target title="debug">
+				<Option output="../../../build/page" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../build" />
+				<Option object_output="../../../build/codeblocks/obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<MakeCommands>
+					<Build command="$make -f $makefile" />
+					<CompileFile command="$make -f $makefile $file" />
+					<Clean command="$make -f $makefile clean" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile" />
+					<SilentBuild command="$make -f $makefile &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="release">
+				<Option output="../../../build/page" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../build" />
+				<Option object_output="../../../build/codeblocks/obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<MakeCommands>
+					<Build command="$make -f $makefile" />
+					<CompileFile command="$make -f $makefile $file" />
+					<Clean command="$make -f $makefile clean" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile" />
+					<SilentBuild command="$make -f $makefile &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="test">
+				<Option output="../../../build/page-test" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../build" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+			</Target>
+			<Target title="scratch">
+				<Option output="../../../build/test" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../build" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="page" targets="debug;release;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="../../../src/local/aud/Channel.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/Channel.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/NullDriver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/NullDriver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/Sound.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/Sound.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/channel/AmbientChannel.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/channel/AmbientChannel.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/channel/SpatialChannel.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/channel/SpatialChannel.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/Buffer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/Buffer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/Channel.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/Channel.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/buffer/StaticBuffer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/buffer/StaticBuffer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/buffer/StreamBuffer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/buffer/StreamBuffer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/channel/AmbientChannel.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/channel/AmbientChannel.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/channel/SpatialChannel.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/openal/channel/SpatialChannel.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/win32/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/aud/win32/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/Cache.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/Cache.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/fwd.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Aabb.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Aabb.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Bounds.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Bounds.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/GlyphImage.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/GlyphImage.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/IndirectProxy.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Proxy.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Reference.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Resource.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Skin.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/Skin.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/openal/Buffer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/openal/Buffer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/opengl/Drawable.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/opengl/Drawable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/opengl/FontTexture.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/opengl/FontTexture.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/opengl/Program.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/opengl/Program.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/opengl/Texture.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/opengl/Texture.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/win32/Cursor.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cache/proxy/win32/Cursor.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/source/CmdlineSource.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/source/CmdlineSource.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/source/FileSource.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/source/FileSource.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/source/Source.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/source/Source.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/source/win32/RegistrySource.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/source/win32/RegistrySource.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/state/BasicState.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/state/BasicState.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/state/CommonState.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/state/CommonState.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/state/State.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/state/State.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/state/opengl/RenderState.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/state/opengl/RenderState.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/var/BasicVar.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/var/BasicVar.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/var/Var.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/cfg/vars.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/Stream.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/Stream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/encoder/Encoder.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/encoder/Encoder.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/encoder/FfmpegEncoder.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/encoder/FfmpegEncoder.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/encoder/TheoraEncoder.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/encoder/TheoraEncoder.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/encoder/detail/EncoderFactory.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/clip/encoder/detail/EncoderFactory.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/doc/doxygen.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/Exception.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/Tag.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/init.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/lua.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/lua.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/openal.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/openal.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/opengl.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/opengl.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/posix.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/posix.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/x11.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/platform/x11.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/report.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/report.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/tags.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/err/tags.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Character.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Character.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Entity.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Entity.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Game.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Game.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/InputDispatcher.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Interface.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Interface.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Object.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Object.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Player.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Player.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Scene.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/Scene.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/game/save.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/Button.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/Device.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/Device.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/Key.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/State.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/State.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/device/register.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/device/registry.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/device/registry.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/win32/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/win32/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/x11/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/inp/x11/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/Indenter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/Indenter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/Stats.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/Stats.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/Filter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/Filter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/IndentFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/IndentFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/IndentFilterState.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/IndentFilterState.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/LineFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/LineFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/PrefixFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/PrefixFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/TimeFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/filter/TimeFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/init.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/init_simple.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/manip.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/manip.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/print.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/print.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/ConsoleSink.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/ConsoleSink.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/FileSink.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/FileSink.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/Sink.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/StderrSink.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/StderrSink.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/StdoutSink.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/sink/StdoutSink.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/stream/BranchableStream.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/stream/BranchableStream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/stream/BufferStream.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/stream/BufferStream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/stream/Stream.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/log/stream/Stream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/main.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Aabb.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/ArithmeticConversion.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Axan.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Color.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Euler.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Frustum.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Matrix.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/OrthoFrustum.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Plane.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Quat.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Slice.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/Vector.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/ViewFrustum.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/algorithm.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/algorithm.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/float.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/fwd.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/interp.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/intersect.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/pow2.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/pow2.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/generic.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/generic.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/3dnow.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/3dnow.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/3dnowext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/3dnowext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/mmx.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/mmx.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/sse.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/sse.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/sse2.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/sse2.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/sse3.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/simd/i386/sse3.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/win32.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/math/win32.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/opt.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/opt.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Body.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Body.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Bounds.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Bounds.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Camera.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Camera.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Controller.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Controller.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Emitter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Emitter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Form.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Form.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Frame.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Frame.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Light.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Light.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Node.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Node.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Particle.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Particle.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Scene.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Scene.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Skin.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Skin.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Sound.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/Sound.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/aabb.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/aabb.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Ambient.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Ambient.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/AmbientRange.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/AmbientRange.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Aspect.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Aspect.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Attenuation.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Attenuation.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Cutoff.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Cutoff.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Deformation.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Deformation.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Depth.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Depth.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Diffuse.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Diffuse.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/DiffuseRange.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/DiffuseRange.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Emissive.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Emissive.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/EmissiveRange.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/EmissiveRange.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Exposure.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Exposure.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Falloff.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Falloff.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Fov.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Fov.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/LifetimeRange.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/LifetimeRange.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Material.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Material.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Mesh.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Mesh.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Normal.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Normal.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Opacity.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Opacity.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/OpacityRange.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/OpacityRange.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Orientation.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Orientation.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Pose.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Pose.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Position.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Position.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/PositionNormal.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/PositionNormal.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/PositionNormalScale.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/PositionNormalScale.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/PositionOrientation.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/PositionOrientation.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/PositionOrientationScale.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/PositionOrientationScale.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Range.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Range.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Scale.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Scale.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Size.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Size.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/SizeRange.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/SizeRange.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Specular.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Specular.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/SpecularRange.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/SpecularRange.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/SpeedRange.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/SpeedRange.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/TexCoord.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/TexCoord.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Volume.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/attrib/Volume.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/AnimationController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/AnimationController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/AnimationTargetController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/AnimationTargetController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/BlinkController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/BlinkController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/CameraFocusController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/CameraFocusController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/ConstrainPositionToPlaneController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/ConstrainPositionToPlaneController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/EyeController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/EyeController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/FollowController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/FollowController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/FrameController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/FrameController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/GaitController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/GaitController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/HeroCamController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/HeroCamController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/IdleController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/IdleController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/LipsyncController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/LipsyncController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/LocomotionController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/LocomotionController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/PathfindingController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/PathfindingController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/TargetController.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/TargetController.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/controller/animation/Interpolator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Collidable.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Collidable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Controllable.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Controllable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Positionable.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Positionable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Trackable.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Trackable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Transformable.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/Transformable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/update/Collidable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/phys/mixin/update/Trackable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/Index.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/Index.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/Node.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/Node.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/Stream.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/Stream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/flac.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/flac.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/freetype.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/freetype.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/minizip.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/minizip.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/png.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/png.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text/LineIterator.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text/LineIterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text/ParseTree.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text/ParseTree.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text/Parser.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text/Parser.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/text/extract.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/vorbis.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/vorbis.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/zip.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/adapt/zip.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/bmp.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/freetype/sub.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/animation.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/cameraSet.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/character.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/cursor.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/gait.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/material.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/mesh.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/model.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/object.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/scene.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/skeleton.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/theme.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/native/track.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/wav.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/fmt/zip.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/animation/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/cameraSet/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/character/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/character/native/expat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/cursor/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/cursor/native/expat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/font/freetype.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/font/freetype.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/font/freetype/sub.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/function.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/gait/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/gait/native/expat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/image/png.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/material/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/material/native/expat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/mesh/3ds.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/mesh/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/model/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/model/native/expat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/object/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/object/native/expat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/opengl/shader/FragmentShader.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/opengl/shader/VertexShader.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/register.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/registry.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/registry.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/scene/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/scene/native/expat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/script/lua.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/skeleton/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/sound/flac.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/sound/vorbis.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/sound/wav.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/theme/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/theme/native/expat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/load/track/native.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/path.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/path.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/CatPipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/CatPipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/CurlPipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/CurlPipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/EndianPipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/EndianPipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/FilePipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/FilePipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/MemPipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/MemPipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/MinizipPipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/MinizipPipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/NullPipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/NullPipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/Pipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/Pipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/SubPipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/SubPipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/ZipPipe.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/pipe/ZipPipe.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/save.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/save.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/save/function.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/save/image/bmp.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/save/image/png.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/save/register.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/save/registry.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/save/registry.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/scan/callback.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/scan/freetype.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/scan/function.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/scan/minizip.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/scan/ogg.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/scan/register.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/scan/registry.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/scan/registry.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/CurlSource.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/CurlSource.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/DirSource.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/DirSource.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/FileSource.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/FileSource.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/Source.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/Source.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/ZipSource.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/ZipSource.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/function.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/register.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/registry.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/source/registry.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Animation.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Animation.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/CameraSet.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/CameraSet.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Character.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Character.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Cursor.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Cursor.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Font.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Font.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Gait.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Gait.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Image.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Image.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Material.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Material.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Mesh.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Mesh.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Model.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Model.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Object.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Object.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Scene.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Scene.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Script.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Script.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Skeleton.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Skeleton.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Sound.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Sound.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Theme.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Theme.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Track.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/Track.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/cursor/win32.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/cursor/win32.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/font/freetype.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/function.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/fwd.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/image/win32.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/image/win32.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/opengl/Shader.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/opengl/Shader.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/register.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/registry.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/registry.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/script/ScriptFormat.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/script/ScriptFormat.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/AudioDecoder.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/AudioStream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/FlacDecoder.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/FlacDecoder.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/FlacStream.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/FlacStream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/PcmDecoder.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/PcmDecoder.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/PcmStream.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/PcmStream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/VorbisDecoder.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/VorbisDecoder.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/VorbisStream.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/VorbisStream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/openal.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/res/type/sound/openal.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/Machine.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/Machine.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/Process.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/Process.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/Router.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/Router.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/Library.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/Library.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/Machine.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/Machine.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/Process.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/Process.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Base.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Base.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Character.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Character.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Class.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Class.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Coroutine.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Coroutine.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Debug.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Debug.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Entity.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Entity.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Game.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Game.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Object.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Object.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Standard.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Standard.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Table.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/lua/lib/Table.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/machine/register.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/machine/registry.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/machine/registry.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/native/move.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/native/move.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/python/ScopedRef.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/script/python/ScopedRef.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/info.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/info.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/info_posix.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/info_win32.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/process.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/process_posix.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/process_win32.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/ClockTimer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/ClockTimer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/Timer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/Timer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/posix/ClockTimer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/posix/ClockTimer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/posix/FtimeTimer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/posix/FtimeTimer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/posix/TimedayTimer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/posix/TimedayTimer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/win32/MmTimer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/win32/MmTimer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/win32/PcTimer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/win32/PcTimer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/win32/TickTimer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/sys/timer/win32/TickTimer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/DrawContext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/DrawContext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/Interface.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/Interface.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/Widget.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/Widget.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/WidgetContainer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/WidgetContainer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Array.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Array.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Button.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Button.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Edit.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Edit.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Image.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Image.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/List.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/List.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Text.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Text.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Window.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/ui/widget/Window.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/AlignedAllocator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/Caller.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/Flags.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/Identifiable.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/Identifiable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/MonoFactory.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/NonCopyable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/Optional.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/Signal.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/Signal.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/StateSaver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/algorithm/contains.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/algorithm/select.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/algorithm/stdext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/bit.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/bit.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/buffer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/buffer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/class/Cloneable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/class/Monostate.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/class/Uncopyable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/class/copy_move.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/class/inheritance.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/class/typeinfo.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/container/reference_vector.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/cstring.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/cstring.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/endian.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/endian.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/factory/Criterion.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/factory/EncoderFactory.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/factory/Factory.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/functional/cast.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/functional/compare.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/functional/factory.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/functional/locale.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/functional/member.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/functional/operator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/functional/pointer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/hash.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/hash.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/init_priority.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/io/InputDelimiter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/io/OutputDelimiter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/io/greedy_istream_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/io/separated_istream_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/io/separated_ostream_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/call_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/chain_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/deferred_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/indirect_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/iterator_adapter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/iterator_facade.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/member_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/proxy_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/range.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/repeat_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/ring_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/iterator/step_iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/lang.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/lang.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/locale.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/locale.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/lua.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/lua.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/memory/Deleter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/opengl/shader.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/opengl/shader.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/path/expand.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/path/expand.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/path/extension.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/path/extension.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/pp.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/raii/ScopeGuard.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/raii/ScopeGuard.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/raii/copy_ptr.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/raii/scoped_handle.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/raii/shared_handle.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/raii/unique_handle.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/regex.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/serialize/DeserializationDelimiter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/serialize/SequenceDeserializationFlags.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/serialize/SerializationDelimiter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/serialize/deserialize.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/serialize/deserialize_string.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/serialize/serialize.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/serialize/serialize_string.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/serialize/skip.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/string/StringBuilder.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/string/convert.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/string/operations.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/tuple.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/const_volatile.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/container.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/function.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/integer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/iterator.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/pointer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/sfinae.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/sign.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/stream.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/string.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/type_traits/type_string.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/typelist.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/x11/event.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/util/x11/event.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/DrawContext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/DrawContext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/Filter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/Filter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/ViewContext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/ViewContext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/draw.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/draw.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ActiveTextureSaver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ActiveTextureSaver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/AttribGuard.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/AttribGuard.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ClientActiveTextureSaver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ClientActiveTextureSaver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ClientAttribGuard.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ClientAttribGuard.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/DrawContext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/DrawContext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Drawable.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Drawable.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Filter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Filter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/FontTexture.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/FontTexture.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Framebuffer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Framebuffer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/FramebufferFlags.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Index.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Index.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/MatrixGuard.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/MatrixGuard.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Program.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Program.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ProgramSaver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ProgramSaver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/RenderTarget.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/RenderTarget.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/RenderTargetPool.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/RenderTargetPool.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/RenderTargetSaver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/RenderTargetSaver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Resources.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Resources.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Texture.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Texture.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/TextureFlags.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/TextureFormat.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Vertex.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/Vertex.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/VertexArray.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/VertexArray.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/VertexBuffer.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/VertexBuffer.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ViewContext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ViewContext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/activeTexture.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/activeTexture.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/blend.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/blend.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/clientActiveTexture.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/clientActiveTexture.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/ext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/AlphaFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/AlphaFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/GlowFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/GlowFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/MedianFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/MedianFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/SaturationFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/SaturationFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/ScaleBiasFilter.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/filter/ScaleBiasFilter.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/get.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/get.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/matrix.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/matrix.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/resources/ShaderMaterialResources.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/resources/ShaderMaterialResources.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/resources/ShaderOutlineResources.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/resources/ShaderOutlineResources.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/resources/ShadowResources.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/resources/ShadowResources.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/state.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/state.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/tex.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/tex.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/tune.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/tune.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/win32/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/win32/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/win32/ext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/win32/ext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/x11/Driver.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/x11/Driver.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/x11/ext.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/vid/opengl/x11/ext.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/win32/boot.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/win32/resource.h">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/Console.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/Console.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/Window.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/Window.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/message.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/message.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/win32/Console.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/win32/Console.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/win32/Window.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/win32/Window.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/win32/message.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/x11/Console.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/x11/Console.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/x11/Window.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/x11/Window.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/local/wnd/x11/message.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/boost/mpl/flatten.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/boost/mpl/join.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/boost/mpl/permutate.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/boost/mpl/permutate_1.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/boost/mpl/unpack.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/c++/bits/string.cpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/c++/bits/string.hpp">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/opengl/GL/gl.h">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/opengl/GL/glext.h">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/opengl/GL/glu.h">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/win32/windef.h">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Unit filename="../../../src/system/win32/windows.h">
+			<Option target="debug" />
+			<Option target="release" />
+		</Unit>
+		<Extensions>
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<editor_config active="1" use_tabs="1" tab_indents="1" tab_width="4" indent="4" eol_mode="2" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

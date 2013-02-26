@@ -39,6 +39,9 @@
 
 	/**
 	 * Convert the macro argument into a string literal.
+	 *
+	 * @note This macro is also defined in config.h, to make it available to the
+	 *       build system.
 	 */
 #	define STRINGIZE(x) STRINGIZE2(x)
 	///@}

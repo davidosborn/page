@@ -28,7 +28,10 @@
  * of this software.
  */
 
+#include <locale>
 #include <unordered_map>
+
+#include <boost/locale/encoding.hpp>
 
 #include <windowsx.h> // GET_[XY]_LPARAM
 
@@ -38,7 +41,6 @@
 #include "../../inp/Driver.hpp" // MakeDriver
 #include "../../res/type/image/win32.hpp" // MakeBitmap
 #include "../../util/pp.hpp" // STRINGIZE
-#include "../../util/string/convert.hpp"
 #include "../../vid/Driver.hpp" // Driver::RenderImage, MakeDriver
 #include "../../win32/resource.h" // IDI_ICON
 #include "Window.hpp"
@@ -121,7 +123,8 @@ namespace page
 				EnterCriticalSection(&GetCriticalSection());
 				lastWindow = this;
 				if (!(hwnd = CreateWindowEx(WS_EX_APPWINDOW, GetClass(),
-					util::Convert<TCHAR>(title).c_str(), style,
+					boost::locale::conv::to_utf<TCHAR>(title, std::locale()).c_str(),
+					style,
 					rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top,
 					0, 0, reinterpret_cast<HINSTANCE>(GetModuleHandle(0)), 0)))
 				{

@@ -2,7 +2,7 @@
 
 # NOTE: .reg files are excluded because they are Windows files
 
-. "$0/../include/config.sh"
+. "$0/../../bash/config.sh"
 
 IFS=
 files=($(find "$top_dir" \

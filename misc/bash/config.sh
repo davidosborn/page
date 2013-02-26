@@ -2,7 +2,7 @@
 
 ################################################################################
 
-set -e
+set -e -o pipefail
 
 ################################################################################
 
@@ -30,9 +30,25 @@ native_path()
 
 ################################################################################
 
+declare -a exit_handlers=
+
 on_exit()
 {
+	for exit_handler in "${exit_handlers[@]}"; do
+		eval "$exit_handler"
+	done
+
 	cd "$orig_dir"
+}
+
+push_exit()
+{
+	exit_handlers=("$1" "${exit_handlers[@]}")
+}
+
+pop_exit()
+{
+	exit_handlers=("${exit_handlers[@]:1}")
 }
 
 trap on_exit EXIT

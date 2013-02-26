@@ -1,0 +1,48 @@
+--- boost_1_49_0/libs/filesystem/src/path.cpp	2012-06-23 14:18:25 -0600
++++ boost_1_49_0/libs/filesystem/src/path.cpp	2012-06-23 14:17:27 -0600
+@@ -760,12 +760,19 @@
+ 
+ #ifdef BOOST_WINDOWS_API
+ 
+-  std::locale path_locale(std::locale(), new windows_file_codecvt); 
+-
+-  const std::codecvt<wchar_t, char, std::mbstate_t>*
++std::locale &get_path_locale()
++{
++	static std::locale path_locale(std::locale(), new windows_file_codecvt); 
++	return path_locale;
++}
++const std::codecvt<wchar_t, char, std::mbstate_t>*&get_codecvt_facet()
++{
++	static const std::codecvt<wchar_t, char, std::mbstate_t>*
+     codecvt_facet(&std::use_facet<std::codecvt<wchar_t, char, std::mbstate_t> >
+-      (path_locale));
+-
++      (get_path_locale()));
++	return codecvt_facet;
++}
++	  
+ #elif defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
+ 
+   // "All BSD system functions expect their string parameters to be in UTF-8 encoding
+@@ -829,15 +836,15 @@
+       // exception if a valid std::locale("") is actually needed.
+       static std::locale posix_lazy_initialization(path::imbue(std::locale("")));
+ #   endif
+-    return codecvt_facet;
++    return get_codecvt_facet();
+   }
+ 
+   std::locale path::imbue(const std::locale& loc)
+   {
+-    std::locale temp(path_locale);
+-    path_locale = loc;
+-    codecvt_facet =
+-      &std::use_facet<std::codecvt<wchar_t, char, std::mbstate_t> >(path_locale);
++    std::locale temp(get_path_locale());
++    get_path_locale() = loc;
++    get_codecvt_facet() =
++      &std::use_facet<std::codecvt<wchar_t, char, std::mbstate_t> >(get_path_locale());
+     return temp;
+   }
+ 

@@ -69,7 +69,6 @@ cd ..
 wget $GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-core-$GCC_VERSION.tar.bz2 -O- | tar -jx
 wget $GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-g++-$GCC_VERSION.tar.bz2 -O- | tar -jx
 cd gcc-$GCC_VERSION
-patch -p1 -i../gcc-delegating-constructors.patch
 cd .. && mkdir gcc-$GCC_VERSION-build && cd gcc-$GCC_VERSION-build
 GCC_CONFIGURE_FLAGS="--enable-libstdcxx-debug"
 test "$USING_MINGW" == yes && GCC_CONFIGURE_FLAGS="$GCC_CONFIGURE_FLAGS --build=pentium4-pc-mingw32 --disable-nls --disable-win32-registry --enable-threads"

@@ -190,7 +190,7 @@ $(PACKAGE).com: src/win32/boot$(OBJEXT)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 	attrib +H $@
 
-$(PACKAGE).res: $(top_prefix)$(PACKAGE).rc $(top_prefix)misc/win32/$(PACKAGE).exe.manifest $(top_prefix)misc/win32/icon.ico config.h
+$(PACKAGE).res: $(top_prefix)misc/build/win32/resource.rc $(top_prefix)misc/build/win32/$(PACKAGE).exe.manifest $(top_prefix)misc/build/win32/icon.ico config.h
 	windres -Ocoff -I. -DTOPDIR=$(topdir) $< $@
 endif
 

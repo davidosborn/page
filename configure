@@ -1580,7 +1580,7 @@ fi
 CPPFLAGS="-imacros config.h -iquote . -isystem $topdir/src/system -isystem $topdir/src/system/c++"
 CXXFLAGS="$CXXFLAGS -std=gnu++11 -pedantic-errors -pipe -Werror"
 LDFLAGS=
-LIBS="-lboost_filesystem -lboost_signals -lboost_system"
+LIBS="-lboost_filesystem -lboost_locale -lboost_signals -lboost_system -licuuc -licui18n -licudata"
 
 if [ "$enable_debug" = yes ]; then
 	CPPFLAGS="$CPPFLAGS" #-D_GLIBCXX_DEBUG

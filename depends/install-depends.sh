@@ -7,7 +7,7 @@
 # Extract it to the directory that you will use for MinGW.
 #
 # Then, run mingw-get to install a basic MinGW system:
-# 
+#
 #     mingw-get install gcc g++ msys-base msys-m4 msys-make msys-patch msys-perl
 #
 # You will also need wget, which is available in the msys-wget package.
@@ -15,7 +15,7 @@
 # version is built with OpenSSL, which involves violating a license
 # incompatibility.  See install-wget.sh for instructions on building wget
 # yourself.
-# 
+#
 # Next, you need to point the /usr/local directory at /mingw32, which you can do
 # with the following command:
 #
@@ -48,6 +48,7 @@ CMAKE_VERSION=2.8.5
 CURL_VERSION=7.24.0
 EXPAT_VERSION=2.0.1
 FREETYPE_VERSION=2.4.5
+ICU_VERSION=50.1.2
 LIBFLAC_VERSION=1.2.1
 LIBOGG_VERSION=1.3.0
 LIBPNG_VERSION=1.5.4
@@ -68,18 +69,37 @@ MAKE_FLAGS=#"-j -l 1.5"
 USING_MINGW=`hash msysinfo && echo yes || echo no`
 
 ################################################################################
+# Package:        icu
+# Dependencies:
+# Depended on by: boost
+
+wget http://download.icu-project.org/files/icu4c/$ICU_VERSION/icu4c-50_1_2-src.tgz -O- | tar -zx
+cd icu/source
+./configure --enable-static --disable-shared
+make $MAKE_FLAGS install
+mv /usr/local/sicudt.a libicudata.a
+mv /usr/local/sicuin.a libicui18n.a
+mv /usr/local/sicuio.a libicuio.a
+mv /usr/local/sicule.a libicule.a
+mv /usr/local/siculx.a libiculx.a
+mv /usr/local/sicutest.a libicutest.a
+mv /usr/local/sicutu.a libicutu.a
+mv /usr/local/sicuuc.a libicuuc.a
+
+################################################################################
 # Package:        boost
-# Dependencies:   
+# Dependencies:   icu
 # Depended on by:
 
 wget http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost_${BOOST_VERSION//./_}.tar.bz2/download --no-check-certificate -O- | tar -jx
 cd boost_${BOOST_VERSION//./_}
-patch -p1 -i../boost-1.49.0.patch # fixes boost/filesystem static-initialization problems under MinGW
+#patch -p1 -i../patch/boost-1.49.0.patch # fixes boost/filesystem static-initialization problems under MinGW
 if [ "$USING_MINGW" == yes ]; then
 	./bootstrap.sh --with-toolset=mingw
 	rm project-config.jam # https://svn.boost.org/trac/boost/ticket/5680
 fi
-./b2 --with-filesystem --with-signals variant=debug link=static threading=multi toolset=gcc
+# NOTE: we disable libiconv support because it is LGPL (requiring dynamic linkage)
+./b2 --with-filesystem --with-locale --with-signals variant=debug link=static threading=multi toolset=gcc boost.locale.iconv=off
 
 # install headers
 find boost -type f -print0 | while read -d $'\0' source
@@ -99,20 +119,20 @@ cd ..
 
 ################################################################################
 # Package:        bzip2
-# Dependencies:   
+# Dependencies:
 # Depended on by: page
 
 wget http://bzip.org/$BZIP2_VERSION/bzip2-$BZIP2_VERSION.tar.gz -O- | tar -zx
 cd bzip2-$BZIP2_VERSION
 if test "$USING_MINGW" == yes; then
-	patch -p1 -i../bzip2-1.0.6-mingw.patch
+	patch -p1 -i../patch/bzip2-1.0.6-mingw.patch
 fi
 make $MAKE_FLAGS install
 cd ..
 
 ################################################################################
 # Package:        curl
-# Dependencies:   
+# Dependencies:
 # Depended on by: page
 
 wget http://curl.haxx.se/download/curl-$CURL_VERSION.tar.bz2 -O- | tar -jx
@@ -122,7 +142,7 @@ cd ..
 
 ################################################################################
 # Package:        expat
-# Dependencies:   
+# Dependencies:
 # Depended on by: page
 
 wget http://sourceforge.net/projects/expat/files/expat/$EXPAT_VERSION/expat-$EXPAT_VERSION.tar.gz/download -O- | tar -zx
@@ -132,7 +152,7 @@ cd ..
 
 ################################################################################
 # Package:        freetype
-# Dependencies:   
+# Dependencies:
 # Depended on by: page
 
 wget http://download.savannah.gnu.org/releases/freetype/freetype-$FREETYPE_VERSION.tar.bz2 -O- | tar -jx
@@ -142,18 +162,18 @@ cd ..
 
 ################################################################################
 # Package:        libflac
-# Dependencies:   
+# Dependencies:
 # Depended on by: page
 
 wget http://downloads.xiph.org/releases/flac/flac-$LIBFLAC_VERSION.tar.gz -O- | tar -zx
 cd flac-$LIBFLAC_VERSION
-patch -p1 -i../flac-1.2.1.patch
+patch -p1 -i../patch/flac-1.2.1.patch
 ./configure && make $MAKE_FLAGS install
 cd ..
 
 ################################################################################
 # Package:        libogg
-# Dependencies:   
+# Dependencies:
 # Depended on by: page
 
 wget http://downloads.xiph.org/releases/ogg/libogg-$LIBOGG_VERSION.tar.gz -O- | tar -zx
@@ -163,12 +183,12 @@ cd ..
 
 ################################################################################
 # Package:        zlib
-# Dependencies:   
+# Dependencies:
 # Depended on by: libpng, page
 
 wget http://prdownloads.sourceforge.net/libpng/zlib-$ZLIB_VERSION.tar.bz2?download -O- | tar -jx
 cd zlib-$ZLIB_VERSION
-patch -p1 -i../zlib-1.2.5.patch
+patch -p1 -i../patch/zlib-1.2.5.patch
 ./configure && make $MAKE_FLAGS install
 cd ..
 
@@ -184,7 +204,7 @@ cd ..
 
 ################################################################################
 # Package:        libvorbis
-# Dependencies:   
+# Dependencies:
 # Depended on by: libtheora, page
 
 wget http://downloads.xiph.org/releases/vorbis/libvorbis-$LIBVORBIS_VERSION.tar.bz2 -O- | tar -jx
@@ -204,7 +224,7 @@ cd ..
 
 ################################################################################
 # Package:        lua
-# Dependencies:   
+# Dependencies:
 # Depended on by: page
 
 wget http://www.lua.org/ftp/lua-$LUA_VERSION.tar.gz -O- | tar -zx
@@ -214,7 +234,7 @@ cd ..
 
 ################################################################################
 # Package:        cmake
-# Dependencies:   
+# Dependencies:
 # Depended on by: openal-soft
 
 wget http://www.cmake.org/files/v2.8/cmake-$CMAKE_VERSION.tar.gz -O- | tar -zx

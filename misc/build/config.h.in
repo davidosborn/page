@@ -216,6 +216,13 @@
 #	undef PARTIAL_DEBUG
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+
+#define STRINGIZE2(x) #x
+#define STRINGIZE(x) STRINGIZE2(x)
+
+////////////////////////////////////////////////////////////////////////////////
+
 #ifdef __GNUC__
 #	define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNU_PATCHLEVEL__)
 	// HACK: avoid MinGW CRTDLL assert to keep stack frames

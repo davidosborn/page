@@ -28,10 +28,13 @@
  * of this software.
  */
 
+#include <locale>
+ 
+#include <boost/locale/encoding.hpp> // to_utf
+
 #include <windows.h>
 
 #include "../../err/Exception.hpp"
-#include "../../util/string/convert.hpp"
 #include "Console.hpp"
 
 namespace page
@@ -42,7 +45,7 @@ namespace page
 		{
 			Console::Console(const std::string &title)
 			{
-				if (!AllocConsole() || !SetConsoleTitle(util::Convert<TCHAR>(title).c_str()))
+				if (!AllocConsole() || !SetConsoleTitle(boost::locale::conv::to_utf<TCHAR>(title, std::locale()).c_str()))
 					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to allocate console") <<
 						boost::errinfo_api_function("AllocConsole")))
 			}
@@ -57,7 +60,7 @@ namespace page
 			}
 			void Console::Put(const std::string &s)
 			{
-				auto ts(util::Convert<TCHAR>(s));
+				auto ts(boost::locale::conv::to_utf<TCHAR>(s, std::locale()));
 				DWORD w;
 				if (!WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), ts.c_str(), ts.size(), &w, 0))
 					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to write to console") <<
