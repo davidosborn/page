@@ -37,33 +37,19 @@ namespace page
 		| constructors & destructor |
 		+--------------------------*/
 
-		template <typename T, typename Char, typename CharTraits, typename Allocator>
-			separated_ostream_iterator<T, Char, CharTraits, Allocator>::
-			separated_ostream_iterator(ostream_type &os) :
-				os(os) {}
-
-		template <typename T, typename Char, typename CharTraits, typename Allocator>
-			separated_ostream_iterator<T, Char, CharTraits, Allocator>::
-			separated_ostream_iterator(ostream_type &os, Char separator) :
-				os(os), separator(1, separator) {}
-
-		template <typename T, typename Char, typename CharTraits, typename Allocator>
-			separated_ostream_iterator<T, Char, CharTraits, Allocator>::
-			separated_ostream_iterator(ostream_type &os, const Char *separator) :
-				os(os), separator(separator) {}
-
-		template <typename T, typename Char, typename CharTraits, typename Allocator>
-			separated_ostream_iterator<T, Char, CharTraits, Allocator>::
-			separated_ostream_iterator(ostream_type &os, const Separator &separator) :
+		template <typename T, typename Char, typename CharTraits>
+		template <typename Separator>
+			separated_ostream_iterator<T, Char, CharTraits>::
+			separated_ostream_iterator(Stream &os, Separator separator) :
 				os(os), separator(separator) {}
 
 		/*--------------------------------+
 		| std::ostream_iterator semantics |
 		+--------------------------------*/
 
-		template <typename T, typename Char, typename CharTraits, typename Allocator>
-			separated_ostream_iterator<T, Char, CharTraits, Allocator> &
-			separated_ostream_iterator<T, Char, CharTraits, Allocator>::
+		template <typename T, typename Char, typename CharTraits>
+			separated_ostream_iterator<T, Char, CharTraits> &
+			separated_ostream_iterator<T, Char, CharTraits>::
 			operator =(const T &value)
 		{
 			if (!atFirstElement) os << separator;
@@ -72,25 +58,25 @@ namespace page
 			return *this;
 		}
 
-		template <typename T, typename Char, typename CharTraits, typename Allocator>
-			separated_ostream_iterator<T, Char, CharTraits, Allocator> &
-			separated_ostream_iterator<T, Char, CharTraits, Allocator>::
+		template <typename T, typename Char, typename CharTraits>
+			separated_ostream_iterator<T, Char, CharTraits> &
+			separated_ostream_iterator<T, Char, CharTraits>::
 			operator *()
 		{
 			return *this;
 		}
 
-		template <typename T, typename Char, typename CharTraits, typename Allocator>
-			separated_ostream_iterator<T, Char, CharTraits, Allocator> &
-			separated_ostream_iterator<T, Char, CharTraits, Allocator>::
+		template <typename T, typename Char, typename CharTraits>
+			separated_ostream_iterator<T, Char, CharTraits> &
+			separated_ostream_iterator<T, Char, CharTraits>::
 			operator ++()
 		{
 			return *this;
 		}
 
-		template <typename T, typename Char, typename CharTraits, typename Allocator>
-			separated_ostream_iterator<T, Char, CharTraits, Allocator> &
-			separated_ostream_iterator<T, Char, CharTraits, Allocator>::
+		template <typename T, typename Char, typename CharTraits>
+			separated_ostream_iterator<T, Char, CharTraits> &
+			separated_ostream_iterator<T, Char, CharTraits>::
 			operator ++(int)
 		{
 			return *this;

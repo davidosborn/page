@@ -28,34 +28,33 @@
  * of this software.
  */
 
-#ifndef    page_local_util_serialize_skip_hpp
-#   define page_local_util_serialize_skip_hpp
+#ifndef    page_local_util_io_skip_hpp
+#   define page_local_util_io_skip_hpp
 
 #	include <iosfwd> // basic_istream
 #	include <limits> // numeric_limits
 #	include <utility> // pair
 
-#	include "DeserializationDelimiter.hpp"
+#	include "InputDelimiter.hpp"
 
 namespace page
 {
 	namespace util
 	{
 		/**
-		 * Skip over a run of delimiters.
+		 * Skips over a run of delimiters.
 		 *
-		 * @return A @c std::pair containing:
-		 * @return @c true if the stream has not reached either EOF or a
-		 *         terminating character, and @c failbit is not set.
-		 * @return The number of delimiters that were skipped.
+		 * @return A @c std::pair containing @c true if the stream has not
+		 *         reached either EOF or a terminating character and @c failbit
+		 *         is not set, and the number of delimiters that were skipped.
 		 */
 		template <typename Char, typename CharTraits,
-			typename Delimiter  = typename DeserializationDelimiter<Char, CharTraits>::Type,
-			typename Terminator = typename DeserializationDelimiter<Char, CharTraits>::Type>
+			typename Separator  = const InputDelimiter<Char, CharTraits> &,
+			typename Terminator = const InputDelimiter<Char, CharTraits> &>
 			std::pair<bool, unsigned> Skip(
 				std::basic_istream<Char, CharTraits> &,
-				const Delimiter  & = DeserializationDelimiter<Char>::Space(),
-				const Terminator & = DeserializationDelimiter<Char>::None(),
+				Separator  = InputDelimiter<Char, CharTraits>::GetSpaceDelimiter(),
+				Terminator = InputDelimiter<Char, CharTraits>::GetEmptyDelimiter(),
 				unsigned limit = std::numeric_limits<unsigned>::max());
 	}
 }

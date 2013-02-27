@@ -61,8 +61,8 @@ namespace page
 			range();
 			range(Iterator first, Iterator last);
 			range(const std::pair<Iterator, Iterator> &);
-			template <typename T> explicit range(T &, ENABLE_IF(is_range<T>::value));
-			template <typename T> explicit range(const T &, ENABLE_IF(is_range<T>::value));
+			template <typename T> explicit range(T &, ENABLE_IF((is_range<T>::value)));
+			template <typename T> explicit range(const T &, ENABLE_IF((is_range<T>::value)));
 			template <typename Iterator2> range(const range<Iterator2> &);
 
 			// iterators

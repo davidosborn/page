@@ -51,6 +51,7 @@ namespace page
 			{
 				return is >> value;
 			}
+
 			template <typename Char, typename CharTraits, typename Allocator>
 				std::basic_istream<Char, CharTraits> &Deserialize(
 					std::basic_istream<Char, CharTraits> &is,
@@ -72,9 +73,9 @@ namespace page
 			greedy_istream_iterator() {}
 
 		template <typename T, typename Char, typename CharTraits>
-			template <typename Separator, typename Terminator>
+		template <typename Separator, typename Terminator>
 			greedy_istream_iterator<T, Char, CharTraits>::
-			greedy_istream_iterator(istream_type &is, Separator separator, Terminator terminator) :
+			greedy_istream_iterator(Stream &is, Separator separator, Terminator terminator) :
 				is(&is), separator(separator), terminator(terminator)
 		{
 			++*this;
@@ -142,7 +143,7 @@ namespace page
 			if (is->flags() & std::ios_base::skipws)
 				s.erase(
 					std::find_if_not(s.rbegin(), s.rend(),
-						InputDelimiter<Char, CharTraits>::GetSpaceDelimiter()).base(),
+						Delimiter::GetSpaceDelimiter()).base(),
 					s.end());
 
 			// process string

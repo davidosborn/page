@@ -44,9 +44,9 @@ namespace page
 			separated_istream_iterator() {}
 
 		template <typename T, typename Char, typename CharTraits>
-			template <typename Separator>
+		template <typename Separator>
 			separated_istream_iterator<T, Char, CharTraits>::
-			separated_istream_iterator(istream_type &is, Separator separator) :
+			separated_istream_iterator(Stream &is, Separator separator) :
 				is(&is), separator(separator)
 		{
 			is >> value;

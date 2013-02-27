@@ -70,10 +70,10 @@ namespace page
 
 			private:
 			// dereference
-			reference Dereference() const override;
+			reference Dereference() const;
 
 			// arithmetic
-			void Increment() override;
+			void Increment();
 
 			Function func;
 			typedef Optional<Result> Cache;
@@ -106,10 +106,10 @@ namespace page
 
 			private:
 			// dereference
-			void Dereference() const override;
+			void Dereference() const;
 
 			// arithmetic
-			void Increment() override;
+			void Increment();
 
 			Function func;
 			mutable bool cache;

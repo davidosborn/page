@@ -69,7 +69,7 @@ namespace page
 
 				static To Apply(const From &from)
 				{
-					return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(from);
+					//return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(from);
 				}
 			};
 
@@ -85,7 +85,7 @@ namespace page
 
 				static To Apply(const From &from)
 				{
-					return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().from_bytes(from);
+					//return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().from_bytes(from);
 				}
 			};
 
@@ -101,7 +101,7 @@ namespace page
 
 				static To Apply(const From &from)
 				{
-					return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(from);
+					//return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(from);
 				}
 			};
 
@@ -117,7 +117,7 @@ namespace page
 
 				static To Apply(const From &from)
 				{
-					return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(from);
+					//return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(from);
 				}
 			};
 
@@ -149,7 +149,7 @@ namespace page
 
 				static To Apply(const From &from)
 				{
-					return std::wstring_convert<std::codecvt_utf16<wchar_t>, wchar_t>().to_bytes(from);
+					//return std::wstring_convert<std::codecvt_utf16<wchar_t>, wchar_t>().to_bytes(from);
 				}
 			};
 
@@ -166,8 +166,8 @@ namespace page
 				static To Apply(const From &from)
 				{
 					// UCS-2 -> UTF-8 -> UTF-32
-					return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(
-						std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(from));
+					/*return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(
+						std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(from));*/
 				}
 			};
 
@@ -183,7 +183,7 @@ namespace page
 
 				static To Apply(const From &from)
 				{
-					return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().to_bytes(from);
+					//return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().to_bytes(from);
 				}
 			};
 
@@ -199,7 +199,7 @@ namespace page
 
 				static To Apply(const From &from)
 				{
-					return std::wstring_convert<std::codecvt_utf16<wchar_t>, wchar_t>().from_bytes(from);
+					//return std::wstring_convert<std::codecvt_utf16<wchar_t>, wchar_t>().from_bytes(from);
 				}
 			};
 
@@ -232,8 +232,8 @@ namespace page
 				static To Apply(const From &from)
 				{
 					// UTF-16 -> UTF-8 -> UTF-32
-					return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(
-						std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().to_bytes(from));
+					/*return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(
+						std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().to_bytes(from));*/
 				}
 			};
 
@@ -249,7 +249,7 @@ namespace page
 
 				static To Apply(const From &from)
 				{
-					return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from);
+					//return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from);
 				}
 			};
 
@@ -266,8 +266,8 @@ namespace page
 				static To Apply(const From &from)
 				{
 					// UTF-32 -> UTF-8 -> UCS-2
-					return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(
-						std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from));
+					/*return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(
+						std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from));*/
 				}
 			};
 
@@ -284,8 +284,8 @@ namespace page
 				static To Apply(const From &from)
 				{
 					// UTF-32 -> UTF-8 -> UTF-16
-					return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().from_bytes(
-						std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from));
+					/*return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>().from_bytes(
+						std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(from));*/
 				}
 			};
 

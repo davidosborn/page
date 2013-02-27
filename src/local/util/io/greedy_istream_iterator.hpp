@@ -61,31 +61,29 @@ namespace page
 			class greedy_istream_iterator :
 				public std::iterator<std::input_iterator_tag, T, std::ptrdiff_t, const T *, const T &>
 		{
-			public:
-			typedef Char                                 char_type;
-			typedef CharTraits                           traits_type;
-			typedef std::basic_istream<Char, CharTraits> istream_type;
+			private:
+			typedef std::basic_istream<Char, CharTraits> Stream;
+			typedef InputDelimiter<Char, CharTraits>     Delimiter;
 
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
 
 			/**
-			 * Create an end-of-stream iterator.
+			 * Creates an end-of-stream iterator.
 			 */
 			greedy_istream_iterator();
 
 			/**
-			 * Create an input-stream iterator with a given separator and
+			 * Creates an input-stream iterator with a given separator and
 			 * terminator.
 			 */
 			template <
-				typename Separator  = InputDelimiter<Char, CharTraits>,
-				typename Terminator = InputDelimiter<Char, CharTraits>>
-				explicit greedy_istream_iterator(
-					istream_type &,
-					Separator  = InputDelimiter<Char, CharTraits>::GetSpaceDelimiter(),
-					Terminator = InputDelimiter<Char, CharTraits>());
+				typename Separator  = const Delimiter &,
+				typename Terminator = const Delimiter &>
+				explicit greedy_istream_iterator(Stream &,
+					Separator  = Delimiter::GetSpaceDelimiter(),
+					Terminator = Delimiter::GetEmptyDelimiter());
 
 			/*--------------------------------+
 			| std::istream_iterator semantics |
@@ -108,8 +106,8 @@ namespace page
 			+-----------------*/
 
 			private:
-			istream_type *is = nullptr;
-			InputDelimiter<Char, CharTraits> separator, terminator;
+			Stream *is = nullptr;
+			Delimiter separator, terminator;
 			T value;
 
 			/**

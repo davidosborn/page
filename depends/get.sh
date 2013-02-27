@@ -70,6 +70,7 @@ dependencies=<<-EOF
 	cg          | Cg            | page         |               |        | yes      | yes
 	curl        | libcurl       | page         |               |        | yes      | yes
 	d3d9        | Direct3D 9    | page         | video         |        | yes      | yes
+	doxygen     | Doxygen       | page-build   | doc           |        | yes      | yes
 	dinput9     | DirectInput 9 | page         | input         |        | yes      | yes
 	dsound9     | DirectSound 9 | page         | sound         |        | yes      | yes
 	expat       | Expat         | page         |               |        | yes      | yes

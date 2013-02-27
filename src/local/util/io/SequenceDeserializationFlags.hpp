@@ -28,46 +28,42 @@
  * of this software.
  */
 
-#include <istream>
+#ifndef    page_local_util_io_SequenceDeserializationFlags_hpp
+#   define page_local_util_io_SequenceDeserializationFlags_hpp
+
+#	include "../Flags.hpp"
 
 namespace page
 {
 	namespace util
 	{
-		template <typename Char, typename CharTraits, typename Delimiter, typename Terminator>
-			std::pair<bool, unsigned> Skip(
-				std::basic_istream<Char, CharTraits> &is,
-				const Delimiter                      &delimiterArg,
-				const Terminator                     &terminatorArg,
-				unsigned                              limit)
+		/**
+		 * A collection of bit-flags for modifying the behaviour of the sequence
+		 * deserialization functions.
+		 */
+		struct SequenceDeserializationFlags : Flags
 		{
-			/**
-			 * @hack If we don't do this, and EOF has already been reached,
-			 *       @c std::basic_istream::peek will set @c failbit.
-			 */
-			if (!is.good())
-				return std::make_pair(false, 0);
-
-			auto
-				delimiter (DeserializationDelimiter<Char, CharTraits>::Normalize(delimiterArg)),
-				terminator(DeserializationDelimiter<Char, CharTraits>::Normalize(terminatorArg));
-
-			unsigned n = 0;
-			for (; n < limit; ++n)
+			enum
 			{
-				auto c = is.peek();
-				if (!CharTraits::not_eof(c))
-					return std::make_pair(false, n);
-				auto ch = CharTraits::to_char_type(c);
-				if (terminator(ch))
-				{
-					is.ignore(); // skip terminator
-					return std::make_pair(false, n);
-				}
-				if (!delimiter(ch)) break;
-				is.ignore();
-			}
-			return std::make_pair(!is.fail(), n);
-		}
+				/**
+				 * Indicates that consecutive delimiters should be viewed as a
+				 * single delimiter.
+				 */
+				collapse = 0x01,
+
+				/**
+				 * Indicates that consecutive leading and trailing delimiters
+				 * should be ignored.
+				 */
+				trim = 0x02,
+
+				/**
+				 * A default flag for whitespace delimiters.
+				 */
+				defaultForSpaceDelimiter = collapse | trim
+			};
+		};
 	}
 }
+
+#endif

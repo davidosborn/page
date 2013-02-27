@@ -1,10 +1,13 @@
-Update util/string/convert and util/serialize/* to handle encoding conversions.
-
-Use Boost/Locale to handle encoding conversions since GCC doesn't have wstring_convert.
-
-Clean up util/serialize, integrate with util/io, and start using it.  It could maybe be used in places where std::copy and util::separated_[io]stream_iterator are currently used.
+Deserialize(string of diff encoding) needs some encoding arguments.
+Add the same encoding arguments to Convert.
+Add some better type traits.
+Use my own Convert function, not Boost/Locale directly.
+Use my custom istream_iterators in the implementation of Serialize and Deserialize.
+Consider using Serialize/Deserialize in places where std::copy and util::separated_[io]stream_iterator are currently used.
 
 -------------
+
+Integrate stblib (already in src/third-party) as a fallback for some things.
 
 Consider using type-erasure (described in detail in doc/misc) to create classes with no visible members in the header.
 

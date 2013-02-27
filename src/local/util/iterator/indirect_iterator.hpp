@@ -79,7 +79,7 @@ namespace page
 
 			private:
 			// dereference
-			reference Dereference() const override;
+			reference Dereference() const;
 		};
 
 		// reverse arithmetic

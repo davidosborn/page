@@ -90,15 +90,15 @@ namespace page
 			void Init();
 
 			// arithmetic
-			void Increment() override;
-			void Decrement() override;
-			void Advance(difference_type) override;
+			void Increment();
+			void Decrement();
+			void Advance(difference_type);
 
 			// distance
-			difference_type Distance(const chain_iterator &) const override;
+			difference_type Distance(const chain_iterator &) const;
 
 			// comparison
-			bool Less(const chain_iterator &) const override;
+			bool Less(const chain_iterator &) const;
 
 			// mapping
 			typedef std::vector<range<Iterator>> Ranges;

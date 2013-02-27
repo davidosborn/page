@@ -85,13 +85,13 @@ namespace page
 				proxy_iterator(const proxy_iterator<Iterator2, UnaryOperation, ConstUnaryOperation, Result, ConstResult> &);
 
 			// dereference
-			reference operator *() const override;
-			pointer operator ->() const override;
-			reference operator [](difference_type) const override;
+			reference operator *() const;
+			pointer operator ->() const;
+			reference operator [](difference_type) const;
 
 			private:
 			// dereference
-			reference Dereference() const override;
+			reference Dereference() const;
 
 			UnaryOperation op;
 			ConstUnaryOperation cop;
@@ -126,13 +126,13 @@ namespace page
 				const_proxy_iterator(const proxy_iterator<Iterator, NonConstUnaryOperation, UnaryOperation, NonConstResult, Result> &);
 
 			// dereference
-			reference operator *() const override;
-			pointer operator ->() const override;
-			reference operator [](difference_type) const override;
+			reference operator *() const;
+			pointer operator ->() const;
+			reference operator [](difference_type) const;
 
 			private:
 			// dereference
-			reference Dereference() const override;
+			reference Dereference() const;
 
 			UnaryOperation op;
 		};

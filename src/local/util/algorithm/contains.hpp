@@ -58,7 +58,7 @@ namespace page
 		 */
 		template <typename Container, typename T>
 				bool contains(const Container &container, const T &value,
-					ENABLE_IF(!detail::has_find<Container>::value))
+					ENABLE_IF((!detail::has_find<Container>::value)))
 		{
 			for (const auto &element : container)
 				if (element == value) return true;
@@ -71,7 +71,7 @@ namespace page
 		 */
 		template <typename Container, typename T>
 				bool contains(const Container &container, const T &value,
-					ENABLE_IF(detail::has_find<Container>::value))
+					ENABLE_IF((detail::has_find<Container>::value)))
 		{
 			return container.find(value) != container.end();
 		}

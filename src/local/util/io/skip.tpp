@@ -28,34 +28,45 @@
  * of this software.
  */
 
-#include <utility> // forward
-#include <sstream> // basic_istringstream
-
-#include "../../err/Exception.hpp"
-#include "deserialize.hpp" // Deserialize
+#include <istream>
 
 namespace page
 {
 	namespace util
 	{
-		/**
-		 * @weakgroup deserialize-from-string
-		 * @{
-		 */
-		template <typename Char, typename CharTraits, typename Allocator, typename... Args> const std::basic_string<Char, CharTraits, Allocator> &Deserialize(const std::basic_string<Char, CharTraits, Allocator> &s, Args &&... args)
+		template <typename Char, typename CharTraits,
+			typename Separator, typename Terminator>
+			std::pair<bool, unsigned> Skip(
+				std::basic_istream<Char, CharTraits> &is,
+				Separator separatorArg, Terminator terminatorArg,
+				unsigned limit)
 		{
-			std::basic_istringstream<Char, CharTraits, Allocator> ss(s);
-			if (Deserialize(ss, std::forward<Args>(args)...).fail())
-				THROW((err::Exception<err::UtilModuleTag, err::SerializationTag>()))
-			return s;
+			InputDelimiter<Char, CharTraits>
+				separator(separatorArg), terminator(terminatorArg);
+
+			/**
+			 * @hack If we don't do this, and EOF has already been reached,
+			 *       @c std::basic_istream::peek will set @c failbit.
+			 */
+			if (!is.good())
+				return std::make_pair(false, 0);
+
+			unsigned n = 0;
+			for (; n < limit; ++n)
+			{
+				auto c = is.peek();
+				if (!CharTraits::not_eof(c))
+					return std::make_pair(false, n);
+				auto ch = CharTraits::to_char_type(c);
+				if (terminator(ch))
+				{
+					is.ignore(); // skip terminator
+					return std::make_pair(false, n);
+				}
+				if (!separator(ch)) break;
+				is.ignore();
+			}
+			return std::make_pair(!is.fail(), n);
 		}
-		template <typename Char, typename... Args> const Char *Deserialize(const Char *s, Args &&... args)
-		{
-			std::basic_istringstream<Char> ss(s);
-			if (Deserialize(ss, std::forward<Args>(args)...).fail())
-				THROW((err::Exception<err::UtilModuleTag, err::SerializationTag>()))
-			return s;
-		}
-		///@}
 	}
 }

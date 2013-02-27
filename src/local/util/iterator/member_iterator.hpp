@@ -86,7 +86,7 @@ namespace page
 
 			private:
 			// dereference
-			reference Dereference() const override;
+			reference Dereference() const;
 
 			Value member_of::*member;
 		};

@@ -33,6 +33,8 @@
 
 #	include <string> // basic_string, char_traits
 
+#	include "../class/copy_move.hpp" // DEFINE_{COPY,MOVE}
+
 namespace page
 {
 	namespace util
@@ -50,9 +52,24 @@ namespace page
 			| constructors & destructor |
 			+--------------------------*/
 
+			/**
+			 * Creates an empty delimiter.
+			 */
 			OutputDelimiter();
+
+			/**
+			 * Creates a delimiter consisting of a single character.
+			 */
 			OutputDelimiter(Char);
+
+			/**
+			 * Creates a delimiter consisting of a string.
+			 */
 			OutputDelimiter(const Char *);
+
+			/**
+			 * Creates a delimiter consisting of a string.
+			 */
 			OutputDelimiter(const String &);
 
 			/*----------+
@@ -79,8 +96,13 @@ namespace page
 			+----------------------*/
 
 			/**
-			 * @return The predefined whitespace delimiter, which contains a
-			 * single space character.
+			 * @return The predefined empty-delimiter, which is empty.
+			 */
+			static const OutputDelimiter &GetEmptyDelimiter();
+
+			/**
+			 * @return The predefined whitespace-delimiter, which consists of a
+			 *         single space character.
 			 */
 			static const OutputDelimiter &GetSpaceDelimiter();
 
@@ -94,6 +116,16 @@ namespace page
 			 */
 			String string;
 		};
+
+		/*------------------------------+
+		| stream insertion & extraction |
+		+------------------------------*/
+
+		/**
+		 * Writes the delimiter to a stream.
+		 */
+		template <typename Char, typename CharTraits>
+			std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &, const OutputDelimiter<Char, CharTraits> &);
 	}
 }
 

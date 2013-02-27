@@ -77,12 +77,12 @@ namespace page
 
 			private:
 			// arithmetic
-			void Increment() override;
-			void Decrement() override;
-			void Advance(difference_type) override;
+			void Increment();
+			void Decrement();
+			void Advance(difference_type);
 
 			// distance
-			difference_type Distance(const step_iterator &) const override;
+			difference_type Distance(const step_iterator &) const;
 		};
 
 		// reverse arithmetic

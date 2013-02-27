@@ -33,7 +33,8 @@
 
 #	include <iosfwd> // basic_ostream
 #	include <iterator> // iterator, output_iterator_tag
-#	include <string> // basic_string
+
+#	include "OutputDelimiter.hpp"
 
 namespace page
 {
@@ -46,34 +47,32 @@ namespace page
 		template <
 			typename T,
 			typename Char       = char,
-			typename CharTraits = std::char_traits<Char>,
-			typename Allocator  = std::allocator<Char>>
+			typename CharTraits = std::char_traits<Char>>
 
 			class separated_ostream_iterator :
 				public std::iterator<std::output_iterator_tag, void, void, void, void>
 		{
-			public:
-			typedef Char                                 char_type;
-			typedef CharTraits                           traits_type;
-			typedef std::basic_ostream<Char, CharTraits> ostream_type;
-
 			private:
-			typedef std::basic_string<Char, CharTraits, Allocator> Separator;
+			typedef std::basic_ostream<Char, CharTraits> Stream;
+			typedef OutputDelimiter<Char, CharTraits>    Delimiter;
 
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
 
 			public:
-			explicit separated_ostream_iterator(ostream_type &);
-			separated_ostream_iterator(ostream_type &, Char separator);
-			separated_ostream_iterator(ostream_type &, const Char *separator);
-			separated_ostream_iterator(ostream_type &, const Separator &separator);
+			/**
+			 * Creates an output-stream iterator with a given separator.
+			 */
+			template <typename Separator = const Delimiter &>
+				explicit separated_ostream_iterator(Stream &,
+					Separator = Delimiter::GetSpaceDelimiter());
 
 			/*--------------------------------+
 			| std::ostream_iterator semantics |
 			+--------------------------------*/
 
+			public:
 			separated_ostream_iterator &operator =(const T &);
 			separated_ostream_iterator &operator *();
 			separated_ostream_iterator &operator ++();
@@ -84,8 +83,8 @@ namespace page
 			+-----------------*/
 
 			private:
-			ostream_type &os;
-			Separator separator = Separator();
+			Stream &os;
+			Delimiter separator;
 			bool atFirstElement = true;
 		};
 	}

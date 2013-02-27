@@ -34,7 +34,9 @@
 #	include <functional> // function
 #	include <string> // char_traits
 
+#	include "../class/copy_move.hpp" // DEFINE_{COPY,MOVE}
 #	include "../type_traits/container.hpp" // is_range
+#	include "../type_traits/iterator.hpp" // is_iterator
 #	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
 namespace page
@@ -54,17 +56,51 @@ namespace page
 			| constructors & destructor |
 			+--------------------------*/
 
+			/**
+			 * Creates a delimiter that will never match.
+			 */
 			InputDelimiter();
-			InputDelimiter(Char);
-			InputDelimiter(const Char *);
-			InputDelimiter(const Predicate &);
 
 			/**
-			 * Create a delimiter from a sequence of characters, which will
-			 * match any character in the sequence.
+			 * Creates a delimiter that will match the specified character.
 			 */
-			template <typename T>
-				InputDelimiter(const T &, ENABLE_IF(is_range<T>::value));
+			InputDelimiter(Char);
+
+			/**
+			 * Creates a delimiter that will match any of the specified
+			 * characters.
+			 */
+			InputDelimiter(const Char *);
+
+			/**
+			 * Create a delimiter that will match any of the specified
+			 * characters.
+			 */
+			template <typename InputRange>
+				InputDelimiter(InputRange,
+					ENABLE_IF((is_range<InputRange>::value)));
+
+			/**
+			 * Create a delimiter that will match any of the specified
+			 * characters.
+			 */
+			template <typename InputIterator>
+				InputDelimiter(
+					InputIterator first,
+					InputIterator last,
+					ENABLE_IF((is_iterator<InputIterator>::value)));
+
+			/**
+			 * Creates a delimiter that will match according to a predicate.
+			 */
+			InputDelimiter(const Predicate &);
+
+			/*----------------------+
+			| copy & move semantics |
+			+----------------------*/
+
+			DEFINE_COPY(InputDelimiter, default)
+			DEFINE_MOVE(InputDelimiter, default)
 
 			/*----------+
 			| observers |
@@ -90,8 +126,14 @@ namespace page
 			+----------------------*/
 
 			/**
-			 * @return The predefined whitespace delimiter, which matches any
-			 * whitespace character.
+			 * @return The predefined empty-delimiter, which doesn't match any
+			 *         characters.
+			 */
+			static const InputDelimiter &GetEmptyDelimiter();
+
+			/**
+			 * @return The predefined whitespace-delimiter, which matches any
+			 *         whitespace character.
 			 */
 			static const InputDelimiter &GetSpaceDelimiter();
 

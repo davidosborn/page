@@ -64,19 +64,19 @@ namespace page
 
 			private:
 			// dereference
-			reference Dereference() const override;
+			reference Dereference() const;
 
 			// arithmetic
-			void Increment() override;
-			void Decrement() override;
-			void Advance(difference_type) override;
+			void Increment();
+			void Decrement();
+			void Advance(difference_type);
 
 			// distance
-			difference_type Distance(const repeat_iterator &) const override;
+			difference_type Distance(const repeat_iterator &) const;
 
 			// comparison
-			bool Equal(const repeat_iterator &) const override;
-			bool Less(const repeat_iterator &) const override;
+			bool Equal(const repeat_iterator &) const;
+			bool Less(const repeat_iterator &) const;
 
 			Value value;
 			difference_type count;

@@ -29,7 +29,7 @@
  */
 
 #include <locale>
- 
+
 #include <boost/locale/encoding.hpp> // to_utf
 
 #include <windows.h>

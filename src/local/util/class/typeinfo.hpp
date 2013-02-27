@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#ifndef    page_local_util_typeinfo_hpp
-#   define page_local_util_typeinfo_hpp
+#ifndef    page_local_util_class_typeinfo_hpp
+#   define page_local_util_class_typeinfo_hpp
 
 #	include <typeinfo> // type_info, typeid
 

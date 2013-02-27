@@ -51,13 +51,17 @@ namespace page
 			InputDelimiter<Char, CharTraits>::InputDelimiter(const Char *s) :
 				InputDelimiter([s](Char c) { return std::strchr(s, c); }) {}
 
+		template <typename Char, typename CharTraits> template <typename InputRange>
+			InputDelimiter<Char, CharTraits>::InputDelimiter(InputRange range, ENABLE_IF_IMPL((is_range<InputRange>::value))) :
+				InputDelimiter([&range](Char c) { return std::find(std::begin(range), std::end(range), c) != std::end(range); }) {}
+
+		template <typename Char, typename CharTraits> template <typename InputIterator>
+			InputDelimiter<Char, CharTraits>::InputDelimiter(InputIterator first, InputIterator last, ENABLE_IF_IMPL((is_iterator<InputIterator>::value))) :
+				InputDelimiter([&first, &last](Char c) { return std::find(first, last, c) != last; }) {}
+
 		template <typename Char, typename CharTraits>
 			InputDelimiter<Char, CharTraits>::InputDelimiter(const Predicate &predicate) :
 				predicate(predicate) {}
-
-		template <typename Char, typename CharTraits> template <typename T>
-			InputDelimiter<Char, CharTraits>::InputDelimiter(const T &seq, ENABLE_IF_IMPL(is_range<T>::value)) :
-				InputDelimiter([&seq](Char c) { return std::find(std::begin(seq), std::end(seq), c) != std::end(seq); }) {}
 
 		/*----------+
 		| observers |
@@ -88,10 +92,18 @@ namespace page
 
 		template <typename Char, typename CharTraits>
 			const InputDelimiter<Char, CharTraits> &
+			InputDelimiter<Char, CharTraits>::GetEmptyDelimiter()
+		{
+			static InputDelimiter r;
+			return r;
+		}
+
+		template <typename Char, typename CharTraits>
+			const InputDelimiter<Char, CharTraits> &
 			InputDelimiter<Char, CharTraits>::GetSpaceDelimiter()
 		{
-			static InputDelimiter delimiter([](Char c) { return std::isspace(c, std::locale()); });
-			return delimiter;
+			static InputDelimiter r([](Char c) { return std::isspace(c, std::locale()); });
+			return r;
 		}
 	}
 }

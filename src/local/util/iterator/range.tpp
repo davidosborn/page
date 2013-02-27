@@ -78,9 +78,9 @@ namespace page
 			pair(first, last) {}
 		template <typename Iterator> range<Iterator>::range(const std::pair<Iterator, Iterator> &pair) :
 			pair(pair) {}
-		template <typename Iterator> template <typename T> range<Iterator>::range(T &other, ENABLE_IF_IMPL(is_range<T>::value)) :
+		template <typename Iterator> template <typename T> range<Iterator>::range(T &other, ENABLE_IF_IMPL((is_range<T>::value))) :
 			pair(std::begin(other), std::end(other)) {}
-		template <typename Iterator> template <typename T> range<Iterator>::range(const T &other, ENABLE_IF_IMPL(is_range<T>::value)) :
+		template <typename Iterator> template <typename T> range<Iterator>::range(const T &other, ENABLE_IF_IMPL((is_range<T>::value))) :
 			pair(std::begin(other), std::end(other)) {}
 		template <typename Iterator> template <typename Iterator2> range<Iterator>::range(const range<Iterator2> &other) :
 			pair(other.pair) {}

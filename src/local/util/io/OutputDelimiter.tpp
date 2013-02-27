@@ -79,10 +79,27 @@ namespace page
 
 		template <typename Char, typename CharTraits>
 			const OutputDelimiter<Char, CharTraits> &
+			OutputDelimiter<Char, CharTraits>::GetEmptyDelimiter()
+		{
+			return OutputDelimiter();
+		}
+
+		template <typename Char, typename CharTraits>
+			const OutputDelimiter<Char, CharTraits> &
 			OutputDelimiter<Char, CharTraits>::GetSpaceDelimiter()
 		{
 			static OutputDelimiter delimiter(CharTraits::to_char_type(' '));
 			return delimiter;
+		}
+
+		/*------------------------------+
+		| stream insertion & extraction |
+		+------------------------------*/
+
+		template <typename Char, typename CharTraits>
+			std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &os, const OutputDelimiter<Char, CharTraits> &delimiter)
+		{
+			return os << delimiter.GetString();
 		}
 	}
 }

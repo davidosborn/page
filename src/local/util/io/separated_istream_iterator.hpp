@@ -52,32 +52,32 @@ namespace page
 			class separated_istream_iterator :
 				public std::iterator<std::input_iterator_tag, T, std::ptrdiff_t, const T *, const T &>
 		{
-			public:
-			typedef Char                                 char_type;
-			typedef CharTraits                           traits_type;
-			typedef std::basic_istream<Char, CharTraits> istream_type;
+			private:
+			typedef std::basic_istream<Char, CharTraits> Stream;
+			typedef InputDelimiter<Char, CharTraits>     Delimiter;
 
 			/*--------------------------+
 			| constructors & destructor |
 			+--------------------------*/
 
+			public:
 			/**
-			 * Create an end-of-stream iterator.
+			 * Creates an end-of-stream iterator.
 			 */
 			separated_istream_iterator();
 
 			/**
-			 * Create an input-stream iterator with a given separator.
+			 * Creates an input-stream iterator with a given separator.
 			 */
-			template <typename Separator = InputDelimiter<Char, CharTraits>>
-				explicit separated_istream_iterator(
-					istream_type &,
-					Separator = InputDelimiter<Char, CharTraits>::GetSpaceDelimiter());
+			template <typename Separator = const Delimiter &>
+				explicit separated_istream_iterator(Stream &,
+					Separator = Delimiter::GetSpaceDelimiter());
 
 			/*--------------------------------+
 			| std::istream_iterator semantics |
 			+--------------------------------*/
 
+			public:
 			const T &operator *() const;
 			const T *operator ->() const;
 			separated_istream_iterator &operator ++();
@@ -87,6 +87,7 @@ namespace page
 			| relational operators |
 			+---------------------*/
 
+			public:
 			bool operator ==(const separated_istream_iterator &) const;
 			bool operator !=(const separated_istream_iterator &) const;
 
@@ -95,8 +96,8 @@ namespace page
 			+-----------------*/
 
 			private:
-			istream_type *is = nullptr;
-			InputDelimiter<Char, CharTraits> separator;
+			Stream *is = nullptr;
+			Delimiter separator;
 			T value;
 		};
 	}
