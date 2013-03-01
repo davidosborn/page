@@ -46,7 +46,7 @@
 #include "../sys/process.hpp" // Sleep
 #include "../sys/timer/Timer.hpp" // MakeTimer, Timer::{GetDelta,Update}
 #include "../util/path/expand.hpp" // ExpandPath
-#include "../util/pp.hpp" // STRINGIZE
+#include "../util/cpp.hpp" // STRINGIZE
 #include "../vid/Driver.hpp"
 #include "../wnd/Window.hpp"
 #include "Game.hpp"

@@ -38,7 +38,8 @@
 #	include <type_traits> // is_base_of, remove_reference
 #	include <utility> // declval, pair
 
-#	include "../pp.hpp" // COMMA
+#	include "../locale/CharEncoding.hpp"
+#	include "../cpp.hpp" // COMMA
 #	include "../type_traits/container.hpp" // is_range
 #	include "../type_traits/iterator.hpp" // is_iterator
 #	include "../type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT, ENABLE_IF
@@ -86,7 +87,10 @@ namespace page
 		 *
 		 * @throw nothrow Sets @c failbit on error.
 		 */
-		template <typename Char, typename CharTraits, typename String>
+		template <
+			CharEncoding   ToCharEncoding = CharEncoding::defaultForType,
+			CharEncoding FromCharEncoding = CharEncoding::defaultForType,
+			typename Char, typename CharTraits, typename String>
 			std::basic_ostream<Char, CharTraits> &Serialize(
 				std::basic_ostream<Char, CharTraits> &,
 				const String &,
@@ -213,13 +217,13 @@ namespace page
 		 * value, in which case @c Serialize will not take any additional
 		 * arguments.
 		 */
-		/*DEFINE_SFINAE_TYPE_TRAIT_1(is_serializable_as_sequence,
+		DEFINE_SFINAE_TYPE_TRAIT_1(is_serializable_as_sequence,
 			decltype(
 				Serialize(
 					std::declval<std::ostream &>(),
 					std::declval<const T &>(),
-					SerializationDelimiter<char>::None()),
-				std::declval<void>()))*/
+					OutputDelimiter<char>()),
+				std::declval<void>()))
 		///@}
 		///@}
 	}

@@ -29,14 +29,12 @@
  */
 
 #include <algorithm> // find
-#include <locale> // locale
 #include <sstream> // ostringstream
 #include <string>
 #include <vector>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/optional.hpp>
-#include <boost/locale/encoding.hpp> // {from,to}_utf
 
 #include <shlobj.h> // SHGetFolderPath
 #include <windows.h>
@@ -47,6 +45,7 @@
 #endif
 
 #include "../err/Exception.hpp"
+#include "../util/locale/convert.hpp" // Convert
 #include "../util/string/operations.hpp" // Trim
 #include "../util/string/StringBuilder.hpp"
 
@@ -83,7 +82,7 @@ namespace page
 					reinterpret_cast<LPTSTR>(&*buffer.end()),
 					TEXT('\0')));
 
-			return boost::locale::conv::from_utf<char>(util::TrimLeading(s));
+			return util::Convert<char>(util::TrimLeading(s));
 		}
 
 		std::string GetOs()
@@ -139,7 +138,7 @@ namespace page
 				" " << vi.dwMajorVersion <<
 				"." << vi.dwMinorVersion <<
 				"." << LOWORD(vi.dwBuildNumber) <<
-				" " << boost::locale::conv::from_utf(vi.szCSDVersion, std::locale());
+				" " << util::Convert<char>(vi.szCSDVersion);
 		}
 
 		std::string GetHostname()
@@ -153,9 +152,8 @@ namespace page
 						boost::errinfo_api_function("GetComputerName")))
 				buffer.resize(size + 1);
 			}
-			return boost::locale::conv::from_utf(
-				std::basic_string<TCHAR>(buffer.begin(), buffer.begin() + size),
-				std::locale());
+			return util::Convert<char>(
+				std::basic_string<TCHAR>(buffer.begin(), buffer.begin() + size));
 		}
 
 		std::string GetUsername()
@@ -169,9 +167,8 @@ namespace page
 						boost::errinfo_api_function("GetUserName")))
 				buffer.resize(size);
 			}
-			return boost::locale::conv::from_utf(
-				std::basic_string<TCHAR>(buffer.begin(), buffer.begin() + size - 1),
-				std::locale());
+			return util::Convert<char>(
+				std::basic_string<TCHAR>(buffer.begin(), buffer.begin() + size - 1));
 		}
 
 		boost::filesystem::path GetHome()
@@ -180,12 +177,12 @@ namespace page
 			if (FAILED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, &*buffer.begin())))
 				THROW((err::Exception<err::SysModuleTag, err::Win32PlatformTag>("failed to get \"Application Data\" directory") <<
 					boost::errinfo_api_function("SHGetFolderPath")))
-			return boost::locale::conv::from_utf(&*buffer.begin(), std::locale());
+			return util::Convert<char>(&*buffer.begin());
 		}
 
 		boost::optional<std::string> GetEnvVar(const std::string &name)
 		{
-			auto tname(boost::locale::conv::to_utf<TCHAR>(name), std::locale());
+			auto tname(util::Convert<TCHAR>(name));
 			std::vector<TCHAR> buffer(32);
 			for (;;)
 			{
@@ -201,7 +198,7 @@ namespace page
 				if (result <= buffer.size()) break;
 				buffer.resize(result);
 			}
-			return boost::in_place(boost::locale::conv::from_utf(&*buffer.begin(), std::locale()));
+			return boost::in_place(util::Convert<char>(&*buffer.begin()));
 		}
 	}
 }

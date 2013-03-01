@@ -62,7 +62,7 @@ namespace page
 
 			public:
 			/**
-			 * Creates an output-stream iterator with a given separator.
+			 * Creates an output iterator with a given separator.
 			 */
 			template <typename Separator = const Delimiter &>
 				explicit separated_ostream_iterator(Stream &,

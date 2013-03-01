@@ -28,36 +28,34 @@
  * of this software.
  */
 
-#ifndef    page_local_util_string_convert_hpp
-#   define page_local_util_string_convert_hpp
+#ifndef    page_local_util_locale_convert_hpp
+#   define page_local_util_locale_convert_hpp
 
 #	include <string> // allocator, basic_string, char_traits
+
+#	include "CharEncoding.hpp"
 
 namespace page
 {
 	namespace util
 	{
 		/**
-		 * Convert a string to a different character encoding.
+		 * Converts a string to a different character encoding.
 		 *
-		 * @verbatim
-		 * Type     | Encoding
-		 * ---------+---------
-		 * char     | UTF-8
-		 * wchar_t  | UCS-2/UCS-4
-		 * char16_t | UTF-16
-		 * char32_t | UTF-32
-		 * @endverbatim
+		 * Characters that cannot be represented in the new encoding are
+		 * dropped.
 		 *
-		 * @throw err::Exception<err::ConversionTag>
+		 * @throw err::Exception<err::UtilModuleTag, err::ConversionTag>
 		 */
 		template <
-			typename ToChar,
-			typename ToCharTraits = std::char_traits<ToChar>,
-			typename ToAllocator  = std::allocator<ToChar>,
-			typename FromChar,
-			typename FromCharTraits,
-			typename FromAllocator>
+			CharEncoding   ToCharEncoding,
+			CharEncoding FromCharEncoding = CharEncoding::defaultForType,
+			typename       ToChar       = typename GetCharEncodingType<ToCharEncoding>::type,
+			typename       ToCharTraits = std::char_traits<ToChar>,
+			typename       ToAllocator  = std::allocator<ToChar>,
+			typename     FromChar,
+			typename     FromCharTraits = std::char_traits<FromChar>,
+			typename     FromAllocator  = std::allocator<FromChar>>
 				std::basic_string<ToChar, ToCharTraits, ToAllocator>
 				Convert(const std::basic_string<FromChar, FromCharTraits, FromAllocator> &);
 
@@ -65,12 +63,14 @@ namespace page
 		 * @copydoc Convert
 		 */
 		template <
-			typename ToChar,
-			typename ToCharTraits = std::char_traits<ToChar>,
-			typename ToAllocator  = std::allocator<ToChar>,
-			typename FromChar,
-			typename FromCharTraits = std::char_traits<FromChar>,
-			typename FromAllocator  = std::allocator<FromChar>>
+			CharEncoding   ToCharEncoding,
+			CharEncoding FromCharEncoding = CharEncoding::defaultForType,
+			typename       ToChar       = typename GetCharEncodingType<ToCharEncoding>::type,
+			typename       ToCharTraits = std::char_traits<ToChar>,
+			typename       ToAllocator  = std::allocator<ToChar>,
+			typename     FromChar,
+			typename     FromCharTraits = std::char_traits<FromChar>,
+			typename     FromAllocator  = std::allocator<FromChar>>
 				std::basic_string<ToChar, ToCharTraits, ToAllocator>
 				Convert(const FromChar *);
 	}

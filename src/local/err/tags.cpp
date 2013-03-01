@@ -28,7 +28,7 @@
  * of this software.
  */
 
-#include "../util/pp.hpp" // STRINGIZE
+#include "../util/cpp.hpp" // STRINGIZE
 #include "tags.hpp"
 
 namespace page

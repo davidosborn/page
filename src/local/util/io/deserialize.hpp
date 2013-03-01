@@ -38,6 +38,7 @@
 #	include <type_traits> // is_pointer
 #	include <utility> // pair
 
+#	include "../locale/CharEncoding.hpp"
 #	include "../type_traits/container.hpp" // is_{compatible_with_insert_iterator,const_propogated,range}
 #	include "../type_traits/iterator.hpp" // is_iterator
 #	include "../type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT, ENABLE_IF
@@ -108,7 +109,10 @@ namespace page
 		 *
 		 * @throw nothrow Sets @c failbit on error.
 		 */
-		template <typename Char, typename CharTraits, typename String,
+		template <
+			CharEncoding   ToCharEncoding = CharEncoding::defaultForType,
+			CharEncoding FromCharEncoding = CharEncoding::defaultForType,
+			typename Char, typename CharTraits, typename String,
 			typename Terminator = const InputDelimiter<Char, CharTraits> &>
 			std::basic_istream<Char, CharTraits> &Deserialize(
 				std::basic_istream<Char, CharTraits> &,
@@ -371,18 +375,18 @@ namespace page
 		 */
 		/**
 		 * A type trait for detecting whether a type will be deserialized as a
-		 * sequence, in which case @c Deserialize will take a delimiter, or as a
-		 * value, in which case @c Deserialize will not take any additional
-		 * arguments.
+		 * sequence, in which case @c Deserialize will take some flags and a
+		 * delimiter, or as a value, in which case @c Deserialize will not take
+		 * any additional arguments.
 		 */
-		/*DEFINE_SFINAE_TYPE_TRAIT_1(is_deserializable_as_sequence,
+		DEFINE_SFINAE_TYPE_TRAIT_1(is_deserializable_as_sequence,
 			decltype(
 				Deserialize(
 					std::declval<std::istream &>(),
 					std::declval<T &>(),
 					SequenceDeserializationFlags::none,
-					InputDelimiter<char>::GetEmptyDelimiter()),
-				std::declval<void>()))*/
+					InputDelimiter<char>()),
+				std::declval<void>()))
 		///@}
 		///@}
 	}

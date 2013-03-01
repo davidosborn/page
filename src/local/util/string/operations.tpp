@@ -33,31 +33,47 @@
 #include <tuple>
 
 #include "../algorithm/stdext.hpp" // copy_until
-#include "../serialize/deserialize_string.hpp" // Deserialize
-#include "../serialize/serialize_string.hpp" // Serialize
+#include "../functional/locale.hpp" // isnewline_function
+#include "../io/deserialize.hpp" // Deserialize
+#include "../io/serialize.hpp" // Serialize
 
 namespace page
 {
 	namespace util
 	{
-		// Join
-		template <typename Char, typename CharTraits, typename... Parts> std::basic_string<Char, CharTraits> Join(Parts &&... parts)
+		/**
+		 * @weakgroup string
+		 * @{
+		 */
+		/**
+		 * @weakgroup string-join
+		 * @{
+		 */
+		template <typename Char, typename CharTraits, typename... Parts>
+			std::basic_string<Char, CharTraits> Join(Parts &&... parts)
 		{
 			Serialize<Char, CharTraits>(std::tuple<Parts &&...>(std::forward<Parts>(parts)...), "");
 		}
+		///@}
 
-		// Split
-		template <typename Char, typename CharTraits, typename OutputIterator, typename Delimiter> void Split(const std::basic_string<Char, CharTraits> &s, OutputIterator result, typename SequenceDeserializationFlags::Type flags, const Delimiter &delimiter, unsigned limit)
+		/**
+		 * @weakgroup string-split
+		 * @{
+		 */
+		template <typename Char, typename CharTraits, typename OutputIterator, typename Delimiter>
+			void Split(const std::basic_string<Char, CharTraits> &s, OutputIterator result, typename SequenceDeserializationFlags::Type flags, const Delimiter &delimiter, unsigned limit)
 		{
 			Deserialize(s, result, flags, delimiter, limit);
 		}
-		template <typename Char, typename OutputIterator, typename Delimiter> void Split(const std::basic_string<Char> &s, OutputIterator result, typename SequenceDeserializationFlags::Type flags, const Delimiter &delimiter, unsigned limit)
+
+		template <typename Char, typename OutputIterator, typename Delimiter>
+			void Split(const std::basic_string<Char> &s, OutputIterator result, typename SequenceDeserializationFlags::Type flags, const Delimiter &delimiter, unsigned limit)
 		{
 			return Split(std::basic_string<Char>(s), result, flags, delimiter, limit);
 		}
 
-		// Partition
-		template <typename Char, typename CharTraits, typename Delimiter> std::pair<std::basic_string<Char, CharTraits>, std::basic_string<Char, CharTraits>> Partition(const std::basic_string<Char, CharTraits> &s, typename SequenceDeserializationFlags::Type flags, const Delimiter &delimiter)
+		template <typename Char, typename CharTraits, typename Delimiter>
+			std::pair<std::basic_string<Char, CharTraits>, std::basic_string<Char, CharTraits>> Partition(const std::basic_string<Char, CharTraits> &s, typename SequenceDeserializationFlags::Type flags, const Delimiter &delimiter)
 		{
 			std::pair<
 				std::basic_string<Char, CharTraits>,
@@ -65,33 +81,49 @@ namespace page
 			Deserialize(s, r, flags, delimiter);
 			return r;
 		}
-		template <typename Char, typename Delimiter> std::pair<std::basic_string<Char>, std::basic_string<Char>> Partition(const char *s, typename SequenceDeserializationFlags::Type flags, const Delimiter &delimiter)
+
+		template <typename Char, typename Delimiter>
+			std::pair<std::basic_string<Char>, std::basic_string<Char>> Partition(const char *s, typename SequenceDeserializationFlags::Type flags, const Delimiter &delimiter)
 		{
 			return Partition(std::basic_string<Char>(s), flags, delimiter);
 		}
+		///@}
 
-		// Trim
-		template <typename Char, typename CharTraits, typename Delimiter> std::basic_string<Char, CharTraits> Trim(const std::basic_string<Char, CharTraits> &s, const Delimiter &delimiter)
+		/**
+		 * @weakgroup string-trim
+		 * @{
+		 */
+		template <typename Char, typename CharTraits, typename Delimiter>
+			std::basic_string<Char, CharTraits> Trim(const std::basic_string<Char, CharTraits> &s, const Delimiter &delimiter)
 		{
 			return TrimLeading(TrimTrailing(s, delimiter), delimiter);
 		}
-		template <typename Char, typename CharTraits, typename Delimiter> std::basic_string<Char, CharTraits> TrimLeading(const std::basic_string<Char, CharTraits> &s, const Delimiter &delimiter)
+
+		template <typename Char, typename CharTraits, typename Delimiter>
+			std::basic_string<Char, CharTraits> TrimLeading(const std::basic_string<Char, CharTraits> &s, const Delimiter &delimiter)
 		{
 			return std::basic_string<Char, CharTraits>(
 				std::find_if_not(s.begin(), s.end(),
-					DeserializationDelimiter<Char, CharTraits>::Normalize(delimiter)),
+					InputDelimiter<Char, CharTraits>(delimiter)),
 				s.end());
 		}
-		template <typename Char, typename CharTraits, typename Delimiter> std::basic_string<Char, CharTraits> TrimTrailing(const std::basic_string<Char, CharTraits> &s, const Delimiter &delimiter)
+
+		template <typename Char, typename CharTraits, typename Delimiter>
+			std::basic_string<Char, CharTraits> TrimTrailing(const std::basic_string<Char, CharTraits> &s, const Delimiter &delimiter)
 		{
 			return std::basic_string<Char, CharTraits>(
 				s.begin(),
 				std::find_if_not(s.rbegin(), s.rend(),
-					DeserializationDelimiter<Char, CharTraits>::Normalize(delimiter)).base());
+					InputDelimiter<Char, CharTraits>(delimiter)).base());
 		}
+		///@}
 
-		// NormalizeNewlines
-		template <typename Char, typename CharTraits> std::basic_string<Char, CharTraits> NormalizeNewlines(const std::basic_string<Char, CharTraits> &s)
+		/**
+		 * @weakgroup string-convert
+		 * @{
+		 */
+		template <typename Char, typename CharTraits>
+			std::basic_string<Char, CharTraits> NormalizeNewlines(const std::basic_string<Char, CharTraits> &s)
 		{
 			std::basic_string<Char, CharTraits> r;
 			r.reserve(s.size());
@@ -115,9 +147,14 @@ namespace page
 			}
 			return r;
 		}
+		///@}
 
-		// getline
-		template <typename Char, typename CharTraits> std::basic_istream<Char, CharTraits> &getline(std::basic_istream<Char, CharTraits> &is, std::basic_string<Char, CharTraits> &s)
+		/**
+		 * @weakgroup string-getline
+		 * @{
+		 */
+		template <typename Char, typename CharTraits>
+			std::basic_istream<Char, CharTraits> &getline(std::basic_istream<Char, CharTraits> &is, std::basic_string<Char, CharTraits> &s)
 		{
 			if (!is) return is;
 			s.clear();
@@ -138,21 +175,32 @@ namespace page
 			}
 			return is;
 		}
-		template <typename Char, typename CharTraits, typename Delimiter> std::basic_istream<Char, CharTraits> &getline(std::basic_istream<Char, CharTraits> &is, std::basic_string<Char, CharTraits> &s, const Delimiter &delimiter)
+
+		template <typename Char, typename CharTraits, typename Delimiter>
+			std::basic_istream<Char, CharTraits> &getline(std::basic_istream<Char, CharTraits> &is, std::basic_string<Char, CharTraits> &s, const Delimiter &delimiter)
 		{
 			return Deserialize(is, s, delimiter);
 		}
+		///@}
 
-		// StartsWith/EndsWith
-		template <typename Char, typename CharTraits> bool StartsWith(const std::basic_string<Char, CharTraits> &a, const std::basic_string<Char, CharTraits> &b)
+		/**
+		 * @weakgroup string-compare
+		 * @{
+		 */
+		template <typename Char, typename CharTraits>
+			bool StartsWith(const std::basic_string<Char, CharTraits> &a, const std::basic_string<Char, CharTraits> &b)
 		{
 			return a.size() >= b.size() &&
 				std::equal(b.begin(), b.end(), a.begin());
 		}
-		template <typename Char, typename CharTraits> bool EndsWith(const std::basic_string<Char, CharTraits> &a, const std::basic_string<Char, CharTraits> &b)
+
+		template <typename Char, typename CharTraits>
+			bool EndsWith(const std::basic_string<Char, CharTraits> &a, const std::basic_string<Char, CharTraits> &b)
 		{
 			return a.size() >= b.size() &&
 				std::equal(b.begin(), b.end(), a.end() - b.size());
 		}
+		///@}
+		///@}
 	}
 }

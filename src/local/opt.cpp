@@ -36,7 +36,7 @@
 
 #include "opt.hpp" // Cfg{Sources,Vars}, ResSources
 #include "sys/file.hpp" // BaseName
-#include "util/pp.hpp" // STRINGIZE
+#include "util/cpp.hpp" // STRINGIZE
 #include "util/string/operations.hpp" // Partition
 
 namespace page

@@ -37,9 +37,9 @@
 #include "../math/float.hpp" // Near
 #include "../util/algorithm/stdext.hpp" // find_not
 #include "../util/functional/operator.hpp" // modulus
+#include "../util/io/deserialize.hpp" // Deserialize
+#include "../util/io/serialize.hpp" // Serialize
 #include "../util/iterator/range.hpp"
-#include "../util/serialize/deserialize.hpp" // Deserialize
-#include "../util/serialize/serialize.hpp" // Serialize
 #include "Axan.hpp"
 #include "Euler.hpp"
 #include "Matrix.hpp"

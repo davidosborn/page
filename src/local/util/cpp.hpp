@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#ifndef    page_local_util_pp_hpp
-#   define page_local_util_pp_hpp
+#ifndef    page_local_util_cpp_hpp
+#   define page_local_util_cpp_hpp
 
 	/**
 	 * @defgroup STRINGIZE

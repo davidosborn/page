@@ -92,6 +92,9 @@ namespace page
 
 			/**
 			 * Creates a delimiter that will match according to a predicate.
+			 *
+			 * @note It is impossible to determine whether the provided
+			 *       predicate is empty, so we assume that it is not.
 			 */
 			InputDelimiter(const Predicate &);
 
@@ -117,7 +120,7 @@ namespace page
 			bool operator()(Char c) const;
 
 			/**
-			 * @return @c true if the delimiter's predicate is callable.
+			 * @return @c true if the delimiter is not empty.
 			 */
 			explicit operator bool() const;
 
@@ -145,7 +148,7 @@ namespace page
 			/**
 			 * A function which determines whether a character is a delimiter.
 			 */
-			Predicate predicate = nullptr;
+			Predicate predicate;
 		};
 	}
 }

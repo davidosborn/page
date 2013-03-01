@@ -37,8 +37,8 @@
 
 #include "../../err/Exception.hpp"
 #include "../../log/manip.hpp" // Warning
+#include "../../util/io/deserialize.hpp" // Deserialize
 #include "../../util/path/extension.hpp" // {Get,With}Extension
-#include "../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "../type/registry.hpp" // GetRegisteredTypeName
 #include "function.hpp" // SaveFunction
 

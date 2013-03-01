@@ -87,7 +87,7 @@ namespace page
 			operator String() const;
 
 			/**
-			 * @return @c true if the delimiter's string is not empty.
+			 * @return @c true if the delimiter is not empty.
 			 */
 			explicit operator bool() const;
 

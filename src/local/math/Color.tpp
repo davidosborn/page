@@ -33,9 +33,9 @@
 
 #include "../util/algorithm/stdext.hpp" // transform_n
 #include "../util/functional/operator.hpp" // modulus, unary_plus
+#include "../util/io/deserialize.hpp" // Deserialize
+#include "../util/io/serialize.hpp" // Serialize
 #include "../util/iterator/range.hpp"
-#include "../util/serialize/deserialize.hpp" // Deserialize
-#include "../util/serialize/serialize.hpp" // Serialize
 #include "float.hpp" // Wrap
 
 namespace page

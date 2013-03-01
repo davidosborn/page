@@ -33,7 +33,7 @@
 
 #include <boost/filesystem/operations.hpp> // absolute
 
-#include "../../util/pp.hpp" // STRINGIZE
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "CommonState.hpp"
 
 #define LOG_HOSTNAME_DEFAULT false

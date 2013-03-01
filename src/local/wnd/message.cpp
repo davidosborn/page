@@ -30,7 +30,7 @@
 
 #include <cassert>
 
-#include "../util/pp.hpp" // STRINGIZE
+#include "../util/cpp.hpp" // STRINGIZE
 #include "msg.hpp"
 
 namespace page

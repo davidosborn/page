@@ -44,8 +44,8 @@
 
 #include "../../../cfg/vars.hpp"
 #include "../../../log/Indenter.hpp"
-#include "../../../util/pp.hpp" // STRINGIZE
-#include "../../../util/serialize/deserialize_string.hpp" // Deserialize
+#include "../../../util/io/deserialize.hpp" // Deserialize
+#include "../../../util/cpp.hpp" // STRINGIZE
 #include "../ext.hpp" // GetProcAddress, ProcAddress
 
 namespace page

@@ -67,7 +67,7 @@ namespace page
 			separated_istream_iterator();
 
 			/**
-			 * Creates an input-stream iterator with a given separator.
+			 * Creates an input iterator with the specified separator.
 			 */
 			template <typename Separator = const Delimiter &>
 				explicit separated_istream_iterator(Stream &,

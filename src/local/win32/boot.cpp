@@ -34,7 +34,7 @@
 
 #include <windows.h>
 
-#include "../util/pp.hpp" // STRINGIZE
+#include "../util/cpp.hpp" // STRINGIZE
 
 namespace
 {

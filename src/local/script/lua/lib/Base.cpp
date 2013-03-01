@@ -32,7 +32,7 @@
 #include <iostream> // cout
 
 #include "../../../err/lua.hpp" // CATCH_LUA_ERRORS, CheckError, luaL_dostring_unprotected
-#include "../../../util/pp.hpp" // STRINGIZE
+#include "../../../util/cpp.hpp" // STRINGIZE
 #include "Base.hpp"
 
 namespace page

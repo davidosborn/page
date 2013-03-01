@@ -33,9 +33,9 @@
 #include <vector>
 
 #include "../../err/Exception.hpp"
+#include "../../util/io/deserialize.hpp" // Deserialize
 #include "../../util/iterator/range.hpp"
 #include "../../util/path/extension.hpp" // GetExtension
-#include "../../util/serialize/deserialize_string.hpp" // Deserialize
 #include "../Node.hpp"
 #include "../pipe/Pipe.hpp"
 #include "callback.hpp" // ScanCallback

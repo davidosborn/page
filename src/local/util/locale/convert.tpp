@@ -28,34 +28,37 @@
  * of this software.
  */
 
-#include <cassert>
+#include <locale>
 
-#include <windows.h>
-
-#include "../../err/Exception.hpp"
-#include "../../util/locale/convert.hpp" // Convert
-#include "../message.hpp" // MessageType
+#include "Transcoder.hpp"
 
 namespace page
 {
-	namespace wnd
+	namespace util
 	{
-		void Message(const std::string &s, MessageType type, const std::string &title)
+		template <
+			CharEncoding   ToCharEncoding,
+			CharEncoding FromCharEncoding,
+			typename   ToChar, typename   ToCharTraits, typename   ToAllocator,
+			typename FromChar, typename FromCharTraits, typename FromAllocator>
+				std::basic_string<ToChar, ToCharTraits, ToAllocator>
+				Convert(const std::basic_string<FromChar, FromCharTraits, FromAllocator> &s)
 		{
-			UINT icon;
-			switch (type)
-			{
-				case infoMessage:    icon = MB_ICONINFORMATION; break;
-				case errorMessage:   icon = MB_ICONERROR;       break;
-				case warningMessage: icon = MB_ICONWARNING;     break;
-				default: assert(!"invalid message type");
-			}
-			if (!MessageBox(NULL,
-				util::Convert<TCHAR>(s).c_str(),
-				util::Convert<TCHAR>(title).c_str(),
-				icon | MB_OK | MB_TASKMODAL))
-					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to create message box") <<
-						boost::errinfo_api_function("MessageBox")))
+			return typename GetTranscoder<
+				ResolveCharEncoding<FromCharEncoding, FromChar>::value,
+				ResolveCharEncoding<  ToCharEncoding,   ToChar>::value>::type()(s);
+		}
+
+		template <
+			CharEncoding   ToCharEncoding,
+			CharEncoding FromCharEncoding,
+			typename   ToChar, typename   ToCharTraits, typename   ToAllocator,
+			typename FromChar, typename FromCharTraits, typename FromAllocator>
+				std::basic_string<ToChar, ToCharTraits, ToAllocator>
+				Convert(const FromChar *s)
+		{
+			return Convert<ToCharEncoding, FromCharEncoding, ToChar, ToCharTraits, ToAllocator>(
+				std::basic_string<FromChar, FromCharTraits, FromAllocator>(s));
 		}
 	}
 }

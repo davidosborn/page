@@ -29,7 +29,7 @@
  */
 
 #include "../../err/lua.hpp" // CheckError
-#include "../../util/pp.hpp" // STRINGIZE
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "Library.hpp"
 
 namespace page

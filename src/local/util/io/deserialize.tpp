@@ -38,7 +38,7 @@
 #include "../algorithm/stdext.hpp" // copy_until
 #include "../iterator/range.hpp"
 #include "../iterator/repeat_iterator.hpp"
-#include "../string/convert.hpp" // Convert
+#include "../locale/convert.hpp" // Convert
 #include "../tuple.hpp" // tuple_{,pop_}front
 #include "../type_traits/iterator.hpp" // output_iterator_value_type
 #include "skip.hpp" // Skip
@@ -100,7 +100,9 @@ namespace page
 			return is;
 		}
 
-		template <typename Char, typename CharTraits, typename String, typename Terminator>
+		template <
+			CharEncoding ToCharEncoding, CharEncoding FromCharEncoding,
+			typename Char, typename CharTraits, typename String, typename Terminator>
 			std::basic_istream<Char, CharTraits> &Deserialize(
 				std::basic_istream<Char, CharTraits> &is,
 				String &s,
@@ -114,8 +116,10 @@ namespace page
 				try
 				{
 					s = std::move(Convert<
+						ToCharEncoding, FromCharEncoding,
 						typename String::value_type,
-						typename String::traits_type>(tmp));
+						typename String::traits_type,
+						typename String::allocator_type>(tmp));
 				}
 				catch (const std::exception &)
 				{
@@ -547,9 +551,16 @@ namespace page
 				Separator separator,
 				LastSeparator lastSeparator)
 		{
-			return Deserialize(is, std::tuple<First, Second>(p), flags,
+			std::tuple<First, Second> tmp;
+
+			Deserialize(is, tmp, flags,
 				InputDelimiter<Char, CharTraits>(separator),
 				InputDelimiter<Char, CharTraits>(lastSeparator));
+
+			p.first  = std::get<0>(tmp);
+			p.second = std::get<1>(tmp);
+
+			return is;
 		}
 		///@}
 		///@}

@@ -36,7 +36,7 @@
 
 #include <png.h>
 
-#include "../../../util/pp.hpp" // STRINGIZE
+#include "../../../util/cpp.hpp" // STRINGIZE
 #include "../../adapt/png.hpp" // WriteInfo
 #include "../../type/Image.hpp"
 #include "../register.hpp" // REGISTER_SAVER

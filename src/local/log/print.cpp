@@ -35,7 +35,7 @@
 #include "../cfg/vars.hpp"
 #include "../util/ios.hpp" // InitIos
 #include "../util/locale.hpp" // InitLocale
-#include "../util/pp.hpp" // STRINGIZE
+#include "../util/cpp.hpp" // STRINGIZE
 #include "Indenter.hpp"
 
 namespace page

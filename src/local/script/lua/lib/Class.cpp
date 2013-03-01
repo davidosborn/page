@@ -32,7 +32,7 @@
 #include <vector>
 
 #include "../../../err/lua.hpp" // CATCH_LUA_ERRORS, CheckError
-#include "../../../util/pp.hpp" // STRINGIZE
+#include "../../../util/cpp.hpp" // STRINGIZE
 #include "Class.hpp"
 
 namespace page

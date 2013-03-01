@@ -34,7 +34,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../iterator/range.hpp"
-#include "../string/convert.hpp" // Convert
+#include "../locale/convert.hpp" // Convert
 #include "../tuple.hpp" // tuple_{,pop_}front
 
 namespace page
@@ -66,7 +66,9 @@ namespace page
 		 * @weakgroup serialize-stream-value-string
 		 * @{
 		 */
-		template <typename Char, typename CharTraits, typename String>
+		template <
+			CharEncoding ToCharEncoding, CharEncoding FromCharEncoding,
+			typename Char, typename CharTraits, typename String>
 			std::basic_ostream<Char, CharTraits> &Serialize(
 				std::basic_ostream<Char, CharTraits> &os,
 				const String &s,
@@ -77,7 +79,9 @@ namespace page
 			std::basic_string<Char, CharTraits> tmp;
 			try
 			{
-				tmp = std::move(Convert<Char, CharTraits>(s));
+				tmp = std::move(Convert<
+					ToCharEncoding, FromCharEncoding,
+					Char, CharTraits>(s));
 			}
 			catch (const std::exception &)
 			{

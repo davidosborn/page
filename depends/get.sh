@@ -78,7 +78,6 @@ dependencies=<<-EOF
 	flac        | libFLAC       | page         |               |        | yes      | yes
 	freetype    | FreeType 2    | page         |               |        | yes      | yes
 	gif         | giflib        | page         |               |        | yes      | yes
-	icu         | ICU           | boost        |               |        | yes      | yes
 	jpeg        | libjpeg       | page         |               |        | yes      | yes
 	lua         | Lua           | page         | script        |        | yes      | yes
 	minizip     | Minizip       | page         |               |        | yes      | yes

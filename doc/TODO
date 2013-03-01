@@ -1,7 +1,5 @@
-Deserialize(string of diff encoding) needs some encoding arguments.
-Add the same encoding arguments to Convert.
+util/locale/Transcoder seems a bit ugly to me.
 Add some better type traits.
-Use my own Convert function, not Boost/Locale directly.
 Use my custom istream_iterators in the implementation of Serialize and Deserialize.
 Consider using Serialize/Deserialize in places where std::copy and util::separated_[io]stream_iterator are currently used.
 

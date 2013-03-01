@@ -28,34 +28,31 @@
  * of this software.
  */
 
-#include <cassert>
+#ifndef    page_local_util_locale_UseableFacet_hpp
+#   define page_local_util_locale_UseableFacet_hpp
 
-#include <windows.h>
-
-#include "../../err/Exception.hpp"
-#include "../../util/locale/convert.hpp" // Convert
-#include "../message.hpp" // MessageType
+#	include "../class/copy_move.hpp" // MAKE_UNCOPYABLE
+#	include "../class/inheritance.hpp" // INHERIT_CONSTRUCTORS
 
 namespace page
 {
-	namespace wnd
+	namespace util
 	{
-		void Message(const std::string &s, MessageType type, const std::string &title)
+		/**
+		 * @sa Based on Howard Hinnant's solution to the protected destructor
+		 *     problem in @c std::codecvt: http://stackoverflow.com/a/7599989
+		 */
+		template <typename Facet>
+			class UseableFacet : public Facet
 		{
-			UINT icon;
-			switch (type)
-			{
-				case infoMessage:    icon = MB_ICONINFORMATION; break;
-				case errorMessage:   icon = MB_ICONERROR;       break;
-				case warningMessage: icon = MB_ICONWARNING;     break;
-				default: assert(!"invalid message type");
-			}
-			if (!MessageBox(NULL,
-				util::Convert<TCHAR>(s).c_str(),
-				util::Convert<TCHAR>(title).c_str(),
-				icon | MB_OK | MB_TASKMODAL))
-					THROW((err::Exception<err::EnvModuleTag, err::Win32PlatformTag>("failed to create message box") <<
-						boost::errinfo_api_function("MessageBox")))
-		}
+			public:
+			INHERIT_CONSTRUCTORS(UseableFacet, Facet)
+
+			~UseableFacet() = default;
+
+			MAKE_UNCOPYABLE(UseableFacet)
+		};
 	}
 }
+
+#endif

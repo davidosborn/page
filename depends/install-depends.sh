@@ -69,24 +69,6 @@ MAKE_FLAGS=#"-j -l 1.5"
 USING_MINGW=`hash msysinfo && echo yes || echo no`
 
 ################################################################################
-# Package:        icu
-# Dependencies:
-# Depended on by: boost
-
-wget http://download.icu-project.org/files/icu4c/$ICU_VERSION/icu4c-50_1_2-src.tgz -O- | tar -zx
-cd icu/source
-./configure --enable-static --disable-shared
-make $MAKE_FLAGS install
-mv /usr/local/sicudt.a libicudata.a
-mv /usr/local/sicuin.a libicui18n.a
-mv /usr/local/sicuio.a libicuio.a
-mv /usr/local/sicule.a libicule.a
-mv /usr/local/siculx.a libiculx.a
-mv /usr/local/sicutest.a libicutest.a
-mv /usr/local/sicutu.a libicutu.a
-mv /usr/local/sicuuc.a libicuuc.a
-
-################################################################################
 # Package:        boost
 # Dependencies:   icu
 # Depended on by:
@@ -99,7 +81,7 @@ if [ "$USING_MINGW" == yes ]; then
 	rm project-config.jam # https://svn.boost.org/trac/boost/ticket/5680
 fi
 # NOTE: we disable libiconv support because it is LGPL (requiring dynamic linkage)
-./b2 --with-filesystem --with-locale --with-signals variant=debug link=static threading=multi toolset=gcc boost.locale.iconv=off
+./b2 --with-filesystem --with-signals variant=debug link=static threading=multi toolset=gcc
 
 # install headers
 find boost -type f -print0 | while read -d $'\0' source

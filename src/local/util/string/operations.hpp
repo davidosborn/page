@@ -36,23 +36,23 @@
 #	include <string> // basic_string, char_traits
 #	include <utility> // pair
 
-#	include "../serialize/DeserializationDelimiter.hpp"
-#	include "../serialize/SequenceDeserializationFlags.hpp"
+#	include "../io/InputDelimiter.hpp"
+#	include "../io/SequenceDeserializationFlags.hpp"
 
 namespace page
 {
 	namespace util
 	{
 		/**
-		 * @defgroup string String
+		 * @defgroup string
 		 * @{
 		 */
 		/**
-		 * @defgroup string-join String joining
+		 * @defgroup string-join Join
 		 * @{
 		 */
 		/**
-		 * Concatenate the variadic arguments into a string.
+		 * Concatenates the variadic arguments into a string.
 		 */
 		template <
 			typename Char       = char,
@@ -62,108 +62,108 @@ namespace page
 		///@}
 
 		/**
-		 * @defgroup string-split String splitting
+		 * @defgroup string-split Split
 		 * @{
 		 */
 		/**
-		 * Split a string at each occurance of a delimiter, writing the
+		 * Splits a string at each occurance of a delimiter, writing the
 		 * resulting sub-strings to an output iterator.
 		 *
 		 * @note This is an overload for @c std::basic_string.
 		 */
 		template <typename Char, typename CharTraits, typename OutputIterator,
-			typename Delimiter = typename DeserializationDelimiter<Char, CharTraits>::Type>
+			typename Delimiter = InputDelimiter<Char, CharTraits>>
 			void Split(
 				const std::basic_string<Char, CharTraits> &,
 				OutputIterator,
 				typename SequenceDeserializationFlags::Type = SequenceDeserializationFlags::defaultForSpaceDelimiter,
-				const Delimiter & = DeserializationDelimiter<Char, CharTraits>::Space(),
+				const Delimiter & = InputDelimiter<Char, CharTraits>::GetSpaceDelimiter(),
 				unsigned limit = std::numeric_limits<unsigned>());
 
 		/**
-		 * Split a string at each occurance of a delimiter, writing the
+		 * Splits a string at each occurance of a delimiter, writing the
 		 * resulting sub-strings to an output iterator.
 		 *
 		 * @note This is an overload for C strings.
 		 */
 		template <typename Char, typename OutputIterator,
-			typename Delimiter = typename DeserializationDelimiter<Char>::Type>
+			typename Delimiter = InputDelimiter<Char>>
 			void Split(
 				const Char *,
 				OutputIterator,
 				typename SequenceDeserializationFlags::Type = SequenceDeserializationFlags::defaultForSpaceDelimiter,
-				const Delimiter & = DeserializationDelimiter<Char>::Space(),
+				const Delimiter & = InputDelimiter<Char>::GetSpaceDelimiter(),
 				unsigned limit = std::numeric_limits<unsigned>());
 
 		/**
-		 * Split a string at the first occurance of a delimiter.
+		 * Splits a string at the first occurance of a delimiter.
 		 *
 		 * @return @c std::pair containing the two sub-strings.
 		 *
 		 * @note This is an overload for @c std::basic_string.
 		 */
 		template <typename Char, typename CharTraits,
-			typename Delimiter = typename DeserializationDelimiter<Char, CharTraits>::Type>
+			typename Delimiter = InputDelimiter<Char, CharTraits>>
 			std::pair<
 				std::basic_string<Char, CharTraits>,
 				std::basic_string<Char, CharTraits>>
 			Partition(
 				const std::basic_string<Char, CharTraits> &,
 				typename SequenceDeserializationFlags::Type = SequenceDeserializationFlags::defaultForSpaceDelimiter,
-				const Delimiter & = DeserializationDelimiter<Char, CharTraits>::Space());
+				const Delimiter & = InputDelimiter<Char, CharTraits>::GetSpaceDelimiter());
 
 		/**
-		 * Split a string at the first occurance of a delimiter.
+		 * Splits a string at the first occurance of a delimiter.
 		 *
 		 * @return @c std::pair containing the two sub-strings.
 		 *
 		 * @note This is an overload for C strings.
 		 */
 		template <typename Char,
-			typename Delimiter = typename DeserializationDelimiter<Char>::Type>
+			typename Delimiter = InputDelimiter<Char>>
 			std::pair<
 				std::basic_string<Char>,
 				std::basic_string<Char>>
 			Partition(
 				const Char *,
 				typename SequenceDeserializationFlags::Type = SequenceDeserializationFlags::defaultForSpaceDelimiter,
-				const Delimiter & = DeserializationDelimiter<Char>::Space());
+				const Delimiter & = InputDelimiter<Char>::GetSpaceDelimiter());
 		///@}
 
 		/**
-		 * @defgroup string-trim String trimming
+		 * @defgroup string-trim Trim
 		 * @{
 		 */
 		/**
-		 * Remove leading and trailing delimiters from a string.
+		 * Removes leading and trailing delimiters from a string.
 		 */
 		template <typename Char, typename CharTraits,
-			typename Delimiter = typename DeserializationDelimiter<Char, CharTraits>::Type>
+			typename Delimiter = InputDelimiter<Char, CharTraits>>
 			std::basic_string<Char, CharTraits> Trim(
 				const std::basic_string<Char, CharTraits> &,
-				const Delimiter & = DeserializationDelimiter<Char, CharTraits>::Space());
+				const Delimiter & = InputDelimiter<Char, CharTraits>::GetSpaceDelimiter());
 
 		/**
-		 * Remove leading delimiters from a string.
+		 * Removes leading delimiters from a string.
 		 */
 		template <typename Char, typename CharTraits,
-			typename Delimiter = typename DeserializationDelimiter<Char, CharTraits>::Type>
+			typename Delimiter = InputDelimiter<Char, CharTraits>>
 			std::basic_string<Char, CharTraits> TrimLeading(
 				const std::basic_string<Char, CharTraits> &,
-				const Delimiter & = DeserializationDelimiter<Char, CharTraits>::Space());
+				const Delimiter & = InputDelimiter<Char, CharTraits>::GetSpaceDelimiter());
 
 		/**
-		 * Remove trailing delimiters from a string.
+		 * Removes trailing delimiters from a string.
 		 */
 		template <typename Char, typename CharTraits,
-			typename Delimiter = typename DeserializationDelimiter<Char, CharTraits>::Type>
+			typename Delimiter = InputDelimiter<Char, CharTraits>>
 			std::basic_string<Char, CharTraits> TrimTrailing(
 				const std::basic_string<Char, CharTraits> &,
-				const Delimiter & = DeserializationDelimiter<Char, CharTraits>::Space());
+				const Delimiter & = InputDelimiter<Char, CharTraits>::GetSpaceDelimiter());
 		///@}
 
 		/**
-		 * @defgroup string-convert String conversion
+		 * @defgroup string-convert Conversion
 		 * @{
 		 */
 		/**
@@ -176,7 +176,7 @@ namespace page
 		///@}
 
 		/**
-		 * @defgroup string-getline String extraction
+		 * @defgroup string-getline Line extraction
 		 * @{
 		 */
 		/**
@@ -208,7 +208,7 @@ namespace page
 		///@}
 
 		/**
-		 * @defgroup string-compare String comparison
+		 * @defgroup string-compare Comparison
 		 * @{
 		 */
 		/**
