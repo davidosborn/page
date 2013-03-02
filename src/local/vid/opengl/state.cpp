@@ -34,6 +34,8 @@
 #include <stack>
 #include <vector>
 
+#include <boost/optional.hpp>
+
 #define GL_PURE
 #include <GL/gl.h>
 
@@ -45,7 +47,6 @@
 #	include <GL/glu.h>
 #endif
 
-#include "../util/Optional.hpp"
 #include "ext.hpp" // ARB_{multitexture,shader_objects}, EXT_{blend_func_separate,framebuffer_object}
 
 namespace page
@@ -138,24 +139,24 @@ namespace page
 
 					struct Attrib
 					{
-						util::Optional<GLenum>                activeTexture;
-						util::Optional<GLenum>                blendDstAlpha;
-						util::Optional<GLenum>                blendDstRgb;
-						util::Optional<GLenum>                blendSrcAlpha;
-						util::Optional<GLenum>                blendSrcRgb;
-						util::Optional<GLboolean>             depthTest;
-						util::Optional<GLenum>                drawBuffer;
-						util::Optional<GLenum>                matrixMode;
-						util::Optional<std::array<GLint, 4>> scissorBox;
-						util::Optional<GLboolean>             scissorTest;
-						util::Optional<std::array<GLint, 4>> viewport;
+						boost::optional<GLenum>                activeTexture;
+						boost::optional<GLenum>                blendDstAlpha;
+						boost::optional<GLenum>                blendDstRgb;
+						boost::optional<GLenum>                blendSrcAlpha;
+						boost::optional<GLenum>                blendSrcRgb;
+						boost::optional<GLboolean>             depthTest;
+						boost::optional<GLenum>                drawBuffer;
+						boost::optional<GLenum>                matrixMode;
+						boost::optional<std::array<GLint, 4>> scissorBox;
+						boost::optional<GLboolean>             scissorTest;
+						boost::optional<std::array<GLint, 4>> viewport;
 					};
 					typedef std::stack<Attrib> AttribStack;
 					AttribStack attribStack;
 
 					struct ClientAttrib
 					{
-						util::Optional<GLenum> clientActiveTexture;
+						boost::optional<GLenum> clientActiveTexture;
 					};
 					typedef std::stack<ClientAttrib> ClientAttribStack;
 					ClientAttribStack clientAttribStack;

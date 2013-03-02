@@ -31,7 +31,9 @@
 #ifndef    page_local_game_InputDispatcher_hpp
 #   define page_local_game_InputDispatcher_hpp
 
-#	include "../util/NonCopyable.hpp"
+#	include <boost/signals/connection.hpp>
+
+#	include "../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -43,7 +45,7 @@ namespace page
 		class Menu;
 		class Player;
 
-		struct InputDispatcher : util::NonCopyable
+		struct InputDispatcher : util::Uncopyable<InputDispatcher>
 		{
 			InputDispatcher(inp::Driver &, Player &, Hud &, Menu &);
 			~InputDispatcher();
@@ -53,7 +55,7 @@ namespace page
 			void OnKey(inp::key::Key);
 
 			// signal connections
-			util::ScopedConnection keyCon;
+			boost::signals::scoped_connection keyCon;
 
 			Player &player;
 			Hud &hud;

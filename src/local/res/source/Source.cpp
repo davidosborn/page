@@ -43,7 +43,7 @@
 #include "../path.hpp" // CatPath
 #include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../scan/registry.hpp" // CallRegisteredScanner
-#include "../type/registry.hpp" // CallWithPointer, GetRegisteredType{Deleter,PostLoader}, PostLoadFunction
+#include "../type/Registry.hpp"
 #include "Source.hpp"
 
 namespace page
@@ -91,7 +91,7 @@ namespace page
 			Paths::iterator pathIter(paths.find(path));
 			if (pathIter == paths.end())
 			{
-				std::shared_ptr<const void> resource(LoadFromDisk(id, path), GetRegisteredTypeDeleter(id));
+				std::shared_ptr<const void> resource(LoadFromDisk(id, path), GLOBAL(type::Registry).Query(id).deleter);
 				if (resource)
 				{
 					Path::Types &types(paths.insert(std::make_pair(path, Path())).first->second.types);
@@ -105,7 +105,7 @@ namespace page
 			Path::Types::iterator typeIter(types.find(id.name()));
 			if (typeIter == types.end())
 			{
-				std::shared_ptr<const void> resource(LoadFromDisk(id, path), GetRegisteredTypeDeleter(id));
+				std::shared_ptr<const void> resource(LoadFromDisk(id, path), GLOBAL(type::Registry).Query(id).deleter);
 				if (resource)
 				{
 					Path::Type::Data &data(types.insert(std::make_pair(id.name(), Path::Type())).first->second.data);
@@ -120,7 +120,7 @@ namespace page
 			{
 				try
 				{
-					resource.reset(LoadFromDisk(id, path), GetRegisteredTypeDeleter(id));
+					resource.reset(LoadFromDisk(id, path), GLOBAL(type::Registry).Query(id).deleter);
 				}
 				catch (...)
 				{
@@ -162,8 +162,8 @@ namespace page
 					THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("resource type mismatch") <<
 						boost::errinfo_file_name(path.node.path) <<
 						err::errinfo_subject(id.name)))
-				PostLoadFunction postLoader(GetRegisteredTypePostLoader(id));
-				if (postLoader) CallWithPointer(postLoader, data);
+				auto postLoader(GLOBAL(type::Registry).Query(id).postLoader);
+				if (postLoader) postLoader(data);
 				return data;
 			}
 			return 0;

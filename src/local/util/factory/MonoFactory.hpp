@@ -28,13 +28,13 @@
  * of this software.
  */
 
-#ifndef    page_local_util_MonoFactory_hpp
-#   define page_local_util_MonoFactory_hpp
+#ifndef    page_local_util_factory_MonoFactory_hpp
+#   define page_local_util_factory_MonoFactory_hpp
 
 #	include <functional> // function
 #	include <memory> // unique_ptr
 
-#	include "class/Monostate.hpp"
+#	include "../class/Monostate.hpp"
 
 namespace page
 {

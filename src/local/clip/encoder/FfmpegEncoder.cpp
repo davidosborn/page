@@ -35,7 +35,7 @@ extern "C"
 
 #include "../../err/Exception.hpp"
 #include "../../math/Vector.hpp"
-#include "../../util/init_priority.hpp" // REG_INIT_PRIORITY
+#include "../../util/gcc/init_priority.hpp" // REG_INIT_PRIORITY
 #include "FfmpegEncoder.hpp"
 
 namespace page

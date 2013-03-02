@@ -52,6 +52,7 @@ namespace page
 				accessDenied,
 				alloc,
 				catastrophic,
+				conflict,
 				conversion,
 				deliberate,
 				end,
@@ -219,92 +220,99 @@ namespace page
 		+-------------------------*/
 
 		/**
-		 *
+		 * A tag to be used when access is not permitted to a resource.
 		 */
 		struct AccessDeniedTag;
 
 		/**
-		 *
+		 * A tag to be used when a container runs out of space.
 		 */
 		struct AllocTag;
 
 		/**
-		 *
+		 * A tag to be used when a catastrophic failure occurs.
 		 */
 		struct CatastrophicTag;
 
 		/**
-		 *
+		 * A tag to be used when a naming conflict occurs.
+		 */
+		struct ConflictTag;
+
+		/**
+		 * A tag to be used when something cannot be converted to something
+		 * else.
 		 */
 		struct ConversionTag;
 
 		/**
-		 *
+		 * A tag to be used when an exception is thrown deliberately.
 		 */
 		struct DeliberateTag;
 
 		/**
-		 *
+		 * A tag to be used when the end of something is reached.
 		 */
 		struct EndTag;
 
 		/**
-		 *
+		 * A tag to be used when the end of a file is reached.
 		 */
 		struct EndOfFileTag;
 
 		/**
-		 *
+		 * A tag to be used when the end of a stream is reached.
 		 */
 		struct EndOfStreamTag;
 
 		/**
-		 *
+		 * A tag to be used when an error occurs in a factory.
 		 */
 		struct FactoryTag;
 
 		/**
-		 *
+		 * A tag to be used when an error occurs during file handling.
 		 */
 		struct FileTag;
 
 		/**
-		 *
+		 * A tag to be used when a file cannot be accessed.
 		 */
 		struct FileAccessTag;
 
 		/**
-		 *
+		 * A tag to be used when a file cannot be flushed.
 		 */
 		struct FileFlushTag;
 
 		/**
-		 *
+		 * A tag to be used when a file is not found.
 		 */
 		struct FileNotFoundTag;
 
 		/**
-		 *
+		 * A tag to be used when a file cannot be opened.
 		 */
 		struct FileOpenTag;
 
 		/**
-		 *
+		 * A tag to be used when a file-read operation fails.
 		 */
 		struct FileReadTag;
 
 		/**
-		 *
+		 * A tag to be used when a file-seek operation fails.
 		 */
 		struct FileSeekTag;
 
 		/**
-		 *
+		 * A tag to be used when the current position in a file cannot be
+		 * determined.
 		 */
 		struct FileTellTag;
 
 		/**
-		 *
+		 * A tag to be used when a file-write operation fails.
 		 */
 		struct FileWriteTag;
 
@@ -330,7 +338,13 @@ namespace page
 		struct KeyTag;
 
 		/**
-		 *
+		 * A tag to be used when there is a conflict between two keys in a
+		 * uniquely-keyed container.
+		 */
+		struct KeyConflictTag;
+
+		/**
+		 * A tag to be used when there is no matching key in a container.
 		 */
 		struct KeyNotFoundTag;
 
@@ -350,12 +364,12 @@ namespace page
 		struct NotAvailableTag;
 
 		/**
-		 *
+		 * A tag to be used when a path does not point to a directory.
 		 */
 		struct NotDirectoryTag;
 
 		/**
-		 *
+		 * A tag to be used when a path does not point to a file.
 		 */
 		struct NotFileTag;
 
@@ -403,52 +417,53 @@ namespace page
 		struct RangeTag;
 
 		/**
-		 *
+		 * A tag to be used when an attempt to modify something immutable fails.
 		 */
 		struct ReadOnlyTag;
 
 		/**
-		 *
+		 * A tag to be used when an attempt to serialize data fails.
 		 */
 		struct SerializationTag;
 
 		/**
-		 *
+		 * A tag to be used when an error occurs during streaming.
 		 */
 		struct StreamTag;
 
 		/**
-		 *
+		 * A tag to be used when a stream cannot be flushed.
 		 */
 		struct StreamFlushTag;
 
 		/**
-		 *
+		 * A tag to be used when a stream-read operation fails.
 		 */
 		struct StreamReadTag;
 
 		/**
-		 *
+		 * A tag to be used when a stream-seek operation fails.
 		 */
 		struct StreamSeekTag;
 
 		/**
-		 *
+		 * A tag to be used when the current position in a stream cannot be
+		 * determined.
 		 */
 		struct StreamTellTag;
 
 		/**
-		 *
+		 * A tag to be used when a stream-write operation fails.
 		 */
 		struct StreamWriteTag;
 
 		/**
-		 *
+		 * A tag to be used when there is an error having to do with a token.
 		 */
 		struct TokenTag;
 
 		/**
-		 *
+		 * A tag to be used when an error occurs having to do with a type.
 		 */
 		struct TypeTag;
 
@@ -473,6 +488,7 @@ namespace page
 		struct AccessDeniedTag  : Tag<TagId::accessDenied>  {};
 		struct AllocTag         : Tag<TagId::alloc>         {};
 		struct CatastrophicTag  : Tag<TagId::catastrophic>  {};
+		struct ConflictTag      : Tag<TagId::conflict>      {};
 		struct ConversionTag    : Tag<TagId::conversion>    {};
 		struct DeliberateTag    : Tag<TagId::deliberate>    {};
 		struct EndTag           : Tag<TagId::end>           {};
@@ -493,6 +509,7 @@ namespace page
 		struct StreamTag        : Tag<TagId::stream>        {};
 		struct TypeTag          : Tag<TagId::type>          {};
 
+		struct KeyConflict      :                           TagSet<KeyTag, ConflictTag>         {};
 		struct KeyNotFoundTag   :                           TagSet<KeyTag, NotFoundTag>          {};
 		struct TokenTag         : Tag<TagId::token>,        TagSet<ParserTag>                    {};
 

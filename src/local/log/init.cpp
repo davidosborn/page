@@ -32,7 +32,7 @@
 #include <memory> // shared_ptr
 
 #include "../cfg/vars.hpp"
-#include "../util/init_priority.hpp" // LOG_INIT_PRIORITY
+#include "../util/gcc/init_priority.hpp" // LOG_INIT_PRIORITY
 #include "filter/IndentFilter.hpp"
 #include "filter/TimeFilter.hpp"
 #include "sink/ConsoleSink.hpp"

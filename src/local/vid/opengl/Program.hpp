@@ -39,7 +39,7 @@
 #	include <GL/gl.h> // GL{enum,int}, glext.h
 #	include <GL/glext.h> // GLhandleARB
 
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 #	include "../../util/raii/unique_handle.hpp"
 
 namespace page
@@ -50,7 +50,7 @@ namespace page
 	{
 		namespace opengl
 		{
-			struct Program : util::NonCopyable
+			struct Program : util::Uncopyable<Program>
 			{
 				// construct
 				explicit Program(const res::opengl::Shader &);

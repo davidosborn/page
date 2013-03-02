@@ -39,21 +39,21 @@ namespace page
 		{
 			// blending
 			// NOTE: nested types do not participate in deduction (bug #31534)
-			template <typename T> inline void Blend(util::Optional<T> &dest, const util::Optional<T> &src, float alpha)
+			template <typename T> inline void Blend(boost::optional<T> &dest, const boost::optional<T> &src, float alpha)
 			{
 				if (src) dest = math::LinearInterp(dest ? *dest : T(), *src, alpha);
 			}
-			template <typename T> inline void Blend(util::Optional<Frame::Range<T>> &dest, const util::Optional<Frame::Range<T>> &src, float alpha)
+			template <typename T> inline void Blend(boost::optional<Frame::Range<T>> &dest, const boost::optional<Frame::Range<T>> &src, float alpha)
 			{
 				if (src) dest = Frame::Range<T>(
 					math::LinearInterp(dest ? dest->min : T(), src->min, alpha),
 					math::LinearInterp(dest ? dest->max : T(), src->max, alpha));
 			}
-			template <typename T> inline void Blend(util::Optional<T> &dest, const util::Optional<T> &src, float alpha, const util::Optional<T> &base)
+			template <typename T> inline void Blend(boost::optional<T> &dest, const boost::optional<T> &src, float alpha, const boost::optional<T> &base)
 			{
 				if (src) dest = math::LinearInterp(dest ? *dest : base ? *base : T(), *src, alpha);
 			}
-			template <typename T> inline void Blend(util::Optional<Frame::Range<T>> &dest, const util::Optional<Frame::Range<T>> &src, float alpha, const util::Optional<Frame::Range<T>> &base)
+			template <typename T> inline void Blend(boost::optional<Frame::Range<T>> &dest, const boost::optional<Frame::Range<T>> &src, float alpha, const boost::optional<Frame::Range<T>> &base)
 			{
 				if (src) dest = Frame::Range<T>(
 					math::LinearInterp(dest ? dest->min : base ? base->min : T(), src->min, alpha),
@@ -62,7 +62,7 @@ namespace page
 
 			// masking
 			// NOTE: nested types do not participate in deduction (bug #31534)
-			template <typename T> inline void Mask(util::Optional<T> &dest, const util::Optional<T> &mask)
+			template <typename T> inline void Mask(boost::optional<T> &dest, const boost::optional<T> &mask)
 			{
 				if (!mask) dest.reset();
 			}

@@ -33,7 +33,7 @@
 #include <iostream> // cerr
 
 #include "../log/manip.hpp" // Clear
-#include "../util/init_priority.hpp" // LOG_INIT_PRIORITY
+#include "../util/gcc/init_priority.hpp" // LOG_INIT_PRIORITY
 #include "../wnd/message.hpp" // Message
 
 namespace page

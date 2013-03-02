@@ -37,11 +37,12 @@
 #	include <unordered_map>
 #	include <vector>
 
+#	include <boost/signal.hpp>
+
 #	include "../../math/Matrix.hpp"
 #	include "../../res/type/Skeleton.hpp" // Skeleton::Bone
 #	include "../../util/Identifiable.hpp"
 #	include "../../util/iterator/indirect_iterator.hpp"
-#	include "../../util/Signal.hpp"
 #	include "PositionOrientationScale.hpp"
 
 namespace page
@@ -162,7 +163,7 @@ namespace page
 				void ResetPose();
 
 				// signals
-				util::Signal<void ()> dirtyPoseSig;
+				boost::signal<void ()> dirtyPoseSig;
 
 				protected:
 				// frame serialization

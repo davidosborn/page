@@ -32,7 +32,7 @@
 #include <cassert>
 
 #include "../../err/Exception.hpp"
-#include "../../util/buffer.hpp" // GetDirtyBuffer
+#include "../../util/container/ScratchBuffer.hpp"
 #include "../adapt/minizip.hpp" // MakeZlibFileFuncDef
 #include "../Stream.hpp"
 #include "MinizipPipe.hpp"
@@ -112,8 +112,8 @@ namespace page
 				else n -= pos;
 				while (n)
 				{
-					unsigned n2 = std::min(n, util::GetDirtyBuffer().size());
-					int result = unzReadCurrentFile(file, &*util::GetDirtyBuffer().begin(), n2);
+					unsigned n2 = std::min(n, GLOBAL(util::ScratchBuffer).size());
+					int result = unzReadCurrentFile(file, GLOBAL(util::ScratchBuffer).data(), n2);
 					if (result < 0)
 						THROW((err::Exception<err::ResModuleTag, err::MinizipPlatformTag, err::StreamReadTag>()))
 					pos += result;

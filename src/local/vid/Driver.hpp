@@ -34,7 +34,7 @@
 #	include "../math/Aabb.hpp"
 #	include "../math/fwd.hpp" // Vector
 #	include "../res/type/Image.hpp"
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -46,7 +46,7 @@ namespace page
 	{
 		class DrawContext;
 
-		struct Driver : util::NonCopyable
+		struct Driver : util::Uncopyable<Driver>
 		{
 			// construct/destroy
 			explicit Driver(wnd::Window &wnd);

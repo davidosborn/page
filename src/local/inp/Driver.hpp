@@ -34,10 +34,11 @@
 #	include <memory> // shared_ptr
 #	include <vector>
 
+#	include <boost/signal.hpp>
+
 #	include "../math/fwd.hpp" // Euler
 #	include "../math/Vector.hpp"
-#	include "../util/NonCopyable.hpp"
-#	include "../util/Signal.hpp"
+#	include "../util/class/Uncopyable.hpp"
 #	include "Button.hpp"
 #	include "Key.hpp"
 #	include "State.hpp"
@@ -51,7 +52,7 @@ namespace page
 	{
 		class Device;
 
-		struct Driver : util::NonCopyable
+		struct Driver : util::Uncopyable<Driver>
 		{
 			// construct/destroy
 			explicit Driver(wnd::Window &);
@@ -99,16 +100,16 @@ namespace page
 			void Imbue(const ui::Interface *);
 
 			// pointer signals
-			util::Signal<void (const math::Vector<2> &position, Button, bool _double)> downSig;
-			util::Signal<void (const math::Vector<2> &position, Button, bool _double)> clickSig;
-			util::Signal<void (const math::Vector<2> &origin, Button, bool _double)> dragSig;
-			util::Signal<void (const math::Vector<2> &origin, const math::Vector<2> &position, Button, bool _double)> dropSig;
-			util::Signal<void (const math::Vector<2> &origin, const math::Vector<2> &position, Button, bool _double)> cancelDragSig;
-			util::Signal<void (const math::Vector<2> &position, float scroll)> scrollSig;
+			boost::signal<void (const math::Vector<2> &position, Button, bool _double)> downSig;
+			boost::signal<void (const math::Vector<2> &position, Button, bool _double)> clickSig;
+			boost::signal<void (const math::Vector<2> &origin, Button, bool _double)> dragSig;
+			boost::signal<void (const math::Vector<2> &origin, const math::Vector<2> &position, Button, bool _double)> dropSig;
+			boost::signal<void (const math::Vector<2> &origin, const math::Vector<2> &position, Button, bool _double)> cancelDragSig;
+			boost::signal<void (const math::Vector<2> &position, float scroll)> scrollSig;
 
 			// key signals
-			util::Signal<void (Key)> keySig;
-			util::Signal<void (char)> charSig;
+			boost::signal<void (Key)> keySig;
+			boost::signal<void (char)> charSig;
 
 			protected:
 			// inspiration access

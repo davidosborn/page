@@ -34,7 +34,7 @@
 #	include <memory> // unique_ptr
 
 #	include "../inp/Key.hpp"
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -48,7 +48,7 @@ namespace page
 		class Interface;
 		class Scene;
 
-		struct Game : util::NonCopyable
+		struct Game : util::Uncopyable<Game>
 		{
 			// construct/destroy
 			Game();

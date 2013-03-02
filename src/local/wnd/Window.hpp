@@ -34,9 +34,10 @@
 #	include <memory> // unique_ptr
 #	include <string>
 
+#	include <boost/signal.hpp>
+
 #	include "../math/Vector.hpp"
-#	include "../util/NonCopyable.hpp"
-#	include "../util/Signal.hpp"
+#	include "../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -46,7 +47,7 @@ namespace page
 
 	namespace wnd
 	{
-		struct Window : util::NonCopyable
+		struct Window : util::Uncopyable<Window>
 		{
 			// construct/destroy
 			Window();
@@ -66,10 +67,10 @@ namespace page
 			vid::Driver &GetVideoDriver();
 
 			// signals
-			util::Signal<void ()> exitSig;
-			util::Signal<void (bool)> focusSig;
-			util::Signal<void (const math::Vector<2, int> &)> moveSig;
-			util::Signal<void (const math::Vector<2, unsigned> &)> sizeSig;
+			boost::signal<void ()> exitSig;
+			boost::signal<void (bool)> focusSig;
+			boost::signal<void (const math::Vector<2, int> &)> moveSig;
+			boost::signal<void (const math::Vector<2, unsigned> &)> sizeSig;
 
 			// environment state
 			virtual math::Vector<2, unsigned> GetScreenSize() const = 0;

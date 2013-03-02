@@ -31,7 +31,7 @@
 #ifndef    page_local_util_StateSaver_hpp
 #   define page_local_util_StateSaver_hpp
 
-#	include "NonCopyable.hpp"
+#	include "class/Uncopyable.hpp"
 
 namespace page
 {
@@ -66,7 +66,7 @@ namespace page
 		 * @sa See http://drdobbs.com/184403758 for more information about the
 		 *     scope-guard concept.
 		 */
-		template <typename Derived> struct StateSaver : NonCopyable
+		template <typename Derived> struct StateSaver : Uncopyable<StateSaver>
 		{
 			// constructor/destructor
 			explicit StateSaver();

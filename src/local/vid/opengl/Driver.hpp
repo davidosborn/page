@@ -33,7 +33,8 @@
 
 #	include <memory> // unique_ptr
 
-#	include "../../util/Signal.hpp" // ScopedConnection
+#	include <boost/signals/connection.hpp> // scoped_connection
+
 #	include "../Driver.hpp"
 
 namespace page
@@ -75,7 +76,7 @@ namespace page
 				void OnFocus(bool);
 				void OnSize(const math::Vector<2, unsigned> &);
 
-				util::ScopedConnection focusCon, sizeCon;
+				boost::signals::scoped_connection focusCon, sizeCon;
 				std::unique_ptr<Resources> res;
 			};
 		}

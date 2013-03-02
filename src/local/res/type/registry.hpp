@@ -28,39 +28,109 @@
  * of this software.
  */
 
-#ifndef    page_local_res_type_registry_hpp
-#   define page_local_res_type_registry_hpp
+#ifndef    page_local_res_type_Registry_hpp
+#   define page_local_res_type_Registry_hpp
 
+#	include <functional>
 #	include <string>
-#	include <typeinfo> // type_info
+#	include <typeindex>
+#	include <typeinfo>
+#	include <unordered_map>
 
-#	include "../../util/memory/Deleter.hpp" // Deleter
-#	include "function.hpp" // PostLoadFunction
+#	include "../../util/class/Monostate.hpp"
+#	include "../../util/gcc/init_priority.hpp" // REG_INIT_PRIORITY
+#	include "../../util/memory/Deleter.hpp"
 
-namespace page
-{
-	namespace res
+namespace page { namespace res { namespace type {
+
+////////// PostLoader //////////////////////////////////////////////////////////
+
+	/**
+	 * A function object which is called after loading a type.
+	 */
+	struct PostLoader
 	{
-		// access
-		/**
-		 * Return the registered name of a given resource type.
-		 */
-		const std::string &GetRegisteredTypeName(const std::type_info &);
-		/**
-		 * Return the registered deleter of a given resource type.
-		 */
-		const util::Deleter &GetRegisteredTypeDeleter(const std::type_info &);
-		/**
-		 * Return the registered post-loader of a given resource type.
-		 */
-		const PostLoadFunction &GetRegisteredTypePostLoader(const std::type_info &);
+		typedef void result_type;
 
-		// registration
+		template <typename T>
+			PostLoader(const std::function<void (T &)> &);
+
+		template <typename T>
+			void operator ()(T &) const;
+
+		void operator ()(void *) const;
+
+		operator bool() const;
+
+		private:
+		class Referenceable;
+		std::function<void (Referenceable &)> f;
+	};
+
+////////// Record //////////////////////////////////////////////////////////////
+
+	/**
+	 * A data structure containing information about a type.
+	 */
+	struct Record
+	{
+		template <typename T>
+			Record(
+				const std::string &name,
+				const std::function<void (T &)> &postLoader = nullptr);
+
+		std::string   name;
+		PostLoader    postLoader;
+		util::Deleter deleter;
+	};
+
+////////// Registry ////////////////////////////////////////////////////////////
+
+	/**
+	 * A place for registering types.
+	 */
+	class Registry : public util::Monostate<Registry>
+	{
+		public:
 		/**
-		 * Register a resource type with the system.
+		 * Registers a type with a record.
 		 */
-		void RegisterType(const std::type_info &, const std::string &, const util::Deleter &, const PostLoadFunction &);
-	}
-}
+		template <typename T>
+			void Register(const Record &);
+
+		private:
+		/**
+		 * Registers a type with a record.
+		 */
+		void Register(const std::type_info &, const Record &);
+
+		public:
+		/**
+		 * Returns the record associated with a specified type.
+		 */
+		const Record &Query(const std::type_info &);
+
+		private:
+		std::unordered_map<std::type_index, Record> records;
+	};
+
+////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Registers a type with @c Registry.
+	 */
+#	define REGISTER_TYPE(T, name, postLoader) \
+		namespace \
+		{ \
+			struct Initializer() \
+			{ \
+				Initializer() \
+				{ \
+					GLOBAL(::page::res::type::Registry).Register<T>(name, postLoader); \
+				} \
+			} initializer __attribute__((init_priority(REG_INIT_PRIORITY))); \
+		}
+
+}}}
 
 #endif

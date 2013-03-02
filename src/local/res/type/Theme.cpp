@@ -29,7 +29,7 @@
  */
 
 #include "Image.hpp" // Image::size
-#include "register.hpp" // REGISTER_TYPE
+#include "Registry.hpp" // REGISTER_TYPE
 #include "Theme.hpp"
 
 namespace page

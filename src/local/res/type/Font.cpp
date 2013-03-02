@@ -38,7 +38,7 @@
 
 #include "../../util/functional/locale.hpp" // isspace_function
 #include "Font.hpp"
-#include "register.hpp" // REGISTER_TYPE
+#include "Registry.hpp" // REGISTER_TYPE
 
 namespace page
 {

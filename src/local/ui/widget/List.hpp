@@ -34,8 +34,9 @@
 #	include <string>
 #	include <vector>
 
+#	include <boost/signal.hpp>
+
 #	include "../../util/raii/copy_ptr.hpp"
-#	include "../../util/Signal.hpp"
 #	include "../Widget.hpp"
 
 namespace page

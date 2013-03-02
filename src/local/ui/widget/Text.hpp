@@ -33,9 +33,10 @@
 
 #	include <string>
 
+#	include <boost/signal.hpp>
+
 #	include "../../math/Color.hpp" // RgbaColor
 #	include "../../util/raii/copy_ptr.hpp"
-#	include "../../util/Signal.hpp"
 #	include "../Widget.hpp"
 
 namespace page
@@ -55,7 +56,7 @@ namespace page
 			void SetText(const std::string &);
 
 			// signals
-			util::Signal<void ()> clickSig;
+			boost::signal<void ()> clickSig;
 
 			private:
 			// metrics

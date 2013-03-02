@@ -31,7 +31,7 @@
 #include <algorithm> // sort
 
 #include "Animation.hpp"
-#include "register.hpp" // REGISTER_TYPE
+#include "Registry.hpp" // REGISTER_TYPE
 
 namespace page
 {

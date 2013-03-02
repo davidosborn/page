@@ -38,7 +38,7 @@
 #include "../../math/Aabb.hpp"
 #include "../../util/bit.hpp" // BitCopy
 #include "Image.hpp"
-#include "register.hpp" // REGISTER_TYPE
+#include "Registry.hpp" // REGISTER_TYPE
 
 namespace page
 {

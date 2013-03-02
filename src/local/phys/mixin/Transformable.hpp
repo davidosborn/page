@@ -31,7 +31,7 @@
 #ifndef    page_local_phys_mixin_Transformable_hpp
 #   define page_local_phys_mixin_Transformable_hpp
 
-#	include "../../util/Signal.hpp"
+#	include <boost/signal.hpp>
 
 namespace page
 {
@@ -48,7 +48,7 @@ namespace page
 			virtual void UpdateDelta() = 0;
 
 			// signals
-			util::Signal<void ()> dirtyTransformSig;
+			boost::signal<void ()> dirtyTransformSig;
 		};
 	}
 }

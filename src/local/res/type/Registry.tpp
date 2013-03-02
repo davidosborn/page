@@ -28,18 +28,43 @@
  * of this software.
  */
 
-#ifndef    page_local_util_buffer_hpp
-#   define page_local_util_buffer_hpp
+#include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
+#include "../../util/functional/cast.hpp" // reinterpret_cast_function
+#include "../../util/memory/Deleter.hpp" // {,Default}Deleter
 
-#	include <vector>
+namespace page { namespace res { namespace type {
 
-namespace page
-{
-	namespace util
+////////// PostLoader //////////////////////////////////////////////////////////
+
+	template <typename T>
+		PostLoader::PostLoader(const std::function<void (T &)> &f) :
+			f(std::bind(f, std::bind(
+				util::reinterpret_cast_function<T &, Referenceable &>(),
+				std::placeholders::_1))) {}
+
+	template <typename T>
+		void PostLoader::operator ()(T &t) const
 	{
-		typedef std::vector<char> Buffer;
-		Buffer &GetDirtyBuffer(); // write-only buffer
+		if (f)
+			f(reinterpret_cast<Referenceable &>(t));
 	}
-}
 
-#endif
+////////// Record //////////////////////////////////////////////////////////////
+
+	template <typename T>
+		void Record::Record(
+			const std::string &name,
+			const std::function<void (T &)> &postLoader) :
+				name(name),
+				postLoader(postLoader),
+				deleter(util::DefaultDeleter<T>()) {}
+
+////////// Registry ////////////////////////////////////////////////////////////
+
+	template <typename T>
+		void Registry::Register(const Record &record)
+	{
+		Register(util::GetIncompleteTypeInfo<T>(), record);
+	}
+
+}}}

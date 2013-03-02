@@ -36,7 +36,7 @@
 #	include <GL/gl.h> // GL{enum,uint}
 
 #	include "../../math/Vector.hpp"
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 #	include "FramebufferFlags.hpp"
 
 namespace page
@@ -47,7 +47,7 @@ namespace page
 		{
 			class DrawContext;
 
-			struct Framebuffer : util::NonCopyable
+			struct Framebuffer : util::Uncopyable<Framebuffer>
 			{
 				typedef FramebufferFlags Flags;
 

@@ -28,7 +28,7 @@
  * of this software.
  */
 
-#include "register.hpp" // REGISTER_TYPE
+#include "Registry.hpp" // REGISTER_TYPE
 #include "Scene.hpp"
 
 namespace page

@@ -33,7 +33,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../../math/algorithm.hpp" // RgbToYcbcr420
-#include "../../util/init_priority.hpp" // REG_INIT_PRIORITY
+#include "../../util/gcc/init_priority.hpp" // REG_INIT_PRIORITY
 #include "TheoraEncoder.hpp"
 
 namespace page

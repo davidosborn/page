@@ -35,7 +35,7 @@
 
 #	include <GL/gl.h> // GLenum
 
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -43,7 +43,7 @@ namespace page
 	{
 		namespace opengl
 		{
-			struct MatrixGuard : util::NonCopyable
+			struct MatrixGuard : util::Uncopyable<MatrixGuard>
 			{
 				// destroy
 				~MatrixGuard();

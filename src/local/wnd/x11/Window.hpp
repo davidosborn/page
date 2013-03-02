@@ -56,7 +56,7 @@ namespace page
 				::Window GetWindow() const;
 
 				// event signal
-				util::Signal<void (const XEvent &)> eventSig;
+				boost::signal<void (const XEvent &)> eventSig;
 
 				// environment state
 				math::Vector<2, unsigned> GetScreenSize() const;

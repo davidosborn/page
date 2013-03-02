@@ -35,7 +35,7 @@
 #	include <functional> // function
 #	include <memory> // shared_ptr
 
-#	include "../Optional.hpp"
+#	include <boost/optional.hpp>
 
 namespace page
 {

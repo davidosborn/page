@@ -1,7 +1,20 @@
-util/locale/Transcoder seems a bit ugly to me.
-Use my custom istream_iterators in the implementation of Serialize and Deserialize.
+Registries:
+- clip/encoder
+- inp/device
+- res/type
+- res/load
+- res/save
+- res/scan
+- res/source
+- script/machine
 
--------------
+Gotta move all the types in res/type into the res::type namespace.
+
+util/locale/init.cpp needs to be worked on.
+
+Move on!
+
+Write a unit test for character-encoding conversions.
 
 Integrate stblib (already in src/third-party) as a fallback for some things.
 

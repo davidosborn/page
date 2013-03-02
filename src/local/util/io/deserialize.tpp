@@ -36,10 +36,10 @@
 
 #include "../../err/Exception.hpp"
 #include "../algorithm/stdext.hpp" // copy_until
+#include "../container/tuple.hpp" // tuple_{,pop_}front
 #include "../iterator/range.hpp"
 #include "../iterator/repeat_iterator.hpp"
 #include "../locale/convert.hpp" // Convert
-#include "../tuple.hpp" // tuple_{,pop_}front
 #include "../type_traits/iterator.hpp" // output_iterator_value_type
 #include "skip.hpp" // Skip
 

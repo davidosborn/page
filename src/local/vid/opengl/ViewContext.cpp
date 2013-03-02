@@ -168,7 +168,7 @@ namespace page
 				if (*CVAR(opengl)::renderShader && res.HasShaderMaterial())
 				{
 					// perform shadow mapping
-					util::Optional<ShadowAttachment> shadowAttachment;
+					boost::optional<ShadowAttachment> shadowAttachment;
 					if (*CVAR(opengl)::renderShadow && res.HasShadow())
 					{
 						math::Vector<2, unsigned> shadowRenderTargetSize(
@@ -302,7 +302,7 @@ namespace page
 			}
 
 			// mesh rendering
-			void ViewContext::Draw(const phys::Form &form, ShaderType type, const util::Optional<ShadowAttachment> &shadow)
+			void ViewContext::Draw(const phys::Form &form, ShaderType type, const boost::optional<ShadowAttachment> &shadow)
 			{
 				using std::bind;
 				using namespace std::placeholders;
@@ -316,7 +316,7 @@ namespace page
 				Draw(form, bind(&ViewContext::PrepFixedMaterial, this, _1, _2, type),
 					*CVAR(opengl)::renderMultipass && type != zcullFixedType);
 			}
-			void ViewContext::Draw(const phys::Scene::View<phys::Form>::Type &forms, ShaderType type, const util::Optional<ShadowAttachment> &shadow)
+			void ViewContext::Draw(const phys::Scene::View<phys::Form>::Type &forms, ShaderType type, const boost::optional<ShadowAttachment> &shadow)
 			{
 				typedef phys::Scene::View<phys::Form>::Type Forms;
 				for (Forms::const_iterator iter(forms.begin()); iter != forms.end(); ++iter)
@@ -411,7 +411,7 @@ namespace page
 			}
 
 			// shader material setup
-			VertexFormat ViewContext::PrepShaderMaterial(const res::Material::Pass &pass, MatrixGuard &matrixGuard, ShaderType type, const util::Optional<ShadowAttachment> &shadow)
+			VertexFormat ViewContext::PrepShaderMaterial(const res::Material::Pass &pass, MatrixGuard &matrixGuard, ShaderType type, const boost::optional<ShadowAttachment> &shadow)
 			{
 				assert(haveArbMultitexture);
 				assert(!GetActiveTextureIndex());
@@ -424,7 +424,7 @@ namespace page
 					default: assert(!"invalid shader type");
 				}
 			}
-			VertexFormat ViewContext::PrepBasicShaderMaterial(const res::Material::Pass &pass, MatrixGuard &matrixGuard, const util::Optional<ShadowAttachment> &shadow)
+			VertexFormat ViewContext::PrepBasicShaderMaterial(const res::Material::Pass &pass, MatrixGuard &matrixGuard, const boost::optional<ShadowAttachment> &shadow)
 			{
 				VertexFormat vertexFormat;
 				vertexFormat.normal = true;
@@ -508,7 +508,7 @@ namespace page
 				}
 				return vertexFormat;
 			}
-			VertexFormat ViewContext::PrepEmissiveSpecularShaderMaterial(const res::Material::Pass &pass, MatrixGuard &matrixGuard, const util::Optional<ShadowAttachment> &shadow)
+			VertexFormat ViewContext::PrepEmissiveSpecularShaderMaterial(const res::Material::Pass &pass, MatrixGuard &matrixGuard, const boost::optional<ShadowAttachment> &shadow)
 			{
 				VertexFormat vertexFormat;
 				vertexFormat.normal = true;

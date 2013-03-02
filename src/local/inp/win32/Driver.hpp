@@ -76,7 +76,7 @@ namespace page
 				void OnMessage(UINT, WPARAM, LPARAM);
 				void OnMove(const math::Vector<2, int> &);
 				void OnSize(const math::Vector<2, unsigned> &);
-				util::ScopedConnection focusCon, messageCon, moveCon, sizeCon;
+				boost::signals::scoped_connection focusCon, messageCon, moveCon, sizeCon;
 
 				// window message handlers
 				void OnButtonDown(Button, WPARAM, LPARAM);

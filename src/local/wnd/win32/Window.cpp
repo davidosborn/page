@@ -37,8 +37,8 @@
 #include "../../err/Exception.hpp"
 #include "../../inp/Driver.hpp" // MakeDriver
 #include "../../res/type/image/win32.hpp" // MakeBitmap
-#include "../../util/locale/convert.hpp" // Convert
 #include "../../util/cpp.hpp" // STRINGIZE
+#include "../../util/locale/convert.hpp" // Convert
 #include "../../vid/Driver.hpp" // Driver::RenderImage, MakeDriver
 #include "../../win32/resource.h" // IDI_ICON
 #include "Window.hpp"

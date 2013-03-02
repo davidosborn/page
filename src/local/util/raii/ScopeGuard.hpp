@@ -33,7 +33,7 @@
 
 #	include <functional> // function
 
-#	include "../NonCopyable.hpp"
+#	include "../class/Uncopyable.hpp"
 
 namespace page
 {
@@ -44,7 +44,7 @@ namespace page
 		 *
 		 * @ingroup scope-guard
 		 */
-		struct ScopeGuard : NonCopyable
+		struct ScopeGuard : Uncopyable<ScopeGuard>
 		{
 			typedef std::function<void ()> Callback;
 

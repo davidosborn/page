@@ -34,8 +34,9 @@
 #	include <cstddef> // nullptr_t
 #	include <functional> // function
 
-#	include "../NonCopyable.hpp"
-#	include "../Optional.hpp"
+#	include <boost/optional.hpp>
+
+#	include "../class/Uncopyable.hpp"
 
 namespace page
 {
@@ -50,7 +51,7 @@ namespace page
 		 *
 		 * @ingroup smart-pointer
 		 */
-		template <typename T> struct unique_handle : NonCopyable
+		template <typename T> struct unique_handle : Uncopyable<unique_handle<T>>
 		{
 			typedef T handle_type;
 			typedef std::function<void (handle_type)> deleter_type;
@@ -90,7 +91,7 @@ namespace page
 			private:
 			class DefaultDeleter;
 
-			Optional<handle_type> handle;
+			boost::optional<handle_type> handle;
 			deleter_type deleter;
 		};
 

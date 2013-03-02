@@ -33,7 +33,8 @@
 
 #	include <string>
 
-#	include "../../util/Signal.hpp"
+#	include <boost/signal.hpp>
+
 #	include "../Widget.hpp"
 
 namespace page
@@ -46,8 +47,8 @@ namespace page
 			Edit *Clone() const;
 
 			// signals
-			util::Signal<void ()> changeSig;
-			util::Signal<void ()> submitSig;
+			boost::signal<void ()> changeSig;
+			boost::signal<void ()> submitSig;
 
 			private:
 			// metrics

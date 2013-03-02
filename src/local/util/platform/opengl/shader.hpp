@@ -26,88 +26,25 @@
  * This software is provided "as is", without any express or implied warranty.
  * In no event will the authors be liable for any damages arising out of the use
  * of this software.
- *
- * @file
- *
- * Inspired by the boost/signals library.
  */
 
-#include <cassert>
+#ifndef    page_local_util_platform_opengl_shader_hpp
+#   define page_local_util_platform_opengl_shader_hpp
 
-#include "Signal.hpp"
+#	include <string>
+
+#	include <GL/gl.h> // GLenum
 
 namespace page
 {
 	namespace util
 	{
-		// connection
-		// construct
-		Connection::Connection(const Handle &handle) : handle(handle)
+		namespace opengl
 		{
-			assert(handle.expired() || *handle.lock());
-		}
-
-		// modifiers
-		void Connection::Disconnect()
-		{
-			if (*this)
-			{
-				assert(*handle.lock());
-				(*handle.lock())();
-			}
-		}
-		void Connection::Swap(Connection &other)
-		{
-			using util::swap;
-			swap(handle, other.handle);
-		}
-
-		// validity
-		Connection::operator bool() const
-		{
-			return !handle.expired();
-		}
-
-		// scoped connection
-		// construct
-		ScopedConnection::ScopedConnection(const Connection &con) : con(con) {}
-		ScopedConnection::~ScopedConnection()
-		{
-			con.Disconnect();
-		}
-
-		// modifiers
-		Connection ScopedConnection::Release()
-		{
-			Connection result;
-			using util::swap;
-			swap(con, result);
-			return result;
-		}
-		void ScopedConnection::Reset()
-		{
-			con.Disconnect();
-			con = Connection();
-		}
-		void ScopedConnection::Reset(const Connection &con)
-		{
-			this->con.Disconnect();
-			this->con = con;
-		}
-		void ScopedConnection::Swap(ScopedConnection &other)
-		{
-			using util::swap;
-			swap(con, other.con);
-		}
-
-		// specialized algorithms
-		void swap(Connection &a, Connection &b)
-		{
-			a.Swap(b);
-		}
-		void swap(ScopedConnection &a, ScopedConnection &b)
-		{
-			a.Swap(b);
+			// uniform types
+			std::string GetUniformTypeName(GLenum);
 		}
 	}
 }
+
+#endif

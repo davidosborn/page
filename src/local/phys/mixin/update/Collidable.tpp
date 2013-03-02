@@ -34,10 +34,11 @@
 #include <utility> // pair
 #include <vector>
 
+#include <boost/optional.hpp>
+
 #include "../../../math/intersect.hpp" // CapsuleSegmentIntersect, SweptCircleSegmentIntersectWeightTangent
 #include "../../../util/iterator/chain_iterator.hpp"
 #include "../../../util/iterator/range.hpp"
-#include "../../../util/Optional.hpp"
 #include "../Collidable.hpp"
 
 namespace page
@@ -57,7 +58,7 @@ namespace page
 
 				Collidable *collidable;
 				math::Vector<2> position, force, direction;
-				util::Optional<math::Vector<2>> constraint;
+				boost::optional<math::Vector<2>> constraint;
 				res::TrackCrossings crossings;
 				bool dirty;
 			};

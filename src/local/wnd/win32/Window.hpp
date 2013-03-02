@@ -54,7 +54,7 @@ namespace page
 				HWND GetHwnd() const;
 
 				// message signal
-				util::Signal<void (UINT, WPARAM, LPARAM)> messageSig;
+				boost::signal<void (UINT, WPARAM, LPARAM)> messageSig;
 
 				// environment state
 				math::Vector<2, unsigned> GetScreenSize() const;

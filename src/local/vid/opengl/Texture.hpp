@@ -35,7 +35,7 @@
 
 #	include "../../math/fwd.hpp" // RgbaColor
 #	include "../../math/Vector.hpp"
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 #	include "TextureFlags.hpp"
 #	include "TextureFormat.hpp"
 
@@ -47,7 +47,7 @@ namespace page
 	{
 		namespace opengl
 		{
-			struct Texture : util::NonCopyable
+			struct Texture : util::Uncopyable<Texture>
 			{
 				typedef TextureFlags  Flags;
 				typedef TextureFormat Format;

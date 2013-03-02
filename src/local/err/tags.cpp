@@ -42,6 +42,7 @@ namespace page
 		template <> const char *Tag<TagId::accessDenied> ::name = "access denied";
 		template <> const char *Tag<TagId::alloc>        ::name = "allocation";
 		template <> const char *Tag<TagId::catastrophic> ::name = "catastrophic";
+		template <> const char *Tag<TagId::conflict>     ::name = "conflict";
 		template <> const char *Tag<TagId::conversion>   ::name = "conversion";
 		template <> const char *Tag<TagId::deliberate>   ::name = "deliberate";
 		template <> const char *Tag<TagId::end>          ::name = "end";

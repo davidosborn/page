@@ -69,12 +69,14 @@ namespace page
 				// connect signals
 				using std::bind;
 				using namespace std::placeholders;
-				focusCon.Reset(wnd.focusSig.Connect(bind(&Driver::OnFocus, this, _1)));
-				messageCon.Reset(wnd.messageSig.Connect(bind(&Driver::OnMessage, this, _1, _2, _3)));
-				moveCon.Reset(wnd.moveSig.Connect(bind(&Driver::OnMove, this, _1)));
-				sizeCon.Reset(wnd.sizeSig.Connect(bind(&Driver::OnSize, this, _1)));
+				focusCon   = wnd.focusSig  .connect(bind(&Driver::OnFocus,   this, _1));
+				messageCon = wnd.messageSig.connect(bind(&Driver::OnMessage, this, _1, _2, _3));
+				moveCon    = wnd.moveSig   .connect(bind(&Driver::OnMove,    this, _1));
+				sizeCon    = wnd.sizeSig   .connect(bind(&Driver::OnSize,    this, _1));
+
 				// register MSH_MOUSEWHEEL message for MSWheel module
 				mshMousewheel = RegisterWindowMessage(TEXT("MSWHEEL_ROLLMSG"));
+
 				// initialize cursor
 				UpdateCursor();
 			}

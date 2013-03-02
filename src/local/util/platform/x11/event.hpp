@@ -28,42 +28,23 @@
  * of this software.
  */
 
-#include <utility> // forward
+#ifndef    page_local_util_platform_x11_event_hpp
+#   define page_local_util_platform_x11_event_hpp
 
-#include "../err/Exception.hpp"
+#	include <string>
+
+#	include <X11/X.h> // XEvent
 
 namespace page
 {
 	namespace util
 	{
-		/*-------------+
-		| registration |
-		+-------------*/
-
-		template <typename T, typename... Args>
-			void MonoFactory<T, Args...>::Register(const Function &function)
+		namespace x11
 		{
-			if (this->function)
-				BOOST_THROW_EXCEPTION(err::Exception("factory function already registered"));
-			this->function = function;
-		}
-
-		template <typename T, typename... Args> template <typename U>
-			void MonoFactory<T, Args...>::Register()
-		{
-			Register([](Args &&... args) { return std::unique_ptr<T>(new U(std::forward<Args>(args)...)); });
-		}
-
-		/*-----------+
-		| production |
-		+-----------*/
-
-		template <typename T, typename... Args>
-			std::unique_ptr<T> MonoFactory<T, Args...>::Make(Args &&... args) const
-		{
-			if (!function)
-				THROW((err::Exception<err::UtilModuleTag, err::FactoryTag, err::NotAvailableTag>("no factory function registered")));
-			return function(std::forward<Args>(args)...);
+			std::string GetEventInfo(const XEvent &);
+			std::string GetEventTypeName(int);
 		}
 	}
 }
+
+#endif

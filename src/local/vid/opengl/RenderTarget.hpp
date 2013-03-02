@@ -33,7 +33,7 @@
 
 #	include <GL/gl.h> // GL{enum,uint}
 
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -44,7 +44,7 @@ namespace page
 			class DrawContext;
 			class Framebuffer;
 
-			struct RenderTarget : util::NonCopyable
+			struct RenderTarget : util::Uncopyable<RenderTarget>
 			{
 				// construct
 				RenderTarget(const Framebuffer &, GLenum);

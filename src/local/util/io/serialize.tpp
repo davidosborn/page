@@ -34,8 +34,8 @@
 #include <utility> // forward, move
 
 #include "../../err/Exception.hpp"
+#include "../container/tuple.hpp" // tuple_{,pop_}front
 #include "../locale/convert.hpp" // Convert
-#include "../tuple.hpp" // tuple_{,pop_}front
 #include "separated_ostream_iterator.hpp"
 
 namespace page
@@ -122,7 +122,7 @@ namespace page
 				Separator separator,
 				ENABLE_IF_IMPL((is_iterator<InputIterator>::value)))
 		{
-			std::copy(first, last, 
+			std::copy(first, last,
 				separated_ostream_iterator<
 					typename std::iterator_traits<InputIterator>::value_type
 					>(os, separator));

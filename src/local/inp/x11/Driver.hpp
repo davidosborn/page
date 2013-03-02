@@ -62,7 +62,7 @@ namespace page
 
 				// window signal handlers
 				void OnEvent(const XEvent &);
-				util::ScopedConnection eventCon;
+				boost::signals::scoped_connection eventCon;
 
 				// key state
 				bool IsKeyDown(KeySym, const char keys[32]) const;

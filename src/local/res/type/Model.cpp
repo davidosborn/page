@@ -35,7 +35,7 @@
 #include "../../log/manip.hpp" // Warning
 #include "../../util/functional/member.hpp" // make_member_of
 #include "Model.hpp"
-#include "register.hpp" // REGISTER_TYPE
+#include "Registry.hpp" // REGISTER_TYPE
 
 namespace page
 {

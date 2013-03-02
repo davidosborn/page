@@ -33,7 +33,7 @@
 #include "../../../math/Euler.hpp"
 #include "../../../math/Quat.hpp"
 #include "../../../math/Vector.hpp"
-#include "../../../util/lua.hpp" // Get{Euler,{,Horizontal}Vector}, Push
+#include "../../../util/platform/lua.hpp" // Get{Euler,{,Horizontal}Vector}, Push
 #include "Class.hpp" // Class::{GetInstance,RegisterProperties}
 #include "Entity.hpp"
 

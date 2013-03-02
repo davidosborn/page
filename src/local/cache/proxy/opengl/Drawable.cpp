@@ -47,9 +47,9 @@ namespace page
 
 			namespace
 			{
-				void Delete(const vid::opengl::Drawable *drawable, util::Connection &con)
+				void Delete(const vid::opengl::Drawable *drawable, boost::signals::connection &con)
 				{
-					con.Disconnect();
+					con.disconnect();
 					delete drawable;
 				}
 
@@ -119,9 +119,9 @@ namespace page
 					if (dynamic)
 						drawable->Update(*Skin(part.GetMesh(), part.GetForm()));
 					// bind dirty signal handler
-					util::ScopedConnection con(part.GetForm().dirtyPoseSig.Connect(GetInvalidate()));
+					boost::signals::scoped_connection con(part.GetForm().dirtyPoseSig.connect(GetInvalidate()));
 					return Instance(drawable.release(),
-						std::bind(Delete, std::placeholders::_1, con.Release()));
+						std::bind(Delete, std::placeholders::_1, con.release()));
 				}
 				return Instance(vid::opengl::MakeDrawable(**mesh));
 			}

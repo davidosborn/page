@@ -37,7 +37,7 @@
 #	include <GL/gl.h> // GL{enum,uint}
 
 #	include "../../math/fwd.hpp" // Vector
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 #	include "Framebuffer.hpp"
 #	include "FramebufferFlags.hpp"
 
@@ -50,7 +50,7 @@ namespace page
 			class DrawContext;
 			class RenderTarget;
 
-			struct RenderTargetPool : util::NonCopyable
+			struct RenderTargetPool : util::Uncopyable<RenderTargetPool>
 			{
 				typedef FramebufferFlags Flags;
 				typedef std::shared_ptr<const RenderTarget> Pooled;

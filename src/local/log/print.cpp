@@ -30,11 +30,9 @@
 
 #include <ctime> // localtime, time
 #include <iostream> // cerr, clog, cout
-#include <locale> // locale, use_facet, time_put
+#include <locale> // use_facet, time_put
 
 #include "../cfg/vars.hpp"
-#include "../util/ios.hpp" // InitIos
-#include "../util/locale.hpp" // InitLocale
 #include "../util/cpp.hpp" // STRINGIZE
 #include "Indenter.hpp"
 
@@ -44,12 +42,6 @@ namespace page
 	{
 		void PrintInit()
 		{
-			// initialize default locale and stream state
-			/*util::InitLocale();
-			std::cout.imbue(std::locale()); util::InitIos(std::cout);
-			std::cerr.imbue(std::locale()); util::InitIos(std::cerr);
-			std::clog.imbue(std::locale()); util::InitIos(std::clog);*/
-
 			// print current date/time
 			std::time_t time = std::time(0);
 			std::cout << "execution initiated on ";

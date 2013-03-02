@@ -82,8 +82,8 @@ namespace page
 				wnd.reset(wnd::MakeWindow(STRINGIZE(NAME)));
 				// bind signal handlers
 				using namespace std::placeholders;
-				wnd->exitSig.Connect(std::bind(&Game::OnExit, this));
-				wnd->focusSig.Connect(std::bind(&Game::OnFocus, this, _1));
+				wnd->exitSig.connect(std::bind(&Game::OnExit, this));
+				wnd->focusSig.connect(std::bind(&Game::OnFocus, this, _1));
 			}
 			std::cout << "initializing video driver" << std::endl;
 			{
@@ -101,7 +101,7 @@ namespace page
 				inp::Driver &driver(wnd->GetInputDriver());
 				// bind signal handlers
 				using namespace std::placeholders;
-				driver.keySig.Connect(std::bind(&Game::OnKey, this, _1));
+				driver.keySig.connect(std::bind(&Game::OnKey, this, _1));
 			}
 			std::cout << "initializing script driver" << std::endl;
 			{

@@ -39,6 +39,7 @@
 #include <sstream> // istringstream
 #include <string>
 
+#include "../gcc/init_priority.hpp"
 #include "../math/float.hpp" // {,Is}{Inf,Nan}
 #include "ios.hpp" // IosBaseFmtSaver
 
@@ -325,6 +326,20 @@ namespace page
 		void InitLocale()
 		{
 			std::locale::global(std::locale(std::locale(std::locale(), new num_get), new num_put));
+		}
+
+		namespace
+		{
+			struct Initializer
+			{
+				Initializer()
+				{
+					/*util::InitLocale();
+					std::cout.imbue(std::locale()); util::InitIos(std::cout);
+					std::cerr.imbue(std::locale()); util::InitIos(std::cerr);
+					std::clog.imbue(std::locale()); util::InitIos(std::clog);*/
+				}
+			} initializer __attribute__((init_priority(ERR_INIT_PRIORITY)));
 		}
 	}
 }

@@ -132,15 +132,15 @@ namespace page
 				using std::bind;
 				using namespace std::placeholders;
 				// connect cursor signals
-				downSig.Connect(bind(&Driver::OnDown, this, _1, _2, _3));
-				clickSig.Connect(bind(&Driver::OnClick, this, _1, _2, _3));
-				dragSig.Connect(bind(&Driver::OnDrag, this, _1, _2, _3));
-				dropSig.Connect(bind(&Driver::OnDrop, this, _1, _2, _3, _4));
-				cancelDragSig.Connect(bind(&Driver::OnCancelDrag, this, _1, _2, _3, _4));
-				scrollSig.Connect(bind(&Driver::OnScroll, this, _1, _2));
+				downSig.connect(bind(&Driver::OnDown, this, _1, _2, _3));
+				clickSig.connect(bind(&Driver::OnClick, this, _1, _2, _3));
+				dragSig.connect(bind(&Driver::OnDrag, this, _1, _2, _3));
+				dropSig.connect(bind(&Driver::OnDrop, this, _1, _2, _3, _4));
+				cancelDragSig.connect(bind(&Driver::OnCancelDrag, this, _1, _2, _3, _4));
+				scrollSig.connect(bind(&Driver::OnScroll, this, _1, _2));
 				// connect key signals
-				charSig.Connect(bind(&Driver::OnChar, this, _1));
-				keySig.Connect(bind(&Driver::OnKey, this, _1));
+				charSig.connect(bind(&Driver::OnChar, this, _1));
+				keySig.connect(bind(&Driver::OnKey, this, _1));
 			}
 			// initialize devices
 			devices = MakeDevices(wnd);

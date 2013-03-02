@@ -31,14 +31,14 @@
 #ifndef    page_local_inp_Device_hpp
 #   define page_local_inp_Device_hpp
 
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class/Uncopyable.hpp"
 #	include "State.hpp"
 
 namespace page
 {
 	namespace inp
 	{
-		struct Device : util::NonCopyable
+		struct Device : util::Uncopyable<Device>
 		{
 			// destroy
 			virtual ~Device();

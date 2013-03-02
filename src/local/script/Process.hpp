@@ -31,13 +31,13 @@
 #ifndef    page_local_script_Process_hpp
 #   define page_local_script_Process_hpp
 
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class/Uncopyable.hpp"
 
 namespace page
 {
 	namespace script
 	{
-		struct Process : util::NonCopyable
+		struct Process : util::Uncopyable<Process>
 		{
 			// destroy
 			virtual ~Process();

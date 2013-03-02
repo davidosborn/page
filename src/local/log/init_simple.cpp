@@ -31,7 +31,7 @@
 #include <iostream> // c{err,log,out}, ios_base::Init, streambuf
 #include <memory> // shared_ptr
 
-#include "../util/init_priority.hpp" // LOG_INIT_PRIORITY
+#include "../util/gcc/init_priority.hpp" // LOG_INIT_PRIORITY
 #include "sink/ConsoleSink.hpp"
 #include "stream/BranchableStream.hpp"
 

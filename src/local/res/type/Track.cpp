@@ -41,7 +41,7 @@
 #include "../../math/intersect.hpp" // ClosestPointOnLine, LineIntersectSecondWeight, PointInTriangle{,Edges}
 #include "../../util/functional/member.hpp" // make_member_of
 #include "../../util/iterator/member_iterator.hpp"
-#include "register.hpp" // REGISTER_TYPE
+#include "Registry.hpp" // REGISTER_TYPE
 #include "Track.hpp"
 
 namespace page

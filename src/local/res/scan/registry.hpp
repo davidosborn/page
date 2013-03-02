@@ -33,8 +33,8 @@
 
 #	include <string>
 
-#	include "function.hpp" // ScanFunction
 #	include "callback.hpp" // ScanCallback
+#	include "function.hpp" // ScanFunction
 
 namespace page
 {

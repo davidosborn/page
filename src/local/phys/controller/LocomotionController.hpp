@@ -35,10 +35,11 @@
 #ifndef    page_local_phys_controller_LocomotionController_hpp
 #   define page_local_phys_controller_LocomotionController_hpp
 
+#	include <boost/optional.hpp>
+
 #	include "../../math/Euler.hpp"
 #	include "../../math/Quat.hpp"
 #	include "../../math/Vector.hpp"
-#	include "../../util/Optional.hpp"
 #	include "../Controller.hpp"
 
 namespace page
@@ -79,8 +80,8 @@ namespace page
 			const attrib::PositionOrientation &controlled;
 
 			// target
-			util::Optional<math::Vector<3>> position;
-			util::Optional<math::Quat<>> orientation;
+			boost::optional<math::Vector<3>> position;
+			boost::optional<math::Quat<>> orientation;
 
 			// force
 			math::Vector<3> velocity, translation;

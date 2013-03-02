@@ -33,7 +33,7 @@
 
 #	include <Python.h> // PyObject
 
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -41,7 +41,7 @@ namespace page
 	{
 		namespace python
 		{
-			struct ScopedRef : util::NonCopyable
+			struct ScopedRef : util::Uncopyable<ScopedRef>
 			{
 				// construct/destroy
 				ScopedRef(PyObject * = 0);

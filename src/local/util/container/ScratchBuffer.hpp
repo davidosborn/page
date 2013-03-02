@@ -28,31 +28,36 @@
  * of this software.
  */
 
-#ifndef    page_local_util_lua_hpp
-#   define page_local_util_lua_hpp
+#ifndef    page_local_util_container_ScratchBuffer_hpp
+#   define page_local_util_container_ScratchBuffer_hpp
 
-#	include <utility>
+#	include <vector>
 
-#	include <lua.hpp>
-
-#	include "../math/fwd.hpp" // Euler, Vector
+#	include "../class/Monostate.hpp"
 
 namespace page
 {
 	namespace util
 	{
-		namespace lua
+		/**
+		 * A static-size temporary-data container.
+		 */
+		class ScratchBuffer :
+			public Monostate<ScratchBuffer>
 		{
-			// extraction
-			math::Euler<> GetEuler(lua_State *);
-			std::pair<math::Vector<3>, bool> GetHorizontalVector(lua_State *);
-			math::Vector<3> GetVector(lua_State *);
+			public:
+			ScratchBuffer();
 
-			// insertion
-			void Push(lua_State *, const math::Euler<> &);
-			void Push(lua_State *, const math::Vector<2> &);
-			void Push(lua_State *, const math::Vector<3> &);
-		}
+			// capacity
+			size_type size() const noexcept;
+
+			// data access
+			value_type *data() noexcept;
+			const value_type *data() const noexcept;
+
+			private:
+			std::vector<char> v;
+		};
 	}
 }
 

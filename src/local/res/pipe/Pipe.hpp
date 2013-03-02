@@ -51,7 +51,7 @@ namespace page
 		 * internet or from within .zip files, and for transforming the data
 		 * while in transit.
 		 */
-		struct Pipe : util::NonCopyable
+		struct Pipe : util::Uncopyable<Pipe>
 		{
 			friend class detail::LockStream;
 

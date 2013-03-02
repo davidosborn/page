@@ -157,8 +157,8 @@ namespace page
 				// initialize signal handlers
 				using std::bind;
 				using namespace std::placeholders;
-				focusCon.Reset(GetWindow().focusSig.Connect(bind(&Driver::OnFocus, this, _1)));
-				sizeCon.Reset(GetWindow().sizeSig.Connect(bind(&Driver::OnSize, this, _1)));
+				focusCon = GetWindow().focusSig.connect(bind(&Driver::OnFocus, this, _1));
+				sizeCon = GetWindow().sizeSig.connect(bind(&Driver::OnSize, this, _1));
 				// initialize profile
 				InitProfile();
 				// initialize resources
@@ -169,8 +169,8 @@ namespace page
 			void Driver::Deinit()
 			{
 				res.reset();
-				sizeCon.Reset();
-				focusCon.Reset();
+				sizeCon.disconnect();
+				focusCon.disconnect();
 			}
 
 			// draw context factory function

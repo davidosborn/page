@@ -36,7 +36,7 @@
 #include "../sys/file.hpp" // AbsPath, NormPath
 #include "save/function.hpp" // SaveFunction
 #include "save/registry.hpp" // GetRegisteredSaver
-#include "type/registry.hpp" // GetRegisteredTypeName
+#include "type/Registry.hpp"
 
 namespace page
 {
@@ -54,7 +54,7 @@ namespace page
 				THROW((err::Exception<err::ResModuleTag, err::FileAccessTag>() <<
 					boost::errinfo_file_name(normPath)))
 			CallWithPointer(save, res, fs);
-			std::cout << GetRegisteredTypeName(id) << " saved as " << normPath << std::endl;
+			std::cout << GLOBAL(type::Registry).Query(id).name << " saved as " << normPath << std::endl;
 		}
 	}
 }

@@ -28,70 +28,37 @@
  * of this software.
  */
 
-#include <cassert>
-#include <string>
-#include <typeinfo> // type_info::name
-#include <unordered_map>
+#include "../../err/Exception.hpp"
+#include "Registry.hpp"
 
-#include "../../util/memory/Deleter.hpp" // Deleter
-#include "function.hpp" // PostLoadFunction
+namespace page { namespace res { namespace type {
 
-namespace page
-{
-	namespace res
+////////// PostLoader //////////////////////////////////////////////////////////
+
+	void PostLoader::operator ()(void *p) const;
 	{
-		namespace
-		{
-			struct Registry
-			{
-				struct Type
-				{
-					std::string name;
-					util::Deleter deleter;
-					PostLoadFunction postLoad;
-				};
-				typedef std::unordered_map<std::string, Type> Types;
-				Types types;
-			};
-			inline Registry &GetRegistry()
-			{
-				static Registry reg;
-				return reg;
-			}
-		}
-
-		// access
-		const std::string &GetRegisteredTypeName(const std::type_info &id)
-		{
-			const Registry &reg(GetRegistry());
-			Registry::Types::const_iterator iter(reg.types.find(id.name()));
-			assert(iter != reg.types.end());
-			const Registry::Type &type(iter->second);
-			return type.name;
-		}
-		const util::Deleter &GetRegisteredTypeDeleter(const std::type_info &id)
-		{
-			const Registry &reg(GetRegistry());
-			Registry::Types::const_iterator iter(reg.types.find(id.name()));
-			assert(iter != reg.types.end());
-			const Registry::Type &type(iter->second);
-			return type.deleter;
-		}
-		const PostLoadFunction &GetRegisteredTypePostLoader(const std::type_info &id)
-		{
-			const Registry &reg(GetRegistry());
-			Registry::Types::const_iterator iter(reg.types.find(id.name()));
-			assert(iter != reg.types.end());
-			const Registry::Type &type(iter->second);
-			return type.postLoad;
-		}
-
-		// registration
-		void RegisterType(const std::type_info &id, const std::string &name, const util::Deleter &deleter, const PostLoadFunction &postLoad)
-		{
-			Registry &reg(GetRegistry());
-			Registry::Type type = {name, deleter, postLoad};
-			reg.types.insert(std::make_pair(id.name(), type));
-		}
+		if (f)
+			f(*static_cast<Referenceable *>(p));
 	}
-}
+
+	PostLoader::operator bool() const
+	{
+		return f;
+	}
+
+////////// Registry ////////////////////////////////////////////////////////////
+
+	void Registry::Register(const std::type_info &key, const Record &record)
+	{
+		if (!records.insert({{key, record}}).second)
+			THROW((err::Exception<err::ResModuleTag, err::KeyCollisionTag>("type already registered")))
+	}
+
+	const Record &Registry::Query(const std::type_info &key)
+	{
+		auto iter(records.find(key));
+		if (iter != records.end())
+			return iter->second;
+	}
+
+}}}

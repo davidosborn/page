@@ -28,15 +28,31 @@
  * of this software.
  */
 
-#ifndef    page_local_util_locale_hpp
-#   define page_local_util_locale_hpp
+#ifndef    page_local_util_platform_lua_hpp
+#   define page_local_util_platform_lua_hpp
+
+#	include <utility>
+
+#	include <lua.hpp>
+
+#	include "../../math/fwd.hpp" // Euler, Vector
 
 namespace page
 {
 	namespace util
 	{
-		// locale initialization
-		void InitLocale();
+		namespace lua
+		{
+			// extraction
+			math::Euler<> GetEuler(lua_State *);
+			std::pair<math::Vector<3>, bool> GetHorizontalVector(lua_State *);
+			math::Vector<3> GetVector(lua_State *);
+
+			// insertion
+			void Push(lua_State *, const math::Euler<> &);
+			void Push(lua_State *, const math::Vector<2> &);
+			void Push(lua_State *, const math::Vector<3> &);
+		}
 	}
 }
 

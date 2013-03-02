@@ -34,7 +34,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../../sys/file.hpp" // FileSize
-#include "../../util/buffer.hpp" // GetDirtyBuffer
+#include "../../util/container/ScratchBuffer.hpp"
 #include "../adapt/zip.hpp" // ZipError
 #include "../Stream.hpp"
 #include "ZipPipe.hpp"
@@ -116,8 +116,8 @@ namespace page
 				else n -= pos;
 				while (n)
 				{
-					unsigned n2 = std::min(n, util::GetDirtyBuffer().size());
-					int result = zip_fread(file, &*util::GetDirtyBuffer().begin(), n2);
+					unsigned n2 = std::min(n, GLOBAL(util::ScratchBuffer).size());
+					int result = zip_fread(file, GLOBAL(util::ScratchBuffer).data(), n2);
 					if (result == -1)
 						THROW((err::Exception<err::ResModuleTag, err::ZipPlatformTag, err::StreamReadTag>()))
 					pos += result;

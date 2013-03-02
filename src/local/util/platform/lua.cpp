@@ -32,8 +32,8 @@
 
 #include <lua.hpp>
 
-#include "../math/Euler.hpp"
-#include "../math/Vector.hpp"
+#include "../../math/Euler.hpp"
+#include "../../math/Vector.hpp"
 
 namespace page
 {

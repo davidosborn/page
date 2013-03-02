@@ -31,7 +31,8 @@
 #ifndef    page_local_ui_widget_Button_hpp
 #   define page_local_ui_widget_Button_hpp
 
-#	include "../../util/Signal.hpp"
+#	include <boost/signal.hpp>
+
 #	include "../Widget.hpp"
 
 namespace page
@@ -44,7 +45,7 @@ namespace page
 			Button *Clone() const;
 
 			// signals
-			util::Signal<void ()> clickSig;
+			boost::signal<void ()> clickSig;
 
 			private:
 			// metrics

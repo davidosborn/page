@@ -39,7 +39,7 @@
 #include "../../log/manip.hpp" // Warning
 #include "../../util/io/deserialize.hpp" // Deserialize
 #include "../../util/path/extension.hpp" // {Get,With}Extension
-#include "../type/registry.hpp" // GetRegisteredTypeName
+#include "../type/Registry.hpp"
 #include "function.hpp" // SaveFunction
 
 namespace page
@@ -93,7 +93,7 @@ namespace page
 								saver.exts.begin(),
 								saver.exts.end()));
 					}
-					std::clog << log::Warning << "unknown " << GetRegisteredTypeName(id) << " format: " << fmt << std::endl;
+					std::clog << log::Warning << "unknown " << GLOBAL(type::Registry).Query(id).name << " format: " << fmt << std::endl;
 				}
 				// check extension
 				std::string ext(util::GetExtension(path));
@@ -113,7 +113,7 @@ namespace page
 						type.defaultSaver.exts.begin(),
 						type.defaultSaver.exts.end()));
 			}
-			THROW((err::Exception<err::ResModuleTag, err::NotAvailableTag>("no " + GetRegisteredTypeName(id) + " savers available")))
+			THROW((err::Exception<err::ResModuleTag, err::NotAvailableTag>("no " + GLOBAL(type::Registry).Query(id).name + " savers available")))
 		}
 
 		// registration

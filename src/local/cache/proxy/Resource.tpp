@@ -29,7 +29,7 @@
  */
 
 #include "../../res/Index.hpp" // GetIndex, Index::Load
-#include "../../res/type/registry.hpp" // GetRegisteredTypeName
+#include "../../res/type/Registry.hpp"
 #include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
 
 namespace page
@@ -61,7 +61,7 @@ namespace page
 		template <typename T>
 			std::string Resource<T>::GetType() const
 		{
-			return res::GetRegisteredTypeName(util::GetIncompleteTypeInfo<T>());
+			return GLOBAL(res::type::Registry).Query(util::GetIncompleteTypeInfo<T>()).name;
 		}
 
 		template <typename T>

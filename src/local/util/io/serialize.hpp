@@ -38,8 +38,8 @@
 #	include <type_traits> // is_base_of, remove_reference
 #	include <utility> // declval, pair
 
-#	include "../locale/CharEncoding.hpp"
 #	include "../cpp.hpp" // COMMA
+#	include "../locale/CharEncoding.hpp"
 #	include "../type_traits/container.hpp" // is_range
 #	include "../type_traits/iterator.hpp" // is_iterator
 #	include "../type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT, ENABLE_IF

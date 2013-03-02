@@ -35,7 +35,7 @@
 #	include <memory> // {unique,shared}_ptr
 
 #	include "../../math/fwd.hpp" // Vector
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -50,7 +50,7 @@ namespace page
 			class ShadowResources;
 			class Texture;
 
-			struct Resources : util::NonCopyable
+			struct Resources : util::Uncopyable<Resources>
 			{
 				// construct
 				explicit Resources(const math::Vector<2, unsigned> &size);

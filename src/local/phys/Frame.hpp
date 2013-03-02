@@ -34,10 +34,11 @@
 #	include <string>
 #	include <unordered_map>
 
+#	include <boost/optional.hpp>
+
 #	include "../math/Color.hpp" // RgbColor
 #	include "../math/Quat.hpp"
 #	include "../math/Vector.hpp"
-#	include "../util/Optional.hpp"
 
 namespace page
 {
@@ -47,7 +48,7 @@ namespace page
 		{
 			template <typename T> struct Channel
 			{
-				typedef util::Optional<T> Type;
+				typedef boost::optional<T> Type;
 			};
 			template <typename T> struct Range
 			{

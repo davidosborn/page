@@ -52,7 +52,7 @@ namespace page
 			{
 				using std::bind;
 				using namespace std::placeholders;
-				eventCon.Reset(wnd.eventSig.Connect(bind(&Driver::OnEvent, this, _1)));
+				eventCon = wnd.eventSig.connect(bind(&Driver::OnEvent, this, _1));
 			}
 
 			// window access

@@ -48,10 +48,10 @@ namespace page
 
 		namespace
 		{
-			void Delete(const math::Aabb<3> *aabb, util::Connection &poseCon, util::Connection &transformCon)
+			void Delete(const math::Aabb<3> *aabb, boost::signals::connection &poseCon, boost::signals::connection &transformCon)
 			{
-				poseCon.Disconnect();
-				transformCon.Disconnect();
+				poseCon.disconnect();
+				transformCon.disconnect();
 				delete aabb;
 			}
 		}
@@ -103,15 +103,15 @@ namespace page
 		{
 			phys::attrib::Pose &pose(util::ReferenceFromId<phys::attrib::Pose>(id));
 			const phys::Bounds &bounds(**this->bounds);
-			util::ScopedConnection
+			boost::signals::scoped_connection
 				poseCon(
 					pose.IsPosed() && !bounds.bones.empty() ?
-					pose.dirtyPoseSig.Connect(GetInvalidate()) :
-					util::Connection()),
-				transformCon(pose.dirtyTransformSig.Connect(GetInvalidate()));
+					pose.dirtyPoseSig.connect(GetInvalidate()) :
+					boost::signals::connection()),
+				transformCon(pose.dirtyTransformSig.connect(GetInvalidate()));
 			return Instance(new math::Aabb<3>(MakeAabb(bounds, pose)),
 				std::bind(Delete, std::placeholders::_1,
-					poseCon.Release(), transformCon.Release()));
+					poseCon.release(), transformCon.release()));
 		}
 	}
 }

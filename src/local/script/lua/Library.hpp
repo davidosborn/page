@@ -33,7 +33,7 @@
 
 #	include <lua.hpp> // lua_State
 
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 #	include "lib/Base.hpp"
 #	include "lib/Character.hpp"
 #	include "lib/Class.hpp"
@@ -53,7 +53,7 @@ namespace page
 
 		namespace lua
 		{
-			struct Library : util::NonCopyable
+			struct Library : util::Uncopyable<Library>
 			{
 				// construct
 				Library(lua_State *, Router &);

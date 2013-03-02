@@ -36,7 +36,7 @@
 #	include <vector>
 
 #	include "../res/type/script/ScriptFormat.hpp"
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class/Uncopyable.hpp"
 #	include "Router.hpp"
 
 namespace page
@@ -49,7 +49,7 @@ namespace page
 		class Machine;
 		class Process;
 
-		struct Driver : util::NonCopyable
+		struct Driver : util::Uncopyable<Driver>
 		{
 			// construct
 			explicit Driver(game::Game &);

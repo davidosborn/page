@@ -33,7 +33,7 @@
 #ifndef    page_local_script_Machine_hpp
 #   define page_local_script_Machine_hpp
 
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -43,7 +43,7 @@ namespace page
 	{
 		class Process;
 
-		struct Machine : util::NonCopyable
+		struct Machine : util::Uncopyable<Machine>
 		{
 			// destroy
 			virtual ~Machine();

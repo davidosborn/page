@@ -41,7 +41,7 @@
 #include "source/registry.hpp" // MakeSource
 #include "source/Source.hpp" // Source::{~Source,Open,Refresh}
 #include "Stream.hpp" // Stream::GetText
-#include "type/registry.hpp" // GetRegisteredTypeName
+#include "type/Registry.hpp"
 
 namespace page
 {
@@ -85,7 +85,7 @@ namespace page
 		std::shared_ptr<const void> Index::Load(const std::type_info &type, const std::string &path) const
 		{
 			std::string normPath(NormPath(path));
-			std::cout << "loading " << GetRegisteredTypeName(type) << " from " << normPath << std::endl;
+			std::cout << "loading " << GLOBAL(type::Registry).Query(type).name << " from " << normPath << std::endl;
 			log::Indenter indenter;
 			try
 			{

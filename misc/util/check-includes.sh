@@ -11,23 +11,28 @@ for file in \
 		-iname \*.h   -o \
 		-iname \*.hpp -o \
 		-iname \*.tpp \) ); do
-	
+
 	in_standard=yes
 	in_system=yes
-	
+
 	local_headers=()
-	
+
 	for line in $( sed -e "s/^#\t*include \([<>0-9A-Za-z_\"/.]*\).*$/\1/;t;d" "$file" ); do
-		[[ ${line:0:1} = '<' ]] && system=yes || \
-		[[ ${line:0:1} = '"' ]] && system=no  || continue
-		
+		if [[ ${line:0:1} = '<' ]]; then
+			system=yes
+		elif [[ ${line:0:1} = '"' ]]; then
+			system=no
+		else
+			continue
+		fi
+
 		target=${line:1:$((${#line}-2))}
-		
+
 		[[ "$system" = yes && \
 			$( expr index "$target" "/" ) -eq 0 && \
 			$( expr index "$target" "." ) -eq 0 ]] && \
 				standard=yes || standard=no
-		
+
 		if [[ "$in_system" = yes ]]; then
 			if [[ "$in_standard" = yes ]]; then
 				in_standard="$standard"
@@ -44,7 +49,7 @@ for file in \
 				continue 2
 			fi
 		fi
-		
+
 		if [[ "$system" = no && "${target:$((${#target}-4)):4}" != ".tpp" ]]; then
 			local_headers=("${local_headers[@]}" "$target")
 		fi

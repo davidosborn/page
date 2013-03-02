@@ -33,12 +33,13 @@
 
 #	include <functional> // function
 
+#	include <boost/optional.hpp>
+
 #	include "../../math/fwd.hpp" // OrthoFrustum
 #	include "../../math/Matrix.hpp"
 #	include "../../phys/Form.hpp" // Form::Part
 #	include "../../phys/Scene.hpp" // Scene::View
 #	include "../../res/type/Material.hpp" // Material::Pass
-#	include "../../util/Optional.hpp"
 #	include "../ViewContext.hpp"
 #	include "AttribGuard.hpp"
 #	include "MatrixGuard.hpp"
@@ -88,9 +89,9 @@ namespace page
 				};
 
 				// mesh rendering
-				void Draw(const phys::Form &, ShaderType, const util::Optional<ShadowAttachment> & = nullptr);
+				void Draw(const phys::Form &, ShaderType, const boost::optional<ShadowAttachment> & = nullptr);
 				void Draw(const phys::Form &, FixedType);
-				void Draw(const phys::Scene::View<phys::Form>::Type &, ShaderType, const util::Optional<ShadowAttachment> & = nullptr);
+				void Draw(const phys::Scene::View<phys::Form>::Type &, ShaderType, const boost::optional<ShadowAttachment> & = nullptr);
 				void Draw(const phys::Scene::View<phys::Form>::Type &, FixedType);
 
 				// mesh rendering implementation
@@ -100,9 +101,9 @@ namespace page
 				void Draw(const phys::Form::Part &, const VertexFormat &);
 
 				// shader material setup
-				VertexFormat PrepShaderMaterial(const res::Material::Pass &, MatrixGuard &, ShaderType, const util::Optional<ShadowAttachment> & = nullptr);
-				VertexFormat PrepBasicShaderMaterial(const res::Material::Pass &, MatrixGuard &, const util::Optional<ShadowAttachment> & = nullptr);
-				VertexFormat PrepEmissiveSpecularShaderMaterial(const res::Material::Pass &, MatrixGuard &, const util::Optional<ShadowAttachment> & = nullptr);
+				VertexFormat PrepShaderMaterial(const res::Material::Pass &, MatrixGuard &, ShaderType, const boost::optional<ShadowAttachment> & = nullptr);
+				VertexFormat PrepBasicShaderMaterial(const res::Material::Pass &, MatrixGuard &, const boost::optional<ShadowAttachment> & = nullptr);
+				VertexFormat PrepEmissiveSpecularShaderMaterial(const res::Material::Pass &, MatrixGuard &, const boost::optional<ShadowAttachment> & = nullptr);
 				VertexFormat PrepNormalShaderMaterial(const res::Material::Pass &, MatrixGuard &);
 				VertexFormat PrepShadowShaderMaterial(const res::Material::Pass &, MatrixGuard &);
 

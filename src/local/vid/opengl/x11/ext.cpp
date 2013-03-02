@@ -44,8 +44,8 @@
 
 #include "../../../cfg/vars.hpp"
 #include "../../../log/Indenter.hpp"
-#include "../../../util/io/deserialize.hpp" // Deserialize
 #include "../../../util/cpp.hpp" // STRINGIZE
+#include "../../../util/io/deserialize.hpp" // Deserialize
 #include "../ext.hpp" // GetProcAddress, ProcAddress
 
 // HACK: import glXGetProcAddress

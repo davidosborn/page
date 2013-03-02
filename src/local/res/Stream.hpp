@@ -38,13 +38,13 @@
 #	include <string>
 #	include <vector>
 
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class/Uncopyable.hpp"
 
 namespace page
 {
 	namespace res
 	{
-		struct Stream : util::NonCopyable
+		struct Stream : util::Uncopyable<Stream>
 		{
 			enum SeekOrigin
 			{

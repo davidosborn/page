@@ -34,7 +34,7 @@
 #	include <memory> // unique_ptr
 
 #	include "../../../cfg/vars.hpp"
-#	include "../../../util/NonCopyable.hpp"
+#	include "../../../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -45,7 +45,7 @@ namespace page
 			class Program;
 			class RenderTargetPool;
 
-			struct ShadowResources : util::NonCopyable
+			struct ShadowResources : util::Uncopyable<ShadowResources>
 			{
 				// construct
 				ShadowResources();

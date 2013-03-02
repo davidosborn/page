@@ -49,10 +49,10 @@ namespace page
 		Window::Window() : focus(false)
 		{
 			using namespace std::placeholders;
-			exitSig.Connect(std::bind(&Window::OnExit, this));
-			focusSig.Connect(std::bind(&Window::OnFocus, this, _1));
-			moveSig.Connect(std::bind(&Window::OnMove, this, _1));
-			sizeSig.Connect(std::bind(&Window::OnSize, this, _1));
+			exitSig.connect(std::bind(&Window::OnExit, this));
+			focusSig.connect(std::bind(&Window::OnFocus, this, _1));
+			moveSig.connect(std::bind(&Window::OnMove, this, _1));
+			sizeSig.connect(std::bind(&Window::OnSize, this, _1));
 		}
 		Window::~Window() {}
 

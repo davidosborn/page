@@ -34,7 +34,7 @@
 #	include <AL/al.h> // ALuint
 
 #	include "../../cache/fwd.hpp" // Proxy
-#	include "../../util/NonCopyable.hpp"
+#	include "../../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -44,7 +44,7 @@ namespace page
 	{
 		namespace openal
 		{
-			struct Buffer : util::NonCopyable
+			struct Buffer : util::Uncopyable<Buffer>
 			{
 				// destroy
 				virtual ~Buffer();

@@ -34,7 +34,7 @@
 #	include <memory> // unique_ptr
 
 #	include "../../../math/fwd.hpp" // Vector
-#	include "../../../util/NonCopyable.hpp"
+#	include "../../../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -45,7 +45,7 @@ namespace page
 			class Program;
 			class RenderTargetPool;
 
-			struct ShaderOutlineResources : util::NonCopyable
+			struct ShaderOutlineResources : util::Uncopyable<ShaderOutlineResources>
 			{
 				// construct
 				ShaderOutlineResources(const math::Vector<2, unsigned> &size);

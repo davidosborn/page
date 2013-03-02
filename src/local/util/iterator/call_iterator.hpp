@@ -36,7 +36,8 @@
 #	include <functional> // result_of
 #	include <iterator> // input_iterator_tag, iterator_traits
 
-#	include "../Optional.hpp"
+#	include <boost/optional.hpp>
+
 #	include "iterator_adapter.hpp"
 
 namespace page
@@ -76,7 +77,7 @@ namespace page
 			void Increment();
 
 			Function func;
-			typedef Optional<Result> Cache;
+			typedef boost::optional<Result> Cache;
 			mutable Cache cache;
 		};
 		template <typename Iterator, typename Function>

@@ -28,16 +28,42 @@
  * of this software.
  */
 
-#include "buffer.hpp" // Buffer
+#include <utility> // forward
+
+#include "../../err/Exception.hpp"
 
 namespace page
 {
 	namespace util
 	{
-		Buffer &GetDirtyBuffer()
+		/*-------------+
+		| registration |
+		+-------------*/
+
+		template <typename T, typename... Args>
+			void MonoFactory<T, Args...>::Register(const Function &function)
 		{
-			static Buffer buffer(512);
-			return buffer;
+			if (this->function)
+				BOOST_THROW_EXCEPTION(err::Exception("factory function already registered"));
+			this->function = function;
+		}
+
+		template <typename T, typename... Args> template <typename U>
+			void MonoFactory<T, Args...>::Register()
+		{
+			Register([](Args &&... args) { return std::unique_ptr<T>(new U(std::forward<Args>(args)...)); });
+		}
+
+		/*-----------+
+		| production |
+		+-----------*/
+
+		template <typename T, typename... Args>
+			std::unique_ptr<T> MonoFactory<T, Args...>::Make(Args &&... args) const
+		{
+			if (!function)
+				THROW((err::Exception<err::UtilModuleTag, err::FactoryTag, err::NotAvailableTag>("no factory function registered")));
+			return function(std::forward<Args>(args)...);
 		}
 	}
 }

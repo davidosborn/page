@@ -35,7 +35,7 @@
 #	include <vector>
 
 #	include "../cache/fwd.hpp" // Proxy
-#	include "../util/NonCopyable.hpp"
+#	include "../util/class/Uncopyable.hpp"
 
 namespace page
 {
@@ -82,7 +82,7 @@ namespace page
 			std::shared_ptr<Sound> sound;
 		};
 
-		struct Driver : util::NonCopyable
+		struct Driver : util::Uncopyable<Driver>
 		{
 			// construct/destroy
 			explicit Driver(wnd::Window &);
