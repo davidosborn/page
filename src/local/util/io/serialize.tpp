@@ -28,14 +28,15 @@
  * of this software.
  */
 
-#include <iterator> // begin, end
+#include <algorithm> // copy
+#include <iterator> // begin, end, iterator_traits
 #include <ostream>
 #include <utility> // forward, move
 
 #include "../../err/Exception.hpp"
-#include "../iterator/range.hpp"
 #include "../locale/convert.hpp" // Convert
 #include "../tuple.hpp" // tuple_{,pop_}front
+#include "separated_ostream_iterator.hpp"
 
 namespace page
 {
@@ -104,28 +105,13 @@ namespace page
 			std::basic_ostream<Char, CharTraits> &Serialize(
 				std::basic_ostream<Char, CharTraits> &os,
 				InputRange range,
-				Separator separatorArg,
+				Separator separator,
 				ENABLE_IF_IMPL((
 					is_range<InputRange>::value &&
 					!is_string<InputRange>::value &&
 					!is_insertable<InputRange, std::basic_ostream<Char, CharTraits> &>::value)))
 		{
-			OutputDelimiter<Char, CharTraits> separator(separatorArg);
-
-			// check for empty sequence
-			if (std::begin(range) == std::end(range))
-				return os;
-
-			for (auto iter(std::begin(range));;)
-			{
-				Serialize(os, *iter);
-
-				if (++iter == std::end(range))
-					break;
-
-				Serialize(os, separator);
-			}
-			return os;
+			return Serialize(os, std::begin(range), std::end(range), separator);
 		}
 
 		template <typename Char, typename CharTraits, typename InputIterator, typename Separator>
@@ -136,8 +122,11 @@ namespace page
 				Separator separator,
 				ENABLE_IF_IMPL((is_iterator<InputIterator>::value)))
 		{
-			return Serialize(os, make_range(first, last),
-				OutputDelimiter<Char, CharTraits>(separator));
+			std::copy(first, last, 
+				separated_ostream_iterator<
+					typename std::iterator_traits<InputIterator>::value_type
+					>(os, separator));
+			return os;
 		}
 		///@}
 

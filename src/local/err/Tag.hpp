@@ -352,6 +352,10 @@ namespace page
 					std::basic_ostream<Char, CharTraits> &os,
 					const RuntimeTagSet &tagSet)
 		{
+			/**
+			 * @note We can't use @c util::Serialize here because it would cause
+			 *       an @c #include dependency-cycle.
+			 */
 			std::copy(
 				tagSet.tags.begin(),
 				tagSet.tags.end(),

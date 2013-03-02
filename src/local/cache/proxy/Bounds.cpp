@@ -28,7 +28,7 @@
  * of this software.
  */
 
-#include <algorithm> // copy, find, sort, transform, unique
+#include <algorithm> // find, sort, transform, unique
 #include <cassert>
 #include <functional> // bind, mem_fn
 #include <iterator> // back_inserter
@@ -37,7 +37,7 @@
 #include "../../phys/Bounds.hpp"
 #include "../../res/type/Model.hpp"
 #include "../../util/functional/pointer.hpp" // dereference
-#include "../../util/io/separated_ostream_iterator.hpp"
+#include "../../util/io/serialize.hpp"
 #include "../../util/iterator/call_iterator.hpp"
 #include "../../util/iterator/indirect_iterator.hpp"
 #include "../../util/iterator/member_iterator.hpp"
@@ -92,12 +92,11 @@ namespace page
 		std::string Bounds::GetSource() const
 		{
 			std::ostringstream ss;
-			std::copy(
+			util::Serialize(ss,
 				util::make_call_iterator(util::make_indirect_iterator(meshes.begin()),
 					std::mem_fn(&Proxy<res::Mesh>::GetSource)),
 				util::make_call_iterator(util::make_indirect_iterator(meshes.end()),
-					std::mem_fn(&Proxy<res::Mesh>::GetSource)),
-				util::separated_ostream_iterator<std::string>(ss, ','));
+					std::mem_fn(&Proxy<res::Mesh>::GetSource)), ',');
 
 			if (skeleton)
 				// NOTE: using alternate separator to differentiate from mesh

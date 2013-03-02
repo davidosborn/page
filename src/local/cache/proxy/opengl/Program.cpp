@@ -28,14 +28,13 @@
  * of this software.
  */
 
-#include <algorithm> // copy, find, sort
+#include <algorithm> // find, sort
 #include <functional> // bind, mem_fn
-#include <sstream> // ostringstream
 
 #include "../../../util/functional/pointer.hpp" // dereference
+#include "../../../util/io/serialize.hpp"
 #include "../../../util/iterator/call_iterator.hpp"
 #include "../../../util/iterator/indirect_iterator.hpp"
-#include "../../../util/io/separated_ostream_iterator.hpp"
 #include "../../../vid/opengl/Program.hpp"
 #include "Program.hpp"
 
@@ -65,14 +64,11 @@ namespace page
 
 			std::string Program::GetSource() const
 			{
-				std::ostringstream ss;
-				std::copy(
+				return util::Serialize<char>(
 					util::make_call_iterator(util::make_indirect_iterator(shaders.begin()),
 						std::mem_fn(&Proxy<res::opengl::Shader>::GetSource)),
 					util::make_call_iterator(util::make_indirect_iterator(shaders.end()),
-						std::mem_fn(&Proxy<res::opengl::Shader>::GetSource)),
-					util::separated_ostream_iterator<std::string>(ss, ','));
-				return ss.str();
+						std::mem_fn(&Proxy<res::opengl::Shader>::GetSource)), ',');
 			}
 
 			Program::operator bool() const

@@ -28,11 +28,8 @@
  * of this software.
  */
 
-#include <algorithm> // copy
-#include <iterator> // back_inserter
-
 #include "../../err/Exception.hpp"
-#include "../../util/io/separated_istream_iterator.hpp"
+#include "../../util/io/deserialize.hpp"
 #include "Source.hpp"
 
 namespace page
@@ -111,12 +108,8 @@ namespace page
 			if (!value)
 				return boost::none;
 
-			std::istringstream ss(*value);
 			std::vector<std::string> sequence;
-			std::copy(
-				util::separated_istream_iterator<std::string>(ss, ','),
-				util::separated_istream_iterator<std::string>(),
-				std::back_inserter(sequence));
+			util::Deserialize(*value, sequence, util::SequenceDeserializationFlags::none, ',');
 			return sequence;
 		}
 
