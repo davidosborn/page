@@ -28,7 +28,6 @@
  * of this software.
  */
 
-#include <algorithm> // copy
 #include <array>
 #include <cassert>
 #include <stack>
@@ -139,16 +138,16 @@ namespace page
 
 					struct Attrib
 					{
-						boost::optional<GLenum>                activeTexture;
-						boost::optional<GLenum>                blendDstAlpha;
-						boost::optional<GLenum>                blendDstRgb;
-						boost::optional<GLenum>                blendSrcAlpha;
-						boost::optional<GLenum>                blendSrcRgb;
-						boost::optional<GLboolean>             depthTest;
-						boost::optional<GLenum>                drawBuffer;
-						boost::optional<GLenum>                matrixMode;
+						boost::optional<GLenum>               activeTexture;
+						boost::optional<GLenum>               blendDstAlpha;
+						boost::optional<GLenum>               blendDstRgb;
+						boost::optional<GLenum>               blendSrcAlpha;
+						boost::optional<GLenum>               blendSrcRgb;
+						boost::optional<GLboolean>            depthTest;
+						boost::optional<GLenum>               drawBuffer;
+						boost::optional<GLenum>               matrixMode;
 						boost::optional<std::array<GLint, 4>> scissorBox;
-						boost::optional<GLboolean>             scissorTest;
+						boost::optional<GLboolean>            scissorTest;
 						boost::optional<std::array<GLint, 4>> viewport;
 					};
 					typedef std::stack<Attrib> AttribStack;
@@ -187,26 +186,26 @@ namespace page
 					const State &state(GetState());
 					switch (value)
 					{
-						case GL_ACTIVE_TEXTURE_ARB: *data = state.activeTexture; break;
-						case GL_BLEND_DST: *data = state.blendDst; break;
-						case GL_BLEND_DST_ALPHA_EXT: *data = state.blendDstAlpha; break;
-						case GL_BLEND_DST_RGB_EXT: *data = state.blendDstRgb; break;
-						case GL_BLEND_SRC: *data = state.blendSrc; break;
-						case GL_BLEND_SRC_ALPHA_EXT: *data = state.blendSrcAlpha; break;
-						case GL_BLEND_SRC_RGB_EXT: *data = state.blendSrcRgb; break;
-						case GL_CLIENT_ACTIVE_TEXTURE_ARB: *data = state.clientActiveTexture; break;
-						case GL_DEPTH_TEST: *data = state.depthTest; break;
-						case GL_DRAW_BUFFER: *data = state.drawBuffer; break;
-						case GL_FRAMEBUFFER_BINDING_EXT: *data = state.framebufferBinding; break;
-						case GL_MATRIX_MODE: *data = state.matrixMode; break;
-						case GL_MAX_MODELVIEW_STACK_DEPTH: *data = state.maxModelviewStackDepth; break;
+						case GL_ACTIVE_TEXTURE_ARB:         *data = state.activeTexture;           break;
+						case GL_BLEND_DST:                  *data = state.blendDst;                break;
+						case GL_BLEND_DST_ALPHA_EXT:        *data = state.blendDstAlpha;           break;
+						case GL_BLEND_DST_RGB_EXT:          *data = state.blendDstRgb;             break;
+						case GL_BLEND_SRC:                  *data = state.blendSrc;                break;
+						case GL_BLEND_SRC_ALPHA_EXT:        *data = state.blendSrcAlpha;           break;
+						case GL_BLEND_SRC_RGB_EXT:          *data = state.blendSrcRgb;             break;
+						case GL_CLIENT_ACTIVE_TEXTURE_ARB:  *data = state.clientActiveTexture;     break;
+						case GL_DEPTH_TEST:                 *data = state.depthTest;               break;
+						case GL_DRAW_BUFFER:                *data = state.drawBuffer;              break;
+						case GL_FRAMEBUFFER_BINDING_EXT:    *data = state.framebufferBinding;      break;
+						case GL_MATRIX_MODE:                *data = state.matrixMode;              break;
+						case GL_MAX_MODELVIEW_STACK_DEPTH:  *data = state.maxModelviewStackDepth;  break;
 						case GL_MAX_PROJECTION_STACK_DEPTH: *data = state.maxProjectionStackDepth; break;
-						case GL_MAX_TEXTURE_UNITS_ARB: *data = state.textureUnits.size(); break;
-						case GL_MODELVIEW_STACK_DEPTH: *data = state.modelviewStackDepth; break;
-						case GL_PROJECTION_STACK_DEPTH: *data = state.projectionStackDepth; break;
-						case GL_SCISSOR_BOX: std::copy(state.scissorBox.begin(), state.scissorBox.end(), data); break;
-						case GL_SCISSOR_TEST: *data = state.scissorTest; break;
-						case GL_VIEWPORT: std::copy(state.viewport.begin(), state.viewport.end(), data); break;
+						case GL_MAX_TEXTURE_UNITS_ARB:      *data = state.textureUnits.size();     break;
+						case GL_MODELVIEW_STACK_DEPTH:      *data = state.modelviewStackDepth;     break;
+						case GL_PROJECTION_STACK_DEPTH:     *data = state.projectionStackDepth;    break;
+						case GL_SCISSOR_BOX:                *data = state.scissorBox;              break;
+						case GL_SCISSOR_TEST:               *data = state.scissorTest;             break;
+						case GL_VIEWPORT:                   *data = state.viewport;                break;
 						default: return false;
 					}
 					return true;
@@ -226,7 +225,7 @@ namespace page
 				State &state(GetState());
 				switch (target)
 				{
-					case GL_DEPTH_TEST: state.depthTest = GL_FALSE; break;
+					case GL_DEPTH_TEST:   state.depthTest   = GL_FALSE; break;
 					case GL_SCISSOR_TEST: state.scissorTest = GL_FALSE; break;
 				}
 				glDisable(target);
@@ -245,7 +244,7 @@ namespace page
 				State &state(GetState());
 				switch (target)
 				{
-					case GL_DEPTH_TEST: state.depthTest = GL_TRUE; break;
+					case GL_DEPTH_TEST:   state.depthTest   = GL_TRUE; break;
 					case GL_SCISSOR_TEST: state.scissorTest = GL_TRUE; break;
 				}
 				glEnable(target);
@@ -277,15 +276,15 @@ namespace page
 				const State::Attrib &attrib(state.attribStack.top());
 				if (attrib.activeTexture) state.activeTexture = *attrib.activeTexture;
 				if (attrib.blendDstAlpha) state.blendDstAlpha = *attrib.blendDstAlpha;
-				if (attrib.blendDstRgb) state.blendDstRgb = *attrib.blendDstRgb;
+				if (attrib.blendDstRgb)   state.blendDstRgb   = *attrib.blendDstRgb;
 				if (attrib.blendSrcAlpha) state.blendSrcAlpha = *attrib.blendSrcAlpha;
-				if (attrib.blendSrcRgb) state.blendSrcRgb = *attrib.blendSrcRgb;
-				if (attrib.depthTest) state.depthTest = *attrib.depthTest;
-				if (attrib.drawBuffer) state.drawBuffer = *attrib.drawBuffer;
-				if (attrib.matrixMode) state.matrixMode = *attrib.matrixMode;
-				if (attrib.scissorBox) state.scissorBox = *attrib.scissorBox;
-				if (attrib.scissorTest) state.scissorTest = *attrib.scissorTest;
-				if (attrib.viewport) state.viewport = *attrib.viewport;
+				if (attrib.blendSrcRgb)   state.blendSrcRgb   = *attrib.blendSrcRgb;
+				if (attrib.depthTest)     state.depthTest     = *attrib.depthTest;
+				if (attrib.drawBuffer)    state.drawBuffer    = *attrib.drawBuffer;
+				if (attrib.matrixMode)    state.matrixMode    = *attrib.matrixMode;
+				if (attrib.scissorBox)    state.scissorBox    = *attrib.scissorBox;
+				if (attrib.scissorTest)   state.scissorTest   = *attrib.scissorTest;
+				if (attrib.viewport)      state.viewport      = *attrib.viewport;
 				state.attribStack.pop();
 				glPopAttrib();
 			}
@@ -303,7 +302,7 @@ namespace page
 				State &state(GetState());
 				switch (state.matrixMode)
 				{
-					case GL_MODELVIEW: --state.modelviewStackDepth; break;
+					case GL_MODELVIEW:  --state.modelviewStackDepth;  break;
 					case GL_PROJECTION: --state.projectionStackDepth; break;
 				}
 				glPopMatrix();
@@ -365,7 +364,7 @@ namespace page
 				State &state(GetState());
 				switch (state.matrixMode)
 				{
-					case GL_MODELVIEW: ++state.modelviewStackDepth; break;
+					case GL_MODELVIEW:  ++state.modelviewStackDepth;  break;
 					case GL_PROJECTION: ++state.projectionStackDepth; break;
 				}
 				glPushMatrix();
