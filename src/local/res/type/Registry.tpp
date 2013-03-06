@@ -28,6 +28,8 @@
  * of this software.
  */
 
+#include <utility> // forward
+
 #include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
 #include "../../util/functional/cast.hpp" // reinterpret_cast_function
 #include "../../util/memory/Deleter.hpp" // {,Default}Deleter
@@ -52,7 +54,7 @@ namespace page { namespace res { namespace type {
 ////////// Record //////////////////////////////////////////////////////////////
 
 	template <typename T>
-		void Record::Record(
+		Record::Record(
 			const std::string &name,
 			const std::function<void (T &)> &postLoader) :
 				name(name),
@@ -61,10 +63,12 @@ namespace page { namespace res { namespace type {
 
 ////////// Registry ////////////////////////////////////////////////////////////
 
-	template <typename T>
-		void Registry::Register(const Record &record)
+	template <typename T, typename... RecordArgs>
+		void Registry::Register(RecordArgs &&... recordArgs)
 	{
-		Register(util::GetIncompleteTypeInfo<T>(), record);
+		Register(
+			util::GetIncompleteTypeInfo<T>(),
+			Record(std::forward<RecordArgs>(recordArgs)...));
 	}
 
 }}}

@@ -28,19 +28,16 @@
  * of this software.
  */
 
-#ifndef    page_local_res_scan_callback_hpp
-#   define page_local_res_scan_callback_hpp
+#include <utility> // forward
 
-#	include <functional> // function
+namespace page { namespace res { namespace scan {
 
-namespace page
-{
-	namespace res
+////////// Registry ////////////////////////////////////////////////////////////
+
+	template <typename... RecordArgs>
+		void Registry::Register(RecordArgs &&... recordArgs)
 	{
-		class Node;
-
-		typedef std::function<void (const Node &)> ScanCallback;
+		Register(Record(std::forward<RecordArgs>(recordArgs)...));
 	}
-}
 
-#endif
+}}}

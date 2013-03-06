@@ -75,7 +75,7 @@ namespace page { namespace res { namespace type {
 	struct Record
 	{
 		template <typename T>
-			Record(
+			explicit Record(
 				const std::string &name,
 				const std::function<void (T &)> &postLoader = nullptr);
 
@@ -95,8 +95,8 @@ namespace page { namespace res { namespace type {
 		/**
 		 * Registers a type with a record.
 		 */
-		template <typename T>
-			void Register(const Record &);
+		template <typename T, typename... RecordArgs>
+			void Register(RecordArgs &&...);
 
 		private:
 		/**
@@ -108,7 +108,7 @@ namespace page { namespace res { namespace type {
 		/**
 		 * Returns the record associated with a specified type.
 		 */
-		const Record &Query(const std::type_info &);
+		const Record &Query(const std::type_info &) const;
 
 		private:
 		std::unordered_map<std::type_index, Record> records;
@@ -133,4 +133,5 @@ namespace page { namespace res { namespace type {
 
 }}}
 
+#	include "Registry.tpp"
 #endif

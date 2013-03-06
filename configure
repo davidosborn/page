@@ -1809,7 +1809,7 @@ local/res/pipe/SubPipe
 local/res/save
 local/res/save/image/bmp
 local/res/save/registry
-local/res/scan/registry
+local/res/scan/Registry
 local/res/source/DirSource
 local/res/source/FileSource
 local/res/source/registry

@@ -42,7 +42,7 @@
 #include "../load/registry.hpp" // GetRegisteredLoader, LoadFunction
 #include "../path.hpp" // CatPath
 #include "../pipe/Pipe.hpp" // Pipe::Open
-#include "../scan/registry.hpp" // CallRegisteredScanner
+#include "../scan/Registry.hpp"
 #include "../type/Registry.hpp"
 #include "Source.hpp"
 
@@ -196,7 +196,7 @@ namespace page
 			// recurse into node
 			try
 			{
-				CallRegisteredScanner(node, std::bind(&Source::ScanToBuildIndex, this, std::placeholders::_1, group, path));
+				GLOBAL(scan::Registry).Scan(node, std::bind(&Source::ScanToBuildIndex, this, std::placeholders::_1, group, path));
 			}
 			catch (const std::exception &e)
 			{

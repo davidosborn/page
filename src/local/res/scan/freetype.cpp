@@ -33,12 +33,13 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../adapt/freetype.hpp" // GetLib, OpenArgs
 #include "../fmt/freetype/sub.hpp"
 #include "../Node.hpp"
 #include "../pipe/CatPipe.hpp"
 #include "../pipe/MemPipe.hpp"
-#include "register.hpp" // REGISTER_SCANNER
+#include "Registry.hpp" // REGISTER_SCANNER
 
 namespace page
 {
@@ -63,8 +64,11 @@ namespace page
 			return false;
 		}
 
-		// NOTE: there are currently no font mime types
-		REGISTER_SCANNER(ScanFreetype,
-			"bdf,cff,fnt,fon,otf,pcf,pfa,pfb,pfr,ttc,ttf", "", "", true)
+		REGISTER_SCANNER(
+			STRINGIZE(FREETYPE_NAME),
+			ScanFreetype,
+			{"bdf", "cff", "fnt", "fon", "otf", "pcf", "pfa", "pfb", "pfr", "ttc", "ttf"},
+			{"application/x-font-bdf", "application/x-font-opentype", "application/x-font-truetype"},
+			true)
 	}
 }

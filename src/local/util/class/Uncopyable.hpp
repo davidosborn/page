@@ -39,6 +39,12 @@ namespace page
 	{
 		/**
 		 * Makes the derived class "uncopyable" (ISO/IEC n3242 8.4.3.3).
+		 *
+		 * @note It only makes sense to inherit from this class, as opposed to
+		 *       using @c MAKE_UNCOPYABLE directly, when the derived class has
+		 *       no member functions that would prevent the compiler from
+		 *       generating an implicit move-constructor, or when you also want
+		 *       the derived class to be unmoveable.
 		 */
 		template <typename Derived>
 			class Uncopyable

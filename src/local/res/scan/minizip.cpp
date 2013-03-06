@@ -33,13 +33,14 @@
 
 #include <minizip/unzip.h>
 
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../adapt/minizip.hpp" // MakeZlibFileFuncDef
 #include "../fmt/zip.hpp" // sig
 #include "../Node.hpp"
 #include "../pipe/MinizipPipe.hpp"
 #include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../Stream.hpp"
-#include "register.hpp" // REGISTER_SCANNER
+#include "Registry.hpp" // REGISTER_SCANNER
 
 namespace page
 {
@@ -81,6 +82,11 @@ namespace page
 			return true;
 		}
 
-		REGISTER_SCANNER(ScanMinizip, "pk2,pk3,pk4,zip", "", "", true)
+		REGISTER_SCANNER(
+			STRINGIZE(MINIZIP_NAME),
+			ScanMinizip,
+			{"pk2", "pk3", "pk4", "zip"},
+			{"application/octet-stream", "application/x-zip", "application/zip"},
+			true)
 	}
 }

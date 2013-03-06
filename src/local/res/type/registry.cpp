@@ -54,7 +54,7 @@ namespace page { namespace res { namespace type {
 			THROW((err::Exception<err::ResModuleTag, err::KeyCollisionTag>("type already registered")))
 	}
 
-	const Record &Registry::Query(const std::type_info &key)
+	const Record &Registry::Query(const std::type_info &key) const
 	{
 		auto iter(records.find(key));
 		if (iter != records.end())

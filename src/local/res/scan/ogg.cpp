@@ -30,10 +30,11 @@
 
 #include <memory> // unique_ptr
 
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../Node.hpp"
 #include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../Stream.hpp"
-#include "register.hpp" // REGISTER_SCANNER
+#include "Registry.hpp" // REGISTER_SCANNER
 
 namespace page
 {
@@ -47,6 +48,11 @@ namespace page
 		}
 
 		// FIXME: waiting for implementation
-//		REGISTER_SCANNER(ScanOgg, "ogg", "application/ogg,audio/ogg,video/ogg", "", true)
+		/*REGISTER_SCANNER(
+			STRINGIZE(OGG_NAME),
+			ScanOgg,
+			{"ogg"},
+			{"application/ogg", "audio/ogg", "video/ogg"},
+			true)*/
 	}
 }

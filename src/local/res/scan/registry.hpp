@@ -28,38 +28,147 @@
  * of this software.
  */
 
-#ifndef    page_local_res_scan_registry_hpp
-#   define page_local_res_scan_registry_hpp
+#ifndef    page_local_res_scan_Registry_hpp
+#   define page_local_res_scan_Registry_hpp
 
+#	include <forward_list>
+#	include <functional> // function
+#	include <memory> // shared_ptr
 #	include <string>
+#	include <unordered_map>
 
-#	include "callback.hpp" // ScanCallback
-#	include "function.hpp" // ScanFunction
+#	include "../../util/class/Monostate.hpp"
+#	include "../../util/gcc/init_priority.hpp" // REG_INIT_PRIORITY
 
-namespace page
-{
-	namespace res
+namespace page { namespace res { class Node; class Pipe; }}
+
+namespace page { namespace res { namespace scan {
+
+	/**
+	 * A function object that is called by a scanner when it has found a node.
+	 */
+	using ScanCallback = std::function<void (const Node &)>;
+
+	/**
+	 * A function object that forms the implementation of a scanner.
+	 */
+	using ScanFunction = std::function<
+		bool (const std::shared_ptr<const Pipe> &, const ScanCallback &)>;
+
+////////// Scanner /////////////////////////////////////////////////////////////
+
+	/**
+	 * A data structure containing information about a scanner.
+	 */
+	class Scanner
 	{
-		class Node;
+		public:
+		Scanner(
+			std::string              const& name,
+			ScanFunction             const& function,
+			std::vector<std::string> const& extensions,
+			std::vector<std::string> const& mimeTypes,
+			bool                            inspect);
 
-		// access
 		/**
-		 * Search for a registered scanner that is compatible with the given
-		 * node, and call it with the provided callback.
+		 * Runs the scanner on a pipe.
+		 *
+		 * @return @c true if the scanner found a node.
 		 */
-		bool CallRegisteredScanner(const Node &, const ScanCallback &);
+		bool operator ()(
+			std::shared_ptr<const Pipe> const&,
+			ScanCallback                const&) const;
 
-		// registration
+		private:
+		std::string              name;
+		ScanFunction             function;
+		std::vector<std::string> extensions;
+		std::vector<std::string> mimeTypes;
+	};
+
+////////// Record //////////////////////////////////////////////////////////////
+
+	/**
+	 * A data structure containing information about a scanner.
+	 */
+	struct Record
+	{
+		friend class Registry;
+
+		explicit Record(
+			Scanner const& scanner,
+			bool           inspect  = false,
+			int            priority = 0);
+
+		Scanner scanner;
+		bool    inspect;
+		int     priority;
+
+		private:
 		/**
-		 * Register a scanner with the system.
+		 * A marker used when scanning, which will be @c true if the scanner has
+		 * already been tried.
 		 */
-		void RegisterScanner(
-			const ScanFunction &,
-			const std::string &extension,
-			const std::string &mimeType,
-			const std::string &tag,
-			bool inspect);
-	}
-}
+		bool mutable tried;
+	};
 
+////////// Registry ////////////////////////////////////////////////////////////
+
+	/**
+	 * A place for registering scanners.
+	 */
+	class Registry : public util::Monostate<Registry>
+	{
+		public:
+		/**
+		 * Registers a scanner.
+		 */
+		template <typename... RecordArgs>
+			void Register(RecordArgs &&...);
+
+		private:
+		/**
+		 * Registers a scanner.
+		 */
+		void Register(const Record &);
+
+		/**
+		 * Searches for a scanner that is compatible with the given node and
+		 * calls it with the provided callback.
+		 *
+		 * @return @c true if any of the scanners found a node.
+		 */
+		bool Scan(const Node &, const ScanCallback &) const;
+
+		private:
+		std::forward_list<Record> records;
+		std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> extensions;
+		std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> mimeTypes;
+
+		static const unsigned lockSize;
+	};
+
+////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Registers a type with @c Registry.
+	 */
+#	define REGISTER_TYPE(name, function, extensions, mimeTypes, inspect, priority) \
+		namespace \
+		{ \
+			struct Initializer() \
+			{ \
+				Initializer() \
+				{ \
+					GLOBAL(::page::res::scan::Registry).Register( \
+						Record( \
+							Scanner(name, function, extensions, mimeTypes), \
+							inspect, priority)); \
+				} \
+			} initializer __attribute__((init_priority(REG_INIT_PRIORITY))); \
+		}
+
+}}}
+
+#	include "Registry.tpp"
 #endif

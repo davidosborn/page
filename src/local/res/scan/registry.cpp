@@ -28,126 +28,152 @@
  * of this software.
  */
 
-#include <iterator> // back_inserter
-#include <unordered_map> // unordered_multimap
-#include <vector>
+#include <algorithm> // lower_bound
+
+#include <boost/adaptors/indirected.hpp>
 
 #include "../../err/Exception.hpp"
-#include "../../util/io/deserialize.hpp" // Deserialize
-#include "../../util/iterator/range.hpp"
-#include "../../util/path/extension.hpp" // GetExtension
 #include "../Node.hpp"
 #include "../pipe/Pipe.hpp"
-#include "callback.hpp" // ScanCallback
-#include "function.hpp" // ScanFunction
+#include "Registry.hpp"
 
-namespace page
-{
-	namespace res
+namespace page { namespace res { namespace type {
+
+////////// Scanner /////////////////////////////////////////////////////////////
+
+	Scanner::Scanner(const std::string &name, const ScanFunction &function, const std::vector<std::string> &extensions, const std::vector<std::string> &mimeTypes) :
+		name(name), function(function), extensions(extensions), mimeTypes(mimeTypes) {}
+
+	bool Scanner::operator ()(
+		std::shared_ptr<const Pipe> const& pipe,
+		ScanCallback                const& callback) const
 	{
-		/**
-		 * The lock size to use for preloading (an optimization).
-		 *
-		 * @note Some scanners require larger lock sizes.
-		 * @note Tar puts its 8 byte format identifier at offset 257, so it
-		 *       needs a lock size of 265.
-		 * @note The FreeType BDF module reads in 1024 byte increments, so it
-		 *       needs a lock size of 1024.
-		 */
-		const unsigned lockSize = 1024;
+		return function(pipe, callback);
+	}
 
-		namespace
+////////// Record //////////////////////////////////////////////////////////////
+
+	Record::Record(const Scanner &scanner, bool inspect, int priority) :
+		scanner(scanner), inspect(inspect), priority(priority) {}
+
+////////// Registry ////////////////////////////////////////////////////////////
+
+	/**
+	 * The lock size to use for preloading (an optimization).
+	 *
+	 * @note Some scanners require larger lock sizes.
+	 *
+	 * @note Tar puts its 8 byte format identifier at offset 257, so its
+	 *       optimal lock size is 265.
+	 *
+	 * @note The FreeType BDF module reads in 1024 byte increments, so its
+	 *       optimal lock size is 1024.
+	 */
+	const unsigned Registry::lockSize = 1024;
+
+	void Registry::Register(const Record &record)
+	{
+		// function to compare record priority
+		auto greaterPriority(
+			std::bind(
+				std::greater<decltype(Record::priority)>(),
+				std::bind(
+					util::make_member_of(&Record::priority),
+					std::placeholders::_1),
+				std::bind(
+					util::make_member_of(&Record::priority),
+					std::placeholders::_2)));
+
+		// add record to list
+		auto iter(
+			records.insert(
+				std::lower_bound(
+					records.begin(),
+					records.end(),
+					record,
+					greaterPriority),
+				record));
+
+		// associate extensions with record
+		for (const auto &extension : record.scanner.extensions)
 		{
-			struct Registry
-			{
-				typedef std::vector<ScanFunction> Scanners;
-				typedef std::unordered_multimap<std::string, ScanFunction> Associations;
-
-				Scanners scanners;
-				Associations exts, mimes, tags;
-			};
-			inline Registry &GetRegistry()
-			{
-				static Registry reg;
-				return reg;
-			}
+			auto &records(extensions.insert({extension, {}}).first->second);
+			records.insert(
+				std::lower_bound(
+					util::make_indirect_iterator(records.begin()),
+					util::make_indirect_iterator(records.end()),
+					record,
+					greaterPriority).base(),
+				iter);
 		}
 
-		// access
-		bool CallRegisteredScanner(const Node &node, const ScanCallback &cb)
+		// associate mime types with record
+		for (const auto &mimeType : record.scanner.mimeTypes)
 		{
-			PipeLocker locker(*node.pipe, lockSize);
-			const Registry &reg(GetRegistry());
-			// check tag
-			if (!node.tag.empty())
-			{
-				auto range(util::make_range(reg.tags.equal_range(node.tag)));
-				for (const auto &assoc : range)
-				{
-					ScanFunction scan(assoc.second);
-					if (scan(node.pipe, cb)) return true;
-				}
-				if (!range.empty())
-					THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched tag") <<
-						boost::errinfo_file_name(node.path) <<
-						err::errinfo_subject(node.tag)))
-			}
-			// check mime type
-			if (!node.mime.empty())
-			{
-				auto range(util::make_range(reg.mimes.equal_range(node.mime)));
-				for (const auto &assoc : range)
-				{
-					ScanFunction scan(assoc.second);
-					if (scan(node.pipe, cb)) return true;
-				}
-				if (!range.empty())
-					THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched mime type") <<
-						boost::errinfo_file_name(node.path) <<
-						err::errinfo_subject(node.mime)))
-			}
-			// check extension
-			std::string ext(util::GetExtension(node.path));
-			if (!ext.empty())
-			{
-				auto range(util::make_range(reg.exts.equal_range(ext)));
-				for (const auto &assoc : range)
-				{
-					ScanFunction scan(assoc.second);
-					if (scan(node.pipe, cb)) return true;
-				}
-				if (!range.empty())
-					THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched extension") <<
-						boost::errinfo_file_name(node.path) <<
-						err::errinfo_subject(ext)))
-			}
-			// resort to format inspection
-			if (node.inspect)
-				for (const auto &scanner : reg.scanners)
-					if (scanner(node.pipe, cb)) return true;
-			return false;
-		}
-
-		// registration
-		void RegisterScanner(const ScanFunction &scan, const std::string &ext, const std::string &mime, const std::string &tag, bool inspect)
-		{
-			Registry &reg(GetRegistry());
-			if (inspect) reg.scanners.push_back(scan);
-			// register extensions
-			std::vector<std::string> exts;
-			util::Deserialize(ext, std::back_inserter(exts), util::SequenceDeserializationFlags::none, ',');
-			for (const auto &ext : exts)
-				reg.exts.insert(std::make_pair(ext, scan));
-			// register mime types
-			std::vector<std::string> mimes;
-			util::Deserialize(mime, std::back_inserter(mimes), util::SequenceDeserializationFlags::none, ',');
-			for (const auto &mime : mimes)
-				reg.mimes.insert(std::make_pair(mime, scan));
-			// register tags
-			std::vector<std::string> tags;
-			util::Deserialize(tag, std::back_inserter(tags), util::SequenceDeserializationFlags::none, ',');
-			for (const auto &tag : tags)
-				reg.tags.insert(std::make_pair(tag, scan));
+			auto &records(mimeTypes.insert({extension, {}}).first->second);
+			records.insert(
+				std::lower_bound(
+					util::make_indirect_iterator(records.begin()),
+					util::make_indirect_iterator(records.end()),
+					record,
+					greaterPriority).base(),
+				iter);
 		}
 	}
-}
+
+	bool Registry::Scan(const Node &node, const ScanCallback &callback) const
+	{
+		/* Lock the pipe for efficiency, since we're going to be repeatedly
+		 * opening it and reading its header. */
+		PipeLocker locker(*node.pipe, lockSize);
+
+		// reset tried flag
+		for (const auto &record : records)
+			record.tried = false;
+
+		// try scanners with matching mime type
+		if (!node.mime.empty())
+		{
+			auto iter(mimeTypes.find(node.mime));
+			if (iter != mimeTypes.end())
+			{
+				auto records(boost::adaptors::indirect(iter->second));
+				for (const auto &record : records)
+					if (record.scanner(node.pipe, callback))
+						return true;
+
+				THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched mime type") <<
+					boost::errinfo_file_name(node.path) <<
+					err::errinfo_subject(node.mime)))
+			}
+		}
+
+		// try scanners with matching extension
+		std::string extension(util::GetExtension(node.path));
+		if (!extension.empty())
+		{
+			auto iter(extensions.find(extension));
+			if (iter != extensions.end())
+			{
+				auto records(boost::adaptors::indirect(iter->second));
+				for (const auto &record : records)
+					if (record.scanner(node.pipe, callback))
+						return true;
+
+				THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched extension") <<
+					boost::errinfo_file_name(node.path) <<
+					err::errinfo_subject(ext)))
+			}
+		}
+
+		// try all remaining scanners
+		if (node.inspect)
+			for (const auto &record : records)
+				if (record.inspect &&
+					record.scanner(node.pipe, callback))
+						return true;
+
+		return false;
+	}
+
+}}}

@@ -8,6 +8,8 @@ Registries:
 - res/source
 - script/machine
 
+Copy and move semantics should go at the top of the class and be consistently rendered (see res/scan/Registry.hpp).
+
 Gotta move all the types in res/type into the res::type namespace.
 
 util/locale/init.cpp needs to be worked on.
