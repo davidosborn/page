@@ -32,7 +32,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../pipe/Pipe.hpp"
-#include "../Stream.hpp"
+#include "../pipe/Stream.hpp"
 #include "vorbis.hpp" // File
 
 namespace page

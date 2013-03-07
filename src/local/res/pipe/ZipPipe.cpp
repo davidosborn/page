@@ -36,7 +36,7 @@
 #include "../../sys/file.hpp" // FileSize
 #include "../../util/container/ScratchBuffer.hpp"
 #include "../adapt/zip.hpp" // ZipError
-#include "../Stream.hpp"
+#include "Stream.hpp"
 #include "ZipPipe.hpp"
 
 namespace page

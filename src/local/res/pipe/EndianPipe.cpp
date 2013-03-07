@@ -31,8 +31,8 @@
 #include <cassert>
 #include <memory> // unique_ptr
 
-#include "../Stream.hpp"
 #include "EndianPipe.hpp"
+#include "Stream.hpp"
 
 namespace page
 {

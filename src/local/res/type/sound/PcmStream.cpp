@@ -29,7 +29,7 @@
  */
 
 #include "../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../Stream.hpp" // Stream::{ReadSome,Seek}
+#include "../../pipe/Stream.hpp" // Stream::{ReadSome,Seek}
 #include "PcmStream.hpp"
 
 namespace page

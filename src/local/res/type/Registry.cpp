@@ -43,20 +43,25 @@ namespace page { namespace res { namespace type {
 
 	PostLoader::operator bool() const
 	{
-		return f;
+		return f != nullptr;
 	}
+
+////////// Record //////////////////////////////////////////////////////////////
+
+	Record::Record(const std::string &name, const PostLoader &postLoader, const util::Deleter &deleter) :
+		name(name), postLoader(postLoader), deleter(deleter) {}
 
 ////////// Registry ////////////////////////////////////////////////////////////
 
-	void Registry::Register(const std::type_info &key, const Record &record)
+	void Registry::Register(const std::type_info &type, const Record &record)
 	{
-		if (!records.insert({{key, record}}).second)
+		if (!records.insert({{type, record}}).second)
 			THROW((err::Exception<err::ResModuleTag, err::KeyCollisionTag>("type already registered")))
 	}
 
-	const Record &Registry::Query(const std::type_info &key) const
+	const Record &Registry::Query(const std::type_info &type) const
 	{
-		auto iter(records.find(key));
+		auto iter(records.find(type));
 		if (iter != records.end())
 			return iter->second;
 	}

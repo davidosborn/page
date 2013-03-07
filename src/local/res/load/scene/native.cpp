@@ -36,9 +36,9 @@
 #include "../../adapt/text/Parser.hpp"
 #include "../../fmt/native/scene.hpp"
 #include "../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../Stream.hpp" // Stream::~Stream
+#include "../../pipe/Stream.hpp" // Stream::~Stream
 #include "../../type/Scene.hpp"
-#include "../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../Registry.hpp" // REGISTER_LOADER
 
 namespace page
 {

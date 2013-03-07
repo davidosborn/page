@@ -28,13 +28,13 @@
  * of this software.
  */
 
-#ifndef    page_local_res_scan_Registry_hpp
-#   define page_local_res_scan_Registry_hpp
+#ifndef    page_local_res_load_Registry_hpp
+#   define page_local_res_load_Registry_hpp
 
 #	include <forward_list>
 #	include <functional> // function
-#	include <memory> // shared_ptr
 #	include <string>
+#	include <typeinfo> // type_info
 #	include <unordered_map>
 
 #	include "../../util/class/Monostate.hpp"
@@ -42,25 +42,23 @@
 
 namespace page { namespace res { class Node; class Pipe; }}
 
-namespace page { namespace res { namespace scan {
+namespace page { namespace res { namespace load {
 
 	/**
-	 * A function object that is called by a scanner when it has found a node.
+	 * A function object that forms the implementation of a loader.
 	 */
-	using ScanCallback = std::function<void (const Node &)>;
+	using Loader = std::function<void *(const std::shared_ptr<const Pipe> &)>;
 
 	/**
-	 * A function object that forms the implementation of a scanner.
-	 *
-	 * @return @c true if the scanner found a node.
+	 * A function object that checks the format of a pipe to see if it is
+	 * compatible with the loader.
 	 */
-	using Scanner = std::function<
-		bool (const std::shared_ptr<const Pipe> &, const ScanCallback &)>;
+	using Checker = std::function<bool (const Pipe &)>;
 
 ////////// Record //////////////////////////////////////////////////////////////
 
 	/**
-	 * A data structure containing information about a scanner.
+	 * A data structure containing information about a loader.
 	 */
 	struct Record
 	{
@@ -71,50 +69,56 @@ namespace page { namespace res { namespace scan {
 
 		Record(
 			std::string              const& name,
-			Scanner                  const& scanner,
+			Checker                  const& checker,
+			Loader                   const& loader,
 			std::vector<std::string> const& extensions = {},
 			std::vector<std::string> const& mimeTypes  = {},
 			bool                            inspect    = true,
 			int                             priority   = 0);
 
 		/**
-		 * The name of the scanner.
+		 * The name of the loader.
 		 */
 		std::string name;
 
 		/**
-		 * @copydoc Scanner
+		 * @copydoc Checker
 		 */
-		Scanner scanner;
+		Checker checker;
 
 		/**
-		 * The extensions that this scanner recognizes.
+		 * @copydoc Loader
+		 */
+		Loader loader;
+
+		/**
+		 * The mime types that this loader recognizes.
 		 */
 		std::vector<std::string> extensions;
 
 		/**
-		 * The mime types that this scanner recognizes.
+		 * The mime types that this loaderer recognizes.
 		 */
 		std::vector<std::string> mimeTypes;
 
 		/**
-		 * @c true if this scanner should be tried as a final resort, even if
+		 * @c true if this loader should be tried as a final resort, even if
 		 * none of its extensions or mime types match the node.
 		 */
 		bool inspect;
 
 		/**
-		 * A higher priority means that this scanner will be tried before other
-		 * scanners of the same level with a lower priority.
+		 * A higher priority means that this loader will be tried before other
+		 * loaders of the same level with a lower priority.
 		 */
 		int priority;
 
 		private:
 		/**
-		 * A marker used when scanning, which will be @c true if this scanner
-		 * has already been tried.
+		 * A marker used when searching for a compatible loader, which will be
+		 * @c true if this loader has already been tried.
 		 *
-		 * @note This member has no definite value outside @c Registry::Scan.
+		 * @note This member has no definite value outside @c Registry::GetLoader.
 		 */
 		bool mutable tried;
 	};
@@ -122,52 +126,60 @@ namespace page { namespace res { namespace scan {
 ////////// Registry ////////////////////////////////////////////////////////////
 
 	/**
-	 * A place for registering scanners.
+	 * A place for registering loaders.
 	 */
 	class Registry : public util::Monostate<Registry>
 	{
 		public:
 		/**
-		 * Registers a scanner.
+		 * Registers a loader.
 		 */
-		template <typename... RecordArgs>
+		template <typename T, typename... RecordArgs>
 			void Register(RecordArgs &&...);
 
 		private:
 		/**
 		 * @copydoc Register
 		 */
-		void Register(const Record &);
+		void Register(const std::type_info &, const Record &);
+
+		public:
+		/**
+		 * Searches for a loader that is compatible with the given node.
+		 *
+		 * @return A compatible loader, or @c nullptr if none was found.
+		 */
+		template <typename T>
+			const Loader &GetLoader(const Node &) const;
 
 		/**
-		 * Searches for a scanner that is compatible with the given node and
-		 * calls it with the provided callback.
-		 *
-		 * @return @c true if any of the scanners found a node.
+		 * @copydoc GetLoader
 		 */
-		bool Scan(const Node &, const ScanCallback &) const;
+		const Loader &GetLoader(const std::type_info &, const Node &) const;
 
 		private:
-		std::forward_list<Record> records;
-		std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> extensions;
-		std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> mimeTypes;
-
-		static const unsigned lockSize;
+		struct TypeRecord
+		{
+			std::forward_list<Record> records;
+			std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> extensions;
+			std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> mimeTypes;
+		};
+		std::unordered_map<std::type_index, TypeRecord> types;
 	};
 
 ////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Registers a scanner with @c Registry.
+	 * Registers a loader with @c Registry.
 	 */
-#	define REGISTER_SCANNER(...) \
+#	define REGISTER_LOADER(T, ...) \
 		namespace \
 		{ \
 			struct Initializer() \
 			{ \
 				Initializer() \
 				{ \
-					GLOBAL(::page::res::scan::Registry).Register(__VA_ARGS__); \
+					GLOBAL(::page::res::load::Registry).Register<T>(__VA_ARGS__); \
 				} \
 			} initializer __attribute__((init_priority(REG_INIT_PRIORITY))); \
 		}

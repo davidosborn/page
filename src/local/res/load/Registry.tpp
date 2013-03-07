@@ -28,21 +28,26 @@
  * of this software.
  */
 
-#ifndef    page_local_res_path_hpp
-#   define page_local_res_path_hpp
+#include <utility> // forward
 
-#	include <string>
+#include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
 
-namespace page
-{
-	namespace res
+namespace page { namespace res { namespace load {
+
+////////// Registry ////////////////////////////////////////////////////////////
+
+	template <typename T, typename... RecordArgs>
+		void Registry::Register(RecordArgs &&... recordArgs)
 	{
-		std::string NormPath(const std::string &);
-		std::string CatPath(const std::string &, const std::string &);
-
-		std::string BaseName(const std::string &);
-		std::string DirName(const std::string &);
+		Register(
+			util::GetIncompleteTypeInfo<T>(),
+			Record(std::forward<RecordArgs>(recordArgs)...));
 	}
-}
 
-#endif
+	template <typename T>
+		const Loader &Registry::GetLoader(const Node &node) const
+	{
+		return GetLoader(util::GetIncompleteTypeInfo<T>(), node);
+	}
+
+}}}

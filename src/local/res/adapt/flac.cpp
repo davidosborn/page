@@ -33,7 +33,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../pipe/Pipe.hpp" // Pipe::Open
-#include "../Stream.hpp"
+#include "../pipe/Stream.hpp"
 #include "flac.hpp" // File, WriteCallback
 
 namespace page

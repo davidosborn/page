@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#ifndef    page_local_res_Node_hpp
-#   define page_local_res_Node_hpp
+#ifndef    page_local_res_node_Node_hpp
+#   define page_local_res_node_Node_hpp
 
 #	include <memory> // shared_ptr
 #	include <string>

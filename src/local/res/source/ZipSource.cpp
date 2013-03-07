@@ -35,7 +35,7 @@
 #include "../../sys/file.hpp"
 #include "../adapt/zip.hpp" // ZipError
 #include "../fmt/zip.hpp" // sig
-#include "../path.hpp" // NormPath
+#include "../node/path.hpp" // NormPath
 #include "../pipe/ZipPipe.hpp"
 #include "register.hpp" // REGISTER_SOURCE
 #include "ZipSource.hpp"

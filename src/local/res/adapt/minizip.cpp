@@ -32,7 +32,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../pipe/Pipe.hpp"
-#include "../Stream.hpp"
+#include "../pipe/Stream.hpp"
 
 namespace page
 {

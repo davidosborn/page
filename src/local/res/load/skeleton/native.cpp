@@ -37,9 +37,9 @@
 #include "../../../util/endian.hpp" // TransformEndian
 #include "../../fmt/native/skeleton.hpp"
 #include "../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../Stream.hpp"
+#include "../../pipe/Stream.hpp"
 #include "../../type/Skeleton.hpp"
-#include "../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../Registry.hpp" // REGISTER_LOADER
 
 namespace page
 {

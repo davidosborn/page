@@ -35,9 +35,9 @@
 #include <GL/glext.h> // GL_VERTEX_SHADER_ARB
 
 #include "../../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../../Stream.hpp" // Stream::GetText
+#include "../../../pipe/Stream.hpp" // Stream::GetText
 #include "../../../type/opengl/Shader.hpp"
-#include "../../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../../Registry.hpp" // REGISTER_LOADER
 
 namespace page
 {

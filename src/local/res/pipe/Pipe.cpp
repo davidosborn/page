@@ -33,7 +33,7 @@
 #include <memory> // unique_ptr
 
 #include "../../err/Exception.hpp"
-#include "../Stream.hpp"
+#include "Stream.hpp"
 #include "Pipe.hpp"
 
 namespace page

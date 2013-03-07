@@ -34,9 +34,9 @@
 #include <expat.h>
 
 #include "../../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../../Stream.hpp" // Stream::~Stream
+#include "../../../pipe/Stream.hpp" // Stream::~Stream
 #include "../../../type/Material.hpp"
-#include "../../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../../Registry.hpp" // REGISTER_LOADER
 
 namespace page
 {

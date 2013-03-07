@@ -35,32 +35,18 @@
 #include "../../err/Exception.hpp"
 #include "../../util/path/extension.hpp" // GetExtension
 #include "../node/Node.hpp"
-#include "../pipe/Pipe.hpp" // PipeLocker
 #include "Registry.hpp"
 
-namespace page { namespace res { namespace scan {
+namespace page { namespace res { namespace load {
 
 ////////// Record //////////////////////////////////////////////////////////////
 
-	Record::Record(const std::string &name, const Scanner &scanner, const std::vector<std::string> &extensions, const std::vector<std::string> &mimeTypes, bool inspect, int priority) :
-		name(name), scanner(scanner), extensions(extensions), mimeTypes(mimeTypes), inspect(inspect), priority(priority) {}
+	Record::Record(const Scanner &scanner, bool inspect, int priority) :
+		scanner(scanner), inspect(inspect), priority(priority) {}
 
 ////////// Registry ////////////////////////////////////////////////////////////
 
-	/**
-	 * The lock size to use for preloading (an optimization).
-	 *
-	 * @note Some scanners require larger lock sizes.
-	 *
-	 * @note Tar puts its 8 byte format identifier at offset 257, so its
-	 *       optimal lock size is 265.
-	 *
-	 * @note The FreeType BDF module reads in 1024 byte increments, so its
-	 *       optimal lock size is 1024.
-	 */
-	const unsigned Registry::lockSize = 1024;
-
-	void Registry::Register(const Record &record)
+	void Registry::Register(const std::type_info &type, const Record &record)
 	{
 		// function to compare record priority
 		auto greaterPriority(
@@ -73,12 +59,15 @@ namespace page { namespace res { namespace scan {
 					util::make_member_of(&Record::priority),
 					std::placeholders::_2)));
 
+		// get type record for type
+		auto &typeRecord(types.insert({type, {}}).first->second);
+
 		// add record to list
 		auto iter(
 			records.insert(
 				std::lower_bound(
-					records.begin(),
-					records.end(),
+					typeRecord.records.begin(),
+					typeRecord.records.end(),
 					record,
 					greaterPriority),
 				record));
@@ -86,7 +75,7 @@ namespace page { namespace res { namespace scan {
 		// associate extensions with record
 		for (const auto &extension : record.extensions)
 		{
-			auto &records(extensions.insert({extension, {}}).first->second);
+			auto &records(typeRecord.extensions.insert({extension, {}}).first->second);
 			records.insert(
 				std::lower_bound(
 					util::make_indirect_iterator(records.begin()),
@@ -99,7 +88,7 @@ namespace page { namespace res { namespace scan {
 		// associate mime types with record
 		for (const auto &mimeType : record.mimeTypes)
 		{
-			auto &records(mimeTypes.insert({extension, {}}).first->second);
+			auto &records(typeRecord.mimeTypes.insert({extension, {}}).first->second);
 			records.insert(
 				std::lower_bound(
 					util::make_indirect_iterator(records.begin()),
@@ -110,65 +99,69 @@ namespace page { namespace res { namespace scan {
 		}
 	}
 
-	bool Registry::Scan(const Node &node, const ScanCallback &callback) const
+	const Loader &Registry::GetLoader(const std::type_info &type, const Node &node) const
 	{
-		/* Lock the pipe for efficiency, since we're going to be repeatedly
-		 * opening it and reading its header. */
-		PipeLocker locker(*node.pipe, lockSize);
-
-		// reset tried flag
-		for (const auto &record : records)
-			record.tried = false;
-
-		// try scanners with matching mime type
-		if (!node.mime.empty())
+		auto iter(types.find(type));
+		if (iter != types.end())
 		{
-			auto iter(mimeTypes.find(node.mime));
-			if (iter != mimeTypes.end())
-			{
-				auto records(boost::adaptors::indirect(iter->second));
-				for (const auto &record : records)
-					if (!record.tried &&
-						(record.tried = true) &&
-						record.scanner(node.pipe, callback))
-							return true;
+			const auto &typeRecord(iter->second);
 
-				THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched mime type") <<
-					boost::errinfo_file_name(node.path) <<
-					err::errinfo_subject(node.mime)))
+			// reset tried flag
+			for (const auto &record : typeRecord.records)
+				record.tried = false;
+
+			// try loaders with matching mime type
+			if (!node.mime.empty())
+			{
+				auto iter(typeRecord.mimeTypes.find(node.mime));
+				if (iter != typeRecord.mimeTypes.end())
+				{
+					auto records(boost::adaptors::indirect(iter->second));
+					for (const auto &record : records)
+						if (record.inspect &&
+							!record.tried &&
+							(record.tried = true) &&
+							record.checker(*node.pipe))
+								return record.loader;
+
+					THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched mime type") <<
+						boost::errinfo_file_name(node.path) <<
+						err::errinfo_subject(node.mime)))
+				}
 			}
+
+			// try loaders with matching extension
+			auto extension(util::GetExtension(node.path));
+			if (!extension.empty())
+			{
+				auto iter(typeRecord.extensions.find(extension));
+				if (iter != typeRecord.extensions.end())
+				{
+					auto records(boost::adaptors::indirect(iter->second));
+					for (const auto &record : records)
+						if (record.inspect &&
+							!record.tried &&
+							(record.tried = true) &&
+							record.checker(*node.pipe))
+								return record.loader;
+
+					THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched extension") <<
+						boost::errinfo_file_name(node.path) <<
+						err::errinfo_subject(extension)))
+				}
+			}
+
+			// try all remaining loaders
+			if (node.inspect)
+				for (const auto &record : typeRecord.records)
+					if (record.inspect &&
+						!record.tried &&
+						(record.tried = true) &&
+						record.checker(*node.pipe))
+							return record.loader;
 		}
 
-		// try scanners with matching extension
-		auto extension(util::GetExtension(node.path));
-		if (!extension.empty())
-		{
-			auto iter(extensions.find(extension));
-			if (iter != extensions.end())
-			{
-				auto records(boost::adaptors::indirect(iter->second));
-				for (const auto &record : records)
-					if (!record.tried &&
-						(record.tried = true) &&
-						record.scanner(node.pipe, callback))
-							return true;
-
-				THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("mismatched extension") <<
-					boost::errinfo_file_name(node.path) <<
-					err::errinfo_subject(extension)))
-			}
-		}
-
-		// try all remaining scanners
-		if (node.inspect)
-			for (const auto &record : records)
-				if (record.inspect &&
-					!record.tried &&
-					(record.tried = true) &&
-					record.scanner(node.pipe, callback))
-						return true;
-
-		return false;
+		return nullptr;
 	}
 
 }}}

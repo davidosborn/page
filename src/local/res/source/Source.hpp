@@ -38,7 +38,7 @@
 #	include <vector>
 
 #	include "../load/function.hpp" // LoadFunction
-#	include "../Node.hpp"
+#	include "../node/Node.hpp"
 
 namespace page
 {

@@ -32,7 +32,7 @@
 #include <cstring> // memset
 
 #include "../../err/Exception.hpp"
-#include "../Stream.hpp"
+#include "Stream.hpp"
 #include "NullPipe.hpp"
 
 namespace page

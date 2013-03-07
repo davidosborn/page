@@ -34,7 +34,7 @@
 #include "../../err/Exception.hpp"
 #include "../../util/container/ScratchBuffer.hpp"
 #include "../adapt/minizip.hpp" // MakeZlibFileFuncDef
-#include "../Stream.hpp"
+#include "Stream.hpp"
 #include "MinizipPipe.hpp"
 
 namespace page

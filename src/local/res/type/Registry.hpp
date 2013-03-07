@@ -39,22 +39,27 @@
 
 #	include "../../util/class/Monostate.hpp"
 #	include "../../util/gcc/init_priority.hpp" // REG_INIT_PRIORITY
-#	include "../../util/memory/Deleter.hpp"
+#	include "../../util/memory/Deleter.hpp" // {,Default}Deleter
 
 namespace page { namespace res { namespace type {
 
 ////////// PostLoader //////////////////////////////////////////////////////////
 
 	/**
-	 * A function object which is called after loading a type.
+	 * A function object that is called after loading a type.
 	 */
-	struct PostLoader
+	class PostLoader
 	{
+		friend class Record;
+
+		public:
 		typedef void result_type;
 
+		private:
 		template <typename T>
 			PostLoader(const std::function<void (T &)> &);
 
+		public:
 		template <typename T>
 			void operator ()(T &) const;
 
@@ -74,13 +79,24 @@ namespace page { namespace res { namespace type {
 	 */
 	struct Record
 	{
-		template <typename T>
-			explicit Record(
-				const std::string &name,
-				const std::function<void (T &)> &postLoader = nullptr);
+		Record(
+			std::string    const& name,
+			PostLoader     const& postLoader,
+			util::Deleter  const& deleter);
 
-		std::string   name;
-		PostLoader    postLoader;
+		/**
+		 * The name of the type.
+		 */
+		std::string name;
+
+		/**
+		 * @copydoc PostLoader
+		 */
+		PostLoader postLoader;
+
+		/**
+		 * @copydoc util::Deleter
+		 */
 		util::Deleter deleter;
 	};
 
@@ -93,20 +109,29 @@ namespace page { namespace res { namespace type {
 	{
 		public:
 		/**
-		 * Registers a type with a record.
+		 * Registers a type.
 		 */
-		template <typename T, typename... RecordArgs>
-			void Register(RecordArgs &&...);
+		template <typename T>
+			void Register(
+				std::string                     const& name,
+				std::function<void (T &)>       const& postLoader = nullptr,
+				std::function<void (const T *)> const& deleter    = util::DefaultDeleter<T>());
 
 		private:
 		/**
-		 * Registers a type with a record.
+		 * @copydoc Register
 		 */
 		void Register(const std::type_info &, const Record &);
 
 		public:
 		/**
-		 * Returns the record associated with a specified type.
+		 * Returns the record associated with the specified type.
+		 */
+		template <typename T>
+			const Record &Query() const;
+
+		/**
+		 * @copydoc Query
 		 */
 		const Record &Query(const std::type_info &) const;
 
@@ -119,14 +144,14 @@ namespace page { namespace res { namespace type {
 	/**
 	 * Registers a type with @c Registry.
 	 */
-#	define REGISTER_TYPE(T, name, postLoader) \
+#	define REGISTER_TYPE(T, ...) \
 		namespace \
 		{ \
 			struct Initializer() \
 			{ \
 				Initializer() \
 				{ \
-					GLOBAL(::page::res::type::Registry).Register<T>(name, postLoader); \
+					GLOBAL(::page::res::type::Registry).Register<T>(__VA_ARGS__); \
 				} \
 			} initializer __attribute__((init_priority(REG_INIT_PRIORITY))); \
 		}

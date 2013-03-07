@@ -33,7 +33,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../../sys/file.hpp" // {Abs,Cat,Norm}Path, IsDir, ModTime, WalkDir
-#include "../path.hpp" // NormPath
+#include "../node/path.hpp" // NormPath
 #include "../pipe/FilePipe.hpp" // FilePipe::{,~}FilePipe
 #include "DirSource.hpp"
 #include "register.hpp" // REGISTER_SOURCE

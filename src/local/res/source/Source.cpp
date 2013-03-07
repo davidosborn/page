@@ -39,8 +39,8 @@
 #include "../../err/Exception.hpp"
 #include "../../err/report.hpp" // ReportWarning, std::exception
 #include "../../log/Indenter.hpp"
-#include "../load/registry.hpp" // GetRegisteredLoader, LoadFunction
-#include "../path.hpp" // CatPath
+#include "../load/Registry.hpp"
+#include "../node/path.hpp" // CatPath
 #include "../pipe/Pipe.hpp" // Pipe::Open
 #include "../scan/Registry.hpp"
 #include "../type/Registry.hpp"
@@ -148,7 +148,7 @@ namespace page
 				Path::Types::const_iterator iter(path.types.find(id.name()));
 				if (iter == path.types.end())
 				{
-					LoadFunction loader(GetRegisteredLoader(id, path.node));
+					LoadFunction loader(GLOBAL(load::Registry).GetLoader(id, path.node));
 					if (!loader)
 						THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("resource type mismatch") <<
 							boost::errinfo_file_name(path.node.path) <<

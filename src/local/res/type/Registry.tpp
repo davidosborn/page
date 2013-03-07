@@ -28,11 +28,8 @@
  * of this software.
  */
 
-#include <utility> // forward
-
 #include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
 #include "../../util/functional/cast.hpp" // reinterpret_cast_function
-#include "../../util/memory/Deleter.hpp" // {,Default}Deleter
 
 namespace page { namespace res { namespace type {
 
@@ -47,28 +44,26 @@ namespace page { namespace res { namespace type {
 	template <typename T>
 		void PostLoader::operator ()(T &t) const
 	{
-		if (f)
-			f(reinterpret_cast<Referenceable &>(t));
+		(*this)(&t);
 	}
-
-////////// Record //////////////////////////////////////////////////////////////
-
-	template <typename T>
-		Record::Record(
-			const std::string &name,
-			const std::function<void (T &)> &postLoader) :
-				name(name),
-				postLoader(postLoader),
-				deleter(util::DefaultDeleter<T>()) {}
 
 ////////// Registry ////////////////////////////////////////////////////////////
 
-	template <typename T, typename... RecordArgs>
-		void Registry::Register(RecordArgs &&... recordArgs)
+	template <typename T>
+		void Registry::Register(
+			std::string                     const& name,
+			std::function<void (T &)>       const& postLoader,
+			std::function<void (const T *)> const& deleter)
 	{
 		Register(
 			util::GetIncompleteTypeInfo<T>(),
-			Record(std::forward<RecordArgs>(recordArgs)...));
+			Record(name, postLoader, deleter));
+	}
+
+	template <typename T>
+		const Record &Registry::Query() const
+	{
+		return Query(util::GetIncompleteTypeInfo<T>());
 	}
 
 }}}

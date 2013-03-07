@@ -34,7 +34,7 @@
 
 #include "../err/Exception.hpp"
 #include "../util/string/operations.hpp" // NormEndl
-#include "Stream.hpp"
+#include "pipe/Stream.hpp"
 
 namespace page
 {

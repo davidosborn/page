@@ -28,8 +28,8 @@
  * of this software.
  */
 
-#include "../Stream.hpp"
 #include "CurlPipe.hpp"
+#include "Stream.hpp"
 
 namespace page
 {

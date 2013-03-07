@@ -34,7 +34,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../pipe/Pipe.hpp"
-#include "../Stream.hpp"
+#include "../pipe/Stream.hpp"
 #include "freetype.hpp"
 
 namespace page

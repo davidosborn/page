@@ -34,8 +34,7 @@
 
 #include "../err/Exception.hpp"
 #include "../sys/file.hpp" // AbsPath, NormPath
-#include "save/function.hpp" // SaveFunction
-#include "save/registry.hpp" // GetRegisteredSaver
+#include "save/Registry.hpp"
 #include "type/Registry.hpp"
 
 namespace page
@@ -45,7 +44,7 @@ namespace page
 		void Save(const void *res, const std::type_info &id, const std::string &path, const std::string &fmt)
 		{
 			SaveFunction save; std::string saverPath;
-			std::tie(save, saverPath) = GetRegisteredSaver(id, path, fmt);
+			std::tie(save, saverPath) = GLOBAL(save::Registry).GetSaver(id, path, fmt);
 			std::string
 				normPath(sys::NormPath(saverPath)),
 				absPath(sys::AbsPath(normPath));

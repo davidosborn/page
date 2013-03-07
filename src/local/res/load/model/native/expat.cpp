@@ -37,9 +37,9 @@
 #include <expat.h>
 
 #include "../../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../../Stream.hpp"
+#include "../../../pipe/Stream.hpp"
 #include "../../../type/Model.hpp"
-#include "../../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../../Registry.hpp" // REGISTER_LOADER
 
 // TEST: for file printing
 #include <iostream>

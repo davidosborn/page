@@ -32,7 +32,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../../sys/file.hpp" // FileSize, IsFile
-#include "../Stream.hpp"
+#include "Stream.hpp"
 #include "FilePipe.hpp"
 
 namespace page

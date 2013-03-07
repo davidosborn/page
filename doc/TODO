@@ -1,3 +1,8 @@
+Still need to do res/save/Registry and res/source/Registry.
+res/source/Source looks like a bit of a mess.
+res/load/* (all the loaders) need to be updated for the new res/load/Registry.
+res/format (all I did was change the name) needs to be cleaned up!
+
 Registries:
 - clip/encoder
 - inp/device

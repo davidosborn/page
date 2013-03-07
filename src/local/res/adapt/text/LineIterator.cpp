@@ -34,7 +34,7 @@
 #include "../../../log/manip.hpp" // Warning
 #include "../../../util/functional/locale.hpp" // isspace_function
 #include "../../../util/string/operations.hpp" // Partition, Trim{Leading,Trailing}
-#include "../../Stream.hpp" // Stream::GetLine
+#include "../../pipe/Stream.hpp" // Stream::GetLine
 #include "LineIterator.hpp"
 
 namespace page

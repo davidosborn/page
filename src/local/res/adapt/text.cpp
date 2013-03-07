@@ -31,7 +31,7 @@
 #include <string>
 
 #include "../../util/string/operations.hpp" // TrimLeading
-#include "../Stream.hpp"
+#include "../pipe/Stream.hpp"
 
 namespace page
 {

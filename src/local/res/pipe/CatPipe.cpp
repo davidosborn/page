@@ -32,8 +32,8 @@
 #include <cassert>
 #include <memory> // unique_ptr
 
-#include "../Stream.hpp"
 #include "CatPipe.hpp"
+#include "Stream.hpp"
 
 namespace page
 {

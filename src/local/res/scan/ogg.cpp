@@ -31,9 +31,9 @@
 #include <memory> // unique_ptr
 
 #include "../../util/cpp.hpp" // STRINGIZE
-#include "../Node.hpp"
+#include "../node/Node.hpp"
 #include "../pipe/Pipe.hpp" // Pipe::Open
-#include "../Stream.hpp"
+#include "../pipe/Stream.hpp"
 #include "Registry.hpp" // REGISTER_SCANNER
 
 namespace page
@@ -52,7 +52,6 @@ namespace page
 			STRINGIZE(OGG_NAME),
 			ScanOgg,
 			{"ogg"},
-			{"application/ogg", "audio/ogg", "video/ogg"},
-			true)*/
+			{"application/ogg", "audio/ogg", "video/ogg"})*/
 	}
 }

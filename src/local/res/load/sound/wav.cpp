@@ -38,10 +38,10 @@
 #include "../../fmt/wav.hpp"
 #include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../pipe/SubPipe.hpp"
-#include "../../Stream.hpp"
+#include "../../pipe/Stream.hpp"
 #include "../../type/Sound.hpp"
 #include "../../type/sound/PcmDecoder.hpp"
-#include "../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../Registry.hpp" // REGISTER_LOADER
 
 namespace page
 {

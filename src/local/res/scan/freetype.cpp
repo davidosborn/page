@@ -36,7 +36,7 @@
 #include "../../util/cpp.hpp" // STRINGIZE
 #include "../adapt/freetype.hpp" // GetLib, OpenArgs
 #include "../fmt/freetype/sub.hpp"
-#include "../Node.hpp"
+#include "../node/Node.hpp"
 #include "../pipe/CatPipe.hpp"
 #include "../pipe/MemPipe.hpp"
 #include "Registry.hpp" // REGISTER_SCANNER
@@ -68,7 +68,6 @@ namespace page
 			STRINGIZE(FREETYPE_NAME),
 			ScanFreetype,
 			{"bdf", "cff", "fnt", "fon", "otf", "pcf", "pfa", "pfb", "pfr", "ttc", "ttf"},
-			{"application/x-font-bdf", "application/x-font-opentype", "application/x-font-truetype"},
-			true)
+			{"application/x-font-bdf", "application/x-font-opentype", "application/x-font-truetype"})
 	}
 }

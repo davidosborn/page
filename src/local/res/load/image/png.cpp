@@ -38,9 +38,9 @@
 #include "../../../err/Exception.hpp"
 #include "../../adapt/png.hpp" // ReadInfo
 #include "../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../Stream.hpp"
+#include "../../pipe/Stream.hpp"
 #include "../../type/Image.hpp"
-#include "../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../Registry.hpp" // REGISTER_LOADER
 
 namespace page
 {

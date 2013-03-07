@@ -32,7 +32,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../../log/manip.hpp" // Warning
-#include "../Stream.hpp"
+#include "../pipe/Stream.hpp"
 #include "png.hpp"
 
 namespace page

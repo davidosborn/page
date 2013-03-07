@@ -37,91 +37,94 @@
 #include "../../../util/endian.hpp" // TransformEndian{,Array}
 #include "../../fmt/native/cameraSet.hpp"
 #include "../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../Stream.hpp"
+#include "../../pipe/Stream.hpp"
 #include "../../type/CameraSet.hpp"
-#include "../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../Registry.hpp" // REGISTER_LOADER
 
-namespace page
-{
-	namespace res
+namespace page { namespace res { namespace load { namespace {
+
+	CameraSet *LoadNativeCameraSet(const std::shared_ptr<const Pipe> &pipe)
 	{
-		CameraSet *LoadNativeCameraSet(const std::shared_ptr<const Pipe> &pipe)
+		assert(pipe);
+		const std::unique_ptr<Stream> stream(pipe->Open());
+		// check signature
+		char sig[sizeof fmt::sig];
+		if (stream->ReadSome(sig, sizeof sig) != sizeof sig ||
+			std::memcmp(sig, fmt::sig, sizeof sig)) return 0;
+		// read header
+		fmt::Header header;
+		stream->Read(&header, sizeof header);
+		util::TransformEndian(&header, fmt::headerFormat, util::littleEndian);
+		// create camera set
+		const std::unique_ptr<CameraSet> cs(new CameraSet);
+		// read cameras
+		cs->cameras.reserve(header.cameras);
+		for (unsigned i = 0; i < header.cameras; ++i)
 		{
-			assert(pipe);
-			const std::unique_ptr<Stream> stream(pipe->Open());
-			// check signature
-			char sig[sizeof fmt::sig];
-			if (stream->ReadSome(sig, sizeof sig) != sizeof sig ||
-				std::memcmp(sig, fmt::sig, sizeof sig)) return 0;
-			// read header
-			fmt::Header header;
-			stream->Read(&header, sizeof header);
-			util::TransformEndian(&header, fmt::headerFormat, util::littleEndian);
-			// create camera set
-			const std::unique_ptr<CameraSet> cs(new CameraSet);
-			// read cameras
-			cs->cameras.reserve(header.cameras);
-			for (unsigned i = 0; i < header.cameras; ++i)
+			fmt::Camera fmtCamera;
+			stream->Read(&fmtCamera, sizeof fmtCamera);
+			util::TransformEndian(&fmtCamera, fmt::cameraFormat, util::littleEndian);
+			// insert camera
+			CameraSet::Camera camera =
 			{
-				fmt::Camera fmtCamera;
-				stream->Read(&fmtCamera, sizeof fmtCamera);
-				util::TransformEndian(&fmtCamera, fmt::cameraFormat, util::littleEndian);
-				// insert camera
-				CameraSet::Camera camera =
-				{
-					"", // FIXME: support camera names
-					math::Vector<3>(
-						fmtCamera.position[0],
-						fmtCamera.position[1],
-						fmtCamera.position[2]),
-					math::Quat<>(
-						fmtCamera.orientation[0],
-						fmtCamera.orientation[1],
-						fmtCamera.orientation[2],
-						fmtCamera.orientation[3]),
-					4.f / 3, // FIXME: support camera aspect
-					fmtCamera.fov,
-					static_cast<CameraSet::Camera::Tracking>(fmtCamera.tracking),
-					fmtCamera.trackingDistance
-				};
-				cs->cameras.push_back(camera);
-			}
-			// read track faces
-			cs->trackFaces.reserve(header.trackFaces);
-			for (unsigned i = 0; i < header.trackFaces; ++i)
-			{
-				fmt::TrackFace fmtTrackFace;
-				stream->Read(&fmtTrackFace, sizeof fmtTrackFace);
-				util::TransformEndian(&fmtTrackFace, fmt::trackFaceFormat, util::littleEndian);
-				// read track face cameras
-				typedef std::vector<fmt::TrackFaceCamera> FmtCameras;
-				FmtCameras fmtCameras(fmtTrackFace.cameras);
-				stream->Read(&*fmtCameras.begin(), sizeof *fmtCameras.begin() * fmtCameras.size());
-				util::TransformEndianArray(&*fmtCameras.begin(), fmtCameras.size(), fmt::trackFaceCameraFormat, util::littleEndian);
-				// insert track face cameras
-				CameraSet::TrackFace trackFace;
-				trackFace.cameras.reserve(fmtTrackFace.cameras);
-				for (FmtCameras::iterator fmtCamera(fmtCameras.begin()); fmtCamera != fmtCameras.end(); ++fmtCamera)
-				{
-					if (*fmtCamera >= cs->cameras.size())
-						THROW((err::Exception<err::ResModuleTag, err::FormatTag, err::RangeTag>("camera index out of range")))
-					trackFace.cameras.push_back(cs->cameras.begin() + *fmtCamera);
-				}
-				// insert track face
-				cs->trackFaces.push_back(trackFace);
-			}
-			return cs.release();
+				"", // FIXME: support camera names
+				math::Vector<3>(
+					fmtCamera.position[0],
+					fmtCamera.position[1],
+					fmtCamera.position[2]),
+				math::Quat<>(
+					fmtCamera.orientation[0],
+					fmtCamera.orientation[1],
+					fmtCamera.orientation[2],
+					fmtCamera.orientation[3]),
+				4.f / 3, // FIXME: support camera aspect
+				fmtCamera.fov,
+				static_cast<CameraSet::Camera::Tracking>(fmtCamera.tracking),
+				fmtCamera.trackingDistance
+			};
+			cs->cameras.push_back(camera);
 		}
-
-		LoadFunction GetNativeCameraSetLoader(const Pipe &pipe)
+		// read track faces
+		cs->trackFaces.reserve(header.trackFaces);
+		for (unsigned i = 0; i < header.trackFaces; ++i)
 		{
-			const std::unique_ptr<Stream> stream(pipe.Open());
-			char sig[sizeof fmt::sig];
-			return stream->ReadSome(sig, sizeof sig) == sizeof sig &&
-				!std::memcmp(sig, fmt::sig, sizeof sig) ? LoadNativeCameraSet : LoadFunction();
+			fmt::TrackFace fmtTrackFace;
+			stream->Read(&fmtTrackFace, sizeof fmtTrackFace);
+			util::TransformEndian(&fmtTrackFace, fmt::trackFaceFormat, util::littleEndian);
+			// read track face cameras
+			typedef std::vector<fmt::TrackFaceCamera> FmtCameras;
+			FmtCameras fmtCameras(fmtTrackFace.cameras);
+			stream->Read(&*fmtCameras.begin(), sizeof *fmtCameras.begin() * fmtCameras.size());
+			util::TransformEndianArray(&*fmtCameras.begin(), fmtCameras.size(), fmt::trackFaceCameraFormat, util::littleEndian);
+			// insert track face cameras
+			CameraSet::TrackFace trackFace;
+			trackFace.cameras.reserve(fmtTrackFace.cameras);
+			for (FmtCameras::iterator fmtCamera(fmtCameras.begin()); fmtCamera != fmtCameras.end(); ++fmtCamera)
+			{
+				if (*fmtCamera >= cs->cameras.size())
+					THROW((err::Exception<err::ResModuleTag, err::FormatTag, err::RangeTag>("camera index out of range")))
+				trackFace.cameras.push_back(cs->cameras.begin() + *fmtCamera);
+			}
+			// insert track face
+			cs->trackFaces.push_back(trackFace);
 		}
-
-		REGISTER_LOADER(CameraSet, GetNativeCameraSetLoader,
-			"cam,pagecam", "", "", true)
+		return cs.release();
 	}
-}
+
+	bool CheckNativeCameraSet(const Pipe &pipe)
+	{
+		const std::unique_ptr<Stream> stream(pipe.Open());
+		char sig[sizeof fmt::sig];
+		return
+			stream->ReadSome(sig, sizeof sig) == sizeof sig &&
+			!std::memcmp(sig, fmt::sig, sizeof sig);
+	}
+
+	REGISTER_LOADER(
+		CameraSet,
+		STRINGIZE(NAME) " camera-set"
+		CheckNativeCameraSet,
+		LoadNativeCameraSet,
+		{"cam", "pagecam"})
+
+}}}}

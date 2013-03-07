@@ -37,10 +37,10 @@
 #include "../log/Indenter.hpp"
 #include "../opt.hpp" // resourceSources
 #include "Index.hpp"
-#include "path.hpp" // NormPath
-#include "source/registry.hpp" // MakeSource
+#include "node/path.hpp" // NormPath
+#include "pipe/Stream.hpp" // Stream::GetText
+#include "source/Registry.hpp"
 #include "source/Source.hpp" // Source::{~Source,Open,Refresh}
-#include "Stream.hpp" // Stream::GetText
 #include "type/Registry.hpp"
 
 namespace page
@@ -63,7 +63,7 @@ namespace page
 			// executes, which is where all the indexing happens.
 			std::cout << "indexing source: " << path << std::endl;
 			log::Indenter indenter;
-			sources.push_front(std::shared_ptr<Source>(MakeSource(path)));
+			sources.push_front(GLOBAL(source::Registry).Make(path));
 		}
 		void Index::Refresh()
 		{

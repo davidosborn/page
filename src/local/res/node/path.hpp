@@ -28,33 +28,20 @@
  * of this software.
  */
 
-#ifndef    page_local_res_save_registry_hpp
-#   define page_local_res_save_registry_hpp
+#ifndef    page_local_res_node_path_hpp
+#   define page_local_res_node_path_hpp
 
 #	include <string>
-#	include <typeinfo> // type_info
-#	include <utility> // pair
-
-#	include "function.hpp" // SaveFunction
 
 namespace page
 {
 	namespace res
 	{
-		// access
-		std::pair<SaveFunction, std::string>
-			GetRegisteredSaver(
-				const std::type_info &,
-				const std::string &path,
-				const std::string &format);
+		std::string NormPath(const std::string &);
+		std::string CatPath(const std::string &, const std::string &);
 
-		// registration
-		void RegisterSaver(
-			const std::type_info &,
-			const SaveFunction &,
-			const std::string &extension,
-			const std::string &format,
-			unsigned rank);
+		std::string BaseName(const std::string &);
+		std::string DirName(const std::string &);
 	}
 }
 

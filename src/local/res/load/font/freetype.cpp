@@ -38,7 +38,7 @@
 #include "../../../err/Exception.hpp"
 #include "../../adapt/freetype.hpp" // FracToFloat, GetLib, OpenArgs
 #include "../../type/Font.hpp"
-#include "../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../Registry.hpp" // REGISTER_LOADER
 #include "freetype.hpp" // LoadFreetypeFont
 
 namespace page

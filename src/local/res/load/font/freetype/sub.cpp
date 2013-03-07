@@ -34,8 +34,8 @@
 #include "../../../adapt/freetype.hpp" // GetLib, OpenArgs
 #include "../../../fmt/freetype/sub.hpp"
 #include "../../../pipe/Pipe.hpp" // Pipe::Open
-#include "../../../Stream.hpp" // Stream::{~Stream,ReadSome}
-#include "../../register.hpp" // LoadFunction, REGISTER_LOADER
+#include "../../../pipe/Stream.hpp" // Stream::{~Stream,ReadSome}
+#include "../../Registry.hpp" // REGISTER_LOADER
 #include "../freetype.hpp" // LoadFreetypeFont
 
 namespace page

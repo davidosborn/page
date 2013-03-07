@@ -1791,7 +1791,7 @@ local/res/load/mesh/3ds
 local/res/load/mesh/native
 local/res/load/model/native
 local/res/load/object/native
-local/res/load/registry
+local/res/load/Registry
 local/res/load/scene/native
 local/res/load/skeleton/native
 local/res/load/sound/wav
@@ -1808,11 +1808,11 @@ local/res/pipe/Pipe
 local/res/pipe/SubPipe
 local/res/save
 local/res/save/image/bmp
-local/res/save/registry
+local/res/save/Registry
 local/res/scan/Registry
 local/res/source/DirSource
 local/res/source/FileSource
-local/res/source/registry
+local/res/source/Registry
 local/res/source/Source
 local/res/Stream
 local/res/type/Animation
