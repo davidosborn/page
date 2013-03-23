@@ -2,7 +2,7 @@
 
 # @section license
 #
-# Copyright (c) 2006-2012 David Osborn
+# Copyright (c) 2006-2013 David Osborn
 #
 # Permission is granted to use and redistribute this software in source and
 # binary form, with or without modification, subject to the following
@@ -36,7 +36,7 @@ PACKAGE='page'
 AUTHOR='David Osborn'
 BUGS='davidcosborn@gmail.com'
 LONGNAME='Portable Adventure Game Engine'
-COPYRIGHT='Copyright (c) 2006-2012 David Osborn'
+COPYRIGHT='Copyright (c) 2006-2013 David Osborn'
 
 VER_MAJOR=0
 VER_MINOR=3
@@ -2350,7 +2350,7 @@ cat >config.status <<\CSEOF
 #
 # @section license
 #
-# Copyright (c) 2006-2012 David Osborn
+# Copyright (c) 2006-2013 David Osborn
 #
 # Permission is granted to use and redistribute this software in source and
 # binary form, with or without modification, subject to the following

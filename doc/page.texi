@@ -13,7 +13,7 @@
 @copying
 This manual is for PAGE, the Portable Adventure Game Engine.
 
-Copyright @copyright{} 2006-2012 David Osborn
+Copyright @copyright{} 2006-2013 David Osborn
 
 @noindent
 Permission is granted to use and redistribute this software in source and binary form, with or without modification, subject to the following conditions:
@@ -204,7 +204,7 @@ Blender is the primary 3D content creation tool supported by @acronym{PAGE}. The
 @section License
 
 @cindex license
-Copyright @copyright{} 2006-2012 David Osborn
+Copyright @copyright{} 2006-2013 David Osborn
 
 @noindent
 Permission is granted to use and redistribute this software in source and binary form, with or without modification, subject to the following conditions:

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2006-2012 David Osborn
+Copyright (c) 2006-2013 David Osborn
 
 Permission is granted to use and redistribute this software in source and binary
 form, with or without modification, subject to the following conditions:
