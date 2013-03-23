@@ -34,24 +34,18 @@
 #	include "../../channel/SpatialChannel.hpp"
 #	include "../Channel.hpp"
 
-namespace page
+namespace page { namespace aud { namespace openal
 {
-	namespace aud
+	struct SpatialChannel : Channel, aud::SpatialChannel
 	{
-		namespace openal
-		{
-			struct SpatialChannel : Channel, aud::SpatialChannel
-			{
-				// construct/destroy
-				SpatialChannel(const phys::Sound &);
-				~SpatialChannel();
+		// construct/destroy
+		SpatialChannel(const phys::Sound &);
+		~SpatialChannel();
 
-				private:
-				// update
-				void DoUpdate3();
-			};
-		}
-	}
-}
+		private:
+		// update
+		void DoUpdate3();
+	};
+}}}
 
 #endif

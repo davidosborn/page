@@ -35,39 +35,36 @@
 #include "Character.hpp" // Character::pathfindingController
 #include "Player.hpp"
 
-namespace page
+namespace page { namespace game
 {
-	namespace game
+	// construct/destroy
+	Player::Player(const std::shared_ptr<Character> &character) :
+		character(character)
 	{
-		// construct/destroy
-		Player::Player(const std::shared_ptr<Character> &character) :
-			character(character)
-		{
-			character->SetType(phys::Collidable::active);
-		}
-		Player::~Player()
-		{
-			character->SetType(phys::Collidable::passive);
-		}
-
-		// character access
-		std::shared_ptr<Character> Player::GetCharacter()
-		{
-			return character;
-		}
-		std::shared_ptr<const Character> Player::GetCharacter() const
-		{
-			return character;
-		}
-
-		// update
-		void Player::Update(const inp::Driver &driver)
-		{
-			math::Vector<2> dir(driver.GetDirection() * (driver.GetModifier(inp::Driver::runModifier) + 1));
-			math::Vector<2> fwd(Rotate(math::Vector<2>(0, dir.y),
-				math::Euler<>(character->GetOrientation()).yaw));
-			character->pathfindingController->SetForce(math::Vector<3>(fwd.x, 0, fwd.y) * 2);
-			character->pathfindingController->SetForce(math::Euler<>(-dir.x, 0, 0) * 2);
-		}
+		character->SetType(phys::Collidable::active);
 	}
-}
+	Player::~Player()
+	{
+		character->SetType(phys::Collidable::passive);
+	}
+
+	// character access
+	std::shared_ptr<Character> Player::GetCharacter()
+	{
+		return character;
+	}
+	std::shared_ptr<const Character> Player::GetCharacter() const
+	{
+		return character;
+	}
+
+	// update
+	void Player::Update(const inp::Driver &driver)
+	{
+		math::Vector<2> dir(driver.GetDirection() * (driver.GetModifier(inp::Driver::runModifier) + 1));
+		math::Vector<2> fwd(Rotate(math::Vector<2>(0, dir.y),
+			math::Euler<>(character->GetOrientation()).yaw));
+		character->pathfindingController->SetForce(math::Vector<3>(fwd.x, 0, fwd.y) * 2);
+		character->pathfindingController->SetForce(math::Euler<>(-dir.x, 0, 0) * 2);
+	}
+}}

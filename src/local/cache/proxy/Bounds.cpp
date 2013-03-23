@@ -43,121 +43,108 @@
 #include "../../util/iterator/member_iterator.hpp"
 #include "Bounds.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
+
+	Bounds::Bounds(const res::Model &model, bool pose)
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		std::transform(
+			util::make_member_iterator(model.parts.begin(), &res::Model::Part::mesh),
+			util::make_member_iterator(model.parts.end(),   &res::Model::Part::mesh),
+			std::back_inserter(meshes),
+			std::mem_fn(&Proxy<res::Mesh>::Copy));
 
-		Bounds::Bounds(const res::Model &model, bool pose)
-		{
-			std::transform(
-				util::make_member_iterator(model.parts.begin(), &res::Model::Part::mesh),
-				util::make_member_iterator(model.parts.end(),   &res::Model::Part::mesh),
-				std::back_inserter(meshes),
-				std::mem_fn(&Proxy<res::Mesh>::Copy));
+		if (pose && model.skeleton)
+			skeleton = model.skeleton.Copy();
 
-			if (pose && model.skeleton)
-				skeleton = model.skeleton.Copy();
+		PostInit();
+	}
 
-			PostInit();
-		}
+	Bounds::Bounds(const Proxy<res::Mesh> &mesh) :
+		Bounds(&mesh, &mesh + 1) {}
 
-		Bounds::Bounds(const Proxy<res::Mesh> &mesh) :
-			Bounds(&mesh, &mesh + 1) {}
+	Bounds::Bounds(const Proxy<res::Mesh> &mesh, const Proxy<res::Skeleton> &skeleton) :
+		Bounds(&mesh, &mesh + 1, skeleton) {}
 
-		Bounds::Bounds(const Proxy<res::Mesh> &mesh, const Proxy<res::Skeleton> &skeleton) :
-			Bounds(&mesh, &mesh + 1, skeleton) {}
+	/*----------+
+	| observers |
+	+----------*/
 
-		/*------+
-		| clone |
-		+------*/
+	std::string Bounds::GetType() const
+	{
+		return "bounds";
+	}
 
-		Bounds *Bounds::Clone() const
-		{
-			return new Bounds(*this);
-		}
+	std::string Bounds::GetSource() const
+	{
+		std::ostringstream ss;
+		util::Serialize(ss,
+			util::make_call_iterator(util::make_indirect_iterator(meshes.begin()),
+				std::mem_fn(&Proxy<res::Mesh>::GetSource)),
+			util::make_call_iterator(util::make_indirect_iterator(meshes.end()),
+				std::mem_fn(&Proxy<res::Mesh>::GetSource)), ',');
 
-		/*----------+
-		| observers |
-		+----------*/
+		if (skeleton)
+			// NOTE: using alternate separator to differentiate from mesh
+			ss << '+' << skeleton->GetSource();
 
-		std::string Bounds::GetType() const
-		{
-			return "bounds";
-		}
+		return ss.str();
+	}
 
-		std::string Bounds::GetSource() const
-		{
-			std::ostringstream ss;
-			util::Serialize(ss,
-				util::make_call_iterator(util::make_indirect_iterator(meshes.begin()),
-					std::mem_fn(&Proxy<res::Mesh>::GetSource)),
-				util::make_call_iterator(util::make_indirect_iterator(meshes.end()),
-					std::mem_fn(&Proxy<res::Mesh>::GetSource)), ',');
-
-			if (skeleton)
-				// NOTE: using alternate separator to differentiate from mesh
-				ss << '+' << skeleton->GetSource();
-
-			return ss.str();
-		}
-
-		Bounds::operator bool() const
-		{
-			if (std::find(
-				util::make_indirect_iterator(meshes.begin()),
-				util::make_indirect_iterator(meshes.end()),
-				false).base() != meshes.end())
-					return false;
-
-			if (skeleton && !*skeleton)
+	Bounds::operator bool() const
+	{
+		if (std::find(
+			util::make_indirect_iterator(meshes.begin()),
+			util::make_indirect_iterator(meshes.end()),
+			false).base() != meshes.end())
 				return false;
 
-			return true;
-		}
+		if (skeleton && !*skeleton)
+			return false;
 
-		/*--------------+
-		| instantiation |
-		+--------------*/
-
-		Bounds::Instance Bounds::Make() const
-		{
-			return skeleton ?
-				std::make_shared<phys::Bounds>(
-					util::make_indirect_iterator(util::make_indirect_iterator(meshes.begin())),
-					util::make_indirect_iterator(util::make_indirect_iterator(meshes.end())),
-					**skeleton) :
-				std::make_shared<phys::Bounds>(
-					util::make_indirect_iterator(util::make_indirect_iterator(meshes.begin())),
-					util::make_indirect_iterator(util::make_indirect_iterator(meshes.end())));
-		}
-
-		/*---------------+
-		| initialization |
-		+---------------*/
-
-		void Bounds::PostInit()
-		{
-			// ensure pointers are valid
-			assert(std::find(meshes.begin(), meshes.end(), nullptr) == meshes.end());
-
-			// sort meshes by source
-			using namespace std::placeholders;
-			sort(meshes.begin(), meshes.end(),
-				bind(Proxy<res::Mesh>::CompareSource(),
-					bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _1),
-					bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _2)));
-
-			// remove duplicate meshes
-			meshes.erase(
-				unique(meshes.begin(), meshes.end(),
-					bind(Proxy<res::Mesh>::CompareSource(),
-						bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _1),
-						bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), _2))),
-				meshes.end());
-		}
+		return true;
 	}
-}
+
+	/*--------------+
+	| instantiation |
+	+--------------*/
+
+	Bounds::Instance Bounds::Make() const
+	{
+		return skeleton ?
+			std::make_shared<phys::Bounds>(
+				util::make_indirect_iterator(util::make_indirect_iterator(meshes.begin())),
+				util::make_indirect_iterator(util::make_indirect_iterator(meshes.end())),
+				**skeleton) :
+			std::make_shared<phys::Bounds>(
+				util::make_indirect_iterator(util::make_indirect_iterator(meshes.begin())),
+				util::make_indirect_iterator(util::make_indirect_iterator(meshes.end())));
+	}
+
+	/*---------------+
+	| initialization |
+	+---------------*/
+
+	void Bounds::PostInit()
+	{
+		// ensure pointers are valid
+		assert(std::find(meshes.begin(), meshes.end(), nullptr) == meshes.end());
+
+		// sort meshes by source
+		std::sort(meshes.begin(), meshes.end(),
+			std::bind(Proxy<res::Mesh>::CompareSource(),
+				std::bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), std::placeholders::_1),
+				std::bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), std::placeholders::_2)));
+
+		// remove duplicate meshes
+		meshes.erase(
+			std::unique(meshes.begin(), meshes.end(),
+				std::bind(Proxy<res::Mesh>::CompareSource(),
+					std::bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), std::placeholders::_1),
+					std::bind(util::dereference<util::copy_ptr<Proxy<res::Mesh>>>(), std::placeholders::_2))),
+			meshes.end());
+	}
+}}

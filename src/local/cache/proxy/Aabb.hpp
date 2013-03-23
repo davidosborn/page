@@ -36,77 +36,69 @@
 #	include "../../util/raii/copy_ptr.hpp"
 #	include "Proxy.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
-	{
-		class Bounds;
-		class Form;
-		namespace attrib { class Pose; }
-	}
+	class Bounds;
+	class Form;
+	namespace attrib { class Pose; }
+}}
 
-	namespace cache
+namespace page { namespace cache
+{
+	/**
+	 * A proxy representing an axis-aligned bounding-box in the cache.
+	 */
+	class Aabb :
+		public Proxy<math::Aabb<3>>,
+		public virtual util::Cloneable<Aabb, Proxy<math::Aabb<3>>>
 	{
+		/*------+
+		| types |
+		+------*/
+
+		public:
+		typedef typename Proxy<math::Aabb<3>>::Instance Instance;
+
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		public:
 		/**
-		 * A proxy representing an axis-aligned bounding-box in the cache.
+		 * Creates a proxy for an AABB around an optionally-posed form.
 		 */
-		class Aabb : public Proxy<math::Aabb<3>>
-		{
-			/*------+
-			| types |
-			+------*/
+		explicit Aabb(const phys::Form &, bool pose = true);
 
-			public:
-			typedef typename Proxy<math::Aabb<3>>::Instance Instance;
+		/**
+		 * Creates a proxy for an AABB around an optionally-posed bounding-
+		 * skeleton
+		 */
+		Aabb(const Proxy<phys::Bounds> &, const phys::attrib::Pose &);
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		/*----------+
+		| observers |
+		+----------*/
 
-			public:
-			/**
-			 * Creates a proxy for an AABB around an optionally-posed form.
-			 */
-			explicit Aabb(const phys::Form &, bool pose = true);
+		public:
+		std::string GetType() const override;
+		std::string GetSource() const override;
+		operator bool() const override;
 
-			/**
-			 * Creates a proxy for an AABB around an optionally-posed bounding-
-			 * skeleton
-			 */
-			Aabb(const Proxy<phys::Bounds> &, const phys::attrib::Pose &);
+		/*--------------+
+		| instantiation |
+		+--------------*/
 
-			/*------+
-			| clone |
-			+------*/
+		private:
+		Instance Make() const override;
 
-			public:
-			Aabb *Clone() const override;
+		/*-------------+
+		| data members |
+		+-------------*/
 
-			/*----------+
-			| observers |
-			+----------*/
-
-			public:
-			std::string GetType() const override;
-			std::string GetSource() const override;
-			operator bool() const override;
-
-			/*--------------+
-			| instantiation |
-			+--------------*/
-
-			private:
-			Instance Make() const override;
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			util::copy_ptr<Proxy<phys::Bounds>> bounds;
-			util::Identifiable::Id id;
-		};
-	}
-}
+		private:
+		util::copy_ptr<Proxy<phys::Bounds>> bounds;
+		util::Identifiable::Id id;
+	};
+}}
 
 #endif

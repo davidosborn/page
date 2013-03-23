@@ -33,36 +33,33 @@
 
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class Camera;
+	class Positionable;
+
+	class CameraFocusController :
+		public Controller,
+		public virtual util::Cloneable<CameraFocusController, Controller>
 	{
-		class Camera;
-		class Positionable;
+		public:
+		// construct
+		CameraFocusController(const Camera &, const Positionable &target);
 
-		struct CameraFocusController : Controller
-		{
-			// construct
-			CameraFocusController(const Camera &, const Positionable &target);
+		// modifiers
+		void Track(const Positionable &target);
 
-			// clone
-			CameraFocusController *Clone() const;
+		// dependencies
+		Dependencies GetDependencies() const;
 
-			// modifiers
-			void Track(const Positionable &target);
+		private:
+		// generate frame
+		Frame DoGetFrame(const Frame &, const Frame &) const;
 
-			// dependencies
-			Dependencies GetDependencies() const;
-
-			private:
-			// generate frame
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			const Camera &camera;
-			const Positionable *target;
-			Dependencies dependencies;
-		};
-	}
-}
+		const Camera &camera;
+		const Positionable *target;
+		Dependencies dependencies;
+	};
+}}
 
 #endif

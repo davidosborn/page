@@ -35,46 +35,43 @@
 #	include "../../res/type/Gait.hpp" // Gait::State
 #	include "AnimationTargetController.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	namespace attrib { class PositionOrientation; }
+
+	class GaitController :
+		public AnimationTargetController,
+		public virtual util::Cloneable<GaitController, AnimationTargetController>
 	{
-		namespace attrib { class PositionOrientation; }
+		public:
+		// construct
+		GaitController(
+			const attrib::PositionOrientation &,
+			const cache::Proxy<res::Gait> &);
 
-		struct GaitController : AnimationTargetController
+		private:
+		enum State
 		{
-			// construct
-			GaitController(
-				const attrib::PositionOrientation &,
-				const cache::Proxy<res::Gait> &);
-
-			// clone
-			GaitController *Clone() const;
-
-			private:
-			enum State
-			{
-				noState,
-				runState,
-				sneakState,
-				turnState,
-				walkState
-			};
-
-			// modifiers
-			void SetState(State);
-			void SetState(const res::Gait::State &);
-
-			// update hooks
-			void UpdateTargets(float deltaTime);
-			float FixDeltaTime(float deltaTime);
-
-			const attrib::PositionOrientation &body;
-			cache::Proxy<res::Gait>::Instance gait;
-			State state;
-			float stride;
+			noState,
+			runState,
+			sneakState,
+			turnState,
+			walkState
 		};
-	}
-}
+
+		// modifiers
+		void SetState(State);
+		void SetState(const res::Gait::State &);
+
+		// update hooks
+		void UpdateTargets(float deltaTime);
+		float FixDeltaTime(float deltaTime);
+
+		const attrib::PositionOrientation &body;
+		cache::Proxy<res::Gait>::Instance gait;
+		State state;
+		float stride;
+	};
+}}
 
 #endif

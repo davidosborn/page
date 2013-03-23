@@ -36,47 +36,44 @@
 
 #	include "../Widget.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	class Window :
+		public Widget,
+		public virtual util::Cloneable<Window, Widget>
 	{
-		struct Window : Widget
-		{
-			// construct
-			explicit Window(const std::string &title = "");
-			Window(const std::string &title, const Widget &child);
-			Window(const std::string &title, const std::shared_ptr<Widget> &child);
+		public:
+		// construct
+		explicit Window(const std::string &title = "");
+		Window(const std::string &title, const Widget &child);
+		Window(const std::string &title, const std::shared_ptr<Widget> &child);
 
-			// clone
-			Window *Clone() const;
+		// cursor event notification
+		bool OnOver(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		bool OnDown(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		bool OnClick(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
 
-			// cursor event notification
-			bool OnOver(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
-			bool OnDown(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
-			bool OnClick(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		private:
+		// metrics
+		Size CalcSize(const res::Theme &) const;
 
-			private:
-			// metrics
-			Size CalcSize(const res::Theme &) const;
+		// rendering
+		void DoDraw(DrawContext &) const;
 
-			// rendering
-			void DoDraw(DrawContext &) const;
+		// update
+		void DoUpdate(float deltaTime);
 
-			// update
-			void DoUpdate(float deltaTime);
+		// internal metrics
+		math::Vector<2> GetTitleSize(const res::Theme &) const;
+		float GetTitleHeight(const res::Theme &) const;
 
-			// internal metrics
-			math::Vector<2> GetTitleSize(const res::Theme &) const;
-			float GetTitleHeight(const res::Theme &) const;
+		// child hit detection
+		typedef std::function<bool (Widget *, const math::Vector<2> &position, const math::Vector<2> &size)> HitCallback;
+		bool CheckHit(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size, const HitCallback &);
 
-			// child hit detection
-			typedef std::function<bool (Widget *, const math::Vector<2> &position, const math::Vector<2> &size)> HitCallback;
-			bool CheckHit(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size, const HitCallback &);
-
-			std::string title;
-			std::shared_ptr<Widget> child;
-		};
-	}
-}
+		std::string title;
+		std::shared_ptr<Widget> child;
+	};
+}}
 
 #endif

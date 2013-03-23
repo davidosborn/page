@@ -39,42 +39,39 @@
 #	include "../../math/Quat.hpp"
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	namespace attrib { class Pose; }
+
+	class BlinkController :
+		public Controller,
+		public virtual util::Cloneable<BlinkController, Controller>
 	{
-		namespace attrib { class Pose; }
+		public:
+		// construct
+		explicit BlinkController(const attrib::Pose &);
 
-		struct BlinkController : Controller
+		// check compatibility
+		static bool Check(const attrib::Pose &);
+
+		private:
+		// update/generate frame
+		void DoUpdate(float deltaTime);
+		Frame DoGetFrame(const Frame &, const Frame &) const;
+
+		enum State
 		{
-			// construct
-			explicit BlinkController(const attrib::Pose &);
-
-			// clone
-			BlinkController *Clone() const;
-
-			// check compatibility
-			static bool Check(const attrib::Pose &);
-
-			private:
-			// update/generate frame
-			void DoUpdate(float deltaTime);
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			enum State
-			{
-				openState,
-				closingState,
-				closedState,
-				openingState
-			} state;
-			float open, delay;
-			math::Quat<>
-				leftEyelidBindOrientation, rightEyelidBindOrientation,
-				leftEyelidOpenOrientation, rightEyelidOpenOrientation;
-			std::mt19937 rand;
-		};
-	}
-}
+			openState,
+			closingState,
+			closedState,
+			openingState
+		} state;
+		float open, delay;
+		math::Quat<>
+			leftEyelidBindOrientation, rightEyelidBindOrientation,
+			leftEyelidOpenOrientation, rightEyelidOpenOrientation;
+		std::mt19937 rand;
+	};
+}}
 
 #endif

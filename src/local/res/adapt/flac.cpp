@@ -137,7 +137,7 @@ namespace page
 				void Error(const FLAC__StreamDecoder *, FLAC__StreamDecoderErrorStatus e, void *)
 				{
 					// NOTE: disabled; use return values rather than exceptions
-/*					switch (e)
+					/*switch (e)
 					{
 						case FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC:          THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::FormatTag>("lost synchronization")))
 						case FLAC__STREAM_DECODER_ERROR_STATUS_BAD_HEADER:         THROW((err::Exception<err::ResModuleTag, err::FlacPlatformTag, err::FormatTag>("corrupt header")))

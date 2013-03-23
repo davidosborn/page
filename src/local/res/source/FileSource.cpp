@@ -33,40 +33,33 @@
 #include "FileSource.hpp"
 #include "register.hpp" // REGISTER_SOURCE
 
-namespace page
+namespace page { namespace res
 {
-	namespace res
+	FileSource::FileSource(const std::string &path) : path(path)
 	{
-		// construct
-		FileSource::FileSource(const std::string &path) : path(path)
+		Index();
+	}
+
+	bool FileSource::CheckPath(const std::string &path)
+	{
+		std::string absPath(sys::AbsPath(sys::NormPath(path)));
+		return sys::IsFile(absPath);
+	}
+
+	void FileSource::Refresh()
+	{
+		if (sys::ModTime(path) != mtime)
 		{
+			Clear();
 			Index();
 		}
-
-		// modifiers
-		void FileSource::Refresh()
-		{
-			if (sys::ModTime(path) != mtime)
-			{
-				Clear();
-				Index();
-			}
-		}
-
-		// indexing
-		void FileSource::Index()
-		{
-			Source::Index(Node(std::shared_ptr<Pipe>(new FilePipe(path))));
-			mtime = sys::ModTime(path);
-		}
-
-		// factory function
-		Source *MakeFileSource(const std::string &path)
-		{
-			std::string absPath(sys::AbsPath(sys::NormPath(path)));
-			return sys::IsFile(absPath) ? new FileSource(absPath) : 0;
-		}
-
-		REGISTER_SOURCE(MakeFileSource, 0)
 	}
-}
+
+	void FileSource::Index()
+	{
+		Source::Index(Node(std::shared_ptr<Pipe>(new FilePipe(path))));
+		mtime = sys::ModTime(path);
+	}
+
+	REGISTER_SOURCE(FileSource)
+}}

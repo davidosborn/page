@@ -33,16 +33,17 @@
 #include <memory> // {shared,unique}_ptr
 #include <vector>
 
+#include "../../../util/cpp.hpp" // STRINGIZE
 #include "../../../util/endian.hpp" // TransformEndian
-#include "../../fmt/native/animation.hpp"
+#include "../../format/native/animation.hpp"
 #include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../pipe/Stream.hpp"
 #include "../../type/Animation.hpp"
-#include "../Registry.hpp" // REGISTER_LOADER
+#include "../LoaderRegistry.hpp" // REGISTER_LOADER
 
-namespace page { namespace res { namespace load { namespace {
-
-	Animation *LoadNativeAnimation(const std::shared_ptr<const Pipe> &pipe)
+namespace page { namespace res
+{
+	std::unique_ptr<Animation> LoadNativeAnimation(const std::shared_ptr<const Pipe> &pipe)
 	{
 		assert(pipe);
 		const std::unique_ptr<Stream> stream(pipe->Open());
@@ -101,7 +102,7 @@ namespace page { namespace res { namespace load { namespace {
 			// insert bone
 			anim->bones.insert(std::make_pair(name, bone));
 		}
-		return anim.release();
+		return anim;
 	}
 
 	bool CheckNativeAnimation(const Pipe &pipe)
@@ -116,8 +117,8 @@ namespace page { namespace res { namespace load { namespace {
 	REGISTER_LOADER(
 		Animation,
 		STRINGIZE(NAME) " animation",
-		CheckNativeAnimation,
 		LoadNativeAnimation,
+		CheckNativeAnimation,
+		{"application/x-page-animation"},
 		{"anim", "pageanim"})
-
-}}}}
+}}

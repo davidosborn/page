@@ -34,8 +34,8 @@
 #include <functional> // bind, logical_and, logical_not
 #include <locale> // use_facet, time_put
 #include <sstream> // ostringstream
+#include <string>
 
-#include <boost/filesystem/path.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include "../../err/Exception.hpp"
@@ -44,7 +44,7 @@ namespace page
 {
 	namespace util
 	{
-		boost::filesystem::path ExpandPath(const boost::filesystem::path &path, int flags)
+		std::string ExpandPath(const std::string &path, int flags)
 		{
 			if (flags & ExpandFlags::withImplicitWildcardSuffix)
 			{

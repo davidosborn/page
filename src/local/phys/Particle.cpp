@@ -40,7 +40,7 @@ namespace page
 
 		// frame serialization
 		// FIXME: should Particle be Controllable?
-/*		Frame Particle::GetFrame() const
+		/*Frame Particle::GetFrame() const
 		{
 			return
 				Ambient::GetFrame() +

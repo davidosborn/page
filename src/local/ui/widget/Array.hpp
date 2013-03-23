@@ -34,40 +34,38 @@
 #	include "../Widget.hpp"
 #	include "../WidgetContainer.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	class Array :
+		public Widget,
+		public WidgetContainer,
+		public virtual util::Cloneable<Array, Widget, WidgetContainer>
 	{
-		struct Array : Widget, WidgetContainer
-		{
-			// construct
-			explicit Array(bool horizontal, bool margin = true);
+		public:
+		// construct
+		explicit Array(bool horizontal, bool margin = true);
 
-			// clone
-			Array *Clone() const;
+		// cursor event notification
+		bool OnOver(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		bool OnDown(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		bool OnClick(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
 
-			// cursor event notification
-			bool OnOver(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
-			bool OnDown(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
-			bool OnClick(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		private:
+		// metrics
+		Size CalcSize(const res::Theme &) const;
 
-			private:
-			// metrics
-			Size CalcSize(const res::Theme &) const;
+		// rendering
+		void DoDraw(DrawContext &) const;
 
-			// rendering
-			void DoDraw(DrawContext &) const;
+		// update
+		void DoUpdate(float deltaTime);
 
-			// update
-			void DoUpdate(float deltaTime);
+		// child hit detection
+		typedef std::function<bool (Widget *, const math::Vector<2> &position, const math::Vector<2> &size)> HitCallback;
+		bool CheckHit(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size, const HitCallback &);
 
-			// child hit detection
-			typedef std::function<bool (Widget *, const math::Vector<2> &position, const math::Vector<2> &size)> HitCallback;
-			bool CheckHit(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size, const HitCallback &);
-
-			bool horizontal, margin;
-		};
-	}
-}
+		bool horizontal, margin;
+	};
+}}
 
 #endif

@@ -36,65 +36,54 @@
 #	include "../../../util/raii/copy_ptr.hpp"
 #	include "../Proxy.hpp"
 
-namespace page
+namespace page { namespace res { class Sound; }}
+
+namespace page { namespace cache { namespace openal
 {
-	namespace res { class Sound; }
-
-	namespace cache
+	/**
+	 * A proxy representing an OpenAL buffer in the cache.
+	 */
+	class Buffer :
+		public Proxy<ALuint>,
+		public virtual util::Cloneable<Buffer, Proxy<ALuint>>
 	{
-		namespace openal
-		{
-			/**
-			 * A proxy representing an OpenAL buffer in the cache.
-			 */
-			class Buffer : public Proxy<ALuint>
-			{
-				/*------+
-				| types |
-				+------*/
+		/*------+
+		| types |
+		+------*/
 
-				public:
-				typedef typename Proxy<ALuint>::Instance Instance;
+		public:
+		typedef typename Proxy<ALuint>::Instance Instance;
 
-				/*--------------------------+
-				| constructors & destructor |
-				+--------------------------*/
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-				public:
-				explicit Buffer(const Proxy<res::Sound> &);
+		public:
+		explicit Buffer(const Proxy<res::Sound> &);
 
-				/*------+
-				| clone |
-				+------*/
+		/*----------+
+		| observers |
+		+----------*/
 
-				public:
-				Buffer *Clone() const override;
+		public:
+		std::string GetType() const override;
+		std::string GetSource() const override;
+		operator bool() const override;
 
-				/*----------+
-				| observers |
-				+----------*/
+		/*--------------+
+		| instantiation |
+		+--------------*/
 
-				public:
-				std::string GetType() const override;
-				std::string GetSource() const override;
-				operator bool() const override;
+		private:
+		Instance Make() const override;
 
-				/*--------------+
-				| instantiation |
-				+--------------*/
+		/*-------------+
+		| data members |
+		+-------------*/
 
-				private:
-				Instance Make() const override;
-
-				/*-------------+
-				| data members |
-				+-------------*/
-
-				private:
-				util::copy_ptr<cache::Proxy<res::Sound>> sound;
-			};
-		}
-	}
-}
+		private:
+		util::copy_ptr<cache::Proxy<res::Sound>> sound;
+	};
+}}}
 
 #endif

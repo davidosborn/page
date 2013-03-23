@@ -39,210 +39,207 @@
 
 #	include "../../util/class/copy_move.hpp" // MAKE_UNCOPYABLE
 
-namespace page
+namespace page { namespace cfg
 {
-	namespace cfg
-	{
 ////////// Source //////////////////////////////////////////////////////////////
 
+	/**
+	 * The base class for configuration storage-mediums.
+	 */
+	class Source
+	{
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		protected:
 		/**
-		 * The base class for configuration storage-mediums.
+		 * Constructor.
+		 *
+		 * @param[in] uri          @copydoc uri
+		 * @param[in] friendlyName @copydoc friendlyName
 		 */
-		class Source
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		Source(
+			const std::string &uri,
+			const std::string &friendlyName);
 
-			protected:
-			/**
-			 * Constructor.
-			 *
-			 * @param[in] uri          @copydoc uri
-			 * @param[in] friendlyName @copydoc friendlyName
-			 */
-			Source(
-				const std::string &uri,
-				const std::string &friendlyName);
+		public:
+		virtual ~Source() = default;
 
-			public:
-			virtual ~Source() = default;
+		/*----------------------+
+		| copy & move semantics |
+		+----------------------*/
 
-			/*----------------------+
-			| copy & move semantics |
-			+----------------------*/
+		MAKE_UNCOPYABLE(Source)
 
-			MAKE_UNCOPYABLE(Source)
+		/*----------+
+		| observers |
+		+----------*/
 
-			/*----------+
-			| observers |
-			+----------*/
+		public:
+		/**
+		 * @return @copydoc uri
+		 */
+		const std::string &GetUri() const;
 
-			public:
-			/**
-			 * @return @copydoc uri
-			 */
-			const std::string &GetUri() const;
+		/**
+		 * @return @copydoc friendlyName
+		 */
+		const std::string &GetFriendlyName() const;
 
-			/**
-			 * @return @copydoc friendlyName
-			 */
-			const std::string &GetFriendlyName() const;
+		/*----+
+		| I/O |
+		+----*/
 
-			/*----+
-			| I/O |
-			+----*/
+		protected:
+		/**
+		 *
+		 */
+		class ReaderWriter;
 
-			protected:
-			/**
-			 *
-			 */
-			class ReaderWriter;
+		/**
+		 *
+		 */
+		class Reader;
 
-			/**
-			 *
-			 */
-			class Reader;
+		/**
+		 *
+		 */
+		class Writer;
 
-			/**
-			 *
-			 */
-			class Writer;
+		public:
+		/**
+		 * Open the source for reading
+		 */
+		virtual std::unique_ptr<Reader> OpenReader() const = 0;
 
-			public:
-			/**
-			 * Open the source for reading
-			 */
-			virtual std::unique_ptr<Reader> OpenReader() const = 0;
+		/**
+		 * Open the source for writing.
+		 */
+		virtual std::unique_ptr<Writer> OpenWriter() const;
 
-			/**
-			 * Open the source for writing.
-			 */
-			virtual std::unique_ptr<Writer> OpenWriter() const;
+		/*-------------+
+		| data members |
+		+-------------*/
 
-			/*-------------+
-			| data members |
-			+-------------*/
+		private:
+		/**
+		 * A URI that uniquely identifies the source.
+		 */
+		std::string uri;
 
-			private:
-			/**
-			 * A URI that uniquely identifies the source.
-			 */
-			std::string uri;
-
-			/**
-			 * A user-friendly string that identifies the source.
-			 */
-			std::string friendlyName;
-		};
+		/**
+		 * A user-friendly string that identifies the source.
+		 */
+		std::string friendlyName;
+	};
 
 ////////// Source::ReaderWriter ////////////////////////////////////////////////
 
+	/**
+	 * The base class for source readers and writers.
+	 */
+	class Source::ReaderWriter
+	{
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		protected:
+		explicit ReaderWriter(const Source &);
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		public:
 		/**
-		 * The base class for source readers and writers.
+		 * @return @copydoc source
 		 */
-		class Source::ReaderWriter
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		const Source &GetSource() const;
 
-			protected:
-			explicit ReaderWriter(const Source &);
+		/*-------------+
+		| data members |
+		+-------------*/
 
-			/*----------+
-			| observers |
-			+----------*/
-
-			public:
-			/**
-			 * @return @copydoc source
-			 */
-			const Source &GetSource() const;
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			/**
-			 * The source on which this reader/writer operates.
-			 */
-			const Source &source;
-		};
+		private:
+		/**
+		 * The source on which this reader/writer operates.
+		 */
+		const Source &source;
+	};
 
 ////////// Source::Reader //////////////////////////////////////////////////////
 
+	/**
+	 * The base class for source readers.
+	 */
+	class Source::Reader : public ReaderWriter
+	{
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		protected:
+		explicit Reader(const Source &);
+
+		/*-----------+
+		| operations |
+		+-----------*/
+
+		public:
 		/**
-		 * The base class for source readers.
+		 * Return the value of a variable stored in the source, identified by
+		 * its key.
 		 */
-		class Source::Reader : public ReaderWriter
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		virtual boost::optional<std::string> Read(const std::string &key) = 0;
 
-			protected:
-			explicit Reader(const Source &);
-
-			/*-----------+
-			| operations |
-			+-----------*/
-
-			public:
-			/**
-			 * Return the value of a variable stored in the source, identified
-			 * by its key.
-			 */
-			virtual boost::optional<std::string> Read(const std::string &key) = 0;
-
-			/**
-			 * Return the value of a sequential variable stored in the source,
-			 * identified by its key.
-			 *
-			 * The default implementation parses the string returned by @c Read
-			 * to extract comma-separated elements.
-			 */
-			virtual boost::optional<std::vector<std::string>> ReadSequence(const std::string &key);
-		};
+		/**
+		 * Return the value of a sequential variable stored in the source,
+		 * identified by its key.
+		 *
+		 * The default implementation parses the string returned by @c Read to
+		 * extract comma-separated elements.
+		 */
+		virtual boost::optional<std::vector<std::string>> ReadSequence(const std::string &key);
+	};
 
 ////////// Source::Writer //////////////////////////////////////////////////////
 
+	/**
+	 * The base class for source writers.
+	 */
+	class Source::Writer : public ReaderWriter
+	{
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		protected:
+		explicit Writer(const Source &);
+
+		/*-----------+
+		| operations |
+		+-----------*/
+
+		public:
 		/**
-		 * The base class for source writers.
+		 * Change the value of a variable stored in the source, identified by
+		 * its key.
 		 */
-		class Source::Writer : public ReaderWriter
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		virtual void Write(const std::string &key, const std::string &value) = 0;
 
-			protected:
-			explicit Writer(const Source &);
+		/**
+		 * Change the value of a sequential variable stored in the source,
+		 * identified by its key.
+		 */
+		virtual void WriteSequence(const std::string &key, const std::string &value);
 
-			/*-----------+
-			| operations |
-			+-----------*/
-
-			public:
-			/**
-			 * Change the value of a variable stored in the source, identified
-			 * by its key.
-			 */
-			virtual void Write(const std::string &key, const std::string &value) = 0;
-
-			/**
-			 * Change the value of a sequential variable stored in the source,
-			 * identified by its key.
-			 */
-			virtual void WriteSequence(const std::string &key, const std::string &value);
-
-			/**
-			 * Remove the variable having the specified key from the source.
-			 */
-			virtual void Remove(const std::string &key) = 0;
-		};
-	}
-}
+		/**
+		 * Remove the variable having the specified key from the source.
+		 */
+		virtual void Remove(const std::string &key) = 0;
+	};
+}}
 
 #endif

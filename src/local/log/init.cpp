@@ -32,6 +32,7 @@
 #include <memory> // shared_ptr
 
 #include "../cfg/vars.hpp"
+#include "../util/cpp.hpp" // STRINGIZE
 #include "../util/gcc/init_priority.hpp" // LOG_INIT_PRIORITY
 #include "filter/IndentFilter.hpp"
 #include "filter/TimeFilter.hpp"
@@ -71,7 +72,7 @@ namespace page
 						{
 							if (*CVAR(logConsoleSpawn))
 							{
-								auto consoleSink(std::make_shared<ConsoleSink>(PACKAGE_NAME " log"));
+								auto consoleSink(std::make_shared<ConsoleSink>(STRINGIZE(PACKAGE) " log"));
 								outRootSink->Attach(consoleSink);
 								errRootSink->Attach(consoleSink);
 							}
@@ -83,7 +84,7 @@ namespace page
 						}
 						if (*CVAR(logFile))
 						{
-							auto fileSink(std::make_shared<FileSink>(absolute(*CVAR(logFilePath), *CVAR(installPath))));
+							auto fileSink(std::make_shared<FileSink>(*CVAR(logFilePath)));
 							outRootSink->Attach(fileSink);
 							errRootSink->Attach(fileSink);
 						}

@@ -192,7 +192,7 @@ namespace page
 					Swizzle(face->vertices[2], 0, 2)
 				};
 				// FIXME: this assertion is too precise
-/*				assert(math::PointInTriangle(position,
+				/*assert(math::PointInTriangle(position,
 					vertices[0], vertices[1], vertices[2]));*/
 				math::Vector<3, bool> outside(!PointInTriangleEdges(
 					target, vertices[0], vertices[1], vertices[2]));

@@ -37,7 +37,7 @@
 #include "../../adapt/vorbis.hpp" // Check, Open
 #include "../../type/Sound.hpp"
 #include "../../type/sound/VorbisDecoder.hpp"
-#include "../Registry.hpp" // REGISTER_LOADER
+#include "../LoaderRegistry.hpp" // REGISTER_LOADER
 
 namespace page
 {

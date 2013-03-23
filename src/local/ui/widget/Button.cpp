@@ -33,27 +33,18 @@
 #include "../DrawContext.hpp"
 #include "Button.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	// metrics
+	Button::Size Button::CalcSize(const res::Theme &theme) const
 	{
-		// clone
-		Button *Button::Clone() const
-		{
-			return new Button(*this);
-		}
-
-		// metrics
-		Button::Size Button::CalcSize(const res::Theme &theme) const
-		{
-			// FIXME: implement
-			return Size(0);
-		}
-
-		// rendering
-		void Button::DoDraw(DrawContext &context) const
-		{
-			// FIXME: implement
-		}
+		// FIXME: implement
+		return Size(0);
 	}
-}
+
+	// rendering
+	void Button::DoDraw(DrawContext &context) const
+	{
+		// FIXME: implement
+	}
+}}

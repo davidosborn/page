@@ -28,71 +28,42 @@
  * of this software.
  */
 
-#include <algorithm> // transform
+#include <string>
 #include <utility> // pair
-
-#include <boost/filesystem/path.hpp>
-
-#include "../functional/locale.hpp" // tolower_function
 
 namespace page
 {
 	namespace util
 	{
-		boost::filesystem::path GetExtension(
-			const boost::filesystem::path &path,
-			unsigned index)
+		std::string GetExtension(const std::string &path, unsigned index)
 		{
-			auto s(path.native());
-			decltype(s)::size_type extStart, extEnd(s.npos);
+			std::string::size_type start, end(path.npos);
 			for (;;)
 			{
-				extStart = s.rfind('.', extEnd);
-				if (!index || extStart == s.npos) break;
-				extEnd = extStart;
+				start = path.rfind('.', end);
+				if (!index || start == path.npos) break;
+				end = start;
 				--index;
 			}
-			if (extStart)
-			{
-				auto ext(s.substr(extStart + 1, extEnd));
-				std::transform(ext.begin(), ext.end(), ext.begin(), tolower_function<char>());
-				return boost::filesystem::path(ext);
-			}
-			return boost::filesystem::path();
+			return start != path.npos ? path.substr(start + 1, end) : "";
 		}
 
-		std::pair<boost::filesystem::path, boost::filesystem::path>
-			PartitionExtension(const boost::filesystem::path &path)
+		std::pair<std::string, std::string>
+			PartitionExtension(const std::string &path)
 		{
-			auto s(path.native());
-			auto i(s.rfind('.'));
-			return i != s.npos ?
-				std::make_pair(
-					boost::filesystem::path(s.substr(0, i)),
-					boost::filesystem::path(s.substr(i + 1))) :
-				std::make_pair(
-					path,
-					boost::filesystem::path());
+			auto i(path.rfind('.'));
+			return i != path.npos ?
+				{path.substr(0, i), path.substr(i + 1)} :
+				{path, ""};
 		}
 
-		boost::filesystem::path AddExtension(
-			const boost::filesystem::path &path,
-			const boost::filesystem::path &extension)
+		std::string AddExtension(
+			std::string        path,
+			std::string const& extension)
 		{
-			boost::filesystem::path newPath(path);
-			if (newPath.empty() || newPath.native().back() != '.')
-				newPath += '.';
-			newPath += extension;
-			return newPath;
-		}
-
-		boost::filesystem::path WithExtension(
-			const boost::filesystem::path &path,
-			const boost::filesystem::path &extension)
-		{
-			if (GetExtension(path) != extension)
-				return AddExtension(path, extension);
-			return path;
+			if (path.empty() || path.back() != '.')
+				path += '.';
+			return path += extension;
 		}
 	}
 }

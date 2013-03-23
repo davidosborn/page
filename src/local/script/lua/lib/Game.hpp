@@ -33,26 +33,17 @@
 
 #	include <lua.hpp> // lua_State
 
-namespace page
+namespace page { namespace script { namespace lua { namespace lib
 {
-	namespace script
+	struct Game
 	{
-		namespace lua
-		{
-			namespace lib
-			{
-				struct Game
-				{
-					// construct
-					explicit Game(lua_State *);
+		// construct
+		explicit Game(lua_State *);
 
-					private:
-					// functions
-					static int Quit(lua_State *);
-				};
-			}
-		}
-	}
-}
+		private:
+		// functions
+		static int Quit(lua_State *);
+	};
+}}}}
 
 #endif

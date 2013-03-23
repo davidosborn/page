@@ -36,25 +36,22 @@
 
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class FrameController :
+		public Controller,
+		public virtual util::Cloneable<FrameController, Controller>
 	{
-		struct FrameController : Controller
-		{
-			// construct
-			explicit FrameController(const Frame &, Layer = preCollisionLayer);
+		public:
+		// construct
+		explicit FrameController(const Frame &, Layer = preCollisionLayer);
 
-			// clone
-			FrameController *Clone() const;
+		private:
+		// generate frame
+		Frame DoGetFrame(const Frame &, const Frame &) const;
 
-			private:
-			// generate frame
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			Frame frame;
-		};
-	}
-}
+		Frame frame;
+	};
+}}
 
 #endif

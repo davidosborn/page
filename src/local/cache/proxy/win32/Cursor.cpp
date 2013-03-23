@@ -32,69 +32,61 @@
 #include "../../../util/string/StringBuilder.hpp"
 #include "Cursor.hpp"
 
-namespace page
+namespace page { namespace cache { namespace win32
 {
-	namespace cache
+	namespace
 	{
-		namespace win32
+		/**
+		 *
+		 */
+		struct CursorDeleter
 		{
-			/*--------+
-			| deleter |
-			+--------*/
+			typedef void result_type;
+			typedef const HCURSOR *argument_type;
 
-			namespace
+			void operator ()(const HCURSOR *cursor) const
 			{
-				void Deleter(const HCURSOR *cursor)
-				{
-					DestroyCursor(*cursor);
-					delete cursor;
-				}
+				DestroyCursor(*cursor);
+				delete cursor;
 			}
-
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
-
-			Cursor::Cursor(const Proxy<res::Cursor> &cursor, unsigned size) :
-				cursor(cursor.Copy()), size(size) {}
-
-			/*------+
-			| clone |
-			+------*/
-
-			Cursor *Cursor::Clone() const
-			{
-				return new Cursor(*this);
-			}
-
-			/*----------+
-			| observers |
-			+----------*/
-
-			std::string Cursor::GetType() const
-			{
-				return "win32 cursor";
-			}
-
-			std::string Cursor::GetSource() const
-			{
-				return util::StringBuilder() <<
-					cursor->GetSource() << ':' << size;
-			}
-
-			Cursor::operator bool() const
-			{
-				return *cursor;
-			}
-
-			/*--------------+
-			| instantiation |
-			+--------------*/
-
-			Cursor::Instance Cursor::Make() const
-			{
-				return Instance(new HCURSOR(res::win32::MakeWin32Cursor(**cursor, size)), Deleter);
-			}
-		}
+		};
 	}
-}
+
+////////// Cursor //////////////////////////////////////////////////////////////
+
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
+
+	Cursor::Cursor(const Proxy<res::Cursor> &cursor, unsigned size) :
+		cursor(cursor.Copy()), size(size) {}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	std::string Cursor::GetType() const
+	{
+		return "win32 cursor";
+	}
+
+	std::string Cursor::GetSource() const
+	{
+		return util::StringBuilder() <<
+			cursor->GetSource() << ':' << size;
+	}
+
+	Cursor::operator bool() const
+	{
+		return *cursor;
+	}
+
+	/*--------------+
+	| instantiation |
+	+--------------*/
+
+	Cursor::Instance Cursor::Make() const
+	{
+		return Instance(new HCURSOR(res::win32::MakeWin32Cursor(**cursor, size)), CursorDeleter());
+	}
+}}}

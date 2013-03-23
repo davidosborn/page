@@ -60,8 +60,9 @@ namespace page
 			math::Vector<2, int> mode;
 		};
 
-		struct Widget : util::Cloneable<Widget>
+		class Widget : public virtual util::Cloneable<Widget>
 		{
+			public:
 			typedef WidgetSize Size;
 
 			// construct

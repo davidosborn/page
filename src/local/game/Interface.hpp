@@ -44,39 +44,39 @@ namespace page
 		class Text;
 		class Window;
 	}
-
-	namespace game
-	{
-		struct Interface : ui::Interface
-		{
-			// construct
-			Interface(aud::Driver &);
-
-			// update
-			void Update(float deltaTime);
-
-			// modifiers
-			void Pause();
-			void Resume();
-
-			private:
-			aud::Driver &audioDriver;
-			std::shared_ptr<ui::Text>
-				statRunTime,
-				statFrameCount,
-				statFrameRate,
-				// FIXME: waiting on support for video statistics
-/*				statTriCount,
-				statTriRate,
-				statPixelCount,
-				statPixelRate,*/
-				statCacheTries,
-				statCacheMisses,
-				statCacheCoherence;
-			std::shared_ptr<ui::Window> statWindow;
-			std::shared_ptr<ui::Array> cmdBar;
-		};
-	}
 }
+
+namespace page { namespace game
+{
+	struct Interface : ui::Interface
+	{
+		// construct
+		Interface(aud::Driver &);
+
+		// update
+		void Update(float deltaTime);
+
+		// modifiers
+		void Pause();
+		void Resume();
+
+		private:
+		aud::Driver &audioDriver;
+		std::shared_ptr<ui::Text>
+			statRunTime,
+			statFrameCount,
+			statFrameRate,
+			// FIXME: waiting on support for video statistics
+			/*statTriCount,
+			statTriRate,
+			statPixelCount,
+			statPixelRate,*/
+			statCacheTries,
+			statCacheMisses,
+			statCacheCoherence;
+		std::shared_ptr<ui::Window> statWindow;
+		std::shared_ptr<ui::Array> cmdBar;
+	};
+}}
 
 #endif

@@ -35,39 +35,36 @@
 #	include "../../util/raii/copy_ptr.hpp"
 #	include "../Widget.hpp"
 
-namespace page
+namespace page { namespace res { class Image; }}
+
+namespace page { namespace ui
 {
-	namespace res { class Image; }
-
-	namespace ui
+	class Image :
+		public Widget,
+		public virtual util::Cloneable<Image, Widget>
 	{
-		struct Image : Widget
-		{
-			// construct
-			explicit Image(const cache::Proxy<res::Image> &, const math::Vector<2> &size = 0);
+		public:
+		// construct
+		explicit Image(const cache::Proxy<res::Image> &, const math::Vector<2> &size = 0);
 
-			// clone
-			Image *Clone() const;
+		// cursor event notification
+		bool OnOver(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
 
-			// cursor event notification
-			bool OnOver(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		private:
+		// metrics
+		Size CalcSize(const res::Theme &) const;
 
-			private:
-			// metrics
-			Size CalcSize(const res::Theme &) const;
+		// rendering
+		void DoDraw(DrawContext &) const;
 
-			// rendering
-			void DoDraw(DrawContext &) const;
+		// update
+		void DoUpdate(float deltaTime);
 
-			// update
-			void DoUpdate(float deltaTime);
-
-			util::copy_ptr<cache::Proxy<res::Image>> img;
-			math::Vector<2> size;
-			bool cursorOver;
-			float glowIntensity;
-		};
-	}
-}
+		util::copy_ptr<cache::Proxy<res::Image>> img;
+		math::Vector<2> size;
+		bool cursorOver;
+		float glowIntensity;
+	};
+}}
 
 #endif

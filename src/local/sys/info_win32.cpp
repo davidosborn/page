@@ -33,7 +33,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/filesystem/path.hpp>
 #include <boost/optional.hpp>
 
 #include <shlobj.h> // SHGetFolderPath
@@ -171,7 +170,7 @@ namespace page
 				std::basic_string<TCHAR>(buffer.begin(), buffer.begin() + size - 1));
 		}
 
-		boost::filesystem::path GetHome()
+		std::string GetHome()
 		{
 			std::vector<TCHAR> buffer(MAX_PATH);
 			if (FAILED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, &*buffer.begin())))

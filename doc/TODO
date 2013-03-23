@@ -1,7 +1,34 @@
-Still need to do res/save/Registry and res/source/Registry.
+Document copy_ptr.
+
+Check all uses of Deleter, now that the Deleter stuff has been updated.
+Clean up the util/memory stuff, since Cloner is not needed anymore (for now).
+
+It seems like pretty much any polymorphic class (ie: virtual destructor) should be util::Cloneable (and drop the virtual destructor).
+
+Working on remove unnecessary indentation.  Make sure you update the comments to
+use the full space (working on tags.hpp now, check the other files in err too).
+
+All the registries should try different records and write warnings on failure the way wnd::ConsoleRegistry does.
+
+clip/encoder/EncoderFactory desperately needs to be a registry, not a factory
+clip should be moved into res, and merged with save (if possible)
+
+Get rid of boost::filesystem::path as a type for passing paths around.
+
+Check the implementation of the Registry::{Make,Save,GetLoader,etc} functions.
+- does the fallback mechanism work the way it should for each
+- should we have the option of outputting a warning (instead of throwing an exception) and continuing to try other records?
+
 res/source/Source looks like a bit of a mess.
 res/load/* (all the loaders) need to be updated for the new res/load/Registry.
+*** NOTE: the order of extensions and mime types changed for all loaders!!!
+*** as well as the order of loaders and checkers in REGISTER_LOADER
 res/format (all I did was change the name) needs to be cleaned up!
+
+Switch back to std::string from boost::filesystem as the type for paths.
+Use UTF-8 for all textual data, and implement proper conversions of all input/output.
+
+Use <iosfwd> when you only need to forward declare ostream or something like that.
 
 Registries:
 - clip/encoder
@@ -12,6 +39,8 @@ Registries:
 - res/scan
 - res/source
 - script/machine
+
+The cfg module needs to be documented in more detail.  I think that once I start documenting it, I will realize that the cfg::State class is a big monolithic class doing multiple things at once, and it should be split into a few different classes.  This is more of a dream for the future; no need to worry about that now.
 
 Copy and move semantics should go at the top of the class and be consistently rendered (see res/scan/Registry.hpp).
 

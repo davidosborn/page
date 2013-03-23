@@ -31,16 +31,10 @@
 #ifndef    page_local_err_platform_posix_hpp
 #   define page_local_err_platform_posix_hpp
 
-namespace page
+namespace page { namespace err { namespace posix
 {
-	namespace err
-	{
-		namespace posix
-		{
-			void ResetError();
-			void CheckError();
-		}
-	}
-}
+	void ResetError();
+	void CheckError();
+}}}
 
 #endif

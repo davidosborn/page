@@ -56,7 +56,7 @@ namespace page
 					fmt::Header header = {i};
 					std::shared_ptr<Pipe> headerPipe(new MemPipe(&header, sizeof header));
 					cb(Node(std::shared_ptr<Pipe>(new CatPipe(headerPipe, pipe)),
-						boost::lexical_cast<std::string>(i), "", fmt::tag, false));
+						boost::lexical_cast<std::string>(i), fmt::mimeTypeForSub, "", false));
 				}
 				FT_Done_Face(face);
 				return true;
@@ -67,7 +67,7 @@ namespace page
 		REGISTER_SCANNER(
 			STRINGIZE(FREETYPE_NAME),
 			ScanFreetype,
-			{"bdf", "cff", "fnt", "fon", "otf", "pcf", "pfa", "pfb", "pfr", "ttc", "ttf"},
-			{"application/x-font-bdf", "application/x-font-opentype", "application/x-font-truetype"})
+			{"application/x-font-bdf", "application/x-font-opentype", "application/x-font-truetype"},
+			{"bdf", "cff", "fnt", "fon", "otf", "pcf", "pfa", "pfb", "pfr", "ttc", "ttf"})
 	}
 }

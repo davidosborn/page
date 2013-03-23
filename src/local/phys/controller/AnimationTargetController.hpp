@@ -40,37 +40,35 @@
 
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class AnimationController;
+
+	class AnimationTargetController : public Controller
 	{
-		class AnimationController;
+		public:
+		// construct
+		explicit AnimationTargetController(Layer, bool sync = true);
 
-		struct AnimationTargetController : Controller
-		{
-			// construct
-			explicit AnimationTargetController(Layer, bool sync = true);
+		// modifiers
+		void SetTarget(); // no target
+		void SetTarget(const AnimationController &);
+		void SetTarget(const std::shared_ptr<AnimationController> &);
 
-			// modifiers
-			void SetTarget(); // no target
-			void SetTarget(const AnimationController &);
-			void SetTarget(const std::shared_ptr<AnimationController> &);
+		private:
+		// update hooks
+		virtual void UpdateTargets(float deltaTime) = 0;
+		virtual float FixDeltaTime(float deltaTime);
 
-			private:
-			// update hooks
-			virtual void UpdateTargets(float deltaTime) = 0;
-			virtual float FixDeltaTime(float deltaTime);
+		// update/generate frame
+		void DoUpdate(float deltaTime);
+		Frame DoGetFrame(const Frame &, const Frame &) const;
 
-			// update/generate frame
-			void DoUpdate(float deltaTime);
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			bool sync;
-			float playPosition;
-			typedef std::vector<std::shared_ptr<AnimationController>> Targets;
-			Targets targets;
-		};
-	}
-}
+		bool sync;
+		float playPosition;
+		typedef std::vector<std::shared_ptr<AnimationController>> Targets;
+		Targets targets;
+	};
+}}
 
 #endif

@@ -33,21 +33,12 @@
 
 #	include "../simd.hpp"
 
-namespace page
+namespace page { namespace math { namespace simd { namespace generic
 {
-	namespace math
-	{
-		namespace simd
-		{
-			namespace generic
-			{
-				MulMat2fFunc MulMat2f;
-				MulMat3fFunc MulMat3f;
-				MulMat34fFunc MulMat34f;
-				MulMat4fFunc MulMat4f;
-			}
-		}
-	}
-}
+	MulMat2fFunc  MulMat2f;
+	MulMat3fFunc  MulMat3f;
+	MulMat34fFunc MulMat34f;
+	MulMat4fFunc  MulMat4f;
+}}}}
 
 #endif

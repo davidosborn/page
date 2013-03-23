@@ -10,11 +10,11 @@ set -e
 
 GNU_MIRROR=ftp://gnu.mirror.iweb.com/gnu
 
-GCC_VERSION=4.6.3
-GDB_VERSION=7.4
-GMP_VERSION=5.0.4
-MPFR_VERSION=3.1.0
-MPC_VERSION=0.9
+GCC_VERSION=4.7.2
+GDB_VERSION=7.5.1
+GMP_VERSION=5.1.1
+MPFR_VERSION=3.1.2
+MPC_VERSION=1.0.1
 
 ################################################################################
 # flags
@@ -28,7 +28,7 @@ USING_MINGW=`hash msysinfo && echo yes || echo no`
 
 ################################################################################
 # Package:        gmp
-# Dependencies:   
+# Dependencies:
 # Depended on by: gcc
 
 wget $GNU_MIRROR/gmp/gmp-$GMP_VERSION.tar.xz -O- | tar -Jx
@@ -56,7 +56,7 @@ cd ..
 
 wget http://www.multiprecision.org/mpc/download/mpc-$MPC_VERSION.tar.gz -O- | tar zx
 cd mpc-$MPC_VERSION
-patch -p1 -i../mpc-0.9.patch
+#patch -p1 -i../patch/mpc-0.9.patch
 ./configure --disable-static --enable-shared
 make $MAKE_FLAGS install
 cd ..
@@ -66,11 +66,10 @@ cd ..
 # Dependencies:   gmp, mpc, mpfr
 # Depended on by: gdb
 
-wget $GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-core-$GCC_VERSION.tar.bz2 -O- | tar -jx
-wget $GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-g++-$GCC_VERSION.tar.bz2 -O- | tar -jx
+wget $GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.bz2 -O- | tar -jx
 cd gcc-$GCC_VERSION
-cd .. && mkdir gcc-$GCC_VERSION-build && cd gcc-$GCC_VERSION-build
-GCC_CONFIGURE_FLAGS="--enable-libstdcxx-debug"
+cd .. && mkdir -p gcc-$GCC_VERSION-build && cd gcc-$GCC_VERSION-build
+GCC_CONFIGURE_FLAGS="--enable-libstdcxx-debug --enable-languages=c,c++"
 test "$USING_MINGW" == yes && GCC_CONFIGURE_FLAGS="$GCC_CONFIGURE_FLAGS --build=pentium4-pc-mingw32 --disable-nls --disable-win32-registry --enable-threads"
 ../gcc-$GCC_VERSION/configure $GCC_CONFIGURE_FLAGS
 make $MAKE_FLAGS #CFLAGS="-O -march=pentium4" LIBCFLAGS="-O2" LIBCXXFLAGS="-O2 -fno-implicit-templates" LDFLAGS="-s"
@@ -80,7 +79,7 @@ cd ..
 ################################################################################
 # Package:        gdb
 # Dependencies:   gcc
-# Depended on by: 
+# Depended on by:
 
 wget $GNU_MIRROR/gdb/gdb-$GDB_VERSION.tar.bz2 -O- | tar -jx
 cd gdb-$GDB_VERSION

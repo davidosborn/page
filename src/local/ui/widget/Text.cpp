@@ -33,43 +33,34 @@
 #include "../DrawContext.hpp"
 #include "Text.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	// construct
+	Text::Text(const std::string &text, const math::Vector<2> &size,
+		const math::RgbaColor<> &color, bool wrap) :
+		text(text), size(size), color(color), wrap(wrap && size.x) {}
+
+	// modifiers
+	void Text::SetText(const std::string &text)
 	{
-		// construct
-		Text::Text(const std::string &text, const math::Vector<2> &size,
-			const math::RgbaColor<> &color, bool wrap) :
-			text(text), size(size), color(color), wrap(wrap && size.x) {}
-
-		// clone
-		Text *Text::Clone() const
-		{
-			return new Text(*this);
-		}
-
-		// modifiers
-		void Text::SetText(const std::string &text)
-		{
-			this->text = text;
-		}
-
-		// metrics
-		Text::Size Text::CalcSize(const res::Theme &theme) const
-		{
-			return Size(Select(size, size * theme.scale,
-				GetTextSize(*theme.text.font, text.begin(), text.end(),
-					wrap ? size.x * theme.scale : 0) * theme.text.size),
-				Size::grow);
-		}
-
-		// rendering
-		void Text::DoDraw(DrawContext &context) const
-		{
-			context.DrawText(context.GetTheme().text, text, math::Aabb<2>(0, 1),
-				color, wrap, wrap ?
-					res::justifyTextAlign :
-					res::leftTextAlign);
-		}
+		this->text = text;
 	}
-}
+
+	// metrics
+	Text::Size Text::CalcSize(const res::Theme &theme) const
+	{
+		return Size(Select(size, size * theme.scale,
+			GetTextSize(*theme.text.font, text.begin(), text.end(),
+				wrap ? size.x * theme.scale : 0) * theme.text.size),
+			Size::grow);
+	}
+
+	// rendering
+	void Text::DoDraw(DrawContext &context) const
+	{
+		context.DrawText(context.GetTheme().text, text, math::Aabb<2>(0, 1),
+			color, wrap, wrap ?
+				res::justifyTextAlign :
+				res::leftTextAlign);
+	}
+}}

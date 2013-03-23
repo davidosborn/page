@@ -42,56 +42,56 @@ namespace page
 	namespace script { class Driver; }
 	namespace sys { class Timer; }
 	namespace wnd { class Window; }
-
-	namespace game
-	{
-		class Interface;
-		class Scene;
-
-		struct Game : util::Uncopyable<Game>
-		{
-			// construct/destroy
-			Game();
-			~Game();
-
-			// main loop
-			void Run();
-
-			// modifiers
-			void Quit();
-
-			// scene access
-			Scene &GetScene();
-			const Scene &GetScene() const;
-
-			private:
-			// update
-			void UpdateCursor();
-			void UpdatePause(float deltaTime);
-			void UpdateRecording();
-
-			// timing
-			float FixDeltaTime(float);
-
-			// signal handlers
-			void OnExit();
-			void OnFocus(bool);
-			void OnKey(inp::Key);
-
-			std::unique_ptr<wnd::Window> wnd;
-			std::unique_ptr<script::Driver> scriptDriver;
-			std::unique_ptr<Scene> scene;
-			std::unique_ptr<Interface> interface;
-			std::unique_ptr<sys::Timer> timer;
-			bool exit;
-			float timeScale;
-			bool paused;
-			float pauseLevel;
-			std::unique_ptr<clip::Stream> clipStream;
-			float clipDeltaTime;
-			float clipQuality;
-		};
-	}
 }
+
+namespace page { namespace game
+{
+	class Interface;
+	class Scene;
+
+	struct Game : util::Uncopyable<Game>
+	{
+		// construct/destroy
+		Game();
+		~Game();
+
+		// main loop
+		void Run();
+
+		// modifiers
+		void Quit();
+
+		// scene access
+		Scene &GetScene();
+		const Scene &GetScene() const;
+
+		private:
+		// update
+		void UpdateCursor();
+		void UpdatePause(float deltaTime);
+		void UpdateRecording();
+
+		// timing
+		float FixDeltaTime(float);
+
+		// signal handlers
+		void OnExit();
+		void OnFocus(bool);
+		void OnKey(inp::Key);
+
+		std::unique_ptr<wnd::Window> wnd;
+		std::unique_ptr<script::Driver> scriptDriver;
+		std::unique_ptr<Scene> scene;
+		std::unique_ptr<Interface> interface;
+		std::unique_ptr<sys::Timer> timer;
+		bool exit;
+		float timeScale;
+		bool paused;
+		float pauseLevel;
+		std::unique_ptr<res::clip::Stream> clipStream;
+		float clipDeltaTime;
+		float clipQuality;
+	};
+}}
 
 #endif

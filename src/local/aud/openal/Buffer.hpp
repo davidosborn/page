@@ -36,28 +36,22 @@
 #	include "../../cache/fwd.hpp" // Proxy
 #	include "../../util/class/Uncopyable.hpp"
 
-namespace page
+namespace page { namespace res { class Sound; }}
+
+namespace page { namespace aud { namespace openal
 {
-	namespace res { class Sound; }
-
-	namespace aud
+	struct Buffer : util::Uncopyable<Buffer>
 	{
-		namespace openal
-		{
-			struct Buffer : util::Uncopyable<Buffer>
-			{
-				// destroy
-				virtual ~Buffer();
+		// destroy
+		virtual ~Buffer();
 
-				// update
-				virtual void Update() = 0;
-			};
+		// update
+		virtual void Update() = 0;
+	};
 
-			// factory function
-			Buffer *MakeBuffer(ALuint source, const cache::Proxy<res::Sound> &,
-				bool loop, float playPosition);
-		}
-	}
-}
+	// factory function
+	Buffer *MakeBuffer(ALuint source, const cache::Proxy<res::Sound> &,
+		bool loop, float playPosition);
+}}}
 
 #endif

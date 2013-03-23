@@ -35,22 +35,19 @@
 
 #	include "../phys/Body.hpp"
 
-namespace page
+namespace page { namespace game
 {
-	namespace game
+	struct Entity : phys::Body
 	{
-		struct Entity : phys::Body
-		{
-			// construct
-			Entity(const std::string &name, const cache::Proxy<res::Model> &);
+		// construct
+		Entity(const std::string &name, const cache::Proxy<res::Model> &);
 
-			// attributes
-			const std::string &GetName() const;
+		// attributes
+		const std::string &GetName() const;
 
-			private:
-			std::string name;
-		};
-	}
-}
+		private:
+		std::string name;
+	};
+}}
 
 #endif

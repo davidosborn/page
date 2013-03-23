@@ -54,7 +54,13 @@ namespace page
 		 */
 		template <typename... Bases>
 			class PublicVirtualInheritor :
-				public virtual Bases... {};
+				public virtual Bases...
+		{
+			public:
+			template <typename... Args>
+				PublicVirtualInheritor(Args &&... args) :
+					Bases(std::forward<Args>(args)...)... {}
+		};
 	}
 }
 

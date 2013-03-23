@@ -38,177 +38,173 @@
 
 #	include "../../util/class/Cloneable.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/**
+	 * A proxy class representing an object which may be stored in the cache and
+	 * can be recreated on demand.
+	 */
+	template <typename T>
+		class Proxy : public virtual util::Cloneable<Proxy<T>>
 	{
+		/*------+
+		| types |
+		+------*/
+
+		public:
 		/**
-		 * A proxy class representing an object which may be stored in the cache
-		 * and can be recreated on demand.
+		 * The type of the object.
 		 */
-		template <typename T>
-			class Proxy :
-				public util::Cloneable<Proxy<T>>
-		{
-			/*------+
-			| types |
-			+------*/
-
-			public:
-			/**
-			 * The type of the object.
-			 */
-			typedef T value_type;
-
-			/**
-			 *
-			 */
-			typedef std::shared_ptr<const T> Instance;
-
-			/**
-			 * A function that will recreate an invalidated object.
-			 */
-			typedef std::function<void (T &)> RepairFunction;
-
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
-
-			public:
-			explicit Proxy(const RepairFunction & = 0);
-
-			virtual ~Proxy();
-
-			/*-------+
-			| access |
-			+-------*/
-
-			public:
-			const T &operator *() const;
-			const T *operator ->() const;
-			const T *get() const;
-
-			/**
-			 *
-			 *
-			 * @note This function is virtual for @c Reference.
-			 */
-			virtual Instance Lock() const;
-
-			/*----------+
-			| observers |
-			+----------*/
-
-			public:
-			/**
-			 * The signature of the cached object.
-			 */
-			std::string GetSignature() const;
-
-			/**
-			 * The type of the cached object.
-			 */
-			virtual std::string GetType() const = 0;
-
-			/**
-			 * @return A user-friendly string identifying the source.
-			 */
-			virtual std::string GetSource() const = 0;
-
-			/**
-			 * @return @c true if all of the dependencies also return @c true.
-			 */
-			virtual operator bool() const = 0;
-
-			protected:
-			/**
-			 * @return A function object that will invalidate the cached object.
-			 */
-			std::function<void ()> GetInvalidate() const;
-
-			/**
-			 * @return A function object that will purge the cached object.
-			 */
-			std::function<void ()> GetPurge() const;
-
-			/*----------+
-			| modifiers |
-			+----------*/
-
-			public:
-			/**
-			 *
-			 *
-			 * @note This function is virtual for @c Reference.
-			 */
-			virtual void Invalidate() const;
-
-			/**
-			 *
-			 *
-			 * @note This function is virtual for @c Reference.
-			 */
-			virtual void Purge() const;
-
-			/*--------------+
-			| instantiation |
-			+--------------*/
-
-			private:
-			/**
-			 * Creates a new instance of the object.
-			 */
-			virtual Instance Make() const = 0;
-
-			/*-----------+
-			| comparison |
-			+-----------*/
-
-			public:
-			/**
-			 * A function object that compares the types of two proxies.
-			 */
-			struct CompareType
-			{
-				typedef Proxy<T> first_argument_type;
-				typedef Proxy<T> second_argument_type;
-				typedef bool result_type;
-
-				bool operator ()(const Proxy<T> &, const Proxy<T> &) const;
-			};
-
-			/**
-			 * A function object that compares the sources of two proxies.
-			 */
-			struct CompareSource
-			{
-				typedef Proxy<T> first_argument_type;
-				typedef Proxy<T> second_argument_type;
-				typedef bool result_type;
-
-				bool operator ()(const Proxy<T> &, const Proxy<T> &) const;
-			};
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			mutable std::weak_ptr<const T> reference;
-			RepairFunction repair;
-		};
-
-		/*------------------------------+
-		| stream insertion & extraction |
-		+------------------------------*/
+		typedef T value_type;
 
 		/**
 		 *
 		 */
-		template <typename T>
-			std::ostream &operator <<(std::ostream &, const Proxy<T> &);
-	}
-}
+		typedef std::shared_ptr<const T> Instance;
+
+		/**
+		 * A function that will recreate an invalidated object.
+		 */
+		typedef std::function<void (T &)> RepairFunction;
+
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		public:
+		explicit Proxy(const RepairFunction & = 0);
+
+		virtual ~Proxy();
+
+		/*-------+
+		| access |
+		+-------*/
+
+		public:
+		const T &operator *() const;
+		const T *operator ->() const;
+		const T *get() const;
+
+		/**
+		 *
+		 *
+		 * @note This function is virtual for @c Reference.
+		 */
+		virtual Instance Lock() const;
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		public:
+		/**
+		 * The signature of the cached object.
+		 */
+		std::string GetSignature() const;
+
+		/**
+		 * The type of the cached object.
+		 */
+		virtual std::string GetType() const = 0;
+
+		/**
+		 * @return A user-friendly string identifying the source.
+		 */
+		virtual std::string GetSource() const = 0;
+
+		/**
+		 * @return @c true if all of the dependencies also return @c true.
+		 */
+		virtual operator bool() const = 0;
+
+		protected:
+		/**
+		 * @return A function object that will invalidate the cached object.
+		 */
+		std::function<void ()> GetInvalidate() const;
+
+		/**
+		 * @return A function object that will purge the cached object.
+		 */
+		std::function<void ()> GetPurge() const;
+
+		/*----------+
+		| modifiers |
+		+----------*/
+
+		public:
+		/**
+		 *
+		 *
+		 * @note This function is virtual for @c Reference.
+		 */
+		virtual void Invalidate() const;
+
+		/**
+		 *
+		 *
+		 * @note This function is virtual for @c Reference.
+		 */
+		virtual void Purge() const;
+
+		/*--------------+
+		| instantiation |
+		+--------------*/
+
+		private:
+		/**
+		 * Creates a new instance of the object.
+		 */
+		virtual Instance Make() const = 0;
+
+		/*-----------+
+		| comparison |
+		+-----------*/
+
+		public:
+		/**
+		 * A function object that compares the types of two proxies.
+		 */
+		struct CompareType
+		{
+			typedef Proxy<T> first_argument_type;
+			typedef Proxy<T> second_argument_type;
+			typedef bool result_type;
+
+			bool operator ()(const Proxy<T> &, const Proxy<T> &) const;
+		};
+
+		/**
+		 * A function object that compares the sources of two proxies.
+		 */
+		struct CompareSource
+		{
+			typedef Proxy<T> first_argument_type;
+			typedef Proxy<T> second_argument_type;
+			typedef bool result_type;
+
+			bool operator ()(const Proxy<T> &, const Proxy<T> &) const;
+		};
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		mutable std::weak_ptr<const T> reference;
+		RepairFunction repair;
+	};
+
+	/*------------------------------+
+	| stream insertion & extraction |
+	+------------------------------*/
+
+	/**
+	 *
+	 */
+	template <typename T>
+		std::ostream &operator <<(std::ostream &, const Proxy<T> &);
+}}
 
 #	include "Proxy.tpp"
 #endif

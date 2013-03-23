@@ -38,80 +38,68 @@
 #include "Aabb.hpp"
 #include "Bounds.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/*--------+
+	| deleter |
+	+--------*/
+
+	namespace
 	{
-		/*--------+
-		| deleter |
-		+--------*/
-
-		namespace
+		void Delete(const math::Aabb<3> *aabb, boost::signals::connection &poseCon, boost::signals::connection &transformCon)
 		{
-			void Delete(const math::Aabb<3> *aabb, boost::signals::connection &poseCon, boost::signals::connection &transformCon)
-			{
-				poseCon.disconnect();
-				transformCon.disconnect();
-				delete aabb;
-			}
-		}
-
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
-
-		Aabb::Aabb(const phys::Form &form, bool pose) :
-			Aabb(Bounds((assert(form.GetModel()), *form.GetModel()), pose), form) {}
-
-		Aabb::Aabb(const Proxy<phys::Bounds> &bounds, const phys::attrib::Pose &pose) :
-			bounds(bounds.Copy()), id(pose.GetId()) {}
-
-		/*------+
-		| clone |
-		+------*/
-
-		Aabb *Aabb::Clone() const
-		{
-			return new Aabb(*this);
-		}
-
-		/*----------+
-		| observers |
-		+----------*/
-
-		std::string Aabb::GetType() const
-		{
-			return "AABB";
-		}
-
-		std::string Aabb::GetSource() const
-		{
-			return util::StringBuilder() <<
-				bounds->GetSource() << ':' << id;
-		}
-
-		Aabb::operator bool() const
-		{
-			return *bounds && util::Identifiable::FromId(id);
-		}
-
-		/*--------------+
-		| instantiation |
-		+--------------*/
-
-		Aabb::Instance Aabb::Make() const
-		{
-			phys::attrib::Pose &pose(util::ReferenceFromId<phys::attrib::Pose>(id));
-			const phys::Bounds &bounds(**this->bounds);
-			boost::signals::scoped_connection
-				poseCon(
-					pose.IsPosed() && !bounds.bones.empty() ?
-					pose.dirtyPoseSig.connect(GetInvalidate()) :
-					boost::signals::connection()),
-				transformCon(pose.dirtyTransformSig.connect(GetInvalidate()));
-			return Instance(new math::Aabb<3>(MakeAabb(bounds, pose)),
-				std::bind(Delete, std::placeholders::_1,
-					poseCon.release(), transformCon.release()));
+			poseCon.disconnect();
+			transformCon.disconnect();
+			delete aabb;
 		}
 	}
-}
+
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
+
+	Aabb::Aabb(const phys::Form &form, bool pose) :
+		Aabb(Bounds((assert(form.GetModel()), *form.GetModel()), pose), form) {}
+
+	Aabb::Aabb(const Proxy<phys::Bounds> &bounds, const phys::attrib::Pose &pose) :
+		bounds(bounds.Copy()), id(pose.GetId()) {}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	std::string Aabb::GetType() const
+	{
+		return "AABB";
+	}
+
+	std::string Aabb::GetSource() const
+	{
+		return util::StringBuilder() <<
+			bounds->GetSource() << ':' << id;
+	}
+
+	Aabb::operator bool() const
+	{
+		return *bounds && util::Identifiable::FromId(id);
+	}
+
+	/*--------------+
+	| instantiation |
+	+--------------*/
+
+	Aabb::Instance Aabb::Make() const
+	{
+		phys::attrib::Pose &pose(util::ReferenceFromId<phys::attrib::Pose>(id));
+		const phys::Bounds &bounds(**this->bounds);
+		boost::signals::scoped_connection
+			poseCon(
+				pose.IsPosed() && !bounds.bones.empty() ?
+				pose.dirtyPoseSig.connect(GetInvalidate()) :
+				boost::signals::connection()),
+			transformCon(pose.dirtyTransformSig.connect(GetInvalidate()));
+		return Instance(new math::Aabb<3>(MakeAabb(bounds, pose)),
+			std::bind(Delete, std::placeholders::_1,
+				poseCon.release(), transformCon.release()));
+	}
+}}

@@ -104,7 +104,7 @@ namespace page
 		}
 		std::string Stream::GetText()
 		{
-/*			std::string s;
+			/*std::string s;
 			for (char c; (c = GetChar()) || !eof;)
 				s.push_back(c);
 			return s;*/

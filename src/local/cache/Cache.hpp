@@ -39,223 +39,229 @@
 
 #	include "../util/class/Monostate.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
-	{
 ////////// detail::CacheTime ///////////////////////////////////////////////////
 
-		namespace detail
+	namespace detail
+	{
+		/**
+		 * A structure used by @c Cache to measure time.  It uses multiple
+		 * units, CacheTime::time and CacheTime::frame, to make a better
+		 * decision about when to drop a Datum from the Cache.
+		 */
+		struct CacheTime
 		{
+			CacheTime() {}
+			CacheTime(float time, unsigned frame) :
+				time(time), frame(frame) {}
+
 			/**
-			 * A structure used by @c Cache to measure time in multiple units.
+			 * The amount of time passed in seconds.
 			 */
-			struct CacheTime
-			{
-				CacheTime() {}
-				CacheTime(float time, unsigned frame) :
-					time(time), frame(frame) {}
+			float time = 0;
 
-				float    time  = 0;
-				unsigned frame = 0;
-			};
+			/**
+			 * The number of frames passed.
+			 */
+			unsigned frame = 0;
+		};
 
-			CacheTime operator -(const CacheTime &a, const CacheTime &b)
-			{
-				return CacheTime(
-					a.time  - b.time,
-					a.frame - b.frame);
-			}
-
-			bool operator <(const CacheTime &a, const CacheTime &b)
-			{
-				return
-					a.time  < b.time &&
-					a.frame < b.frame;
-			}
-
-			bool operator >(const CacheTime &a, const CacheTime &b)
-			{
-				return b < a;
-			}
+		CacheTime operator -(const CacheTime &a, const CacheTime &b)
+		{
+			return CacheTime(
+				a.time  - b.time,
+				a.frame - b.frame);
 		}
+
+		bool operator <(const CacheTime &a, const CacheTime &b)
+		{
+			return
+				a.time  < b.time &&
+				a.frame < b.frame;
+		}
+
+		bool operator >(const CacheTime &a, const CacheTime &b)
+		{
+			return b < a;
+		}
+	}
 
 ////////// Cache ///////////////////////////////////////////////////////////////
 
+	/**
+	 * Temporary storage for objects that take up resources and can be re-
+	 * created on-demand.
+	 *
+	 * @note It is not usually necessary to interact with the cache directly.
+	 *       Check out @c Proxy and its derivatives, which are provided to
+	 *       simplify the process of caching resources.
+	 */
+	class Cache :
+		public util::Monostate<Cache>
+	{
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		public:
+		explicit Cache(const detail::CacheTime &lifetime = {4, 8});
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		public:
 		/**
-		 * Temporary storage for objects that take up resources and can be
-		 * re-created on-demand.
-		 *
-		 * @note It is not usually necessary to interact with the cache
-		 *       directly.  Check out @c Proxy and its derivatives, which are
-		 *       provided to simplify the process of caching resources.
+		 * Fetches a piece of data from the cache.
 		 */
-		class Cache :
-			public util::Monostate<Cache>
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		std::shared_ptr<const void> Fetch(
+			const std::string &signature,
+			const std::string &name,
+			const std::type_info &) const;
 
-			public:
-			explicit Cache(const detail::CacheTime &lifetime = {4, 8});
-
-			/*----------+
-			| observers |
-			+----------*/
-
-			public:
-			/**
-			 * Fetches a piece of data from the cache.
-			 */
-			std::shared_ptr<const void> Fetch(
+		/**
+		 * Fetches an object from the cache.
+		 */
+		template <typename T>
+			std::shared_ptr<const T> Fetch(
 				const std::string &signature,
-				const std::string &name,
-				const std::type_info &) const;
+				const std::string &name) const;
 
-			/**
-			 * Fetches an object from the cache.
-			 */
-			template <typename T>
-				std::shared_ptr<const T> Fetch(
-					const std::string &signature,
-					const std::string &name) const;
+		/*----------+
+		| modifiers |
+		+----------*/
 
-			/*----------+
-			| modifiers |
-			+----------*/
+		public:
+		/**
+		 * Stores a piece of data in the cache.
+		 */
+		void Store(
+			const std::string &signature,
+			const std::string &name,
+			const std::shared_ptr<const void> &,
+			const std::type_info &,
+			const std::function<void ()> &repair = nullptr);
 
-			public:
-			/**
-			 * Stores a piece of data in the cache.
-			 */
+		/**
+		 * Stores an object in the cache.
+		 */
+		template <typename T>
 			void Store(
 				const std::string &signature,
 				const std::string &name,
-				const std::shared_ptr<const void> &,
-				const std::type_info &,
+				const std::shared_ptr<const T> &data,
 				const std::function<void ()> &repair = nullptr);
 
-			/**
-			 * Stores an object in the cache.
-			 */
-			template <typename T>
-				void Store(
-					const std::string &signature,
-					const std::string &name,
-					const std::shared_ptr<const T> &data,
-					const std::function<void ()> &repair = nullptr);
+		/**
+		 * Invalidates the matching datum.
+		 */
+		void Invalidate(
+			const std::string &signature,
+			const std::string &name);
+
+		/**
+		 * Purges all data from the cache.
+		 */
+		void Purge();
+
+		/**
+		 * Purges the matching datum from the cache.
+		 */
+		void Purge(
+			const std::string &signature,
+			const std::string &name);
+
+		/**
+		 * Purges the matching resource from the cache.
+		 */
+		void PurgeResource(
+			const std::string &path);
+
+		/*-------+
+		| update |
+		+-------*/
+
+		public:
+		/**
+		 * Updates the cache, purging expired data.
+		 *
+		 * @note This function should be called by the main loop, exactly once
+		 *       every frame.
+		 */
+		void Update(float deltaTime);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		/**
+		 * A cached object.
+		 */
+		struct Datum
+		{
+			Datum(
+				const std::string &name,
+				const std::shared_ptr<const void> &data,
+				const std::type_info &type,
+				const std::function<void ()> &repair,
+				const detail::CacheTime &atime = {}) :
+					name(name),
+					data(data),
+					type(&type),
+					repair(repair),
+					atime(atime) {}
 
 			/**
-			 * Invalidates the matching datum.
+			 * The user-friendly name of the object.
 			 */
-			void Invalidate(
-				const std::string &signature,
-				const std::string &name);
+			std::string name;
 
 			/**
-			 * Purges all data from the cache.
+			 * The actual data.
 			 */
-			void Purge();
+			std::shared_ptr<const void> data;
 
 			/**
-			 * Purges the matching datum from the cache.
+			 * The type of the object.
 			 */
-			void Purge(
-				const std::string &signature,
-				const std::string &name);
+			const std::type_info *type;
 
 			/**
-			 * Purges the matching resource from the cache.
+			 * A callback used to repair an @c invalid datum.
 			 */
-			void PurgeResource(
-				const std::string &path);
-
-			/*-------+
-			| update |
-			+-------*/
-
-			public:
-			/**
-			 * Updates the cache, purging expired data.
-			 *
-			 * @note This function should be called by the main loop, exactly
-			 *       once every frame.
-			 */
-			void Update(float deltaTime);
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			/**
-			 * A cached object.
-			 */
-			struct Datum
-			{
-				Datum(
-					const std::string &name,
-					const std::shared_ptr<const void> &data,
-					const std::type_info &type,
-					const std::function<void ()> &repair,
-					const detail::CacheTime &atime = {}) :
-						name(name),
-						data(data),
-						type(&type),
-						repair(repair),
-						atime(atime) {}
-
-				/**
-				 * The user-friendly name of the object.
-				 */
-				std::string name;
-
-				/**
-				 * The actual data.
-				 */
-				std::shared_ptr<const void> data;
-
-				/**
-				 * The type of the object.
-				 */
-				const std::type_info *type;
-
-				/**
-				 * A callback used to repair an @c invalid datum.
-				 */
-				std::function<void ()> repair;
-
-				/**
-				 * The time when the datum was last accessed.
-				 */
-				mutable detail::CacheTime atime;
-
-				/**
-				 * @c true if the datum has been invalidated.
-				 */
-				mutable bool invalid = false;
-			};
+			std::function<void ()> repair;
 
 			/**
-			 * A pool containing all of the cached data, where each datum is
-			 * accessible through its signature.
+			 * The time when the datum was last accessed.
 			 */
-			std::unordered_map<std::string, Datum> pool;
+			mutable detail::CacheTime atime;
 
 			/**
-			 * The length of time that data remains in the cache before it gets
-			 * purged.
+			 * @c true if the datum has been invalidated.
 			 */
-			const detail::CacheTime lifetime;
-
-			/**
-			 * A running count of how long the cache has been operating.
-			 */
-			detail::CacheTime time;
+			mutable bool invalid = false;
 		};
-	}
-}
+
+		/**
+		 * A pool containing all of the cached data, where each datum is
+		 * accessible through its signature.
+		 */
+		std::unordered_map<std::string, Datum> pool;
+
+		/**
+		 * The length of time that data remains in the cache before it gets
+		 * purged.
+		 */
+		const detail::CacheTime lifetime;
+
+		/**
+		 * A running count of how long the cache has been operating.
+		 */
+		detail::CacheTime time;
+	};
+}}
 
 #	include "Cache.tpp"
 #endif

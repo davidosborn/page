@@ -33,7 +33,6 @@
 
 #	include <string>
 
-#	include <boost/filesystem/path.hpp>
 #	include <boost/optional.hpp>
 
 namespace page
@@ -69,7 +68,7 @@ namespace page
 		/**
 		 * @return The path of the home directory.
 		 */
-		boost::filesystem::path GetHome();
+		std::string GetHome();
 
 		/**
 		 * @param[in] key The key of the desired environment variable.

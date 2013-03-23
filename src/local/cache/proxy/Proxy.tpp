@@ -36,144 +36,141 @@
 #include "../../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
 #include "../Cache.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
+
+	template <typename T>
+		Proxy<T>::Proxy(const RepairFunction &repair) :
+			repair(repair) {}
+
+	template <typename T>
+		Proxy<T>::~Proxy() {}
+
+	/*-------+
+	| access |
+	+-------*/
+
+	template <typename T>
+		const T &Proxy<T>::operator *() const
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
-
-		template <typename T>
-			Proxy<T>::Proxy(const RepairFunction &repair) :
-				repair(repair) {}
-
-		template <typename T>
-			Proxy<T>::~Proxy() {}
-
-		/*-------+
-		| access |
-		+-------*/
-
-		template <typename T>
-			const T &Proxy<T>::operator *() const
-		{
-			return *get();
-		}
-
-		template <typename T>
-			const T *Proxy<T>::operator ->() const
-		{
-			return get();
-		}
-
-		template <typename T>
-			const T *Proxy<T>::get() const
-		{
-			return Lock().get();
-		}
-
-		template <typename T>
-			typename Proxy<T>::Instance Proxy<T>::Lock() const
-		{
-			assert(*this);
-			Instance instance(reference.lock());
-			if (!instance)
-			{
-				auto sig(GetSignature());
-				auto name(boost::lexical_cast<std::string>(*this));
-				if (!(instance = GLOBAL(Cache).Fetch<T>(sig, name)))
-				{
-					instance = Make();
-					assert(instance);
-					GLOBAL(Cache).Store(sig, name, instance, repair ?
-						std::bind(repair, std::ref(*std::const_pointer_cast<T>(instance))) :
-						std::function<void ()>());
-				}
-				// FIXME: we can't use the weak reference in its current state
-				// because the access time will not be updated
-//				reference = instance;
-			}
-			return instance;
-		}
-
-		/*----------+
-		| observers |
-		+----------*/
-
-		template <typename T>
-			std::string Proxy<T>::GetSignature() const
-		{
-			return util::GetIncompleteTypeInfo<T>().name() + GetType() + GetSource();
-		}
-
-		template <typename T>
-			std::function<void ()> Proxy<T>::GetInvalidate() const
-		{
-			return std::bind(
-				&Cache::Invalidate,
-				&GLOBAL(Cache),
-				GetSignature(),
-				boost::lexical_cast<std::string>(*this));
-		}
-
-		template <typename T>
-			std::function<void ()> Proxy<T>::GetPurge() const
-		{
-			return std::bind(
-				static_cast<void (*)(const std::string &, const std::string &)>(&Cache::Purge),
-				&GLOBAL(Cache),
-				GetSignature(),
-				boost::lexical_cast<std::string>(*this));
-		}
-
-		/*----------+
-		| modifiers |
-		+----------*/
-
-		template <typename T>
-			void Proxy<T>::Invalidate() const
-		{
-			std::string
-				sig(GetSignature()),
-				name(boost::lexical_cast<std::string>(*this));
-			GLOBAL(Cache).Invalidate(sig, name);
-		}
-		template <typename T>
-			void Proxy<T>::Purge() const
-		{
-			std::string
-				sig(GetSignature()),
-				name(boost::lexical_cast<std::string>(*this));
-			GLOBAL(Cache).Purge(sig, name);
-		}
-
-		/*-----------+
-		| comparison |
-		+-----------*/
-
-		template <typename T>
-			bool Proxy<T>::CompareType::operator ()(const Proxy<T> &a, const Proxy<T> &b) const
-		{
-			return a.GetType() < b.GetType();
-		}
-
-		template <typename T>
-			bool Proxy<T>::CompareSource::operator ()(const Proxy<T> &a, const Proxy<T> &b) const
-		{
-			return a.GetSource() < b.GetSource();
-		}
-
-		/*------------------------------+
-		| stream insertion & extraction |
-		+------------------------------*/
-
-		template <typename T>
-			std::ostream &operator <<(std::ostream &os, const Proxy<T> &proxy)
-		{
-			return proxy ?
-				os << proxy.GetType() << " from " << proxy.GetSource() :
-				os << "invalid " << proxy.GetType();
-		}
+		return *get();
 	}
-}
+
+	template <typename T>
+		const T *Proxy<T>::operator ->() const
+	{
+		return get();
+	}
+
+	template <typename T>
+		const T *Proxy<T>::get() const
+	{
+		return Lock().get();
+	}
+
+	template <typename T>
+		typename Proxy<T>::Instance Proxy<T>::Lock() const
+	{
+		assert(*this);
+		Instance instance(reference.lock());
+		if (!instance)
+		{
+			auto sig(GetSignature());
+			auto name(boost::lexical_cast<std::string>(*this));
+			if (!(instance = GLOBAL(Cache).Fetch<T>(sig, name)))
+			{
+				instance = Make();
+				assert(instance);
+				GLOBAL(Cache).Store(sig, name, instance, repair ?
+					std::bind(repair, std::ref(*std::const_pointer_cast<T>(instance))) :
+					std::function<void ()>());
+			}
+			// FIXME: we can't use the weak reference in its current state
+			// because the access time will not be updated
+			//reference = instance;
+		}
+		return instance;
+	}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	template <typename T>
+		std::string Proxy<T>::GetSignature() const
+	{
+		return util::GetIncompleteTypeInfo<T>().name() + GetType() + GetSource();
+	}
+
+	template <typename T>
+		std::function<void ()> Proxy<T>::GetInvalidate() const
+	{
+		return std::bind(
+			&Cache::Invalidate,
+			&GLOBAL(Cache),
+			GetSignature(),
+			boost::lexical_cast<std::string>(*this));
+	}
+
+	template <typename T>
+		std::function<void ()> Proxy<T>::GetPurge() const
+	{
+		return std::bind(
+			static_cast<void (*)(const std::string &, const std::string &)>(&Cache::Purge),
+			&GLOBAL(Cache),
+			GetSignature(),
+			boost::lexical_cast<std::string>(*this));
+	}
+
+	/*----------+
+	| modifiers |
+	+----------*/
+
+	template <typename T>
+		void Proxy<T>::Invalidate() const
+	{
+		std::string
+			sig(GetSignature()),
+			name(boost::lexical_cast<std::string>(*this));
+		GLOBAL(Cache).Invalidate(sig, name);
+	}
+	template <typename T>
+		void Proxy<T>::Purge() const
+	{
+		std::string
+			sig(GetSignature()),
+			name(boost::lexical_cast<std::string>(*this));
+		GLOBAL(Cache).Purge(sig, name);
+	}
+
+	/*-----------+
+	| comparison |
+	+-----------*/
+
+	template <typename T>
+		bool Proxy<T>::CompareType::operator ()(const Proxy<T> &a, const Proxy<T> &b) const
+	{
+		return a.GetType() < b.GetType();
+	}
+
+	template <typename T>
+		bool Proxy<T>::CompareSource::operator ()(const Proxy<T> &a, const Proxy<T> &b) const
+	{
+		return a.GetSource() < b.GetSource();
+	}
+
+	/*------------------------------+
+	| stream insertion & extraction |
+	+------------------------------*/
+
+	template <typename T>
+		std::ostream &operator <<(std::ostream &os, const Proxy<T> &proxy)
+	{
+		return proxy ?
+			os << proxy.GetType() << " from " << proxy.GetSource() :
+			os << "invalid " << proxy.GetType();
+	}
+}}

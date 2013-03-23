@@ -28,30 +28,21 @@
  * of this software.
  */
 
-#ifndef    page_local_res_fmt_native_model_hpp
-#   define page_local_res_fmt_native_model_hpp
+#ifndef    page_local_res_format_native_model_hpp
+#   define page_local_res_format_native_model_hpp
 
 #	include <string>
 
-namespace page
+namespace page { namespace res { namespace format
 {
-	namespace res
+	namespace native { namespace model
 	{
-		namespace fmt
-		{
-			namespace native
-			{
-				namespace model
-				{
-					const char comment = '#';
-					const std::string shebang(std::string(1, comment) + '!');
-					const std::string sig("PAGEmodel");
-				}
-			}
+		const char comment = '#';
+		const std::string shebang(std::string(1, comment) + '!');
+		const std::string sig("PAGEmodel");
+	}}
 
-			using namespace native::model;
-		}
-	}
-}
+	using namespace native::model;
+}}}
 
 #endif

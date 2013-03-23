@@ -33,15 +33,9 @@
 
 #	include <string>
 
-namespace page
+namespace page { namespace err { namespace x11
 {
-	namespace err
-	{
-		namespace x11
-		{
-			std::string GetErrorString(unsigned char);
-		}
-	}
-}
+	std::string GetErrorString(unsigned char);
+}}}
 
 #endif

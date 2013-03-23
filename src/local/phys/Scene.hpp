@@ -130,15 +130,15 @@ namespace page
 			const math::Vector<3> &GetSunDirection() const;
 
 			// sunlight access
-/*			bool HasSunlight() const;
+			/*bool HasSunlight() const;
 			const Sunlight &GetSunlight() const;*/
 
 			// cloud access
-/*			bool HasClouds() const;
+			/*bool HasClouds() const;
 			const Clouds &GetClouds() const;*/
 
 			// precipitation access
-/*			bool HasPrecipitation() const;
+			/*bool HasPrecipitation() const;
 			const Precipitation &GetPrecipitation() const;*/
 
 			// modifiers

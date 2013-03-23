@@ -28,30 +28,21 @@
  * of this software.
  */
 
-#ifndef    page_local_res_fmt_native_gait_hpp
-#   define page_local_res_fmt_native_gait_hpp
+#ifndef    page_local_res_format_native_gait_hpp
+#   define page_local_res_format_native_gait_hpp
 
 #	include <string>
 
-namespace page
+namespace page { namespace res { namespace format
 {
-	namespace res
+	namespace native { namespace gait
 	{
-		namespace fmt
-		{
-			namespace native
-			{
-				namespace gait
-				{
-					const char comment = '#';
-					const std::string shebang(std::string(1, comment) + '!');
-					const std::string sig("PAGEgait");
-				}
-			}
+		const char comment = '#';
+		const std::string shebang(std::string(1, comment) + '!');
+		const std::string sig("PAGEgait");
+	}}
 
-			using namespace native::gait;
-		}
-	}
-}
+	using namespace native::gait;
+}}}
 
 #endif

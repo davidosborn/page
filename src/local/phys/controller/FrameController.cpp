@@ -30,24 +30,15 @@
 
 #include "FrameController.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	// construct
+	FrameController::FrameController(const Frame &frame, Layer layer) :
+		Controller(layer), frame(frame) {}
+
+	// generate frame
+	Frame FrameController::DoGetFrame(const Frame &, const Frame &) const
 	{
-		// construct
-		FrameController::FrameController(const Frame &frame, Layer layer) :
-			Controller(layer), frame(frame) {}
-
-		// clone
-		FrameController *FrameController::Clone() const
-		{
-			return new FrameController(*this);
-		}
-
-		// generate frame
-		Frame FrameController::DoGetFrame(const Frame &, const Frame &) const
-		{
-			return frame;
-		}
+		return frame;
 	}
-}
+}}

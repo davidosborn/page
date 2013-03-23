@@ -35,54 +35,51 @@
 
 #	include "../Window.hpp"
 
-namespace page
+namespace page { namespace wnd { namespace x11
 {
-	namespace wnd
+	class Window :
+		public wnd::Window,
+		public virtual util::Cloneable<Window, wnd::Window>
 	{
-		namespace x11
-		{
-			struct Window : wnd::Window
-			{
-				// construct/destroy
-				Window(const std::string &title);
-				~Window();
+		public:
+		// construct/destroy
+		explicit Window(const std::string &title);
+		~Window();
 
-				// update
-				void Update();
+		// update
+		void Update();
 
-				// platform access
-				Display *GetDisplay() const;
-				int GetScreen() const;
-				::Window GetWindow() const;
+		// platform access
+		Display *GetDisplay() const;
+		int GetScreen() const;
+		::Window GetWindow() const;
 
-				// event signal
-				boost::signal<void (const XEvent &)> eventSig;
+		// event signal
+		boost::signal<void (const XEvent &)> eventSig;
 
-				// environment state
-				math::Vector<2, unsigned> GetScreenSize() const;
+		// environment state
+		math::Vector<2, unsigned> GetScreenSize() const;
 
-				private:
-				// driver factory functions
-				aud::Driver *MakeAudioDriver();
-				inp::Driver *MakeInputDriver();
-				vid::Driver *MakeVideoDriver();
+		private:
+		// driver factory functions
+		aud::Driver *MakeAudioDriver();
+		inp::Driver *MakeInputDriver();
+		vid::Driver *MakeVideoDriver();
 
-				// fullscreen modifiers
-				void SetFull(bool);
-				void SwitchFull();
+		// fullscreen modifiers
+		void SetFull(bool);
+		void SwitchFull();
 
-				// atoms
-				Atom
-					_NET_WM_STATE,
-					_NET_WM_STATE_FULLSCREEN,
-					WM_DELETE_WINDOW;
+		// atoms
+		Atom
+			_NET_WM_STATE,
+			_NET_WM_STATE_FULLSCREEN,
+			WM_DELETE_WINDOW;
 
-				Display *display;
-				int screen;
-				::Window w;
-			};
-		}
-	}
-}
+		Display *display;
+		int screen;
+		::Window w;
+	};
+}}}
 
 #endif

@@ -1667,9 +1667,6 @@ local/cfg/source/Source
 local/cfg/state/BasicState
 local/cfg/state/CommonState
 local/cfg/state/State
-local/clip/encoder/detail/EncoderFactory
-local/clip/encoder/Encoder
-local/clip/Stream
 local/err/init
 local/err/report
 local/err/tags
@@ -1694,7 +1691,6 @@ local/log/Indenter
 local/log/init
 local/log/manip
 local/log/print
-local/log/sink/BufferSink
 local/log/sink/ConsoleSink
 local/log/sink/FileSink
 local/log/sink/StderrSink
@@ -1780,6 +1776,9 @@ local/res/adapt/text
 local/res/adapt/text/ParseTree
 local/res/adapt/text/LineIterator
 local/res/adapt/text/Parser
+local/res/clip/Encoder
+local/res/clip/EncoderRegistry
+local/res/clip/Stream
 local/res/Index
 local/res/load/animation/native
 local/res/load/cameraSet/native
@@ -1791,7 +1790,7 @@ local/res/load/mesh/3ds
 local/res/load/mesh/native
 local/res/load/model/native
 local/res/load/object/native
-local/res/load/Registry
+local/res/load/LoaderRegistry
 local/res/load/scene/native
 local/res/load/skeleton/native
 local/res/load/sound/wav
@@ -1806,13 +1805,12 @@ local/res/pipe/MemPipe
 local/res/pipe/NullPipe
 local/res/pipe/Pipe
 local/res/pipe/SubPipe
-local/res/save
 local/res/save/image/bmp
-local/res/save/Registry
-local/res/scan/Registry
+local/res/save/SaverRegistry
+local/res/scan/ScannerRegistry
 local/res/source/DirSource
 local/res/source/FileSource
-local/res/source/Registry
+local/res/source/SourceRegistry
 local/res/source/Source
 local/res/Stream
 local/res/type/Animation
@@ -1826,7 +1824,7 @@ local/res/type/Material
 local/res/type/Mesh
 local/res/type/Model
 local/res/type/Object
-local/res/type/Registry
+local/res/type/TypeRegistry
 local/res/type/Scene
 local/res/type/Script
 local/res/type/script/ScriptFormat
@@ -1873,7 +1871,6 @@ local/vid/DrawContext
 local/vid/Driver
 local/vid/Filter
 local/vid/ViewContext
-local/wnd/Console
 local/wnd/message
 local/wnd/Window
 EOF
@@ -1911,18 +1908,18 @@ fi
 
 if [ "$with_expat" = yes ]; then
 	add_cxx_sources <<\EOF
-local/res/load/cursor/native/expat
-local/res/load/gait/native/expat
-local/res/load/material/native/expat
-local/res/load/model/native/expat
-local/res/load/scene/native/expat
-local/res/load/theme/native/expat
+local/res/load/cursor/native-xml-expat
+local/res/load/gait/native-xml-expat
+local/res/load/material/native-xml-expat
+local/res/load/model/native-xml-expat
+local/res/load/scene/native-xml-expat
+local/res/load/theme/native-xml-expat
 EOF
 fi
 
 if [ "$with_ffmpeg" = yes ]; then
 	add_cxx_sources <<\EOF
-local/clip/encoder/FfmpegEncoder
+local/res/clip/FfmpegClipEncoder
 EOF
 fi
 
@@ -2073,7 +2070,7 @@ fi
 
 if [ "$with_theora" = yes ]; then
 	add_cxx_sources <<\EOF
-local/clip/encoder/TheoraEncoder
+local/res/clip/TheoraClipEncoder
 EOF
 fi
 

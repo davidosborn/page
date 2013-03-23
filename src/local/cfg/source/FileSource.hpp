@@ -31,52 +31,49 @@
 #ifndef    page_local_cfg_source_FileSource_hpp
 #   define page_local_cfg_source_FileSource_hpp
 
-#	include <boost/filesystem.hpp> // path
+#	include <string>
 
 #	include "Source.hpp"
 
-namespace page
+namespace page { namespace cfg
 {
-	namespace cfg
+	/**
+	 * Represents a file containing configuration variables.
+	 */
+	class FileSource : public Source
 	{
-		/**
-		 * Represents a file containing configuration variables.
-		 */
-		class FileSource : public Source
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-			public:
-			explicit FileSource(const boost::filesystem::path &);
+		public:
+		explicit FileSource(const std::string &);
 
-			/*----------------------+
-			| copy & move semantics |
-			+----------------------*/
+		/*----------------------+
+		| copy & move semantics |
+		+----------------------*/
 
-			MAKE_UNCOPYABLE(FileSource)
+		MAKE_UNCOPYABLE(FileSource)
 
-			/*----------------------+
-			| Source implementation |
-			+----------------------*/
+		/*----------------------+
+		| Source implementation |
+		+----------------------*/
 
-			private:
-			class Reader;
-			class Writer;
+		private:
+		class Reader;
+		class Writer;
 
-			public:
-			std::unique_ptr<Source::Reader> OpenReader() const override;
-			std::unique_ptr<Source::Writer> OpenWriter() const override;
+		public:
+		std::unique_ptr<Source::Reader> OpenReader() const override;
+		std::unique_ptr<Source::Writer> OpenWriter() const override;
 
-			/*-------------+
-			| data members |
-			+-------------*/
+		/*-------------+
+		| data members |
+		+-------------*/
 
-			private:
-			boost::filesystem::path path;
-		};
-	}
-}
+		private:
+		std::string path;
+	};
+}}
 
 #endif

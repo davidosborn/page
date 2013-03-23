@@ -38,8 +38,8 @@
 
 #	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
-namespace page { namespace util { namespace tuple {
-
+namespace page { namespace util { namespace tuple
+{
 	/**
 	 * @defgroup tuple
 	 * @{
@@ -314,7 +314,6 @@ namespace page { namespace util { namespace tuple {
 	}
 	///@}
 	///@}
-
 }}}
 
 #endif

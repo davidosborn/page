@@ -33,41 +33,37 @@
 
 #	include "Source.hpp"
 
-namespace page
+namespace page { namespace cfg
 {
-	namespace cfg
+	/**
+	 * Provides access to configuration variables specified on the command line.
+	 */
+	class CmdlineSource : public Source
 	{
-		/**
-		 * Provides access to configuration variables specified on the command
-		 * line.
-		 */
-		class CmdlineSource : public Source
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-			public:
-			CmdlineSource(int argc, const char *const *argv);
+		public:
+		CmdlineSource(int argc, const char *const *argv);
 
-			/*----------------------+
-			| copy & move semantics |
-			+----------------------*/
+		/*----------------------+
+		| copy & move semantics |
+		+----------------------*/
 
-			public:
-			MAKE_UNCOPYABLE(CmdlineSource)
+		public:
+		MAKE_UNCOPYABLE(CmdlineSource)
 
-			/*----------------------+
-			| Source implementation |
-			+----------------------*/
+		/*----------------------+
+		| Source implementation |
+		+----------------------*/
 
-			private:
-			class Reader;
+		private:
+		class Reader;
 
-			public:
-			std::unique_ptr<Source::Reader> OpenReader() const override;
-		};
-	}
-}
+		public:
+		std::unique_ptr<Source::Reader> OpenReader() const override;
+	};
+}}
 
 #endif

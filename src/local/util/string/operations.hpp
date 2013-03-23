@@ -167,7 +167,21 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Convert various newline formats into the standard format, with each
+		 * Converts every character in the string to lowercase.
+		 */
+		template <typename Char, typename CharTraits>
+			std::basic_string<Char, CharTraits>
+				ToLower(const std::basic_string<Char, CharTraits> &);
+
+		/**
+		 * Converts every character in the string to uppercase.
+		 */
+		template <typename Char, typename CharTraits>
+			std::basic_string<Char, CharTraits>
+				ToUpper(const std::basic_string<Char, CharTraits> &);
+
+		/**
+		 * Converts various newline formats into the standard format, with each
 		 * newline indicated by '\n'.
 		 */
 		template <typename Char, typename CharTraits>
@@ -212,7 +226,7 @@ namespace page
 		 * @{
 		 */
 		/**
-		 * Compare the leading portion of a string with another string.
+		 * Compares the leading portion of a string with another string.
 		 *
 		 * @return @c true if the first string starts with the second string.
 		 */
@@ -221,7 +235,7 @@ namespace page
 				const std::basic_string<Char, CharTraits> &,
 				const std::basic_string<Char, CharTraits> &);
 		/**
-		 * Compare the trailing portion of a string with another string.
+		 * Compares the trailing portion of a string with another string.
 		 *
 		 * @return @c true if the first string ends with the second string.
 		 */

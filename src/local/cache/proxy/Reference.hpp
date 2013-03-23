@@ -36,80 +36,72 @@
 
 #	include "Proxy.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/**
+	 * A facade of @c Proxy that provides access to a object by reference that
+	 * is not in the cache.
+	 */
+	template <typename T>
+		class Reference :
+			public Proxy<T>,
+			public virtual util::Cloneable<Reference<T>, Proxy<T>>
 	{
-		/**
-		 * A facade of @c Proxy that provides access to a object by reference
-		 * that is not in the cache.
-		 */
-		template <typename T>
-			class Reference : public Proxy<T>
-		{
-			/*------+
-			| types |
-			+------*/
+		/*------+
+		| types |
+		+------*/
 
-			public:
-			typedef typename Proxy<T>::Instance Instance;
+		public:
+		typedef typename Proxy<T>::Instance Instance;
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-			public:
-			explicit Reference(const T &);
-			explicit Reference(const Instance & = Instance());
+		public:
+		explicit Reference(const T &);
+		explicit Reference(const Instance & = Instance());
 
-			/*------+
-			| clone |
-			+------*/
+		/*-------+
+		| access |
+		+-------*/
 
-			public:
-			Reference<T> *Clone() const override;
+		public:
+		Instance Lock() const override;
 
-			/*-------+
-			| access |
-			+-------*/
+		/*----------+
+		| observers |
+		+----------*/
 
-			public:
-			Instance Lock() const override;
+		public:
+		std::string GetType() const override;
+		std::string GetSource() const override;
+		operator bool() const override;
 
-			/*----------+
-			| observers |
-			+----------*/
+		/*----------+
+		| modifiers |
+		+----------*/
 
-			public:
-			std::string GetType() const override;
-			std::string GetSource() const override;
-			operator bool() const override;
+		public:
+		void Invalidate() const override;
+		void Purge() const override;
 
-			/*----------+
-			| modifiers |
-			+----------*/
+		/*--------------+
+		| instantiation |
+		+--------------*/
 
-			public:
-			void Invalidate() const override;
-			void Purge() const override;
+		private:
+		Instance Make() const override;
 
-			/*--------------+
-			| instantiation |
-			+--------------*/
+		/*-------------+
+		| data members |
+		+-------------*/
 
-			private:
-			Instance Make() const override;
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			Instance instance;
-			std::string source;
-		};
-	}
-}
+		private:
+		Instance instance;
+		std::string source;
+	};
+}}
 
 #	include "Reference.tpp"
 #endif

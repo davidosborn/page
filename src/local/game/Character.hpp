@@ -39,31 +39,31 @@ namespace page
 {
 	namespace phys { class PathfindingController; }
 	namespace res { class Character; }
-
-	namespace game
-	{
-		struct Character : Entity
-		{
-			friend class Player;
-
-			// construct
-			explicit Character(const res::Character &);
-
-			// actions
-			void Goto(const math::Vector<3> &);
-			void Say(const std::string &);
-
-			// properties
-			// FIXME: implement
-
-			// conditions
-			bool IsIdle() const;
-			bool IsMoving() const;
-
-			private:
-			std::shared_ptr<phys::PathfindingController> pathfindingController;
-		};
-	}
 }
+
+namespace page { namespace game
+{
+	struct Character : Entity
+	{
+		friend class Player;
+
+		// construct
+		explicit Character(const res::Character &);
+
+		// actions
+		void Goto(const math::Vector<3> &);
+		void Say(const std::string &);
+
+		// properties
+		// FIXME: implement
+
+		// conditions
+		bool IsIdle() const;
+		bool IsMoving() const;
+
+		private:
+		std::shared_ptr<phys::PathfindingController> pathfindingController;
+	};
+}}
 
 #endif

@@ -34,39 +34,36 @@
 #	include "../../util/Identifiable.hpp" // Identifiable::Id
 #	include "../Channel.hpp"
 
-namespace page
+namespace page { namespace phys { class Sound; }}
+
+namespace page { namespace aud
 {
-	namespace phys { class Sound; }
-
-	namespace aud
+	struct SpatialChannel : virtual Channel
 	{
-		struct SpatialChannel : virtual Channel
-		{
-			// construct
-			explicit SpatialChannel(const phys::Sound &);
+		// construct
+		explicit SpatialChannel(const phys::Sound &);
 
-			// state
-			bool IsAudible() const;
+		// state
+		bool IsAudible() const;
 
-			// update
-			void DoUpdate(float deltaTime);
+		// update
+		void DoUpdate(float deltaTime);
 
-			// modifiers
-			void Occlude();
+		// modifiers
+		void Occlude();
 
-			// sound access
-			phys::Sound *GetSound() const;
-			util::Identifiable::Id GetId() const;
+		// sound access
+		phys::Sound *GetSound() const;
+		util::Identifiable::Id GetId() const;
 
-			private:
-			// state
-			float DoGetLinearVolume() const;
+		private:
+		// state
+		float DoGetLinearVolume() const;
 
-			util::Identifiable::Id id;
-			bool occluded;
-			float level;
-		};
-	}
-}
+		util::Identifiable::Id id;
+		bool occluded;
+		float level;
+	};
+}}
 
 #endif

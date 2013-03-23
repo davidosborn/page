@@ -33,54 +33,42 @@
 #include "../../util/string/StringBuilder.hpp"
 #include "Skin.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
+
+	Skin::Skin(const Proxy<res::Mesh> &mesh, const phys::attrib::Pose &pose) :
+		mesh(mesh.Copy()), poseId(pose.GetId()) {}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	std::string Skin::GetType() const
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
-
-		Skin::Skin(const Proxy<res::Mesh> &mesh, const phys::attrib::Pose &pose) :
-			mesh(mesh.Copy()), poseId(pose.GetId()) {}
-
-		/*------+
-		| clone |
-		+------*/
-
-		Skin *Skin::Clone() const
-		{
-			return new Skin(*this);
-		}
-
-		/*----------+
-		| observers |
-		+----------*/
-
-		std::string Skin::GetType() const
-		{
-			return "skin";
-		}
-
-		std::string Skin::GetSource() const
-		{
-			return util::StringBuilder() <<
-				mesh->GetSource() << ':' << poseId;
-		}
-
-		Skin::operator bool() const
-		{
-			return *mesh && util::Identifiable::FromId(poseId);
-		}
-
-		/*--------------+
-		| instantiation |
-		+--------------*/
-
-		Skin::Instance Skin::Make() const
-		{
-			return std::make_shared<phys::Skin>(**mesh,
-				util::ReferenceFromId<phys::attrib::Pose>(poseId));
-		}
+		return "skin";
 	}
-}
+
+	std::string Skin::GetSource() const
+	{
+		return util::StringBuilder() <<
+			mesh->GetSource() << ':' << poseId;
+	}
+
+	Skin::operator bool() const
+	{
+		return *mesh && util::Identifiable::FromId(poseId);
+	}
+
+	/*--------------+
+	| instantiation |
+	+--------------*/
+
+	Skin::Instance Skin::Make() const
+	{
+		return std::make_shared<phys::Skin>(**mesh,
+			util::ReferenceFromId<phys::attrib::Pose>(poseId));
+	}
+}}

@@ -33,22 +33,13 @@
 
 #	include <lua.hpp> // lua_State
 
-namespace page
+namespace page { namespace script { namespace lua { namespace lib
 {
-	namespace script
+	struct Coroutine
 	{
-		namespace lua
-		{
-			namespace lib
-			{
-				struct Coroutine
-				{
-					// construct
-					explicit Coroutine(lua_State *);
-				};
-			}
-		}
-	}
-}
+		// construct
+		explicit Coroutine(lua_State *);
+	};
+}}}}
 
 #endif

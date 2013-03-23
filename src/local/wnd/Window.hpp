@@ -37,85 +37,83 @@
 #	include <boost/signal.hpp>
 
 #	include "../math/Vector.hpp"
-#	include "../util/class/Uncopyable.hpp"
+#	include "../util/class/Cloneable.hpp"
 
 namespace page
 {
 	namespace aud { class Driver; }
 	namespace inp { class Driver; }
 	namespace vid { class Driver; }
-
-	namespace wnd
-	{
-		struct Window : util::Uncopyable<Window>
-		{
-			// construct/destroy
-			Window();
-			virtual ~Window();
-
-			// state
-			bool HasFocus() const;
-			const math::Vector<2, int> &GetPosition() const;
-			const math::Vector<2, unsigned> &GetSize() const;
-
-			// update
-			virtual void Update() = 0;
-
-			// driver access
-			aud::Driver &GetAudioDriver();
-			inp::Driver &GetInputDriver();
-			vid::Driver &GetVideoDriver();
-
-			// signals
-			boost::signal<void ()> exitSig;
-			boost::signal<void (bool)> focusSig;
-			boost::signal<void (const math::Vector<2, int> &)> moveSig;
-			boost::signal<void (const math::Vector<2, unsigned> &)> sizeSig;
-
-			// environment state
-			virtual math::Vector<2, unsigned> GetScreenSize() const = 0;
-
-			protected:
-			// deferred state initialization
-			// must be called at end of derived constructor
-			void InitState(bool focus,
-				const math::Vector<2, int> &position,
-				const math::Vector<2, unsigned> &size);
-
-			// preemptive destruction
-			// must be called at beginning of derived destructor
-			void Deinit();
-
-			// driver state
-			bool HasAudioDriver() const;
-			bool HasInputDriver() const;
-			bool HasVideoDriver() const;
-
-			private:
-			// driver factory functions
-			virtual aud::Driver *MakeAudioDriver() = 0;
-			virtual inp::Driver *MakeInputDriver() = 0;
-			virtual vid::Driver *MakeVideoDriver() = 0;
-
-			// signal handlers
-			void OnExit();
-			void OnFocus(bool);
-			void OnMove(const math::Vector<2, int> &);
-			void OnSize(const math::Vector<2, unsigned> &);
-
-			// drivers
-			std::unique_ptr<aud::Driver> audioDriver;
-			std::unique_ptr<inp::Driver> inputDriver;
-			std::unique_ptr<vid::Driver> videoDriver;
-
-			bool focus;
-			math::Vector<2, int> pos;
-			math::Vector<2, unsigned> size;
-		};
-
-		// factory function
-		Window *MakeWindow(const std::string &title);
-	}
 }
+
+namespace page { namespace wnd
+{
+	class Window : public virtual util::Cloneable<Window>
+	{
+		public:
+		// construct/destroy
+		Window();
+		virtual ~Window();
+
+		// state
+		bool HasFocus() const;
+		const math::Vector<2, int> &GetPosition() const;
+		const math::Vector<2, unsigned> &GetSize() const;
+
+		// update
+		virtual void Update() = 0;
+
+		// driver access
+		aud::Driver &GetAudioDriver();
+		inp::Driver &GetInputDriver();
+		vid::Driver &GetVideoDriver();
+
+		// signals
+		boost::signal<void ()> exitSig;
+		boost::signal<void (bool)> focusSig;
+		boost::signal<void (const math::Vector<2, int> &)> moveSig;
+		boost::signal<void (const math::Vector<2, unsigned> &)> sizeSig;
+
+		// environment state
+		virtual math::Vector<2, unsigned> GetScreenSize() const = 0;
+
+		protected:
+		// deferred state initialization
+		// must be called at end of derived constructor
+		void InitState(bool focus,
+			const math::Vector<2, int> &position,
+			const math::Vector<2, unsigned> &size);
+
+		// preemptive destruction
+		// must be called at beginning of derived destructor
+		void Deinit();
+
+		// driver state
+		bool HasAudioDriver() const;
+		bool HasInputDriver() const;
+		bool HasVideoDriver() const;
+
+		private:
+		// driver factory functions
+		virtual aud::Driver *MakeAudioDriver() = 0;
+		virtual inp::Driver *MakeInputDriver() = 0;
+		virtual vid::Driver *MakeVideoDriver() = 0;
+
+		// signal handlers
+		void OnExit();
+		void OnFocus(bool);
+		void OnMove(const math::Vector<2, int> &);
+		void OnSize(const math::Vector<2, unsigned> &);
+
+		// drivers
+		std::unique_ptr<aud::Driver> audioDriver;
+		std::unique_ptr<inp::Driver> inputDriver;
+		std::unique_ptr<vid::Driver> videoDriver;
+
+		bool focus;
+		math::Vector<2, int> pos;
+		math::Vector<2, unsigned> size;
+	};
+}}
 
 #endif

@@ -31,24 +31,15 @@
 #include "AnimationController.hpp"
 #include "IdleController.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	// construct
+	IdleController::IdleController() :
+		AnimationTargetController(preCollisionLayer) {}
+
+	// update hooks
+	void IdleController::UpdateTargets(float deltaTime)
 	{
-		// construct
-		IdleController::IdleController() :
-			AnimationTargetController(preCollisionLayer) {}
-
-		// clone
-		IdleController *IdleController::Clone() const
-		{
-			return new IdleController(*this);
-		}
-
-		// update hooks
-		void IdleController::UpdateTargets(float deltaTime)
-		{
-			// FIXME: implement
-		}
+		// FIXME: implement
 	}
-}
+}}

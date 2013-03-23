@@ -35,7 +35,7 @@
 
 	/**
 	 * @return The value of the specified configuration variable from the
-	 *         default @c State.
+	 *         global @c State.
 	 *
 	 * @note To access the value of a variable, use:
 	 *       @code *CVAR(name) @endcode

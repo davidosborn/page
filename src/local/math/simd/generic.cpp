@@ -28,27 +28,21 @@
  * of this software.
  */
 
-namespace page
+namespace page { namespace math { namespace simd { namespace generic
 {
-	namespace math
+	void MulMat2f(const float *in1, const float *in2, float *out, unsigned n)
 	{
-		namespace simd
-		{
-			namespace generic
-			{
-				void MulMat2f(const float *in1, const float *in2, float *out, unsigned n)
-				{
-				}
-				void MulMat3f(const float *in1, const float *in2, float *out, unsigned n)
-				{
-				}
-				void MulMat34f(const float *in1, const float *in2, float *out, unsigned n)
-				{
-				}
-				void MulMat4f(const float *in1, const float *in2, float *out, unsigned n)
-				{
-				}
-			}
-		}
 	}
-}
+
+	void MulMat3f(const float *in1, const float *in2, float *out, unsigned n)
+	{
+	}
+
+	void MulMat34f(const float *in1, const float *in2, float *out, unsigned n)
+	{
+	}
+
+	void MulMat4f(const float *in1, const float *in2, float *out, unsigned n)
+	{
+	}
+}}}}

@@ -33,31 +33,28 @@
 
 #	include <memory> // shared_ptr
 
-namespace page
+namespace page { namespace inp { class Driver; }}
+
+namespace page { namespace game
 {
-	namespace inp { class Driver; }
+	class Character;
 
-	namespace game
+	struct Player
 	{
-		class Character;
+		// construct/destroy
+		explicit Player(const std::shared_ptr<Character> &);
+		~Player();
 
-		struct Player
-		{
-			// construct/destroy
-			explicit Player(const std::shared_ptr<Character> &);
-			~Player();
+		// character access
+		std::shared_ptr<Character> GetCharacter();
+		std::shared_ptr<const Character> GetCharacter() const;
 
-			// character access
-			std::shared_ptr<Character> GetCharacter();
-			std::shared_ptr<const Character> GetCharacter() const;
+		// update
+		void Update(const inp::Driver &);
 
-			// update
-			void Update(const inp::Driver &);
-
-			private:
-			std::shared_ptr<Character> character;
-		};
-	}
-}
+		private:
+		std::shared_ptr<Character> character;
+	};
+}}
 
 #endif

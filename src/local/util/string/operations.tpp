@@ -28,12 +28,12 @@
  * of this software.
  */
 
-#include <algorithm> // equal, find{,_if{,_not}}
+#include <algorithm> // equal, find{,_if{,_not}}, transform
 #include <iterator> // back_inserter, istreambuf_iterator
 #include <tuple>
 
 #include "../algorithm/stdext.hpp" // copy_until
-#include "../functional/locale.hpp" // isnewline_function
+#include "../functional/locale.hpp" // {isnewline,to{lower,upper}}_function
 #include "../io/deserialize.hpp" // Deserialize
 #include "../io/serialize.hpp" // Serialize
 
@@ -122,6 +122,22 @@ namespace page
 		 * @weakgroup string-convert
 		 * @{
 		 */
+		template <typename Char, typename CharTraits>
+			std::basic_string<Char, CharTraits> ToLower(const std::basic_string<Char, CharTraits> &s)
+		{
+			std::basic_string<Char, CharTraits> r(s.size(), '\0');
+			std::transform(s.begin(), s.end(), r.begin(), util::tolower_function<Char>());
+			return r;
+		}
+
+		template <typename Char, typename CharTraits>
+			std::basic_string<Char, CharTraits> ToUpper(const std::basic_string<Char, CharTraits> &s)
+		{
+			std::basic_string<Char, CharTraits> r(s.size(), '\0');
+			std::transform(s.begin(), s.end(), r.begin(), util::toupper_function<Char>());
+			return r;
+		}
+
 		template <typename Char, typename CharTraits>
 			std::basic_string<Char, CharTraits> NormalizeNewlines(const std::basic_string<Char, CharTraits> &s)
 		{

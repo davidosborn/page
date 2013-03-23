@@ -39,85 +39,76 @@
 #include "Class.hpp" // Class::RegisterInstance
 #include "Object.hpp"
 
-namespace page
+namespace page { namespace script { namespace lua { namespace lib
 {
-	namespace script
+	// construct
+	Object::Object(lua_State *state)
 	{
-		namespace lua
+		struct Protected
 		{
-			namespace lib
+			static int Call(lua_State *state)
 			{
-				// construct
-				Object::Object(lua_State *state)
+				lua_pop(state, 1);
+				// create object table
+				luaL_dostring_unprotected(state,
+					"class.Object(Entity)\n"
+					"enable_delete(Object)\n"
+					"enable_properties(Object)");
+				// register functions
+				luaL_Reg funcs[] =
 				{
-					struct Protected
-					{
-						static int Call(lua_State *state)
-						{
-							lua_pop(state, 1);
-							// create object table
-							luaL_dostring_unprotected(state,
-								"class.Object(Entity)\n"
-								"enable_delete(Object)\n"
-								"enable_properties(Object)");
-							// register functions
-							luaL_Reg funcs[] =
-							{
-								{"__init", &Object::Init},
-								{"get",    &Object::Get},
-								{}
-							};
-							luaL_register(state, "Object", funcs);
-							lua_pop(state, 1);
-							return 0;
-						}
-					};
-					err::lua::CheckError(state, lua_cpcall(state, Protected::Call, 0));
-				}
+					{"__init", &Object::Init},
+					{"get",    &Object::Get},
+					{}
+				};
+				luaL_register(state, "Object", funcs);
+				lua_pop(state, 1);
+				return 0;
+			}
+		};
+		err::lua::CheckError(state, lua_cpcall(state, Protected::Call, 0));
+	}
 
-				// functions
-				int Object::Get(lua_State *state)
-				{
-					// FIXME: implement
-					return 1;
-				}
-				int Object::Init(lua_State *state)
-				{
-					lua_settop(state, 2);
-					luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
-					luaL_argcheck(state, lua_isstring(state, 2), 2, "string expected");
-					// extract path argument
-					std::string path;
-					try
-					{
-						path = lua_tostring(state, -1);
-					}
-					CATCH_LUA_ERRORS(state)
-					lua_pop(state, 1);
-					// create instance
-					std::shared_ptr<game::Object> object;
-					try
-					{
-						Library &lib(GetLibrary(state));
-						object = lib.router.MakeObject(path);
-						try
-						{
-							object.reset(object.get(), std::bind(
-								static_cast<void (Router::*)(const std::shared_ptr<game::Object> &)>(&Router::Remove),
-								&lib.router, object));
-						}
-						catch (...)
-						{
-							lib.router.Remove(object);
-							throw;
-						}
-					}
-					CATCH_LUA_ERRORS(state)
-					// register instance
-					Class::RegisterInstance(state, object);
-					return 0;
-				}
+	// functions
+	int Object::Get(lua_State *state)
+	{
+		// FIXME: implement
+		return 1;
+	}
+	int Object::Init(lua_State *state)
+	{
+		lua_settop(state, 2);
+		luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
+		luaL_argcheck(state, lua_isstring(state, 2), 2, "string expected");
+		// extract path argument
+		std::string path;
+		try
+		{
+			path = lua_tostring(state, -1);
+		}
+		CATCH_LUA_ERRORS(state)
+		lua_pop(state, 1);
+		// create instance
+		std::shared_ptr<game::Object> object;
+		try
+		{
+			Library &lib(GetLibrary(state));
+			object = lib.router.MakeObject(path);
+			try
+			{
+				object.reset(object.get(), std::bind(
+					static_cast<void (Router::*)(const std::shared_ptr<game::Object> &)>(&Router::Remove),
+					&lib.router, object));
+			}
+			catch (...)
+			{
+				lib.router.Remove(object);
+				throw;
 			}
 		}
+		CATCH_LUA_ERRORS(state)
+		// register instance
+		Class::RegisterInstance(state, object);
+		return 0;
 	}
-}
+}}}}

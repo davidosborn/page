@@ -36,44 +36,41 @@
 #	include "../../math/Vector.hpp"
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class Form;
+
+	class FollowController :
+		public Controller,
+		public virtual util::Cloneable<FollowController, Controller>
 	{
-		class Form;
+		public:
+		// construct
+		explicit FollowController(
+			const Form &target,
+			const math::Vector<3> &center = .5,
+			const math::Quat<> &orientation = math::Quat<>(),
+			float distance = 0);
 
-		struct FollowController : Controller
-		{
-			// construct
-			explicit FollowController(
-				const Form &target,
-				const math::Vector<3> &center = .5,
-				const math::Quat<> &orientation = math::Quat<>(),
-				float distance = 0);
+		// modifiers
+		void Follow(const Form &target);
+		void Follow(const Form &target, const math::Vector<3> &center);
+		void Reorient(const math::Quat<> &orientation);
+		void Reorient(const math::Quat<> &orientation, float distance);
 
-			// clone
-			FollowController *Clone() const;
+		// dependencies
+		Dependencies GetDependencies() const;
 
-			// modifiers
-			void Follow(const Form &target);
-			void Follow(const Form &target, const math::Vector<3> &center);
-			void Reorient(const math::Quat<> &orientation);
-			void Reorient(const math::Quat<> &orientation, float distance);
+		private:
+		// generate frame
+		Frame DoGetFrame(const Frame &, const Frame &) const;
 
-			// dependencies
-			Dependencies GetDependencies() const;
-
-			private:
-			// generate frame
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			cache::Aabb aabb;
-			math::Vector<3> center;
-			math::Quat<> orientation;
-			float distance;
-			Dependencies dependencies;
-		};
-	}
-}
+		cache::Aabb aabb;
+		math::Vector<3> center;
+		math::Quat<> orientation;
+		float distance;
+		Dependencies dependencies;
+	};
+}}
 
 #endif

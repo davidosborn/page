@@ -35,17 +35,11 @@
 
 #	include <AL/al.h> // ALenum
 
-namespace page
+namespace page { namespace err { namespace openal
 {
-	namespace err
-	{
-		namespace openal
-		{
-			void ResetError();
-			void CheckError();
-			std::string GetErrorString(ALenum error);
-		}
-	}
-}
+	void ResetError();
+	void CheckError();
+	std::string GetErrorString(ALenum error);
+}}}
 
 #endif

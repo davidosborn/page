@@ -37,7 +37,7 @@
 #include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../pipe/Stream.hpp" // Stream::~Stream
 #include "../../type/Model.hpp"
-#include "../Registry.hpp" // REGISTER_LOADER
+#include "../LoaderRegistry.hpp" // REGISTER_LOADER
 
 namespace page
 {

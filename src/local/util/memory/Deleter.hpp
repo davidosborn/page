@@ -31,56 +31,24 @@
 #ifndef    page_local_util_memory_Deleter_hpp
 #   define page_local_util_memory_Deleter_hpp
 
-#	include <memory> // shared_ptr
+#	include <functional> // function
 
-namespace page
+namespace page { namespace util
 {
-	namespace util
-	{
-		/**
-		 * A function object containing a generic deleter, for use with
-		 * @c shared_ptr and @c unique_ptr.
-		 */
-		typedef std::function<void (const void *)> Deleter;
+	/**
+	 * A pointer to a deleter function, for use with smart pointers.
+	 */
+	template <typename T>
+		using Deleter = std::function<void (const T *)>;
 
-		/**
-		 * A default deleter.
-		 *
-		 * @note This deleter takes a pointer-to-void to provide compatibility
-		 *       with @c Deleter.
-		 */
-		template <typename T>
-			struct DefaultDeleter
-		{
-			typedef const void *argument_type;
-			typedef void result_type;
-
-			void operator ()(const void *p) const
-			{
-				delete static_cast<const T *>(p);
-			}
-		};
-
-		/**
-		 * A no-op deleter.
-		 */
-		struct NopDeleter
-		{
-			typedef const void *argument_type;
-			typedef void result_type;
-
-			void operator ()(const void *) const {}
-		};
-
-		/**
-		 * @return A @c std::shared_ptr representation of a static instance.
-		 */
-		template <typename T>
-			std::shared_ptr<T> Share(T &p)
-		{
-			return std::shared_ptr<T>(&p, NopDeleter());
-		}
-	}
-}
+	/**
+	 * A pointer to a deleter function, for use with smart pointers.
+	 *
+	 * This variation accepts a non-const pointer, which is compatible with the
+	 * C++ Standard Library, such as in the case of @c std::default_delete.
+	 */
+	template <typename T>
+		using NonConstDeleter = std::function<void (T *)>;
+}}
 
 #endif

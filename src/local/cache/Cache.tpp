@@ -30,36 +30,33 @@
 
 #include "../util/class/typeinfo.hpp" // GetIncompleteTypeInfo
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
-	{
-		/*----------+
-		| observers |
-		+----------*/
+	/*----------+
+	| observers |
+	+----------*/
 
-		template <typename T>
-			std::shared_ptr<const T>
-				Cache::Fetch(
-					const std::string &signature,
-					const std::string &name) const
-		{
-			return std::static_pointer_cast<const T>(
-				Fetch(signature, name, util::GetIncompleteTypeInfo<T>()));
-		}
-
-		/*----------+
-		| modifiers |
-		+----------*/
-
-		template <typename T>
-			void Cache::Store(
+	template <typename T>
+		std::shared_ptr<const T>
+			Cache::Fetch(
 				const std::string &signature,
-				const std::string &name,
-				const std::shared_ptr<const T> &data,
-				const std::function<void ()> &repair)
-		{
-			Store(signature, name, data, util::GetIncompleteTypeInfo<T>(), repair);
-		}
+				const std::string &name) const
+	{
+		return std::static_pointer_cast<const T>(
+			Fetch(signature, name, util::GetIncompleteTypeInfo<T>()));
 	}
-}
+
+	/*----------+
+	| modifiers |
+	+----------*/
+
+	template <typename T>
+		void Cache::Store(
+			const std::string &signature,
+			const std::string &name,
+			const std::shared_ptr<const T> &data,
+			const std::function<void ()> &repair)
+	{
+		Store(signature, name, data, util::GetIncompleteTypeInfo<T>(), repair);
+	}
+}}

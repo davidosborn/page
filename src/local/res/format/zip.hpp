@@ -28,23 +28,17 @@
  * of this software.
  */
 
-#ifndef    page_local_res_fmt_zip_hpp
-#   define page_local_res_fmt_zip_hpp
+#ifndef    page_local_res_format_zip_hpp
+#   define page_local_res_format_zip_hpp
 
-namespace page
+namespace page { namespace res { namespace format
 {
-	namespace res
+	namespace zip
 	{
-		namespace fmt
-		{
-			namespace zip
-			{
-				const char sig[] = {'P', 'K', '\3', '\4'};
-			}
-
-			using namespace zip;
-		}
+		const char sig[] = {'P', 'K', '\3', '\4'};
 	}
-}
+
+	using namespace zip;
+}}}
 
 #endif

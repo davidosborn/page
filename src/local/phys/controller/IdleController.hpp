@@ -33,23 +33,20 @@
 
 #	include "AnimationTargetController.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class IdleController :
+		public AnimationTargetController,
+		public virtual util::Cloneable<IdleController, AnimationTargetController>
 	{
-		struct IdleController : AnimationTargetController
-		{
-			// construct
-			IdleController();
+		public:
+		// construct
+		IdleController();
 
-			// clone
-			IdleController *Clone() const;
-
-			private:
-			// update hooks
-			void UpdateTargets(float deltaTime);
-		};
-	}
-}
+		private:
+		// update hooks
+		void UpdateTargets(float deltaTime);
+	};
+}}
 
 #endif

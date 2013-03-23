@@ -31,7 +31,7 @@
 #ifndef    page_local_util_path_expand_hpp
 #   define page_local_util_path_expand_hpp
 
-#	include <boost/filesystem/path.hpp>
+#	include <string>
 
 #	include "../Flags.hpp"
 
@@ -71,9 +71,7 @@ namespace page
 		 * @note If the path contains wildcards, the function will avoid any
 		 *       matching files when processing %i symbols.
 		 */
-		boost::filesystem::path ExpandPath(
-			const boost::filesystem::path &,
-			int flags = 0);
+		std::string ExpandPath(const std::string &, int flags = 0);
 	}
 }
 

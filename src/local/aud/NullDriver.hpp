@@ -33,29 +33,26 @@
 
 #	include "Driver.hpp"
 
-namespace page
+namespace page { namespace aud
 {
-	namespace aud
+	struct NullDriver : Driver
 	{
-		struct NullDriver : Driver
-		{
-			// construct
-			explicit NullDriver(wnd::Window &);
+		// construct
+		explicit NullDriver(wnd::Window &);
 
-			// modifiers
-			void SetVolume(float);
+		// modifiers
+		void SetVolume(float);
 
-			private:
-			// limits
-			unsigned MaxAmbientChannels() const;
-			unsigned MaxSpatialChannels() const;
-			unsigned MaxPersistentSpatialChannels() const;
+		private:
+		// limits
+		unsigned MaxAmbientChannels() const;
+		unsigned MaxSpatialChannels() const;
+		unsigned MaxPersistentSpatialChannels() const;
 
-			// channel factory functions
-			AmbientChannel *MakeAmbientChannel(const Sound &) const;
-			SpatialChannel *MakeSpatialChannel(const phys::Sound &) const;
-		};
-	}
-}
+		// channel factory functions
+		AmbientChannel *MakeAmbientChannel(const Sound &) const;
+		SpatialChannel *MakeSpatialChannel(const phys::Sound &) const;
+	};
+}}
 
 #endif

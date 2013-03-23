@@ -33,36 +33,33 @@
 
 #	include "../Channel.hpp"
 
-namespace page
+namespace page { namespace aud
 {
-	namespace aud
+	class Sound;
+
+	struct AmbientChannel : virtual Channel
 	{
-		class Sound;
+		// construct
+		explicit AmbientChannel(const Sound &);
 
-		struct AmbientChannel : virtual Channel
-		{
-			// construct
-			explicit AmbientChannel(const Sound &);
+		// state
+		bool IsAlive() const;
 
-			// state
-			bool IsAlive() const;
+		// update
+		void DoUpdate(float deltaTime);
 
-			// update
-			void DoUpdate(float deltaTime);
+		// modifiers
+		void Stop();
+		void Stop(float fadeDuration);
+		void SetVolume(float);
 
-			// modifiers
-			void Stop();
-			void Stop(float fadeDuration);
-			void SetVolume(float);
+		private:
+		// state
+		float DoGetLinearVolume() const;
 
-			private:
-			// state
-			float DoGetLinearVolume() const;
-
-			bool playing;
-			float fadeDuration, level, volume;
-		};
-	}
-}
+		bool playing;
+		float fadeDuration, level, volume;
+	};
+}}
 
 #endif

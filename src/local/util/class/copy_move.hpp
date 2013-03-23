@@ -32,27 +32,28 @@
 #   define page_local_util_class_copy_move_hpp
 
 	/**
-	 * Define the copy-constructor and copy-assignment-operator of the specified
-	 * class.  The value should be either "default" or "delete".
+	 * Defines the copy-constructor and copy-assignment-operator of the
+	 * specified class.  The value should be either "default" or "delete".
 	 */
 #	define DEFINE_COPY(CLASS, VALUE) \
 		CLASS(const CLASS &)             = VALUE; \
 		CLASS &operator =(const CLASS &) = VALUE;
 
 	/**
-	 * Define the move-constructor and move-assignment-operator of the specified
-	 * class.  The value should be either "default" or "delete".
+	 * Defines the move-constructor and move-assignment-operator of the
+	 * specified class.  The value should be either "default" or "delete".
 	 */
 #	define DEFINE_MOVE(CLASS, VALUE) \
 		CLASS(CLASS &&)             = VALUE; \
 		CLASS &operator =(CLASS &&) = VALUE;
 
 	/**
-	 * Make the specified class "uncopyable" (ISO/IEC n3242 8.4.3.3).  The class
-	 * will not be copyable, but it will be movable.  This behaviour is
+	 * Makes the specified class "uncopyable" (ISO/IEC n3242 8.4.3.3).  The
+	 * class will not be copyable, but it will be movable.  This behaviour is
 	 * inherited, as long as the compiler is able to implicitly generate the
-	 * move-constructor and move-assignment-operator of the derived class (in
-	 * particular, it can't in the case of an user-defined destructor).
+	 * move-constructor and move-assignment-operator of the derived class, which
+	 * it can't do in the presence of any "special member functions" (12.8.10).
+	 * Also note that the default constructor will not be implicitly generated.
 	 */
 #	define MAKE_UNCOPYABLE(CLASS) \
 		public: \

@@ -39,40 +39,37 @@
 #	include "../../util/raii/copy_ptr.hpp"
 #	include "../Widget.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	class List :
+		public Widget,
+		public virtual util::Cloneable<List, Widget>
 	{
-		struct List : Widget
-		{
-			// construct/copy
-			List(const math::Vector<2> &size = 0);
-			List(const List &);
-			List &operator =(const List &);
+		public:
+		// construct/copy
+		List(const math::Vector<2> &size = 0);
+		List(const List &);
+		List &operator =(const List &);
 
-			// clone
-			List *Clone() const;
+		// modifiers
+		void Insert(const std::string &);
 
-			// modifiers
-			void Insert(const std::string &);
+		// cursor event notification
+		bool OnOver(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		bool OnClick(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
 
-			// cursor event notification
-			bool OnOver(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
-			bool OnClick(const math::Vector<2> &position, const res::Theme &, const math::Vector<2> &size);
+		private:
+		// metrics
+		Size CalcSize(const res::Theme &) const;
 
-			private:
-			// metrics
-			Size CalcSize(const res::Theme &) const;
+		// rendering
+		void DoDraw(DrawContext &) const;
 
-			// rendering
-			void DoDraw(DrawContext &) const;
-
-			math::Vector<2> size;
-			typedef std::vector<std::string> Items;
-			Items items;
-			Items::iterator selection;
-		};
-	}
-}
+		math::Vector<2> size;
+		typedef std::vector<std::string> Items;
+		Items items;
+		Items::iterator selection;
+	};
+}}
 
 #endif

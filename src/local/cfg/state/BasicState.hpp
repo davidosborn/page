@@ -37,64 +37,61 @@
 
 #	include "../../util/class/copy_move.hpp" // DEFINE_{COPY,MOVE}
 
-namespace page
+namespace page { namespace cfg
 {
-	namespace cfg
+	class BasicVar;
+
+	/**
+	 * The base class for a manager of a set of configuration variables.
+	 */
+	class BasicState
 	{
-		class BasicVar;
+		/*----------------------+
+		| copy & move semantics |
+		+----------------------*/
+
+		public:
+		BasicState() = default;
+
+		DEFINE_COPY(BasicState, delete)
+		DEFINE_MOVE(BasicState, delete)
+
+		/*------------------+
+		| cvar registration |
+		+------------------*/
+
+		public:
+		/**
+		 * Register a configuration variable.
+		 */
+		void Register(BasicVar *);
 
 		/**
-		 * The base class for a manager of a set of configuration variables.
+		 * Unregister a configuration variable.
 		 */
-		class BasicState
-		{
-			/*----------------------+
-			| copy & move semantics |
-			+----------------------*/
+		void Unregister(BasicVar *);
 
-			public:
-			BasicState() = default;
+		/*---------------+
+		| cvar iteration |
+		+---------------*/
 
-			DEFINE_COPY(BasicState, delete)
-			DEFINE_MOVE(BasicState, delete)
+		public:
+		/**
+		 * @return a range providing iterable access to all registered
+		 * configuration variables, ordered by key.
+		 */
+		boost::indirected_range<std::list<BasicVar *>> GetVars() const;
 
-			/*------------------+
-			| cvar registration |
-			+------------------*/
+		/*-------------+
+		| data members |
+		+-------------*/
 
-			public:
-			/**
-			 * Register a configuration variable.
-			 */
-			void Register(BasicVar *);
-
-			/**
-			 * Unregister a configuration variable.
-			 */
-			void Unregister(BasicVar *);
-
-			/*---------------+
-			| cvar iteration |
-			+---------------*/
-
-			public:
-			/**
-			 * @return a range providing iterable access to all registered
-			 * configuration variables, ordered by key.
-			 */
-			boost::indirected_range<std::list<BasicVar *>> GetVars() const;
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			/**
-			 * A list of registered configuration variables, ordered by key
-			 */
-			std::list<BasicVar *> vars;
-		};
-	}
-}
+		private:
+		/**
+		 * A list of registered configuration variables, ordered by key
+		 */
+		std::list<BasicVar *> vars;
+	};
+}}
 
 #endif

@@ -35,33 +35,30 @@
 
 #	include "../util/class/Uncopyable.hpp"
 
-namespace page
+namespace page { namespace inp { class Driver; }}
+
+namespace page { namespace game
 {
-	namespace inp { class Driver; }
+	class Hud;
+	class Menu;
+	class Player;
 
-	namespace game
+	struct InputDispatcher : util::Uncopyable<InputDispatcher>
 	{
-		class Hud;
-		class Menu;
-		class Player;
+		InputDispatcher(inp::Driver &, Player &, Hud &, Menu &);
+		~InputDispatcher();
 
-		struct InputDispatcher : util::Uncopyable<InputDispatcher>
-		{
-			InputDispatcher(inp::Driver &, Player &, Hud &, Menu &);
-			~InputDispatcher();
+		private:
+		// signal handlers
+		void OnKey(inp::key::Key);
 
-			private:
-			// signal handlers
-			void OnKey(inp::key::Key);
+		// signal connections
+		boost::signals::scoped_connection keyCon;
 
-			// signal connections
-			boost::signals::scoped_connection keyCon;
-
-			Player &player;
-			Hud &hud;
-			Menu &menu;
-		};
-	}
-}
+		Player &player;
+		Hud &hud;
+		Menu &menu;
+	};
+}}
 
 #endif

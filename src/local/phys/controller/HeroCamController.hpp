@@ -35,40 +35,37 @@
 #	include "../../math/Euler.hpp"
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace inp { class Driver; }}
+
+namespace page { namespace phys
 {
-	namespace inp { class Driver; }
+	class Form;
 
-	namespace phys
+	class HeroCamController :
+		public Controller,
+		public virtual util::Cloneable<HeroCamController, Controller>
 	{
-		class Form;
+		public:
+		// construct
+		HeroCamController(const inp::Driver &, const Form &);
 
-		struct HeroCamController : Controller
-		{
-			// construct
-			HeroCamController(const inp::Driver &, const Form &);
+		// modifiers
+		void SetTarget(const Form &);
 
-			// clone
-			HeroCamController *Clone() const;
+		// dependencies
+		Dependencies GetDependencies() const;
 
-			// modifiers
-			void SetTarget(const Form &);
+		private:
+		// generate frame
+		void DoUpdate(float deltaTime);
+		Frame DoGetFrame(const Frame &, const Frame &) const;
 
-			// dependencies
-			Dependencies GetDependencies() const;
-
-			private:
-			// generate frame
-			void DoUpdate(float deltaTime);
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			const inp::Driver &driver;
-			cache::Aabb aabb;
-			math::Euler<> orientation;
-			float center, distance;
-			Dependencies dependencies;
-		};
-	}
-}
+		const inp::Driver &driver;
+		cache::Aabb aabb;
+		math::Euler<> orientation;
+		float center, distance;
+		Dependencies dependencies;
+	};
+}}
 
 #endif

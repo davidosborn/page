@@ -85,7 +85,7 @@ namespace page
 		REGISTER_SCANNER(
 			STRINGIZE(MINIZIP_NAME),
 			ScanMinizip,
-			{"pk2", "pk3", "pk4", "zip"},
-			{"application/octet-stream", "application/x-zip", "application/zip"})
+			{"application/octet-stream", "application/x-zip", "application/zip"},
+			{"pk2", "pk3", "pk4", "zip"})
 	}
 }

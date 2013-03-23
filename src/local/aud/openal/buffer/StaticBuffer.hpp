@@ -34,28 +34,22 @@
 #	include "../../../util/raii/copy_ptr.hpp"
 #	include "../Buffer.hpp"
 
-namespace page
+namespace page { namespace aud { namespace openal
 {
-	namespace aud
+	struct StaticBuffer : Buffer
 	{
-		namespace openal
-		{
-			struct StaticBuffer : Buffer
-			{
-				// construct/destroy
-				StaticBuffer(ALuint source, const cache::Proxy<res::Sound> &, bool loop, float playPosition);
-				~StaticBuffer();
+		// construct/destroy
+		StaticBuffer(ALuint source, const cache::Proxy<res::Sound> &, bool loop, float playPosition);
+		~StaticBuffer();
 
-				// update
-				void Update();
+		// update
+		void Update();
 
-				private:
-				ALuint source;
-				util::copy_ptr<cache::Proxy<ALuint>> buffer;
-				cache::Proxy<ALuint>::Instance lock;
-			};
-		}
-	}
-}
+		private:
+		ALuint source;
+		util::copy_ptr<cache::Proxy<ALuint>> buffer;
+		cache::Proxy<ALuint>::Instance lock;
+	};
+}}}
 
 #endif

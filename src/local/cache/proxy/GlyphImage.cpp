@@ -32,53 +32,41 @@
 #include "../../util/string/StringBuilder.hpp"
 #include "GlyphImage.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
+
+	GlyphImage::GlyphImage(const Proxy<res::Font> &font, char ch, unsigned size) :
+		font(font.Copy()), ch(ch), size(size) {}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	std::string GlyphImage::GetType() const
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
-
-		GlyphImage::GlyphImage(const Proxy<res::Font> &font, char ch, unsigned size) :
-			font(font.Copy()), ch(ch), size(size) {}
-
-		/*------+
-		| clone |
-		+------*/
-
-		GlyphImage *GlyphImage::Clone() const
-		{
-			return new GlyphImage(*this);
-		}
-
-		/*----------+
-		| observers |
-		+----------*/
-
-		std::string GlyphImage::GetType() const
-		{
-			return "glyph image";
-		}
-
-		std::string GlyphImage::GetSource() const
-		{
-			return util::StringBuilder() <<
-				font->GetSource() << ':' << ch << ':' << size;
-		}
-
-		GlyphImage::operator bool() const
-		{
-			return *font;
-		}
-
-		/*--------------+
-		| instantiation |
-		+--------------*/
-
-		GlyphImage::Instance GlyphImage::Make() const
-		{
-			return std::make_shared<res::Image>(GetCharImage(**font, ch, size));
-		}
+		return "glyph image";
 	}
-}
+
+	std::string GlyphImage::GetSource() const
+	{
+		return util::StringBuilder() <<
+			font->GetSource() << ':' << ch << ':' << size;
+	}
+
+	GlyphImage::operator bool() const
+	{
+		return *font;
+	}
+
+	/*--------------+
+	| instantiation |
+	+--------------*/
+
+	GlyphImage::Instance GlyphImage::Make() const
+	{
+		return std::make_shared<res::Image>(GetCharImage(**font, ch, size));
+	}
+}}

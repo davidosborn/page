@@ -38,58 +38,55 @@
 #	include "../Controller.hpp"
 #	include "animation/Interpolator.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class AnimationController :
+		public Controller,
+		public virtual util::Cloneable<AnimationController, Controller>
 	{
-		struct AnimationController : Controller
+		public:
+		// construct
+		explicit AnimationController(const res::Animation &, float timeScale = 1);
+
+		// modifiers
+		void SetPlayPosition(float);
+
+		private:
+		// update/generate frame
+		void DoUpdate(float deltaTime);
+		Frame DoGetFrame(const Frame &, const Frame &) const;
+
+		float time, timeScale, duration;
+		Interpolator<math::Vector<3>> position;
+		Interpolator<math::Quat<>> orientation;
+		Interpolator<math::Vector<3>> normal, scale;
+		Interpolator<math::Vector<2>> texCoord;
+		Interpolator<math::RgbColor<>> ambient, diffuse, specular;
+		Interpolator<float> attenuation, cutoff, depth, exposure, falloff, fov, opacity, range, size, volume;
+		struct Bone
 		{
 			// construct
-			explicit AnimationController(const res::Animation &, float timeScale = 1);
+			Bone(res::Animation::Bones::const_iterator::reference);
 
-			// clone
-			AnimationController *Clone() const;
-
-			// modifiers
-			void SetPlayPosition(float);
-
-			private:
-			// update/generate frame
-			void DoUpdate(float deltaTime);
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			float time, timeScale, duration;
+			std::string name;
 			Interpolator<math::Vector<3>> position;
 			Interpolator<math::Quat<>> orientation;
-			Interpolator<math::Vector<3>> normal, scale;
-			Interpolator<math::Vector<2>> texCoord;
-			Interpolator<math::RgbColor<>> ambient, diffuse, specular;
-			Interpolator<float> attenuation, cutoff, depth, exposure, falloff, fov, opacity, range, size, volume;
-			struct Bone
-			{
-				// construct
-				Bone(res::Animation::Bones::const_iterator::reference);
-
-				std::string name;
-				Interpolator<math::Vector<3>> position;
-				Interpolator<math::Quat<>> orientation;
-				Interpolator<math::Vector<3>> scale;
-			};
-			typedef std::vector<Bone> Bones;
-			Bones bones;
-			struct Vertex
-			{
-				// construct
-				Vertex(res::Animation::Vertices::const_iterator::reference);
-
-				unsigned index;
-				Interpolator<math::Vector<3>> position, normal;
-				Interpolator<math::Vector<2>> texCoord;
-			};
-			typedef std::vector<Vertex> Vertices;
-			Vertices vertices;
+			Interpolator<math::Vector<3>> scale;
 		};
-	}
-}
+		typedef std::vector<Bone> Bones;
+		Bones bones;
+		struct Vertex
+		{
+			// construct
+			Vertex(res::Animation::Vertices::const_iterator::reference);
+
+			unsigned index;
+			Interpolator<math::Vector<3>> position, normal;
+			Interpolator<math::Vector<2>> texCoord;
+		};
+		typedef std::vector<Vertex> Vertices;
+		Vertices vertices;
+	};
+}}
 
 #endif

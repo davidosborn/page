@@ -37,29 +37,26 @@
 
 #	include "../Widget.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	class Edit :
+		public Widget,
+		public virtual util::Cloneable<Edit, Widget>
 	{
-		struct Edit : Widget
-		{
-			// clone
-			Edit *Clone() const;
+		public:
+		// signals
+		boost::signal<void ()> changeSig;
+		boost::signal<void ()> submitSig;
 
-			// signals
-			boost::signal<void ()> changeSig;
-			boost::signal<void ()> submitSig;
+		private:
+		// metrics
+		Size CalcSize(const res::Theme &) const;
 
-			private:
-			// metrics
-			Size CalcSize(const res::Theme &) const;
+		// rendering
+		void DoDraw(DrawContext &) const;
 
-			// rendering
-			void DoDraw(DrawContext &) const;
-
-			std::string text;
-		};
-	}
-}
+		std::string text;
+	};
+}}
 
 #endif

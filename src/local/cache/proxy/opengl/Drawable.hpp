@@ -40,65 +40,57 @@ namespace page
 {
 	namespace res { class Mesh; }
 	namespace vid { namespace opengl { class Drawable; }}
-
-	namespace cache
-	{
-		namespace opengl
-		{
-			/**
-			 * A proxy representing an instance of @c vid::opengl::Drawable in
-			 * the cache.
-			 */
-			class Drawable : public Proxy<vid::opengl::Drawable>
-			{
-				/*------+
-				| types |
-				+------*/
-
-				public:
-				typedef typename Proxy<vid::opengl::Drawable>::Instance Instance;
-
-				/*--------------------------+
-				| constructors & destructor |
-				+--------------------------*/
-
-				public:
-				explicit Drawable(const Proxy<res::Mesh> &);
-				explicit Drawable(const phys::Form::Part &);
-
-				/*------+
-				| clone |
-				+------*/
-
-				public:
-				Drawable *Clone() const override;
-
-				/*----------+
-				| observers |
-				+----------*/
-
-				public:
-				std::string GetType() const override;
-				std::string GetSource() const override;
-				operator bool() const override;
-
-				/*--------------+
-				| instantiation |
-				+--------------*/
-
-				private:
-				Instance Make() const override;
-
-				/*-------------+
-				| data members |
-				+-------------*/
-
-				private:
-				util::copy_ptr<Proxy<res::Mesh>> mesh;
-				util::Identifiable::Id partId;
-			};
-		}
-	}
 }
+
+namespace page { namespace cache { namespace opengl
+{
+	/**
+	 * A proxy representing an instance of @c vid::opengl::Drawable in the
+	 * cache.
+	 */
+	class Drawable :
+		public Proxy<vid::opengl::Drawable>,
+		public virtual util::Cloneable<Drawable, Proxy<vid::opengl::Drawable>>
+	{
+		/*------+
+		| types |
+		+------*/
+
+		public:
+		typedef typename Proxy<vid::opengl::Drawable>::Instance Instance;
+
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		public:
+		explicit Drawable(const Proxy<res::Mesh> &);
+		explicit Drawable(const phys::Form::Part &);
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		public:
+		std::string GetType() const override;
+		std::string GetSource() const override;
+		operator bool() const override;
+
+		/*--------------+
+		| instantiation |
+		+--------------*/
+
+		private:
+		Instance Make() const override;
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		util::copy_ptr<Proxy<res::Mesh>> mesh;
+		util::Identifiable::Id partId;
+	};
+}}}
 
 #endif

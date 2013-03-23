@@ -39,9 +39,9 @@
 #include "Index.hpp"
 #include "node/path.hpp" // NormPath
 #include "pipe/Stream.hpp" // Stream::GetText
-#include "source/Registry.hpp"
 #include "source/Source.hpp" // Source::{~Source,Open,Refresh}
-#include "type/Registry.hpp"
+#include "source/SourceRegistry.hpp"
+#include "type/TypeRegistry.hpp"
 
 namespace page
 {
@@ -63,7 +63,7 @@ namespace page
 			// executes, which is where all the indexing happens.
 			std::cout << "indexing source: " << path << std::endl;
 			log::Indenter indenter;
-			sources.push_front(GLOBAL(source::Registry).Make(path));
+			sources.push_front(GLOBAL(SourceRegistry).Make(path));
 		}
 		void Index::Refresh()
 		{
@@ -85,7 +85,7 @@ namespace page
 		std::shared_ptr<const void> Index::Load(const std::type_info &type, const std::string &path) const
 		{
 			std::string normPath(NormPath(path));
-			std::cout << "loading " << GLOBAL(type::Registry).Query(type).name << " from " << normPath << std::endl;
+			std::cout << "loading " << GLOBAL(TypeRegistry).Query(type).name << " from " << normPath << std::endl;
 			log::Indenter indenter;
 			try
 			{

@@ -28,30 +28,21 @@
  * of this software.
  */
 
-#ifndef    page_local_res_fmt_native_material_hpp
-#   define page_local_res_fmt_native_material_hpp
+#ifndef    page_local_res_format_native_material_hpp
+#   define page_local_res_format_native_material_hpp
 
 #	include <string>
 
-namespace page
+namespace page { namespace res { namespace format
 {
-	namespace res
+	namespace native { namespace material
 	{
-		namespace fmt
-		{
-			namespace native
-			{
-				namespace material
-				{
-					const char comment = '#';
-					const std::string shebang(std::string(1, comment) + '!');
-					const std::string sig("PAGEmat");
-				}
-			}
+		const char comment = '#';
+		const std::string shebang(std::string(1, comment) + '!');
+		const std::string sig("PAGEmat");
+	}}
 
-			using namespace native::material;
-		}
-	}
-}
+	using namespace native::material;
+}}}
 
 #endif

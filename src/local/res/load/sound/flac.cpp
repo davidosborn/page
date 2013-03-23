@@ -36,7 +36,7 @@
 #include "../../adapt/flac.hpp" // Check, Open
 #include "../../type/Sound.hpp"
 #include "../../type/sound/FlacDecoder.hpp"
-#include "../Registry.hpp" // REGISTER_LOADER
+#include "../LoaderRegistry.hpp" // REGISTER_LOADER
 
 namespace page
 {

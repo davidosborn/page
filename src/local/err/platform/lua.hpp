@@ -35,17 +35,11 @@
 
 #	include <lua.hpp> // lua_State, luaL_error
 
-namespace page
+namespace page { namespace err { namespace lua
 {
-	namespace err
-	{
-		namespace lua
-		{
-			void CheckError(lua_State *, int);
-			void CheckErrorForLua(lua_State *, int);
-		}
-	}
-}
+	void CheckError(lua_State *, int);
+	void CheckErrorForLua(lua_State *, int);
+}}}
 
 #	define CATCH_LUA_ERRORS(state) \
 		catch (const std::exception &e) \

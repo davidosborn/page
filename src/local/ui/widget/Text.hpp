@@ -39,38 +39,35 @@
 #	include "../../util/raii/copy_ptr.hpp"
 #	include "../Widget.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	class Text :
+		public Widget,
+		public virtual util::Cloneable<Text, Widget>
 	{
-		struct Text : Widget
-		{
-			Text(const std::string &text = "", const math::Vector<2> &size = 0,
-				const math::RgbaColor<> & = math::WhiteRgbaColor(),
-				bool wrap = true);
+		public:
+		Text(const std::string &text = "", const math::Vector<2> &size = 0,
+			const math::RgbaColor<> & = math::WhiteRgbaColor(),
+			bool wrap = true);
 
-			// clone
-			Text *Clone() const;
+		// modifiers
+		void SetText(const std::string &);
 
-			// modifiers
-			void SetText(const std::string &);
+		// signals
+		boost::signal<void ()> clickSig;
 
-			// signals
-			boost::signal<void ()> clickSig;
+		private:
+		// metrics
+		Size CalcSize(const res::Theme &) const;
 
-			private:
-			// metrics
-			Size CalcSize(const res::Theme &) const;
+		// rendering
+		void DoDraw(DrawContext &) const;
 
-			// rendering
-			void DoDraw(DrawContext &) const;
-
-			std::string text;
-			math::Vector<2> size;
-			math::RgbaColor<> color;
-			bool wrap;
-		};
-	}
-}
+		std::string text;
+		math::Vector<2> size;
+		math::RgbaColor<> color;
+		bool wrap;
+	};
+}}
 
 #endif

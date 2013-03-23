@@ -33,134 +33,178 @@
 
 #	include <cstddef> // nullptr_t
 #	include <functional> // function
-#	include <iosfwd> // ostream
-#	include <memory> // {auto,unique}_ptr
+#	include <iosfwd> // basic_ostream
+#	include <memory> // unique_ptr
 
-namespace page
+namespace page { namespace util
 {
-	namespace util
+	/**
+	 * A copy pointer with a customizable cloner.
+	 */
+	template <typename T>
+		class copy_ptr
 	{
+		template <typename>
+			friend class copy_ptr;
+
+		/*------+
+		| types |
+		+------*/
+
+		private:
 		/**
-		 * A copy pointer with a custom cloner/deleter.
-		 *
-		 * @note This class supports incomplete types.
-		 * @note The cloner and deleter may be initialized to @c nullptr on
-		 *       construction.  In this case, the copy constructor will produce
-		 *       null pointers and the deleter will not be executed.
-		 *
-		 * @ingroup smart-pointer
+		 * The underlying smart-pointer.
 		 */
-		template <typename T> struct copy_ptr
-		{
-			template <typename> friend class copy_ptr;
+		typedef std::unique_ptr<T> pointer;
 
-			typedef T *pointer;
-			typedef T element_type;
-			typedef std::function<T *(T *)> cloner_type;
-			typedef std::function<T *(const T *)> const_cloner_type;
-			typedef std::function<void (T *)> deleter_type;
-			typedef std::function<void (const T *)> const_deleter_type;
+		public:
+		/**
+		 * The deleter type.
+		 */
+		typedef typename pointer::deleter_type deleter_type;
 
-			// constructors
-			copy_ptr();
-			explicit copy_ptr(pointer);
-			copy_ptr(pointer, cloner_type);
-			copy_ptr(pointer, cloner_type, deleter_type);
-			copy_ptr(std::nullptr_t);
-			copy_ptr(std::nullptr_t, cloner_type);
-			copy_ptr(std::nullptr_t, cloner_type, deleter_type);
-			copy_ptr(const copy_ptr &);
-			template <typename U> copy_ptr(const copy_ptr<U> &);
-			template <typename U> copy_ptr(std::auto_ptr<U> &&);
-			template <typename U> copy_ptr(std::auto_ptr<U> &&, cloner_type);
-			template <typename U, typename D> copy_ptr(std::unique_ptr<U, D> &&);
-			template <typename U, typename D> copy_ptr(std::unique_ptr<U, D> &&, cloner_type);
+		/**
+		 * The cloner type.
+		 */
+		typedef std::function<std::unique_ptr<T> (const T &)> cloner_type;
 
-			// destructor
-			~copy_ptr();
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-			// assignment
-			copy_ptr &operator =(copy_ptr);
-			template <typename U> copy_ptr &operator =(copy_ptr<U>);
-			template <typename U> copy_ptr &operator =(std::auto_ptr<U> &&);
-			template <typename U, typename D> copy_ptr &operator =(std::unique_ptr<U, D> &&);
+		public:
+		constexpr copy_ptr();
+		constexpr copy_ptr(std::nullptr_t);
 
-			// observers
-			T &operator *() const noexcept;
-			pointer operator ->() const noexcept;
-			pointer get() const noexcept;
-			const cloner_type &get_cloner() const noexcept;
-			/**
-			 * @note This function silently casts the cloner to
-			 *       @c const_cloner_type, even if the original cloner was
-			 *       non-const.
-			 */
-			const_cloner_type get_const_cloner() const;
-			const deleter_type &get_deleter() const noexcept;
-			/**
-			 * @note This function silently casts the deleter to
-			 *       @c const_deleter_type, even if the original deleter was
-			 *       non-const.
-			 */
-			const_deleter_type get_const_deleter() const;
-			explicit operator bool() const noexcept;
+		explicit copy_ptr(T *);
+		copy_ptr(T *, const cloner_type &);
 
-			// modifiers
-			pointer release() noexcept;
-			void reset();
-			template <typename U> void reset(U *);
-			template <typename U, typename C> void reset(U *, C);
-			template <typename U, typename C, typename D> void reset(U *, C, D);
-			void reset(std::nullptr_t);
-			template <typename C> void reset(std::nullptr_t, C);
-			template <typename C, typename D> void reset(std::nullptr_t, C, D);
-			void swap(copy_ptr &) noexcept;
+		/*------------------------+
+		| unique_ptr constructors |
+		+------------------------*/
 
-			private:
-			// default cloner/deleter
-			class DefaultCloner;
-			class DefaultDeleter;
+		public:
+		explicit copy_ptr(std::unique_ptr<T> &&);
+		copy_ptr(std::unique_ptr<T> &&, const cloner_type &);
 
-			// const cloner/deleter adapters
-			class ConstClonerAdapter;
-			class ConstDeleterAdapter;
+		template <typename U>
+			explicit copy_ptr(std::unique_ptr<U> &&);
 
-			// implicit cloner/deleter conversion adapters
-			template <typename> class ClonerConversionAdapter;
-			template <typename> class DeleterConversionAdapter;
+		template <typename U>
+			copy_ptr(std::unique_ptr<U> &&, const cloner_type &);
 
-			pointer      p;
-			cloner_type  cloner;
-			deleter_type deleter;
-		};
+		/*---------------+
+		| copy semantics |
+		+---------------*/
 
-		// relational operators
-		template <typename T, typename U> bool operator < (const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
-		template <typename T, typename U> bool operator > (const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
-		template <typename T, typename U> bool operator <=(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
-		template <typename T, typename U> bool operator >=(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
-		template <typename T, typename U> bool operator ==(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
-		template <typename T, typename U> bool operator !=(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
+		public:
+		copy_ptr(const copy_ptr &);
+		copy_ptr &operator =(const copy_ptr &);
 
-		// nullptr relational operators
-		template <typename T> bool operator ==(const copy_ptr<T> &, std::nullptr_t) noexcept;
-		template <typename T> bool operator ==(std::nullptr_t, const copy_ptr<T> &) noexcept;
-		template <typename T> bool operator !=(const copy_ptr<T> &, std::nullptr_t) noexcept;
-		template <typename T> bool operator !=(std::nullptr_t, const copy_ptr<T> &) noexcept;
+		template <typename U>
+			copy_ptr(const copy_ptr<U> &);
 
-		// casts
-		template <typename T, typename U> copy_ptr<T>      static_pointer_cast(const copy_ptr<U> &) noexcept;
-		template <typename T, typename U> copy_ptr<T>     dynamic_pointer_cast(const copy_ptr<U> &) noexcept;
-		template <typename T, typename U> copy_ptr<T> reinterpret_pointer_cast(const copy_ptr<U> &) noexcept;
-		template <typename T, typename U> copy_ptr<T>       const_pointer_cast(const copy_ptr<U> &) noexcept;
+		template <typename U>
+			copy_ptr &operator =(const copy_ptr<U> &);
 
-		// stream insertion
-		template <typename T, typename Char, typename CharTraits>
-			std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &, const copy_ptr<T> &) noexcept;
+		/*---------------+
+		| move semantics |
+		+---------------*/
 
-		// specialized algorithms
-		template <typename T> void swap(copy_ptr<T> &, copy_ptr<T> &) noexcept;
-	}
+		public:
+		copy_ptr(copy_ptr &&);
+		copy_ptr &operator =(copy_ptr &&);
+
+		template <typename U>
+			copy_ptr(copy_ptr<U> &&);
+
+		template <typename U>
+			copy_ptr &operator =(copy_ptr<U> &&);
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		public:
+		T &operator *() const noexcept;
+		const pointer &operator ->() const noexcept;
+		T *get() const noexcept;
+		deleter_type &get_deleter() noexcept;
+		const deleter_type &get_deleter() const noexcept;
+		cloner_type &get_cloner() noexcept;
+		const cloner_type &get_cloner() const noexcept;
+		explicit operator bool() const noexcept;
+
+		/*----------+
+		| modifiers |
+		+----------*/
+
+		public:
+		T *release() noexcept;
+		void reset(T *);
+		void reset(T *, const cloner_type &);
+		void swap(copy_ptr &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		pointer p;
+		cloner_type cloner;
+	};
+
+	/*-------------------+
+	| pointer comparison |
+	+-------------------*/
+
+	template <typename T, typename U>
+		bool operator ==(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
+
+	template <typename T, typename U>
+		bool operator !=(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
+
+	template <typename T, typename U>
+		bool operator <=(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
+
+	template <typename T, typename U>
+		bool operator >=(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
+
+	template <typename T, typename U>
+		bool operator <(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
+
+	template <typename T, typename U>
+		bool operator >(const copy_ptr<T> &, const copy_ptr<U> &) noexcept;
+
+	/*-------------------+
+	| nullptr comparison |
+	+-------------------*/
+
+	template <typename T>
+		bool operator ==(const copy_ptr<T> &, std::nullptr_t) noexcept;
+
+	template <typename T>
+		bool operator ==(std::nullptr_t, const copy_ptr<T> &) noexcept;
+
+	template <typename T>
+		bool operator !=(const copy_ptr<T> &, std::nullptr_t) noexcept;
+
+	template <typename T>
+		bool operator !=(std::nullptr_t, const copy_ptr<T> &) noexcept;
+
+	/*-----------------+
+	| stream insertion |
+	+-----------------*/
+
+	template <typename Char, typename CharTraits, typename T>
+		std::basic_ostream<Char, CharTraits> &operator <<(
+			std::basic_ostream<Char, CharTraits> &, const copy_ptr<T> &);
+}}
+
+namespace std
+{
+	template <typename T, typename U>
+		void swap(::page::util::copy_ptr<T> &, ::page::util::copy_ptr<U> &);
 }
 
 #	include "copy_ptr.tpp"

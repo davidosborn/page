@@ -41,7 +41,7 @@
 #include "../../pipe/Stream.hpp"
 #include "../../type/Sound.hpp"
 #include "../../type/sound/PcmDecoder.hpp"
-#include "../Registry.hpp" // REGISTER_LOADER
+#include "../LoaderRegistry.hpp" // REGISTER_LOADER
 
 namespace page
 {

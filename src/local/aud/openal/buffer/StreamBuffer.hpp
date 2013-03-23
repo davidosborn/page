@@ -37,39 +37,33 @@
 
 #	include "../Buffer.hpp"
 
-namespace page
+namespace page { namespace res { class AudioStream; }}
+
+namespace page { namespace aud { namespace openal
 {
-	namespace res { class AudioStream; }
-
-	namespace aud
+	struct StreamBuffer : Buffer
 	{
-		namespace openal
-		{
-			struct StreamBuffer : Buffer
-			{
-				// construct/destroy
-				StreamBuffer(ALuint source, const res::Sound &, bool loop, float playPosition);
-				~StreamBuffer();
+		// construct/destroy
+		StreamBuffer(ALuint source, const res::Sound &, bool loop, float playPosition);
+		~StreamBuffer();
 
-				// update
-				void Update();
+		// update
+		void Update();
 
-				private:
-				// buffering
-				void Queue(const ALuint *buffers, unsigned n);
+		private:
+		// buffering
+		void Queue(const ALuint *buffers, unsigned n);
 
-				ALuint source;
-				std::unique_ptr<res::AudioStream> stream;
-				ALenum format;
-				unsigned frequency;
-				bool loop, end;
-				typedef std::array<ALuint, 2> Buffers;
-				Buffers buffers;
-				typedef std::vector<char> BufferData;
-				BufferData bufferData;
-			};
-		}
-	}
-}
+		ALuint source;
+		std::unique_ptr<res::AudioStream> stream;
+		ALenum format;
+		unsigned frequency;
+		bool loop, end;
+		typedef std::array<ALuint, 2> Buffers;
+		Buffers buffers;
+		typedef std::vector<char> BufferData;
+		BufferData bufferData;
+	};
+}}}
 
 #endif

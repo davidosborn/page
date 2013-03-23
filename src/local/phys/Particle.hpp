@@ -63,7 +63,7 @@ namespace page
 			protected:
 			// frame serialization
 			// FIXME: should Particle be Controllable?
-/*			Frame GetFrame() const;
+			/*Frame GetFrame() const;
 			void Update(const Frame &);*/
 
 			private:

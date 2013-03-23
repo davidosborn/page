@@ -38,35 +38,32 @@
 
 #	include "TargetController.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	namespace attrib { class Pose; }
+
+	class LipsyncController :
+		public TargetController,
+		public virtual util::Cloneable<LipsyncController, TargetController>
 	{
-		namespace attrib { class Pose; }
+		public:
+		// construct
+		explicit LipsyncController(const attrib::Pose &);
 
-		struct LipsyncController : TargetController
-		{
-			// construct
-			explicit LipsyncController(const attrib::Pose &);
+		// modifiers
+		void PushText(const std::string &);
+		void PushPhonemes(const std::string &);
 
-			// clone
-			LipsyncController *Clone() const;
+		// check compatibility
+		static bool Check(const attrib::Pose &);
 
-			// modifiers
-			void PushText(const std::string &);
-			void PushPhonemes(const std::string &);
+		private:
+		// update targets
+		void UpdateTargets(float deltaTime);
 
-			// check compatibility
-			static bool Check(const attrib::Pose &);
-
-			private:
-			// update targets
-			void UpdateTargets(float deltaTime);
-
-			std::string phonemes;
-			float phonemeDuration;
-		};
-	}
-}
+		std::string phonemes;
+		float phonemeDuration;
+	};
+}}
 
 #endif

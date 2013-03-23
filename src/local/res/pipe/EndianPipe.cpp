@@ -70,7 +70,7 @@ namespace page
 				// FIXME: swap bytes as specified in format
 				pos += n;
 				// FIXME: reference code ripped from SubPipe
-/*				if (pos + n > size)
+				/*if (pos + n > size)
 				{
 					try
 					{
@@ -120,7 +120,7 @@ namespace page
 				super->Seek(n);
 				pos = n;
 				// FIXME: reference code ripped from SubPipe
-/*				if (n > size)
+				/*if (n > size)
 				{
 					try
 					{

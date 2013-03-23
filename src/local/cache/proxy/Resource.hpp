@@ -33,62 +33,54 @@
 
 #	include "Proxy.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/**
+	 * A proxy representing a resource in the cache.
+	 */
+	template <typename T>
+		class Resource :
+			public Proxy<T>,
+			public virtual util::Cloneable<Resource<T>, Proxy<T>>
 	{
-		/**
-		 * A proxy representing a resource in the cache.
-		 */
-		template <typename T>
-			class Resource : public Proxy<T>
-		{
-			/*------+
-			| types |
-			+------*/
+		/*------+
+		| types |
+		+------*/
 
-			public:
-			typedef typename Proxy<T>::Instance Instance;
+		public:
+		typedef typename Proxy<T>::Instance Instance;
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-			public:
-			explicit Resource(const std::string &path = "");
+		public:
+		explicit Resource(const std::string &path = "");
 
-			/*------+
-			| clone |
-			+------*/
+		/*----------+
+		| observers |
+		+----------*/
 
-			public:
-			Resource<T> *Clone() const override;
+		public:
+		std::string GetType() const override;
+		std::string GetSource() const override;
+		operator bool() const override;
 
-			/*----------+
-			| observers |
-			+----------*/
+		/*--------------+
+		| instantiation |
+		+--------------*/
 
-			public:
-			std::string GetType() const override;
-			std::string GetSource() const override;
-			operator bool() const override;
+		private:
+		Instance Make() const override;
 
-			/*--------------+
-			| instantiation |
-			+--------------*/
+		/*-------------+
+		| data members |
+		+-------------*/
 
-			private:
-			Instance Make() const override;
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			std::string path;
-		};
-	}
-}
+		private:
+		std::string path;
+	};
+}}
 
 #	include "Resource.tpp"
 #endif

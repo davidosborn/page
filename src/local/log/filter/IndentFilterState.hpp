@@ -44,12 +44,14 @@ namespace page
 			| observers |
 			+----------*/
 
+			public:
 			unsigned GetLevel() const;
 
 			/*----------+
 			| modifiers |
 			+----------*/
 
+			public:
 			void Indent();
 			void Dedent();
 

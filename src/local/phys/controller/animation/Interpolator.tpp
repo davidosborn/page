@@ -109,7 +109,7 @@ namespace page
 		{
 			assert(!frames.empty());
 			// FIXME: for wrapping iterator during looping; must wrap time too
-/*			int i = iter - frames.begin(), max = frames.size();
+			/*int i = iter - frames.begin(), max = frames.size();
 			n = ((i + n) % max + max) % max;*/
 			n = std::min(std::max(n, frames.begin() - iter), (frames.end() - 1) - iter);
 			return iter + n;

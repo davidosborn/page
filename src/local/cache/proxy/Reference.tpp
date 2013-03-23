@@ -30,84 +30,71 @@
 
 #include "../../util/memory/Deleter.hpp" // Share
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
+
+	template <typename T>
+		Reference<T>::Reference(const T &reference) :
+			instance(util::Share(reference)) {}
+
+	template <typename T>
+		Reference<T>::Reference(const Instance &instance) :
+			instance(instance) {}
+
+	/*-------+
+	| access |
+	+-------*/
+
+	template <typename T>
+		typename Reference<T>::Instance Reference<T>::Lock() const
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
-
-		template <typename T>
-			Reference<T>::Reference(const T &reference) :
-				instance(util::Share(reference)) {}
-
-		template <typename T>
-			Reference<T>::Reference(const Instance &instance) :
-				instance(instance) {}
-
-		/*------+
-		| clone |
-		+------*/
-
-		template <typename T>
-			Reference<T> *Reference<T>::Clone() const
-		{
-			return new Reference<T>(*this);
-		}
-
-		/*-------+
-		| access |
-		+-------*/
-
-		template <typename T>
-			typename Reference<T>::Instance Reference<T>::Lock() const
-		{
-			assert(*this);
-			return instance;
-		}
-
-		/*----------+
-		| observers |
-		+----------*/
-
-		template <typename T>
-			std::string Reference<T>::GetType() const
-		{
-			return "reference";
-		}
-
-		template <typename T>
-			std::string Reference<T>::GetSource() const
-		{
-			return *this ? "nowhere" : "";
-		}
-
-		template <typename T>
-			Reference<T>::operator bool() const
-		{
-			return instance;
-		}
-
-		/*----------+
-		| modifiers |
-		+----------*/
-
-		template <typename T>
-			void Reference<T>::Invalidate() const {}
-
-		template <typename T>
-			void Reference<T>::Purge() const {}
-
-		/*--------------+
-		| instantiation |
-		+--------------*/
-
-		template <typename T>
-			typename Reference<T>::Instance Reference<T>::Make() const
-		{
-			assert(!"should never be called");
-			return instance;
-		}
+		assert(*this);
+		return instance;
 	}
-}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	template <typename T>
+		std::string Reference<T>::GetType() const
+	{
+		return "reference";
+	}
+
+	template <typename T>
+		std::string Reference<T>::GetSource() const
+	{
+		return *this ? "nowhere" : "";
+	}
+
+	template <typename T>
+		Reference<T>::operator bool() const
+	{
+		return instance;
+	}
+
+	/*----------+
+	| modifiers |
+	+----------*/
+
+	template <typename T>
+		void Reference<T>::Invalidate() const {}
+
+	template <typename T>
+		void Reference<T>::Purge() const {}
+
+	/*--------------+
+	| instantiation |
+	+--------------*/
+
+	template <typename T>
+		typename Reference<T>::Instance Reference<T>::Make() const
+	{
+		assert(!"should never be called");
+		return instance;
+	}
+}}

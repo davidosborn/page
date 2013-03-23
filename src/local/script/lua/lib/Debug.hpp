@@ -35,22 +35,13 @@
 #	include <memory> // shared_ptr
 #	include <lua.hpp> // lua_State
 
-namespace page
+namespace page { namespace script { namespace lua { namespace lib
 {
-	namespace script
+	struct Debug
 	{
-		namespace lua
-		{
-			namespace lib
-			{
-				struct Debug
-				{
-					// construct
-					explicit Debug(lua_State *);
-				};
-			}
-		}
-	}
-}
+		// construct
+		explicit Debug(lua_State *);
+	};
+}}}}
 
 #endif

@@ -38,38 +38,36 @@
 
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class TargetController : public Controller
 	{
-		struct TargetController : Controller
+		public:
+		// construct
+		explicit TargetController(Layer, float fadeDuration = 1);
+
+		protected:
+		// modifiers
+		void SetTarget(const Frame &);
+		void SetTarget(const Frame &, float fadeDuration);
+
+		private:
+		// update hooks
+		virtual void UpdateTargets(float deltaTime) = 0;
+
+		// update/generate frame
+		void DoUpdate(float deltaTime);
+		Frame DoGetFrame(const Frame &, const Frame &) const;
+
+		float fadeDuration;
+		struct Target
 		{
-			// construct
-			explicit TargetController(Layer, float fadeDuration = 1);
-
-			protected:
-			// modifiers
-			void SetTarget(const Frame &);
-			void SetTarget(const Frame &, float fadeDuration);
-
-			private:
-			// update hooks
-			virtual void UpdateTargets(float deltaTime) = 0;
-
-			// update/generate frame
-			void DoUpdate(float deltaTime);
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			float fadeDuration;
-			struct Target
-			{
-				Frame frame;
-				float opacity, fadeDuration;
-			};
-			typedef std::vector<Target> Targets;
-			Targets targets;
+			Frame frame;
+			float opacity, fadeDuration;
 		};
-	}
-}
+		typedef std::vector<Target> Targets;
+		Targets targets;
+	};
+}}
 
 #endif

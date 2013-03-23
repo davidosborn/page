@@ -33,22 +33,13 @@
 
 #	include <lua.hpp> // lua_State
 
-namespace page
+namespace page { namespace script { namespace lua { namespace lib
 {
-	namespace script
+	struct Standard
 	{
-		namespace lua
-		{
-			namespace lib
-			{
-				struct Standard
-				{
-					// construct
-					explicit Standard(lua_State *);
-				};
-			}
-		}
-	}
-}
+		// construct
+		explicit Standard(lua_State *);
+	};
+}}}}
 
 #endif

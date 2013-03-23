@@ -33,27 +33,26 @@
 
 #	include "Source.hpp"
 
-namespace page
+namespace page { namespace res
 {
-	namespace res
+	struct ZipSource : Source
 	{
-		struct ZipSource : Source
-		{
-			// construct
-			explicit ZipSource(const std::string &);
+		// construct
+		explicit ZipSource(const std::string &);
 
-			// modifiers
-			void Refresh();
+		static bool CheckPath(const std::string &path);
 
-			private:
-			// indexing
-			void Index();
-			void IndexFile(const std::string &, int);
+		// modifiers
+		void Refresh();
 
-			std::string path;
-			unsigned mtime;
-		};
-	}
-}
+		private:
+		// indexing
+		void Index();
+		void IndexFile(const std::string &, int);
+
+		std::string path;
+		unsigned mtime;
+	};
+}}
 
 #endif

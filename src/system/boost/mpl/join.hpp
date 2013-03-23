@@ -34,34 +34,31 @@
 #	include <boost/mpl/front_inserter.hpp>
 #	include <boost/mpl/vector.hpp>
 
-namespace boost
+namespace boost { namespace mpl
 {
-	namespace mpl
+	/**
+	 * Recursively concatenates multiple sequences into a single
+	 * sequence.
+	 */
+	template <typename... Sequences>
+		struct join;
+
+	template <typename Sequence, typename... RemainingSequences>
+		struct join<Sequence, RemainingSequences...>
 	{
-		/**
-		 * Recursively concatenates multiple sequences into a single
-		 * sequence.
-		 */
-		template <typename... Sequences>
-			struct join;
+		typedef
+			typename reverse_copy<
+				Sequence,
+				front_inserter<
+					typename join<RemainingSequences...>::type>
+				>::type type;
+	};
 
-		template <typename Sequence, typename... RemainingSequences>
-			struct join<Sequence, RemainingSequences...>
-		{
-			typedef
-				typename reverse_copy<
-					Sequence,
-					front_inserter<
-						typename join<RemainingSequences...>::type>
-					>::type type;
-		};
-
-		template <>
-			struct join<>
-		{
-			typedef vector<> type;
-		};
-	}
-}
+	template <>
+		struct join<>
+	{
+		typedef vector<> type;
+	};
+}}
 
 #endif

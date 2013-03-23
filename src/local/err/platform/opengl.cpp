@@ -37,35 +37,29 @@
 
 #include "../Exception.hpp"
 
-namespace page
+namespace page { namespace err { namespace opengl
 {
-	namespace err
+	std::string GetErrorString(GLenum);
+
+	void ResetError()
 	{
-		namespace opengl
-		{
-			std::string GetErrorString(GLenum);
-
-			void ResetError()
-			{
-				for (unsigned i = 0; i < 1000 && glGetError(); ++i);
-			}
-
-			void CheckError()
-			{
-				GLenum error = glGetError();
-				if (error)
-					THROW((err::Exception<err::ErrModuleTag, err::OpenglPlatformTag>(GetErrorString(error))))
-			}
-
-			std::string GetErrorString(GLenum error)
-			{
-				return
-#ifdef HAVE_GLU
-					reinterpret_cast<const char *>(gluErrorString(error));
-#else
-					"error";
-#endif
-			}
-		}
+		for (unsigned i = 0; i < 1000 && glGetError(); ++i);
 	}
-}
+
+	void CheckError()
+	{
+		GLenum error = glGetError();
+		if (error)
+			THROW((err::Exception<err::ErrModuleTag, err::OpenglPlatformTag>(GetErrorString(error))))
+	}
+
+	std::string GetErrorString(GLenum error)
+	{
+		return
+#ifdef HAVE_GLU
+			reinterpret_cast<const char *>(gluErrorString(error));
+#else
+			"error";
+#endif
+	}
+}}}

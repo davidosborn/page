@@ -34,23 +34,17 @@
 #	include "../../channel/AmbientChannel.hpp"
 #	include "../Channel.hpp"
 
-namespace page
+namespace page { namespace aud { namespace openal
 {
-	namespace aud
+	struct AmbientChannel : Channel, aud::AmbientChannel
 	{
-		namespace openal
-		{
-			struct AmbientChannel : Channel, aud::AmbientChannel
-			{
-				// construct
-				AmbientChannel(const Sound &);
+		// construct
+		AmbientChannel(const Sound &);
 
-				private:
-				// update
-				void DoUpdate3();
-			};
-		}
-	}
-}
+		private:
+		// update
+		void DoUpdate3();
+	};
+}}}
 
 #endif

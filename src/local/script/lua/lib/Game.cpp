@@ -33,47 +33,38 @@
 #include "../Library.hpp" // GetLibrary, Library::router
 #include "Game.hpp"
 
-namespace page
+namespace page { namespace script { namespace lua { namespace lib
 {
-	namespace script
+	// construct
+	Game::Game(lua_State *state)
 	{
-		namespace lua
+		struct Protected
 		{
-			namespace lib
+			static int Call(lua_State *state)
 			{
-				// construct
-				Game::Game(lua_State *state)
+				lua_pop(state, 1);
+				// register functions
+				luaL_Reg funcs[] =
 				{
-					struct Protected
-					{
-						static int Call(lua_State *state)
-						{
-							lua_pop(state, 1);
-							// register functions
-							luaL_Reg funcs[] =
-							{
-								{"quit", &Game::Quit},
-								{}
-							};
-							luaL_register(state, "_G", funcs);
-							lua_pop(state, 1);
-							return 0;
-						}
-					};
-					err::lua::CheckError(state, lua_cpcall(state, Protected::Call, 0));
-				}
-
-				// functions
-				int Game::Quit(lua_State *state)
-				{
-					try
-					{
-						GetLibrary(state).router.Quit();
-					}
-					CATCH_LUA_ERRORS(state)
-					return 0;
-				}
+					{"quit", &Game::Quit},
+					{}
+				};
+				luaL_register(state, "_G", funcs);
+				lua_pop(state, 1);
+				return 0;
 			}
-		}
+		};
+		err::lua::CheckError(state, lua_cpcall(state, Protected::Call, 0));
 	}
-}
+
+	// functions
+	int Game::Quit(lua_State *state)
+	{
+		try
+		{
+			GetLibrary(state).router.Quit();
+		}
+		CATCH_LUA_ERRORS(state)
+		return 0;
+	}
+}}}}

@@ -32,104 +32,101 @@
 #include "../../util/io/deserialize.hpp"
 #include "Source.hpp"
 
-namespace page
+namespace page { namespace cfg
 {
-	namespace cfg
-	{
 ////////// Source //////////////////////////////////////////////////////////////
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
 
-		Source::Source(
-			const std::string &uri,
-			const std::string &friendlyName) :
-				uri(uri),
-				friendlyName(friendlyName) {}
+	Source::Source(
+		const std::string &uri,
+		const std::string &friendlyName) :
+			uri(uri),
+			friendlyName(friendlyName) {}
 
-		/*----------+
-		| observers |
-		+----------*/
+	/*----------+
+	| observers |
+	+----------*/
 
-		const std::string &Source::GetUri() const
-		{
-			return uri;
-		}
+	const std::string &Source::GetUri() const
+	{
+		return uri;
+	}
 
-		const std::string &Source::GetFriendlyName() const
-		{
-			return friendlyName;
-		}
+	const std::string &Source::GetFriendlyName() const
+	{
+		return friendlyName;
+	}
 
-		/*----+
-		| I/O |
-		+----*/
+	/*----+
+	| I/O |
+	+----*/
 
-		std::unique_ptr<Source::Writer> Source::OpenWriter() const
-		{
-			THROW((err::Exception<err::CfgModuleTag, err::ReadOnlyTag>("source is read-only")))
-		}
+	std::unique_ptr<Source::Writer> Source::OpenWriter() const
+	{
+		THROW((err::Exception<err::CfgModuleTag, err::ReadOnlyTag>("source is read-only")))
+	}
 
 ////////// Source::ReaderWriter ////////////////////////////////////////////////
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
 
-		Source::ReaderWriter::ReaderWriter(const Source &source) :
-			source(source) {}
+	Source::ReaderWriter::ReaderWriter(const Source &source) :
+		source(source) {}
 
-		/*----------+
-		| observers |
-		+----------*/
+	/*----------+
+	| observers |
+	+----------*/
 
-		const Source &Source::ReaderWriter::GetSource() const
-		{
-			return source;
-		}
+	const Source &Source::ReaderWriter::GetSource() const
+	{
+		return source;
+	}
 
 ////////// Source::Reader //////////////////////////////////////////////////////
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
 
-		Source::Reader::Reader(const Source &source) :
-			ReaderWriter(source) {}
+	Source::Reader::Reader(const Source &source) :
+		ReaderWriter(source) {}
 
-		/*-----------+
-		| operations |
-		+-----------*/
+	/*-----------+
+	| operations |
+	+-----------*/
 
-		boost::optional<std::vector<std::string>> Source::Reader::ReadSequence(const std::string &key)
-		{
-			auto value(Read(key));
-			if (!value)
-				return boost::none;
+	boost::optional<std::vector<std::string>> Source::Reader::ReadSequence(const std::string &key)
+	{
+		auto value(Read(key));
+		if (!value)
+			return boost::none;
 
-			std::vector<std::string> sequence;
-			util::Deserialize(*value, sequence, util::SequenceDeserializationFlags::none, ',');
-			return sequence;
-		}
+		std::vector<std::string> sequence;
+		util::Deserialize(*value, sequence, util::SequenceDeserializationFlags::none, ',');
+		return sequence;
+	}
 
 ////////// Source::Writer //////////////////////////////////////////////////////
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
 
-		Source::Writer::Writer(const Source &source) :
-			ReaderWriter(source) {}
+	Source::Writer::Writer(const Source &source) :
+		ReaderWriter(source) {}
 
-		/*-----------+
-		| operations |
-		+-----------*/
+	/*-----------+
+	| operations |
+	+-----------*/
 
-		void Source::Writer::WriteSequence(const std::string &key, const std::string &value)
-		{
-			// FIXME: implement
-			assert(false);
-		}
+	void Source::Writer::WriteSequence(const std::string &key, const std::string &value)
+	{
+		// FIXME: implement
+		assert(false);
 	}
-}
+}}

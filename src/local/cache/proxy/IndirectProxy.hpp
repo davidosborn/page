@@ -34,20 +34,17 @@
 #	include "../../util/raii/copy_ptr.hpp"
 #	include "Proxy.hpp"
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
+	template <typename T>
+		class IndirectProxy : public Proxy<T>
 	{
-		template <typename T>
-			class IndirectProxy : public Proxy<T>
-		{
-			// FIXME: implement
+		// FIXME: implement
 
-			private:
-			util::copy_ptr<Proxy<T>> proxy;
-		};
-	}
-}
+		private:
+		util::copy_ptr<Proxy<T>> proxy;
+	};
+}}
 
 #	include "IndirectProxy.tpp"
 #endif

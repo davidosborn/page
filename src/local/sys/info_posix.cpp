@@ -30,7 +30,6 @@
 
 #include <string>
 
-#include <boost/filesystem/path.hpp>
 #include <boost/optional.hpp>
 
 #include <pwd.h> // getpwuid
@@ -80,7 +79,7 @@ namespace page
 			return name;
 		}
 
-		boost::filesystem::path GetHome()
+		std::string GetHome()
 		{
 			const char *home = getenv("HOME");
 			if (!home)

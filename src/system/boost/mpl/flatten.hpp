@@ -39,34 +39,31 @@
 #	include <boost/mpl/single_view.hpp>
 #	include <boost/mpl/transform.hpp>
 
-namespace boost
+namespace boost { namespace mpl
 {
-	namespace mpl
+	/**
+	 * Recursively expands sub-sequences to produce a flat sequence.
+	 */
+	template <
+		typename Sequence,
+		bool = is_sequence<Sequence>::value>
+			struct flatten
 	{
-		/**
-		 * Recursively expands sub-sequences to produce a flat sequence.
-		 */
-		template <
-			typename Sequence,
-			bool = is_sequence<Sequence>::value>
-				struct flatten
-		{
-			typedef
-				typename transform<
-					Sequence,
-					quote1<flatten>,
-					inserter<
-						typename clear<Sequence>::type,
-						insert_range<_1, end<_1>, _2>>
-					>::type type;
-		};
+		typedef
+			typename transform<
+				Sequence,
+				quote1<flatten>,
+				inserter<
+					typename clear<Sequence>::type,
+					insert_range<_1, end<_1>, _2>>
+				>::type type;
+	};
 
-		template <typename T>
-			struct flatten<T, false>
-		{
-			typedef single_view<T> type;
-		};
-	}
-}
+	template <typename T>
+		struct flatten<T, false>
+	{
+		typedef single_view<T> type;
+	};
+}}
 
 #endif

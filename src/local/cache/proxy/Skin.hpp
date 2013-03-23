@@ -43,60 +43,55 @@ namespace page
 		namespace attrib { class Pose; }
 	}
 	namespace res { class Mesh; }
-
-	namespace cache
-	{
-		/**
-		 * A proxy representing an instance of @c phys::Skin in the cache.
-		 */
-		class Skin : public Proxy<phys::Skin>
-		{
-			/*------+
-			| types |
-			+------*/
-
-			public:
-			typedef typename Proxy<phys::Skin>::Instance Instance;
-
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
-
-			public:
-			Skin(const Proxy<res::Mesh> &, const phys::attrib::Pose &);
-
-			/*------+
-			| clone |
-			+------*/
-
-			public:
-			Skin *Clone() const override;
-
-			/*----------+
-			| observers |
-			+----------*/
-
-			public:
-			std::string GetType() const override;
-			std::string GetSource() const override;
-			operator bool() const override;
-
-			/*--------------+
-			| instantiation |
-			+--------------*/
-
-			private:
-			Instance Make() const override;
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			util::copy_ptr<Proxy<res::Mesh>> mesh;
-			util::Identifiable::Id poseId;
-		};
-	}
 }
+
+namespace page { namespace cache
+{
+	/**
+	 * A proxy representing an instance of @c phys::Skin in the cache.
+	 */
+	class Skin :
+		public Proxy<phys::Skin>,
+		public virtual util::Cloneable<Skin, Proxy<phys::Skin>>
+	{
+		/*------+
+		| types |
+		+------*/
+
+		public:
+		typedef typename Proxy<phys::Skin>::Instance Instance;
+
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
+
+		public:
+		Skin(const Proxy<res::Mesh> &, const phys::attrib::Pose &);
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		public:
+		std::string GetType() const override;
+		std::string GetSource() const override;
+		operator bool() const override;
+
+		/*--------------+
+		| instantiation |
+		+--------------*/
+
+		private:
+		Instance Make() const override;
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		util::copy_ptr<Proxy<res::Mesh>> mesh;
+		util::Identifiable::Id poseId;
+	};
+}}
 
 #endif

@@ -31,33 +31,24 @@
 #include "../../math/intersect.hpp" // ClosestPointOnPlane
 #include "ConstrainPositionToPlaneController.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	// construct
+	ConstrainPositionToPlaneController::ConstrainPositionToPlaneController(const math::Plane<3> &plane) :
+		Controller(constraintLayer), plane(plane) {}
+
+	// modifiers
+	void ConstrainPositionToPlaneController::SetPlane(const math::Plane<3> &plane)
 	{
-		// construct
-		ConstrainPositionToPlaneController::ConstrainPositionToPlaneController(const math::Plane<3> &plane) :
-			Controller(constraintLayer), plane(plane) {}
-
-		// clone
-		ConstrainPositionToPlaneController *ConstrainPositionToPlaneController::Clone() const
-		{
-			return new ConstrainPositionToPlaneController(*this);
-		}
-
-		// modifiers
-		void ConstrainPositionToPlaneController::SetPlane(const math::Plane<3> &plane)
-		{
-			this->plane = plane;
-		}
-
-		// generate frame
-		Frame ConstrainPositionToPlaneController::DoGetFrame(const Frame &, const Frame &accum) const
-		{
-			Frame frame;
-			if (accum.position)
-				frame.position = ClosestPointOnPlane(plane, *accum.position);
-			return frame;
-		}
+		this->plane = plane;
 	}
-}
+
+	// generate frame
+	Frame ConstrainPositionToPlaneController::DoGetFrame(const Frame &, const Frame &accum) const
+	{
+		Frame frame;
+		if (accum.position)
+			frame.position = ClosestPointOnPlane(plane, *accum.position);
+		return frame;
+	}
+}}

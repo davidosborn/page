@@ -28,30 +28,21 @@
  * of this software.
  */
 
-#ifndef    page_local_res_fmt_native_scene_hpp
-#   define page_local_res_fmt_native_scene_hpp
+#ifndef    page_local_res_format_native_scene_hpp
+#   define page_local_res_format_native_scene_hpp
 
 #	include <string>
 
-namespace page
+namespace page { namespace res { namespace format
 {
-	namespace res
+	namespace native { namespace scene
 	{
-		namespace fmt
-		{
-			namespace native
-			{
-				namespace scene
-				{
-					const char comment = '#';
-					const std::string shebang(std::string(1, comment) + '!');
-					const std::string sig("PAGEscene");
-				}
-			}
+		const char comment = '#';
+		const std::string shebang(std::string(1, comment) + '!');
+		const std::string sig("PAGEscene");
+	}}
 
-			using namespace native::scene;
-		}
-	}
-}
+	using namespace native::scene;
+}}}
 
 #endif

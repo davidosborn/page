@@ -260,8 +260,10 @@ namespace page
 			control = state.control;
 			look    = state.look;
 			// execute events
-			std::for_each(state.keyEvents.begin(), state.keyEvents.end(), keySig);
-			std::for_each(state.charEvents.begin(), state.charEvents.end(), charSig);
+			for (const auto &event : state.keyEvents)
+				keySig(event);
+			for (const auto &event : state.charEvents)
+				charSig(event);
 		}
 
 		// inspiration notification

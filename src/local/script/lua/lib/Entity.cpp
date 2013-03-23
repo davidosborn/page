@@ -37,182 +37,173 @@
 #include "Class.hpp" // Class::{GetInstance,RegisterProperties}
 #include "Entity.hpp"
 
-namespace page
+namespace page { namespace script { namespace lua { namespace lib
 {
-	namespace script
+	// construct
+	Entity::Entity(lua_State *state)
 	{
-		namespace lua
+		struct Protected
 		{
-			namespace lib
+			static int Call(lua_State *state)
 			{
-				// construct
-				Entity::Entity(lua_State *state)
+				lua_pop(state, 1);
+				// execute Lua code
+				luaL_dostring_unprotected(state,
+					"class.Entity()\n"
+					"enable_properties(Entity)");
+				// register functions
+				luaL_Reg funcs[] =
 				{
-					struct Protected
-					{
-						static int Call(lua_State *state)
-						{
-							lua_pop(state, 1);
-							// execute Lua code
-							luaL_dostring_unprotected(state,
-								"class.Entity()\n"
-								"enable_properties(Entity)");
-							// register functions
-							luaL_Reg funcs[] =
-							{
-								{"do", &Entity::Do},
-								{}
-							};
-							luaL_register(state, "_G", funcs);
-							lua_pop(state, 1);
-							// register properties
-							Class::Property properties[] =
-							{
-								{"position",    &Entity::GetPosition,    &Entity::SetPosition},
-								{"orientation", &Entity::GetOrientation, &Entity::SetOrientation},
-								{"scale",       &Entity::GetScale,       &Entity::SetScale},
-								{}
-							};
-							Class::RegisterProperties(state, "Entity", properties);
-							return 0;
-						}
-					};
-					err::lua::CheckError(state, lua_cpcall(state, Protected::Call, 0));
-				}
-
-				// actions
-				int Entity::Do(lua_State *state)
+					{"do", &Entity::Do},
+					{}
+				};
+				luaL_register(state, "_G", funcs);
+				lua_pop(state, 1);
+				// register properties
+				Class::Property properties[] =
 				{
-					lua_settop(state, 2);
-					// extract instance argument
-					luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
-					game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
-					if (!entity) return 0;
-					// extract path argument
-					luaL_argcheck(state, lua_isstring(state, -1), 1, "string expected");
-					std::string path;
-					try
-					{
-						path = lua_tostring(state, -1);
-					}
-					CATCH_LUA_ERRORS(state)
-					lua_pop(state, 1);
-					// apply animation
-					try
-					{
-						// FIXME: is this the right solution?
-/*						Library &lib(GetLibrary(state));
-						lib.router.ApplyAnimation(entity, path);*/
-					}
-					CATCH_LUA_ERRORS(state)
-					return 0;
-				}
-
-				// properties
-				int Entity::GetPosition(lua_State *state)
-				{
-					lua_settop(state, 1);
-					// extract instance argument
-					luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
-					game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
-					if (!entity) return 0;
-					// load return value
-					math::Vector<3> position;
-					try
-					{
-						position = entity->GetPosition();
-					}
-					CATCH_LUA_ERRORS(state)
-					util::lua::Push(state, position);
-					return 1;
-				}
-				int Entity::SetPosition(lua_State *state)
-				{
-					lua_settop(state, 2);
-					// extract instance argument
-					luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
-					lua_pushvalue(state, 1);
-					lua_remove(state, 1);
-					game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
-					if (!entity) return 0;
-					// extract value argument
-					std::pair<math::Vector<3>, bool> value(
-						util::lua::GetHorizontalVector(state));
-					if (value.second) entity->SetPosition(value.first);
-					else entity->SetPosition(Swizzle(value.first, 0, 2));
-					return 0;
-				}
-				int Entity::GetOrientation(lua_State *state)
-				{
-					lua_settop(state, 1);
-					// extract instance argument
-					luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
-					game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
-					if (!entity) return 0;
-					// load return value
-					math::Euler<> orientation;
-					try
-					{
-						orientation = RadToDeg(math::Euler<>(entity->GetOrientation()));
-					}
-					CATCH_LUA_ERRORS(state)
-					util::lua::Push(state, orientation);
-					return 1;
-				}
-				int Entity::SetOrientation(lua_State *state)
-				{
-					lua_settop(state, 2);
-					// extract instance argument
-					luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
-					lua_pushvalue(state, 1);
-					lua_remove(state, 1);
-					game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
-					if (!entity) return 0;
-					// extract value argument
-					math::Euler<> orientation(util::lua::GetEuler(state));
-					try
-					{
-						entity->SetOrientation(math::Quat<>(DegToRad(orientation)));
-					}
-					CATCH_LUA_ERRORS(state)
-					return 0;
-				}
-				int Entity::GetScale(lua_State *state)
-				{
-					lua_settop(state, 1);
-					// extract instance argument
-					luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
-					game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
-					if (!entity) return 0;
-					// load return value
-					math::Vector<3> scale;
-					try
-					{
-						scale = entity->GetScale();
-					}
-					CATCH_LUA_ERRORS(state)
-					util::lua::Push(state, scale);
-					return 1;
-				}
-				int Entity::SetScale(lua_State *state)
-				{
-					lua_settop(state, 2);
-					// extract instance argument
-					luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
-					lua_pushvalue(state, 1);
-					lua_remove(state, 1);
-					game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
-					if (!entity) return 0;
-					// extract value argument
-					math::Vector<3> scale(util::lua::GetVector(state));
-					try
-					{
-						entity->SetScale(scale);
-					}
-					CATCH_LUA_ERRORS(state)
-					return 0;
-				}
+					{"position",    &Entity::GetPosition,    &Entity::SetPosition},
+					{"orientation", &Entity::GetOrientation, &Entity::SetOrientation},
+					{"scale",       &Entity::GetScale,       &Entity::SetScale},
+					{}
+				};
+				Class::RegisterProperties(state, "Entity", properties);
+				return 0;
 			}
-		}
+		};
+		err::lua::CheckError(state, lua_cpcall(state, Protected::Call, 0));
 	}
-}
+
+	// actions
+	int Entity::Do(lua_State *state)
+	{
+		lua_settop(state, 2);
+		// extract instance argument
+		luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
+		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
+		if (!entity) return 0;
+		// extract path argument
+		luaL_argcheck(state, lua_isstring(state, -1), 1, "string expected");
+		std::string path;
+		try
+		{
+			path = lua_tostring(state, -1);
+		}
+		CATCH_LUA_ERRORS(state)
+		lua_pop(state, 1);
+		// apply animation
+		try
+		{
+			// FIXME: is this the right solution?
+			/*Library &lib(GetLibrary(state));
+			lib.router.ApplyAnimation(entity, path);*/
+		}
+		CATCH_LUA_ERRORS(state)
+		return 0;
+	}
+
+	// properties
+	int Entity::GetPosition(lua_State *state)
+	{
+		lua_settop(state, 1);
+		// extract instance argument
+		luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
+		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
+		if (!entity) return 0;
+		// load return value
+		math::Vector<3> position;
+		try
+		{
+			position = entity->GetPosition();
+		}
+		CATCH_LUA_ERRORS(state)
+		util::lua::Push(state, position);
+		return 1;
+	}
+	int Entity::SetPosition(lua_State *state)
+	{
+		lua_settop(state, 2);
+		// extract instance argument
+		luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
+		lua_pushvalue(state, 1);
+		lua_remove(state, 1);
+		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
+		if (!entity) return 0;
+		// extract value argument
+		std::pair<math::Vector<3>, bool> value(
+			util::lua::GetHorizontalVector(state));
+		if (value.second) entity->SetPosition(value.first);
+		else entity->SetPosition(Swizzle(value.first, 0, 2));
+		return 0;
+	}
+	int Entity::GetOrientation(lua_State *state)
+	{
+		lua_settop(state, 1);
+		// extract instance argument
+		luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
+		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
+		if (!entity) return 0;
+		// load return value
+		math::Euler<> orientation;
+		try
+		{
+			orientation = RadToDeg(math::Euler<>(entity->GetOrientation()));
+		}
+		CATCH_LUA_ERRORS(state)
+		util::lua::Push(state, orientation);
+		return 1;
+	}
+	int Entity::SetOrientation(lua_State *state)
+	{
+		lua_settop(state, 2);
+		// extract instance argument
+		luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
+		lua_pushvalue(state, 1);
+		lua_remove(state, 1);
+		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
+		if (!entity) return 0;
+		// extract value argument
+		math::Euler<> orientation(util::lua::GetEuler(state));
+		try
+		{
+			entity->SetOrientation(math::Quat<>(DegToRad(orientation)));
+		}
+		CATCH_LUA_ERRORS(state)
+		return 0;
+	}
+	int Entity::GetScale(lua_State *state)
+	{
+		lua_settop(state, 1);
+		// extract instance argument
+		luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
+		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
+		if (!entity) return 0;
+		// load return value
+		math::Vector<3> scale;
+		try
+		{
+			scale = entity->GetScale();
+		}
+		CATCH_LUA_ERRORS(state)
+		util::lua::Push(state, scale);
+		return 1;
+	}
+	int Entity::SetScale(lua_State *state)
+	{
+		lua_settop(state, 2);
+		// extract instance argument
+		luaL_argcheck(state, lua_istable(state, 1), 1, "table expected");
+		lua_pushvalue(state, 1);
+		lua_remove(state, 1);
+		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
+		if (!entity) return 0;
+		// extract value argument
+		math::Vector<3> scale(util::lua::GetVector(state));
+		try
+		{
+			entity->SetScale(scale);
+		}
+		CATCH_LUA_ERRORS(state)
+		return 0;
+	}
+}}}}

@@ -31,12 +31,9 @@
 #ifndef    page_local_cache_fwd_hpp
 #   define page_local_cache_fwd_hpp
 
-namespace page
+namespace page { namespace cache
 {
-	namespace cache
-	{
-		template <typename> class Proxy;
-	}
-}
+	template <typename> class Proxy;
+}}
 
 #endif

@@ -39,7 +39,7 @@
 #include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../pipe/Stream.hpp"
 #include "../../type/Track.hpp"
-#include "../Registry.hpp" // REGISTER_LOADER
+#include "../LoaderRegistry.hpp" // REGISTER_LOADER
 
 namespace page
 {

@@ -31,31 +31,25 @@
 #include <X11/Xlib.h>
 
 #include "../../err/Exception.hpp"
+#include "../ConsoleRegistry.hpp" // REGISTER_CONSOLE
 #include "Console.hpp"
 
-namespace page
+namespace page { namespace wnd { namespace x11
 {
-	namespace wnd
+	Console::Console(const std::string &title)
 	{
-		namespace x11
-		{
-			Console::Console(const std::string &title)
-			{
-				// FIXME: implement
-			}
-
-			void Console::Put(char c)
-			{
-				// FIXME: implement
-			}
-			void Console::Put(const std::string &s)
-			{
-				// FIXME: implement
-			}
-		}
-
-		// factory function
-		Console *MakeConsole(const std::string &title)
-			{ return new x11::Console(title); }
+		// FIXME: implement
 	}
-}
+
+	void Console::Put(char c)
+	{
+		// FIXME: implement
+	}
+
+	void Console::Put(const std::string &s)
+	{
+		// FIXME: implement
+	}
+
+	REGISTER_CONSOLE(Console, "X11 console")
+}}}

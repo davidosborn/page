@@ -51,7 +51,7 @@ namespace page
 		/*REGISTER_SCANNER(
 			STRINGIZE(OGG_NAME),
 			ScanOgg,
-			{"ogg"},
-			{"application/ogg", "audio/ogg", "video/ogg"})*/
+			{"application/ogg", "audio/ogg", "video/ogg"},
+			{"ogg"})*/
 	}
 }

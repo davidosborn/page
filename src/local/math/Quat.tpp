@@ -91,7 +91,7 @@ namespace page
 			// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/christian.htm
 			// FIXME: this implementation doesn't appear to produce correct
 			// results when facing below the horizon
-/*			x = std::copysign(std::sqrt(std::max<T>(1 + m.xx - m.yy - m.zz, 0)) / 2, m.zy - m.yz);
+			/*x = std::copysign(std::sqrt(std::max<T>(1 + m.xx - m.yy - m.zz, 0)) / 2, m.zy - m.yz);
 			y = std::copysign(std::sqrt(std::max<T>(1 - m.xx + m.yy - m.zz, 0)) / 2, m.xz - m.zx);
 			z = std::copysign(std::sqrt(std::max<T>(1 - m.xx - m.yy + m.zz, 0)) / 2, m.yx - m.xy);
 			w = std::sqrt(std::max<T>(1 + m.xx + m.yy + m.zz, 0)) / 2;*/

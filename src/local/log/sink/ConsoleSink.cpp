@@ -28,7 +28,8 @@
  * of this software.
  */
 
-#include "../../gui/Console.hpp"
+#include "../../wnd/ConsoleRegistry.hpp"
+#include "../../wnd/Console.hpp"
 #include "ConsoleSink.hpp"
 
 namespace page
@@ -40,7 +41,7 @@ namespace page
 		+--------------------------*/
 
 		ConsoleSink::ConsoleSink(const std::string &title) :
-			console(GLOBAL(gui::Console::Factory).Make(title)) {}
+			console(GLOBAL(wnd::ConsoleRegistry).Make(title)) {}
 
 		/*----------------------+
 		| Stream implementation |

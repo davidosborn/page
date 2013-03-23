@@ -42,7 +42,7 @@ namespace page
 	{
 		class Controllable;
 
-		struct Controller : util::Cloneable<Controller>
+		struct Controller : virtual util::Cloneable<Controller>
 		{
 			enum Layer
 			{

@@ -35,17 +35,11 @@
 
 #	include <GL/gl.h> // GLenum
 
-namespace page
+namespace page { namespace err { namespace opengl
 {
-	namespace err
-	{
-		namespace opengl
-		{
-			void ResetError();
-			void CheckError();
-			std::string GetErrorString(GLenum error);
-		}
-	}
-}
+	void ResetError();
+	void CheckError();
+	std::string GetErrorString(GLenum error);
+}}}
 
 #endif

@@ -34,54 +34,51 @@
 #	include "../../math/Vector.hpp"
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class Positionable;
+	namespace attrib { class Pose; }
+
+	class EyeController :
+		public Controller,
+		public virtual util::Cloneable<EyeController, Controller>
 	{
-		class Positionable;
-		namespace attrib { class Pose; }
+		public:
+		// construct
+		explicit EyeController(const attrib::Pose &);
 
-		struct EyeController : Controller
+		// modifiers
+		void Reset();
+		void LookAt(const math::Vector<3> &);
+		void Follow(const Positionable &, const math::Vector<3> & = 0);
+
+		// dependencies
+		Dependencies GetDependencies() const;
+
+		// check compatibility
+		static bool Check(const attrib::Pose &);
+
+		private:
+		// generate frame
+		Frame DoGetFrame(const Frame &, const Frame &) const;
+
+		enum Mode
 		{
-			// construct
-			explicit EyeController(const attrib::Pose &);
-
-			// clone
-			EyeController *Clone() const;
-
-			// modifiers
-			void Reset();
-			void LookAt(const math::Vector<3> &);
-			void Follow(const Positionable &, const math::Vector<3> & = 0);
-
-			// dependencies
-			Dependencies GetDependencies() const;
-
-			// check compatibility
-			static bool Check(const attrib::Pose &);
-
-			private:
-			// generate frame
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			enum Mode
-			{
-				noMode,
-				lookAtMode,
-				followMode
-			} mode;
-			struct LookAt
-			{
-				math::Vector<3> position;
-			} lookAt;
-			struct Follow
-			{
-				const Positionable *target;
-				math::Vector<3> position;
-			} follow;
-			Dependencies dependencies;
-		};
-	}
-}
+			noMode,
+			lookAtMode,
+			followMode
+		} mode;
+		struct LookAt
+		{
+			math::Vector<3> position;
+		} lookAt;
+		struct Follow
+		{
+			const Positionable *target;
+			math::Vector<3> position;
+		} follow;
+		Dependencies dependencies;
+	};
+}}
 
 #endif

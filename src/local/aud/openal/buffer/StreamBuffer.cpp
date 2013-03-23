@@ -37,101 +37,95 @@
 #include "../../../res/type/sound/openal.hpp" // GetFormat
 #include "StreamBuffer.hpp"
 
-namespace page
+namespace page { namespace aud { namespace openal
 {
-	namespace aud
+	const unsigned bufferSize = 65536;
+
+	// construct/destroy
+	StreamBuffer::StreamBuffer(ALuint source, const res::Sound &sound, bool loop, float playPosition) :
+		source(source), stream(sound.decoder->Open()),
+		format(res::openal::GetFormat(sound)),
+		frequency(sound.frequency), loop(loop), end(false),
+		bufferData(bufferSize)
 	{
-		namespace openal
+		alGenBuffers(buffers.size(), &*buffers.begin());
+		if (alGetError())
+			THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to create buffer") <<
+				boost::errinfo_api_function("alGenBuffers")))
+		if (playPosition)
 		{
-			const unsigned bufferSize = 65536;
+			assert(playPosition <= GetDuration(sound));
+			stream->Seek(playPosition * sound.frequency);
+		}
+		Queue(&*buffers.begin(), buffers.size());
+	}
+	StreamBuffer::~StreamBuffer()
+	{
+		alSourceStop(source);
+		alSourcei(source, AL_BUFFER, 0);
+		alDeleteBuffers(buffers.size(), &*buffers.begin());
+	}
 
-			// construct/destroy
-			StreamBuffer::StreamBuffer(ALuint source, const res::Sound &sound, bool loop, float playPosition) :
-				source(source), stream(sound.decoder->Open()),
-				format(res::openal::GetFormat(sound)),
-				frequency(sound.frequency), loop(loop), end(false),
-				bufferData(bufferSize)
-			{
-				alGenBuffers(buffers.size(), &*buffers.begin());
-				if (alGetError())
-					THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to create buffer") <<
-						boost::errinfo_api_function("alGenBuffers")))
-				if (playPosition)
-				{
-					assert(playPosition <= GetDuration(sound));
-					stream->Seek(playPosition * sound.frequency);
-				}
-				Queue(&*buffers.begin(), buffers.size());
-			}
-			StreamBuffer::~StreamBuffer()
-			{
-				alSourceStop(source);
-				alSourcei(source, AL_BUFFER, 0);
-				alDeleteBuffers(buffers.size(), &*buffers.begin());
-			}
-
-			// update
-			void StreamBuffer::Update()
-			{
-				if (end) return;
-				// refill processed buffers
-				ALint processed = 0;
-				alGetSourcei(source, AL_BUFFERS_PROCESSED, &processed);
-				if (processed)
-				{
-					std::vector<ALuint> buffers(processed);
-					alSourceUnqueueBuffers(source, processed, &*buffers.begin());
-					if (alGetError())
-						THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to unqueue buffer") <<
-							boost::errinfo_api_function("alSourceUnqueueBuffers")))
-					Queue(&*buffers.begin(), buffers.size());
-				}
-				// restart starved source
-				ALint state = AL_STOPPED;
-				alGetSourcei(source, AL_SOURCE_STATE, &state);
-				if (state != AL_PLAYING)
-				{
-					ALint buffers = 0;
-					alGetSourcei(source, AL_BUFFERS_QUEUED, &buffers);
-					if (buffers) alSourcePlay(source);
-				}
-			}
-
-			// buffering
-			void StreamBuffer::Queue(const ALuint *buffers, unsigned n)
-			{
-				for (const ALuint *buffer = buffers; buffer != buffers + n; ++buffer)
-				{
-					if (loop)
-					{
-						for (BufferData::iterator iter(bufferData.begin());;)
-						{
-							iter += stream->Read(&*iter, bufferData.end() - iter);
-							if (iter == bufferData.end()) break;
-							stream->Seek(0);
-						}
-						alBufferData(*buffer, format, &*bufferData.begin(), bufferData.size(), frequency);
-					}
-					else
-					{
-						unsigned size = stream->Read(&*bufferData.begin(), bufferData.size());
-						alBufferData(*buffer, format, &*bufferData.begin(), size, frequency);
-						if (size != bufferData.size())
-						{
-							n = buffer - buffers + 1;
-							end = true;
-							break;
-						}
-					}
-					if (alGetError())
-						THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to initialize buffer") <<
-							boost::errinfo_api_function("alBufferData")))
-				}
-				alSourceQueueBuffers(source, n, buffers);
-				if (alGetError())
-					THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to queue buffer") <<
-						boost::errinfo_api_function("alSourceQueueBuffers")))
-			}
+	// update
+	void StreamBuffer::Update()
+	{
+		if (end) return;
+		// refill processed buffers
+		ALint processed = 0;
+		alGetSourcei(source, AL_BUFFERS_PROCESSED, &processed);
+		if (processed)
+		{
+			std::vector<ALuint> buffers(processed);
+			alSourceUnqueueBuffers(source, processed, &*buffers.begin());
+			if (alGetError())
+				THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to unqueue buffer") <<
+					boost::errinfo_api_function("alSourceUnqueueBuffers")))
+			Queue(&*buffers.begin(), buffers.size());
+		}
+		// restart starved source
+		ALint state = AL_STOPPED;
+		alGetSourcei(source, AL_SOURCE_STATE, &state);
+		if (state != AL_PLAYING)
+		{
+			ALint buffers = 0;
+			alGetSourcei(source, AL_BUFFERS_QUEUED, &buffers);
+			if (buffers) alSourcePlay(source);
 		}
 	}
-}
+
+	// buffering
+	void StreamBuffer::Queue(const ALuint *buffers, unsigned n)
+	{
+		for (const ALuint *buffer = buffers; buffer != buffers + n; ++buffer)
+		{
+			if (loop)
+			{
+				for (BufferData::iterator iter(bufferData.begin());;)
+				{
+					iter += stream->Read(&*iter, bufferData.end() - iter);
+					if (iter == bufferData.end()) break;
+					stream->Seek(0);
+				}
+				alBufferData(*buffer, format, &*bufferData.begin(), bufferData.size(), frequency);
+			}
+			else
+			{
+				unsigned size = stream->Read(&*bufferData.begin(), bufferData.size());
+				alBufferData(*buffer, format, &*bufferData.begin(), size, frequency);
+				if (size != bufferData.size())
+				{
+					n = buffer - buffers + 1;
+					end = true;
+					break;
+				}
+			}
+			if (alGetError())
+				THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to initialize buffer") <<
+					boost::errinfo_api_function("alBufferData")))
+		}
+		alSourceQueueBuffers(source, n, buffers);
+		if (alGetError())
+			THROW((err::Exception<err::AudModuleTag, err::OpenalPlatformTag>("failed to queue buffer") <<
+				boost::errinfo_api_function("alSourceQueueBuffers")))
+	}
+}}}

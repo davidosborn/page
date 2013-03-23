@@ -33,21 +33,19 @@
 
 #	include "../Console.hpp"
 
-namespace page
+namespace page { namespace wnd { namespace x11
 {
-	namespace wnd
+	class Console :
+		public wnd::Console,
+		public virtual util::Cloneable<Console, wnd::Console>
 	{
-		namespace x11
-		{
-			struct Console : wnd::Console
-			{
-				Console(const std::string &title);
+		public:
+		explicit Console(const std::string &title);
 
-				void Put(char);
-				void Put(const std::string &);
-			};
-		}
-	}
-}
+		public:
+		void Put(char);
+		void Put(const std::string &);
+	};
+}}}
 
 #endif

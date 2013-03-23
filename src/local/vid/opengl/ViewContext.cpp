@@ -152,7 +152,7 @@ namespace page
 				Forms forms(scene.GetVisibleForms(GetFrustum()));
 				// write early depth pass
 				// FIXME: this has a detrimental effect right now
-/*				{
+				/*{
 					AttribGuard attribGuard;
 					glPushAttrib(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 					glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
@@ -196,7 +196,7 @@ namespace page
 					// FIXME: implement
 					// draw emissive and specular glow
 					// TEST: disabled until we actually need emissive/specular
-/*					if (*CVAR(opengl)::renderGlow &&
+					/*if (*CVAR(opengl)::renderGlow &&
 						res.HasProgram(Resources::convolutionFilter5hProgram) &&
 						res.HasProgram(Resources::convolutionFilter5vProgram) &&
 						res.HasRenderTargetPool(Resources::rgbBlurRenderTargetPool))

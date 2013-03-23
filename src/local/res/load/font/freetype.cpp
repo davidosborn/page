@@ -36,16 +36,17 @@
 #include FT_FREETYPE_H
 
 #include "../../../err/Exception.hpp"
+#include "../../../util/cpp.hpp" // STRINGIZE
 #include "../../adapt/freetype.hpp" // FracToFloat, GetLib, OpenArgs
 #include "../../type/Font.hpp"
-#include "../Registry.hpp" // REGISTER_LOADER
+#include "../LoaderRegistry.hpp" // REGISTER_LOADER
 #include "freetype.hpp" // LoadFreetypeFont
 
-namespace page
+namespace page { namespace res
 {
-	namespace res
+	namespace
 	{
-		Font *LoadFreetypeFont(const OpenArgs &args, unsigned faceIndex)
+		std::unique_ptr<Font> LoadFreetypeFont(const OpenArgs &args, unsigned faceIndex)
 		{
 			FT_Face face;
 			if (FT_Open_Face(GetLib(), args.Get(), faceIndex, &face)) return 0;
@@ -196,22 +197,26 @@ namespace page
 			}
 			return font.release();
 		}
-		Font *LoadFreetypeFont(const std::shared_ptr<const Pipe> &pipe)
-		{
-			assert(pipe);
-			OpenArgs args(*pipe);
-			return LoadFreetypeFont(args);
-		}
-
-		LoadFunction GetFreetypeFontLoader(const Pipe &pipe)
-		{
-			OpenArgs args(pipe);
-			return !FT_Open_Face(GetLib(), args.Get(), -1, 0) ?
-				static_cast<Font *(*)(const std::shared_ptr<const Pipe> &)>(LoadFreetypeFont) : LoadFunction();
-		}
-
-		// NOTE: there are currently no font mime types
-		REGISTER_LOADER(Font, GetFreetypeFontLoader,
-			"bdf,cff,fnt,fon,otf,pcf,pfa,pfb,pfr,ttc,ttf", "", "", true)
 	}
-}
+
+	std::unique_ptr<Font> LoadFreetypeFont(const std::shared_ptr<const Pipe> &pipe)
+	{
+		assert(pipe);
+		OpenArgs args(*pipe);
+		return LoadFreetypeFont(args);
+	}
+
+	bool CheckFreetypeFont(const Pipe &pipe)
+	{
+		OpenArgs args(pipe);
+		return !FT_Open_Face(GetLib(), args.Get(), -1, 0);
+	}
+
+	REGISTER_LOADER(
+		Font,
+		STRINGIZE(NAME) " font",
+		LoadFreetypeFont,
+		CheckFreetypeFont,
+		{}, // NOTE: there are currently no font mime types
+		{"bdf", "cff", "fnt", "fon", "otf", "pcf", "pfa", "pfb", "pfr", "ttc", "ttf"})
+}}

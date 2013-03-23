@@ -33,18 +33,15 @@
 
 #	include "Entity.hpp"
 
-namespace page
-{
-	namespace res { class Object; }
+namespace page { namespace res { class Object; }}
 
-	namespace game
+namespace page { namespace game
+{
+	struct Object : Entity
 	{
-		struct Object : Entity
-		{
-			// construct
-			explicit Object(const res::Object &);
-		};
-	}
-}
+		// construct
+		explicit Object(const res::Object &);
+	};
+}}
 
 #endif

@@ -36,66 +36,55 @@
 #	include "../../../util/raii/copy_ptr.hpp"
 #	include "../Proxy.hpp"
 
-namespace page
+namespace page { namespace res { class Cursor; }}
+
+namespace page { namespace cache { namespace win32
 {
-	namespace res { class Cursor; }
-
-	namespace cache
+	/**
+	 * A proxy representing a cursor in the cache.
+	 */
+	class Cursor :
+		public Proxy<HCURSOR>,
+		public virtual util::Cloneable<Cursor, Proxy<HCURSOR>>
 	{
-		namespace win32
-		{
-			/**
-			 * A proxy representing a cursor in the cache.
-			 */
-			class Cursor : public Proxy<HCURSOR>
-			{
-				/*------+
-				| types |
-				+------*/
+		/*------+
+		| types |
+		+------*/
 
-				public:
-				typedef typename Proxy<HCURSOR>::Instance Instance;
+		public:
+		typedef typename Proxy<HCURSOR>::Instance Instance;
 
-				/*--------------------------+
-				| constructors & destructor |
-				+--------------------------*/
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-				public:
-				explicit Cursor(const Proxy<res::Cursor> &, unsigned size);
+		public:
+		explicit Cursor(const Proxy<res::Cursor> &, unsigned size);
 
-				/*------+
-				| clone |
-				+------*/
+		/*----------+
+		| observers |
+		+----------*/
 
-				public:
-				Cursor *Clone() const override;
+		public:
+		std::string GetType() const override;
+		std::string GetSource() const override;
+		operator bool() const override;
 
-				/*----------+
-				| observers |
-				+----------*/
+		/*--------------+
+		| instantiation |
+		+--------------*/
 
-				public:
-				std::string GetType() const override;
-				std::string GetSource() const override;
-				operator bool() const override;
+		private:
+		Instance Make() const override;
 
-				/*--------------+
-				| instantiation |
-				+--------------*/
+		/*-------------+
+		| data members |
+		+-------------*/
 
-				private:
-				Instance Make() const override;
-
-				/*-------------+
-				| data members |
-				+-------------*/
-
-				private:
-				util::copy_ptr<Proxy<res::Cursor>> cursor;
-				unsigned size;
-			};
-		}
-	}
-}
+		private:
+		util::copy_ptr<Proxy<res::Cursor>> cursor;
+		unsigned size;
+	};
+}}}
 
 #endif

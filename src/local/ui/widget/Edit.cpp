@@ -30,28 +30,19 @@
 
 #include "Edit.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	// metrics
+	Edit::Size Edit::CalcSize(const res::Theme &theme) const
 	{
-		// clone
-		Edit *Edit::Clone() const
-		{
-			return new Edit(*this);
-		}
-
-		// metrics
-		Edit::Size Edit::CalcSize(const res::Theme &theme) const
-		{
-			// FIXME: implement
-			return Size(0);
-		}
-
-		// rendering
-		void Edit::DoDraw(DrawContext &context) const
-		{
-			// FIXME: implement
-//			context.DrawText("test", res::Resource<res::Font>("default.ttf"), math::Vector<2>(), 1.f, 0.f);
-		}
+		// FIXME: implement
+		return Size(0);
 	}
-}
+
+	// rendering
+	void Edit::DoDraw(DrawContext &context) const
+	{
+		// FIXME: implement
+		//context.DrawText("test", res::Resource<res::Font>("default.ttf"), math::Vector<2>(), 1.f, 0.f);
+	}
+}}

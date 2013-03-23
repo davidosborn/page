@@ -37,32 +37,32 @@
 #	include "../../res/type/Track.hpp" // Track::Face, TrackPath
 #	include "LocomotionController.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class Body;
+	class Collidable;
+
+	class PathfindingController :
+		public LocomotionController,
+		public virtual util::Cloneable<PathfindingController, LocomotionController>
 	{
-		class Body;
-		class Collidable;
+		public:
+		// construct
+		explicit PathfindingController(const Body &);
 
-		struct PathfindingController : LocomotionController
-		{
-			// construct
-			explicit PathfindingController(const Body &);
+		// modifiers
+		void Goto(const math::Vector<3> &);
+		void Goto(const res::Track::Face &);
+		void Goto(const res::Track::Face &, const math::Vector<2> &);
+		void Stop();
 
-			// modifiers
-			void Goto(const math::Vector<3> &);
-			void Goto(const res::Track::Face &);
-			void Goto(const res::Track::Face &, const math::Vector<2> &);
-			void Stop();
+		private:
+		// update hooks
+		void UpdateLocomotion();
 
-			private:
-			// update hooks
-			void UpdateLocomotion();
-
-			const Collidable &controlled;
-			res::TrackPath path;
-		};
-	}
-}
+		const Collidable &controlled;
+		res::TrackPath path;
+	};
+}}
 
 #endif

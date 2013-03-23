@@ -33,20 +33,17 @@
 
 #	include <exception>
 
-namespace page
+namespace page { namespace err
 {
-	namespace err
-	{
-		/**
-		 * Print an error message from an exception.
-		 */
-		void ReportError(const std::exception &);
+	/**
+	 * Print an error message from an exception.
+	 */
+	void ReportError(const std::exception &);
 
-		/**
-		 * Print a warning message from an exception.
-		 */
-		void ReportWarning(const std::exception &);
-	}
-}
+	/**
+	 * Print a warning message from an exception.
+	 */
+	void ReportWarning(const std::exception &);
+}}
 
 #endif

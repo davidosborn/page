@@ -38,91 +38,83 @@
 #include "../../../res/type/sound/openal.hpp" // GetFormat
 #include "Buffer.hpp"
 
-namespace page
+namespace page { namespace res { class Sound; }}
+
+namespace page { namespace cache { namespace openal
 {
-	namespace res { class Sound; }
-
-	namespace cache
+	namespace
 	{
-		namespace openal
+		/**
+		 *
+		 */
+		struct BufferDeleter
 		{
-			/*--------+
-			| deleter |
-			+--------*/
+			typedef void result_type;
+			typedef const ALuint *argument_type;
 
-			namespace
+			void operator ()(const ALuint *buffer) const
 			{
-				void Deleter(const ALuint *buffer)
-				{
-					alDeleteBuffers(1, buffer);
-					delete buffer;
-				}
+				alDeleteBuffers(1, buffer);
+				delete buffer;
 			}
+		};
+	}
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+////////// Buffer //////////////////////////////////////////////////////////////
 
-			Buffer::Buffer(const Proxy<res::Sound> &sound) :
-				sound(sound.Copy()) {}
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
 
-			/*------+
-			| clone |
-			+------*/
+	Buffer::Buffer(const Proxy<res::Sound> &sound) :
+		sound(sound.Copy()) {}
 
-			Buffer *Buffer::Clone() const
-			{
-				return new Buffer(*this);
-			}
+	/*----------+
+	| observers |
+	+----------*/
 
-			/*----------+
-			| observers |
-			+----------*/
+	std::string Buffer::GetType() const
+	{
+		return "audio buffer";
+	}
 
-			std::string Buffer::GetType() const
-			{
-				return "audio buffer";
-			}
+	std::string Buffer::GetSource() const
+	{
+		return sound->GetSource();
+	}
 
-			std::string Buffer::GetSource() const
-			{
-				return sound->GetSource();
-			}
+	Buffer::operator bool() const
+	{
+		return *sound;
+	}
 
-			Buffer::operator bool() const
-			{
-				return *sound;
-			}
+	/*--------------+
+	| instantiation |
+	+--------------*/
 
-			/*--------------+
-			| instantiation |
-			+--------------*/
-
-			Buffer::Instance Buffer::Make() const
-			{
-				ALuint buffer;
-				alGenBuffers(1, &buffer);
-				if (alGetError())
-					THROW((err::Exception<err::CacheModuleTag, err::OpenalPlatformTag>("failed to create buffer") <<
-						boost::errinfo_api_function("alGenBuffers")))
-				try
-				{
-					const res::Sound &sound(**this->sound);
-					const std::unique_ptr<res::AudioStream> stream(sound.decoder->Open());
-					std::vector<char> data(GetSize(sound));
-					data.resize(stream->Read(&*data.begin(), data.size()));
-					alBufferData(buffer, res::openal::GetFormat(sound),
-						&*data.begin(), data.size(), sound.frequency);
-					if (alGetError())
-						THROW((err::Exception<err::CacheModuleTag, err::OpenalPlatformTag>("failed to initialize buffer") <<
-							boost::errinfo_api_function("alBufferData")))
-					return Instance(new ALuint(buffer), Deleter);
-				}
-				catch (...)
-				{
-					alDeleteBuffers(1, &buffer);
-				}
-			}
+	Buffer::Instance Buffer::Make() const
+	{
+		ALuint buffer;
+		alGenBuffers(1, &buffer);
+		if (alGetError())
+			THROW((err::Exception<err::CacheModuleTag, err::OpenalPlatformTag>("failed to create buffer") <<
+				boost::errinfo_api_function("alGenBuffers")))
+		try
+		{
+			const res::Sound &sound(**this->sound);
+			const std::unique_ptr<res::AudioStream> stream(sound.decoder->Open());
+			std::vector<char> data(GetSize(sound));
+			data.resize(stream->Read(&*data.begin(), data.size()));
+			alBufferData(buffer, res::openal::GetFormat(sound),
+				&*data.begin(), data.size(), sound.frequency);
+			if (alGetError())
+				THROW((err::Exception<err::CacheModuleTag, err::OpenalPlatformTag>("failed to initialize buffer") <<
+					boost::errinfo_api_function("alBufferData")))
+			return Instance(new ALuint(buffer), BufferDeleter());
+		}
+		catch (...)
+		{
+			alDeleteBuffers(1, &buffer);
 		}
 	}
-}
+}}}

@@ -34,28 +34,25 @@
 #	include "../../math/Plane.hpp"
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	class ConstrainPositionToPlaneController :
+		public Controller,
+		public virtual util::Cloneable<ConstrainPositionToPlaneController, Controller>
 	{
-		struct ConstrainPositionToPlaneController : Controller
-		{
-			// construct
-			explicit ConstrainPositionToPlaneController(const math::Plane<3> &);
+		public:
+		// construct
+		explicit ConstrainPositionToPlaneController(const math::Plane<3> &);
 
-			// clone
-			ConstrainPositionToPlaneController *Clone() const;
+		// modifiers
+		void SetPlane(const math::Plane<3> &);
 
-			// modifiers
-			void SetPlane(const math::Plane<3> &);
+		private:
+		// generate frame
+		Frame DoGetFrame(const Frame &, const Frame &) const;
 
-			private:
-			// generate frame
-			Frame DoGetFrame(const Frame &, const Frame &) const;
-
-			math::Plane<3> plane;
-		};
-	}
-}
+		math::Plane<3> plane;
+	};
+}}
 
 #endif

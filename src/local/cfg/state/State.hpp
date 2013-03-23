@@ -42,85 +42,81 @@
 #		include "opengl/RenderState.hpp"
 #	endif
 
-namespace page
+namespace page { namespace cfg
 {
-	namespace cfg
-	{
-		class Source;
+	class Source;
 
-		/**
-		 * Manages a set of configuration sources, providing fall-through access
-		 * to the variables contained in them.
-		 */
-		class State :
-			public CommonState,
+	/**
+	 * Manages a set of configuration sources, providing fall-through access to
+	 * the variables contained in them.
+	 */
+	class State :
+		public CommonState,
 #	ifdef USE_OPENGL
-			public opengl::RenderState,
+		public opengl::RenderState,
 #	endif
-			public util::Monostate<State>
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		public util::Monostate<State>
+	{
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-			public:
-			/**
-			 * Use the default source configuration.
-			 */
-			State();
-
-			/**
-			 * @copydoc Commit
-			 */
-			~State();
-
-			/*-----------------+
-			| revision control |
-			+-----------------*/
-
-			public:
-			/**
-			 * Read configuration variables from disk, incorporating the changes
-			 * to unmodified variables while retaining the modified ones.
-			 */
-			void Update();
-
-			/**
-			 * Write modified configuration variables to disk.
-			 */
-			void Commit();
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			/**
-			 * An ordered list of sources, used to initialize configuration
-			 * variables in a fall-through manner.
-			 */
-			std::list<std::shared_ptr<Source>> sources;
-		};
-
-		/*-----------------------+
-		| user-friendly printing |
-		+-----------------------*/
+		public:
+		/**
+		 * Uses the default source configuration.
+		 */
+		State();
 
 		/**
-		 * Write a list of the registered configuration variables and their
-		 * values, contained in the given instance of @c State, to the given
-		 * stream.
+		 * @copydoc Commit
 		 */
-		template <typename Char, typename CharTraits>
-			std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &, const State &);
+		~State();
+
+		/*-----------------+
+		| revision control |
+		+-----------------*/
+
+		public:
+		/**
+		 * Reads configuration variables from disk, incorporating the changes to
+		 * unmodified variables while retaining the modified ones.
+		 */
+		void Update();
 
 		/**
-		 * If verbose logging is enabled, write a list of the registered
-		 * configuration variables and their values, contained in the given
-		 * instance of @c State.
+		 * Writes modified configuration variables to disk.
 		 */
-		void Print(const State &);
-	}
-}
+		void Commit();
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		/**
+		 * An ordered list of sources, used to initialize configuration
+		 * variables in a fall-through manner.
+		 */
+		std::list<std::shared_ptr<Source>> sources;
+	};
+
+	/*-----------------------+
+	| user-friendly printing |
+	+-----------------------*/
+
+	/**
+	 * Writes a list of the registered configuration variables and their values,
+	 * contained in the given instance of @c State, to the given stream.
+	 */
+	template <typename Char, typename CharTraits>
+		std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &, const State &);
+
+	/**
+	 * If verbose logging is enabled, write a list of the registered
+	 * configuration variables and their values, contained in the given instance
+	 * of @c State.
+	 */
+	void Print(const State &);
+}}
 
 #endif

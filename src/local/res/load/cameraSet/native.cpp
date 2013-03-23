@@ -34,16 +34,17 @@
 #include <vector>
 
 #include "../../../err/Exception.hpp"
+#include "../../../util/cpp.hpp" // STRINGIZE
 #include "../../../util/endian.hpp" // TransformEndian{,Array}
-#include "../../fmt/native/cameraSet.hpp"
+#include "../../format/native/cameraSet.hpp"
 #include "../../pipe/Pipe.hpp" // Pipe::Open
 #include "../../pipe/Stream.hpp"
 #include "../../type/CameraSet.hpp"
-#include "../Registry.hpp" // REGISTER_LOADER
+#include "../LoaderRegistry.hpp" // REGISTER_LOADER
 
-namespace page { namespace res { namespace load { namespace {
-
-	CameraSet *LoadNativeCameraSet(const std::shared_ptr<const Pipe> &pipe)
+namespace page { namespace res
+{
+	std::unique_ptr<CameraSet> LoadNativeCameraSet(const std::shared_ptr<const Pipe> &pipe)
 	{
 		assert(pipe);
 		const std::unique_ptr<Stream> stream(pipe->Open());
@@ -108,7 +109,7 @@ namespace page { namespace res { namespace load { namespace {
 			// insert track face
 			cs->trackFaces.push_back(trackFace);
 		}
-		return cs.release();
+		return cs;
 	}
 
 	bool CheckNativeCameraSet(const Pipe &pipe)
@@ -122,9 +123,9 @@ namespace page { namespace res { namespace load { namespace {
 
 	REGISTER_LOADER(
 		CameraSet,
-		STRINGIZE(NAME) " camera-set"
-		CheckNativeCameraSet,
+		STRINGIZE(NAME) " camera-set",
 		LoadNativeCameraSet,
+		CheckNativeCameraSet,
+		{"application/x-page-camera-set"},
 		{"cam", "pagecam"})
-
-}}}}
+}}

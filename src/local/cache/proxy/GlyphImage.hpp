@@ -34,68 +34,60 @@
 #	include "../../util/raii/copy_ptr.hpp"
 #	include "Proxy.hpp"
 
-namespace page
+namespace page { namespace res
 {
-	namespace res
+	class Font;
+	class Image;
+}}
+
+namespace page { namespace cache
+{
+	/**
+	 * A proxy representing a glyph image in the cache.
+	 */
+	class GlyphImage :
+		public Proxy<res::Image>,
+		public virtual util::Cloneable<GlyphImage, Proxy<res::Image>>
 	{
-		class Font;
-		class Image;
-	}
+		/*------+
+		| types |
+		+------*/
 
-	namespace cache
-	{
-		/**
-		 * A proxy representing a glyph image in the cache.
-		 */
-		class GlyphImage : public Proxy<res::Image>
-		{
-			/*------+
-			| types |
-			+------*/
+		public:
+		typedef typename Proxy<res::Image>::Instance Instance;
 
-			public:
-			typedef typename Proxy<res::Image>::Instance Instance;
+		/*--------------------------+
+		| constructors & destructor |
+		+--------------------------*/
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+		public:
+		GlyphImage(const Proxy<res::Font> &, char ch, unsigned size);
 
-			public:
-			GlyphImage(const Proxy<res::Font> &, char ch, unsigned size);
+		/*----------+
+		| observers |
+		+----------*/
 
-			/*------+
-			| clone |
-			+------*/
+		public:
+		std::string GetType() const override;
+		std::string GetSource() const override;
+		operator bool() const override;
 
-			public:
-			GlyphImage *Clone() const override;
+		/*--------------+
+		| instantiation |
+		+--------------*/
 
-			/*----------+
-			| observers |
-			+----------*/
+		private:
+		Instance Make() const override;
 
-			public:
-			std::string GetType() const override;
-			std::string GetSource() const override;
-			operator bool() const override;
+		/*-------------+
+		| data members |
+		+-------------*/
 
-			/*--------------+
-			| instantiation |
-			+--------------*/
-
-			private:
-			Instance Make() const override;
-
-			/*-------------+
-			| data members |
-			+-------------*/
-
-			private:
-			util::copy_ptr<Proxy<res::Font>> font;
-			char ch;
-			unsigned size;
-		};
-	}
-}
+		private:
+		util::copy_ptr<Proxy<res::Font>> font;
+		char ch;
+		unsigned size;
+	};
+}}
 
 #endif

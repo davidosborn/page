@@ -38,52 +38,43 @@
 #include "../DrawContext.hpp" // DrawContext::DrawImage
 #include "Image.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	// construct
+	Image::Image(const cache::Proxy<res::Image> &img, const math::Vector<2> &size) :
+		img(img.Copy()), size(size), cursorOver(false), glowIntensity(0) {}
+
+	// cursor event notification
+	bool Image::OnOver(const math::Vector<2> &, const res::Theme &, const math::Vector<2> &)
 	{
-		// construct
-		Image::Image(const cache::Proxy<res::Image> &img, const math::Vector<2> &size) :
-			img(img.Copy()), size(size), cursorOver(false), glowIntensity(0) {}
-
-		// clone
-		Image *Image::Clone() const
-		{
-			return new Image(*this);
-		}
-
-		// cursor event notification
-		bool Image::OnOver(const math::Vector<2> &, const res::Theme &, const math::Vector<2> &)
-		{
-			cursorOver = true;
-		}
-
-		// metrics
-		Image::Size Image::CalcSize(const res::Theme &theme) const
-		{
-			return Size(
-				Select(size, size * theme.scale, (*img)->size),
-				Select(size, Size::grow, Size::shrink));
-		}
-
-		// rendering
-		void Image::DoDraw(DrawContext &context) const
-		{
-			DrawContext::Base::FilterSaver filterSaver(context.GetBase());
-			if (glowIntensity && context.GetBase().GetFilterCaps() & DrawContext::Base::glowFilter)
-				context.GetBase().PushGlowFilter(math::HermiteScale(glowIntensity, glowFadeExponent));
-			context.DrawImage(*img, 0, 1);
-		}
-
-		// update
-		void Image::DoUpdate(float deltaTime)
-		{
-			// update glow intensity
-			glowIntensity = cursorOver ?
-				std::min(glowIntensity + deltaTime / glowFadeInDuration,  1.f) :
-				std::max(glowIntensity - deltaTime / glowFadeOutDuration, 0.f);
-			// reset cursor over state
-			cursorOver = false;
-		}
+		cursorOver = true;
 	}
-}
+
+	// metrics
+	Image::Size Image::CalcSize(const res::Theme &theme) const
+	{
+		return Size(
+			Select(size, size * theme.scale, (*img)->size),
+			Select(size, Size::grow, Size::shrink));
+	}
+
+	// rendering
+	void Image::DoDraw(DrawContext &context) const
+	{
+		DrawContext::Base::FilterSaver filterSaver(context.GetBase());
+		if (glowIntensity && context.GetBase().GetFilterCaps() & DrawContext::Base::glowFilter)
+			context.GetBase().PushGlowFilter(math::HermiteScale(glowIntensity, glowFadeExponent));
+		context.DrawImage(*img, 0, 1);
+	}
+
+	// update
+	void Image::DoUpdate(float deltaTime)
+	{
+		// update glow intensity
+		glowIntensity = cursorOver ?
+			std::min(glowIntensity + deltaTime / glowFadeInDuration,  1.f) :
+			std::max(glowIntensity - deltaTime / glowFadeOutDuration, 0.f);
+		// reset cursor over state
+		cursorOver = false;
+	}
+}}

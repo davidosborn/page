@@ -60,7 +60,7 @@ namespace page
 			};
 
 			FileStream::FileStream(const std::string &path) :
-				fs(path.c_str(), std::ios_base::binary | std::ios_base::in)
+				fs(path, std::ios_base::binary)
 			{
 				if (!fs)
 					if (sys::IsFile(path))

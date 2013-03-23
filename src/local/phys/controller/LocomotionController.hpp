@@ -42,52 +42,49 @@
 #	include "../../math/Vector.hpp"
 #	include "../Controller.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	namespace attrib { class PositionOrientation; }
+
+	class LocomotionController :
+		public Controller,
+		public virtual util::Cloneable<LocomotionController, Controller>
 	{
-		namespace attrib { class PositionOrientation; }
+		public:
+		// construct
+		explicit LocomotionController(const attrib::PositionOrientation &);
 
-		struct LocomotionController : Controller
-		{
-			// construct
-			explicit LocomotionController(const attrib::PositionOrientation &);
+		// target modifiers
+		bool HasTarget() const;
+		void SetTarget();
+		void SetTarget(const math::Vector<3> &position);
+		void SetTarget(const math::Quat<> &orientation);
+		void SetTarget(const math::Vector<3> &position, const math::Quat<> &orientation);
 
-			// clone
-			LocomotionController *Clone() const;
+		// force modifiers
+		void SetForce(const math::Vector<3> &velocity);
+		void SetForce(const math::Euler<> &rotation);
+		void SetForce(const math::Vector<3> &velocity, const math::Euler<> &rotation);
 
-			// target modifiers
-			bool HasTarget() const;
-			void SetTarget();
-			void SetTarget(const math::Vector<3> &position);
-			void SetTarget(const math::Quat<> &orientation);
-			void SetTarget(const math::Vector<3> &position, const math::Quat<> &orientation);
+		protected:
+		// update hooks
+		virtual void UpdateLocomotion();
 
-			// force modifiers
-			void SetForce(const math::Vector<3> &velocity);
-			void SetForce(const math::Euler<> &rotation);
-			void SetForce(const math::Vector<3> &velocity, const math::Euler<> &rotation);
+		private:
+		// update/generate frame
+		void DoUpdate(float deltaTime);
+		Frame DoGetFrame(const Frame &, const Frame &) const;
 
-			protected:
-			// update hooks
-			virtual void UpdateLocomotion();
+		const attrib::PositionOrientation &controlled;
 
-			private:
-			// update/generate frame
-			void DoUpdate(float deltaTime);
-			Frame DoGetFrame(const Frame &, const Frame &) const;
+		// target
+		boost::optional<math::Vector<3>> position;
+		boost::optional<math::Quat<>> orientation;
 
-			const attrib::PositionOrientation &controlled;
-
-			// target
-			boost::optional<math::Vector<3>> position;
-			boost::optional<math::Quat<>> orientation;
-
-			// force
-			math::Vector<3> velocity, translation;
-			math::Euler<> angularVelocity, rotation;
-		};
-	}
-}
+		// force
+		math::Vector<3> velocity, translation;
+		math::Euler<> angularVelocity, rotation;
+	};
+}}
 
 #endif

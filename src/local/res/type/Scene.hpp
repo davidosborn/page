@@ -66,7 +66,7 @@ namespace page
 			cache::Resource<Script> script;
 			cache::Resource<Sound> music;
 			cache::Resource<Track> track;
-/*			struct Instance
+			/*struct Instance
 			{
 				std::string model;
 				math::Vector<3> position;
@@ -77,7 +77,7 @@ namespace page
 			};
 			typedef std::vector<Instance> Instances;
 			Instances instances;*/
-/*			struct Light
+			/*struct Light
 			{
 				math::Vector<3> position;
 				math::Quat<> orientation;
@@ -89,7 +89,7 @@ namespace page
 			typedef std::vector<Light> Lights;
 			Lights lights;*/
 			// FIXME: these are not finished
-/*			struct Sound
+			/*struct Sound
 			{
 				std::string sound;
 				float volume;
@@ -98,10 +98,10 @@ namespace page
 			};
 			typedef std::vector<Sound> Sounds;
 			Sounds sounds;*/
-/*			struct Water
+			/*struct Water
 			{
 			};*/
-/*			struct Terrain
+			/*struct Terrain
 			{
 			};*/
 		};

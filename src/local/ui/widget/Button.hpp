@@ -35,26 +35,23 @@
 
 #	include "../Widget.hpp"
 
-namespace page
+namespace page { namespace ui
 {
-	namespace ui
+	class Button :
+		public Widget,
+		public virtual util::Cloneable<Button, Widget>
 	{
-		struct Button : Widget
-		{
-			// clone
-			Button *Clone() const;
+		public:
+		// signals
+		boost::signal<void ()> clickSig;
 
-			// signals
-			boost::signal<void ()> clickSig;
+		private:
+		// metrics
+		Size CalcSize(const res::Theme &) const;
 
-			private:
-			// metrics
-			Size CalcSize(const res::Theme &) const;
-
-			// rendering
-			void DoDraw(DrawContext &) const;
-		};
-	}
-}
+		// rendering
+		void DoDraw(DrawContext &) const;
+	};
+}}
 
 #endif

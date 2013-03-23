@@ -33,26 +33,44 @@
 
 #	include "Source.hpp"
 
-namespace page
+namespace page { namespace res
 {
-	namespace res
+	/**
+	 *
+	 */
+	class FileSource : public Source
 	{
-		struct FileSource : Source
-		{
-			// construct
-			explicit FileSource(const std::string &);
+		public:
+		explicit FileSource(const std::string &path);
 
-			// modifiers
-			void Refresh();
+		/**
+		 * @copydoc Source::CheckPath
+		 */
+		static bool CheckPath(const std::string &path);
 
-			private:
-			// indexing
-			void Index();
+		void Refresh() override;
 
-			std::string path;
-			unsigned mtime;
-		};
-	}
-}
+		private:
+		/**
+		 *
+		 */
+		void Index();
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		/**
+		 *
+		 */
+		std::string path;
+
+		/**
+		 *
+		 */
+		unsigned mtime;
+	};
+}}
 
 #endif

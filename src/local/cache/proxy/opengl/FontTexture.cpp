@@ -32,56 +32,41 @@
 #include "../../../vid/opengl/FontTexture.hpp"
 #include "FontTexture.hpp"
 
-namespace page
+namespace page { namespace cache { namespace opengl
 {
-	namespace cache
+	/*--------------------------+
+	| constructors & destructor |
+	+--------------------------*/
+
+	FontTexture::FontTexture(const Proxy<res::Font> &font, unsigned fontSize) :
+		font(font.Copy()), fontSize(fontSize) {}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	std::string FontTexture::GetType() const
 	{
-		namespace opengl
-		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
-
-			FontTexture::FontTexture(const Proxy<res::Font> &font, unsigned fontSize) :
-				font(font.Copy()), fontSize(fontSize) {}
-
-			/*------+
-			| clone |
-			+------*/
-
-			FontTexture *FontTexture::Clone() const
-			{
-				return new FontTexture(*this);
-			}
-
-			/*----------+
-			| observers |
-			+----------*/
-
-			std::string FontTexture::GetType() const
-			{
-				return "font texture";
-			}
-
-			std::string FontTexture::GetSource() const
-			{
-				return util::StringBuilder() <<
-					font->GetSource() << ':' << fontSize;
-			}
-
-			FontTexture::operator bool() const
-			{
-				return *font;
-			}
-
-			/*--------------+
-			| instantiation |
-			+--------------*/
-
-			FontTexture::Instance FontTexture::Make() const
-			{
-				return Instance(new vid::opengl::FontTexture(**font, fontSize));
-			}
-		}
+		return "font texture";
 	}
-}
+
+	std::string FontTexture::GetSource() const
+	{
+		return util::StringBuilder() <<
+			font->GetSource() << ':' << fontSize;
+	}
+
+	FontTexture::operator bool() const
+	{
+		return *font;
+	}
+
+	/*--------------+
+	| instantiation |
+	+--------------*/
+
+	FontTexture::Instance FontTexture::Make() const
+	{
+		return Instance(new vid::opengl::FontTexture(**font, fontSize));
+	}
+}}}

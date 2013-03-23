@@ -32,8 +32,7 @@
 #   define page_local_log_sink_FileSink_hpp
 
 #	include <fstream> // ofstream
-
-#	include <boost/filesystem.hpp> // path
+#	include <string>
 
 #	include "Sink.hpp"
 
@@ -48,7 +47,7 @@ namespace page
 			+--------------------------*/
 
 			public:
-			explicit FileSink(const boost::filesystem::path &);
+			explicit FileSink(std::string path);
 
 			/*----------------------+
 			| Stream implementation |

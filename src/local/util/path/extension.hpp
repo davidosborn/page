@@ -31,72 +31,35 @@
 #ifndef    page_local_util_path_extension_hpp
 #   define page_local_util_path_extension_hpp
 
+#	include <string>
 #	include <utility> // pair
-
-#	include <boost/filesystem/path.hpp>
-
-#	include "../type_traits/container.hpp" // is_range
-#	include "../type_traits/iterator.hpp" // is_iterator
-#	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
 namespace page
 {
 	namespace util
 	{
 		/**
-		 * Return the path's extension, without the leading dot character.  If
-		 * the path has multiple extensions, return the one at the specified
-		 * index, counting back from the right.  The extension is converted to
-		 * lowercase.
+		 * Returns the path's extension, without the leading dot character.  If
+		 * the path has multiple extensions, the one at the specified index,
+		 * counting back from the right, is returned.
 		 */
-		boost::filesystem::path GetExtension(
-			const boost::filesystem::path &path,
-			unsigned index = 0);
+		std::string GetExtension(const std::string &path, unsigned index = 0);
 
 		/**
-		 * Return the two path segments resulting from splitting the path at the
-		 * last dot character.
+		 * Returns the two path segments resulting from splitting the path at
+		 * the last dot character.
 		 */
-		std::pair<boost::filesystem::path, boost::filesystem::path>
-			PartitionExtension(const boost::filesystem::path &path);
+		std::pair<std::string, std::string>
+			PartitionExtension(const std::string &path);
 
 		/**
-		 * Add the extension to the end of the path.  If the path does not end
-		 * with a dot character, add one before the extension.
+		 * Adds the extension to the end of the path.  If the path does not end
+		 * with a dot character, one is inserted before the extension.
 		 */
-		boost::filesystem::path AddExtension(
-			const boost::filesystem::path &path,
-			const boost::filesystem::path &extension);
-
-		/**
-		 * Ensure the path ends with the specified extension.
-		 */
-		boost::filesystem::path WithExtension(
-			const boost::filesystem::path &path,
-			const boost::filesystem::path &extension);
-
-		/**
-		 * Ensure the path ends with one of the specified extensions.  If it
-		 * does not, the first extension is used.
-		 */
-		template <typename InputRange>
-			boost::filesystem::path WithExtension(
-				const boost::filesystem::path &path,
-				InputRange extensions,
-				ENABLE_IF((is_range<InputRange>::value)));
-
-		/**
-		 * Ensure the path ends with one of the specified extensions.  If it
-		 * does not, the first extension is used.
-		 */
-		template <typename InputIterator>
-			boost::filesystem::path WithExtension(
-				const boost::filesystem::path &path,
-				InputIterator firstExtension,
-				InputIterator lastExtension,
-				ENABLE_IF((is_iterator<InputIterator>::value)));
+		std::string AddExtension(
+			std::string        path,
+			std::string const& extension);
 	}
 }
 
-#	include "extension.tpp"
 #endif

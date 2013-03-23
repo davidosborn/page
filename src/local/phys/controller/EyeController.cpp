@@ -35,68 +35,59 @@
 #include "../mixin/Positionable.hpp" // Positionable::GetPosition
 #include "EyeController.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	// construct
+	EyeController::EyeController(const attrib::Pose &pose) :
+		Controller(constraintLayer), mode(noMode)
 	{
-		// construct
-		EyeController::EyeController(const attrib::Pose &pose) :
-			Controller(constraintLayer), mode(noMode)
-		{
-			assert(Check(pose));
-		}
-
-		// clone
-		EyeController *EyeController::Clone() const
-		{
-			return new EyeController(*this);
-		}
-
-		// modifiers
-		void EyeController::Reset()
-		{
-			mode = noMode;
-			// initialize dependencies
-			dependencies.clear();
-		}
-		void EyeController::LookAt(const math::Vector<3> &position)
-		{
-			lookAt.position = position;
-			mode = lookAtMode;
-			// initialize dependencies
-			dependencies.clear();
-		}
-		void EyeController::Follow(const Positionable &target, const math::Vector<3> &position)
-		{
-			follow.target = &target;
-			follow.position = position;
-			mode = followMode;
-			// initialize dependencies
-			dependencies.clear();
-			if (const Controllable *dependency = dynamic_cast<const Controllable *>(follow.target))
-				dependencies.push_back(dependency);
-		}
-
-		// dependencies
-		Controller::Dependencies EyeController::GetDependencies() const
-		{
-			return dependencies;
-		}
-
-		// check compatibility
-		bool EyeController::Check(const attrib::Pose &pose)
-		{
-			return
-				pose.GetBone("eye.l") &&
-				pose.GetBone("eye.r");
-		}
-
-		// generate frame
-		Frame EyeController::DoGetFrame(const Frame &, const Frame &) const
-		{
-			Frame frame;
-			// FIXME: implement; need to account for world position of head
-			return frame;
-		}
+		assert(Check(pose));
 	}
-}
+
+	// modifiers
+	void EyeController::Reset()
+	{
+		mode = noMode;
+		// initialize dependencies
+		dependencies.clear();
+	}
+	void EyeController::LookAt(const math::Vector<3> &position)
+	{
+		lookAt.position = position;
+		mode = lookAtMode;
+		// initialize dependencies
+		dependencies.clear();
+	}
+	void EyeController::Follow(const Positionable &target, const math::Vector<3> &position)
+	{
+		follow.target = &target;
+		follow.position = position;
+		mode = followMode;
+		// initialize dependencies
+		dependencies.clear();
+		if (const Controllable *dependency = dynamic_cast<const Controllable *>(follow.target))
+			dependencies.push_back(dependency);
+	}
+
+	// dependencies
+	Controller::Dependencies EyeController::GetDependencies() const
+	{
+		return dependencies;
+	}
+
+	// check compatibility
+	bool EyeController::Check(const attrib::Pose &pose)
+	{
+		return
+			pose.GetBone("eye.l") &&
+			pose.GetBone("eye.r");
+	}
+
+	// generate frame
+	Frame EyeController::DoGetFrame(const Frame &, const Frame &) const
+	{
+		Frame frame;
+		// FIXME: implement; need to account for world position of head
+		return frame;
+	}
+}}
