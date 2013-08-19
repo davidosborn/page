@@ -1,9 +1,10 @@
-#ifndef    page_local_cache_proxy_opengl_Texture_hpp
-#   define page_local_cache_proxy_opengl_Texture_hpp
+#ifndef    page_local_cache_proxy_opengl_TextureProxy_hpp
+#   define page_local_cache_proxy_opengl_TextureProxy_hpp
 
 #	include "../../../math/Vector.hpp"
 #	include "../../../vid/opengl/TextureFlags.hpp"
 #	include "../../../vid/opengl/TextureFormat.hpp"
+#	include "../BasicProxy.hpp"
 #	include "../Proxy.hpp"
 
 namespace page
@@ -17,51 +18,50 @@ namespace page { namespace cache { namespace opengl
 	/**
 	 * A proxy representing a texture in the cache.
 	 */
-	class Texture :
-		public Proxy<vid::opengl::Texture>,
-		public virtual util::Cloneable<Texture, Proxy<vid::opengl::Texture>>
+	class TextureProxy :
+		public BasicProxy<vid::opengl::Texture>,
+		public virtual util::Cloneable<TextureProxy, BasicProxy<vid::opengl::Texture>>
 	{
-		/*------+
-		| types |
-		+------*/
+		/*-------+
+		| traits |
+		+-------*/
 
 		public:
-		typedef typename Proxy<vid::opengl::Texture>::Instance Instance;
+		using BasicProxy<vid::opengl::Texture>::pointer;
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-		public:
-		explicit Texture(const Proxy<res::Image> &,
-			vid::opengl::TextureFormat = vid::opengl::defaultTextureFormat,
-			vid::opengl::TextureFlags =
+		explicit TextureProxy(
+			const Proxy<res::Image> &image,
+			vid::opengl::TextureFormat format = vid::opengl::defaultTextureFormat,
+			vid::opengl::TextureFlags flags =
 				static_cast<vid::opengl::TextureFlags>(
 					vid::opengl::filterTextureFlag |
 					vid::opengl::mipmapTextureFlag),
 			const math::Vector<2, bool> &clamp = false);
-
-		/*----------+
-		| observers |
-		+----------*/
-
-		public:
-		std::string GetType() const override;
-		std::string GetSource() const override;
-		operator bool() const override;
-
-		/*--------------+
-		| instantiation |
-		+--------------*/
-
+		
 		private:
-		Instance Make() const override;
+		/**
+		 * Generates the appropriate signature for the constructor arguments.
+		 */
+		static std::string MakeSignature(
+			const Proxy<res::Image> &image,
+			vid::opengl::TextureFormat format,
+			vid::opengl::TextureFlags flags,
+			const math::Vector<2, bool> &clamp);
+
+		/*--------------------------+
+		| BasicProxy implementation |
+		+--------------------------*/
+
+		pointer DoLock() const override;
 
 		/*-------------+
 		| data members |
 		+-------------*/
 
-		private:
 		Proxy<res::Image> image;
 		vid::opengl::TextureFormat format;
 		vid::opengl::TextureFlags flags;

@@ -1,15 +1,9 @@
-#include <cassert>
 #include <functional> // mem_fn
 #include <sstream> // ostringstream
 
-#include <boost/iterator/indirect_iterator.hpp>
 #include <boost/range/adaptor/indirected.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 #include <boost/range/algorithm/copy.hpp>
-#include <boost/range/algorithm/find.hpp>
-#include <boost/range/algorithm/sort.hpp>
-#include <boost/range/algorithm/unique.hpp>
-#include <boost/range/algorithm_ext/erase.hpp>
 
 #include "../../util/io/separated_ostream_iterator.hpp"
 
@@ -27,16 +21,7 @@ namespace page { namespace cache
 				BasicProxy<phys::Bounds>(MakeSignature(meshes, skeleton)),
 				meshes(meshes), skeleton(skeleton)
 	{
-		// ensure pointers are valid
-		assert(boost::find(meshes, nullptr) == meshes.end());
-
-		// source-comparison function
-		auto compareSource = [](Proxy<res::Mesh> &a, Proxy<res::Mesh> &b)
-			{ return a->GetSource() < b->GetSource(); };
-
-		// uniquely sort meshes by source
-		boost::sort(meshes, compareSource);
-		boost::erase(meshes, boost::unique<boost::return_found_end>(meshes, compareSource));
+		Init();
 	}
 
 	template <typename MeshInputRange>
@@ -49,13 +34,13 @@ namespace page { namespace cache
 		boost::copy(
 			boost::adaptors::transform(
 				boost::adaptors::indirect(meshes),
-				std::mem_fn(&Proxy<res::Mesh>::GetSource)),
+				std::mem_fn(&Proxy<res::Mesh>::GetSignature)),
 			util::separated_ostream_iterator<std::string>(ss, ','));
 
 		if (skeleton)
 			// NOTE: using alternate separator to differentiate from mesh
 			ss << '+' << skeleton->GetSource();
 
-		return ss.str();
+		return Signature("bounds", ss.str());
 	}
 }}

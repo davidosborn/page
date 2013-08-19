@@ -1,3 +1,10 @@
+#include <cassert>
+
+#include <boost/range/algorithm/find.hpp>
+#include <boost/range/algorithm/sort.hpp>
+#include <boost/range/algorithm/unique.hpp>
+#include <boost/range/algorithm_ext/erase.hpp>
+
 #include "../../phys/Bounds.hpp"
 #include "../../res/type/Model.hpp"
 #include "../../util/iterator/indirect_iterator.hpp"
@@ -13,6 +20,16 @@ namespace page { namespace cache
 		BoundsProxy(
 			GetGeometricallyDistinctMeshes(model),
 			pose ? model.skeleton : Proxy<res::Skeleton()) {}
+
+	void BoundProxy::Init()
+	{
+		// ensure dependencies are valid
+		assert(boost::find(meshes, nullptr) == meshes.end());
+
+		// uniquely sort meshes by signature
+		boost::sort(meshes);
+		boost::erase(meshes, boost::unique<boost::return_found_end>(meshes));
+	}
 
 	/*--------------------------+
 	| BasicProxy implementation |

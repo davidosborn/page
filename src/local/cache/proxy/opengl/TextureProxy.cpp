@@ -6,25 +6,18 @@
 
 namespace page { namespace cache { namespace opengl
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
-	Texture::Texture(const Proxy<res::Image> &image, vid::opengl::TextureFormat format, vid::opengl::TextureFlags flags, const math::Vector<2, bool> &clamp) :
-		image(image.Copy()), format(format), flags(flags), clamp(clamp) {}
+	TextureProxy::TextureProxy(const Proxy<res::Image> &image, vid::opengl::TextureFormat format, vid::opengl::TextureFlags flags, const math::Vector<2, bool> &clamp) :
+		BasicProxy<vid::opengl::Texture>(MakeSignature(image, format, flags, clamp)),
+		image(image), format(format), flags(flags), clamp(clamp) {}
 
-	/*----------+
-	| observers |
-	+----------*/
-
-	std::string Texture::GetType() const
+	std::string TextureProxy::MakeSignature(const Proxy<res::Image> &image, vid::opengl::TextureFormat format, vid::opengl::TextureFlags flags, const math::Vector<2, bool> &clamp)
 	{
-		return "texture";
-	}
-
-	std::string Texture::GetSource() const
-	{
-		std::ostringstream ss(image->GetSource());
+		std::ostringstream ss;
+		ss << image->GetSource();
 		switch (format)
 		{
 			case vid::opengl::defaultTextureFormat: break;
@@ -40,19 +33,14 @@ namespace page { namespace cache { namespace opengl
 			if      (!clamp.x) ss << ".y";
 			else if (!clamp.y) ss << ".x";
 		}
-		return ss.str();
+		return Signature("OpenGL texture", ss.str());
 	}
 
-	Texture::operator bool() const
-	{
-		return *image;
-	}
+	/*--------------------------+
+	| BasicProxy implementation |
+	+--------------------------*/
 
-	/*--------------+
-	| instantiation |
-	+--------------*/
-
-	Texture::Instance Texture::Make() const
+	auto TextureProxy::DoLock() const -> pointer
 	{
 		return std::make_shared<vid::opengl::Texture>(**image, format, flags, clamp);
 	}

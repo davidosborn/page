@@ -33,7 +33,7 @@ namespace page { namespace cache { namespace openal
 	+--------------------------*/
 
 	BufferProxy::BufferProxy(const Proxy<res::Sound> &sound) :
-		BasicProxy<ALuint>("OpenAL audio buffer", sound->GetSignature()),
+		BasicProxy<ALuint>(Signature("OpenAL audio buffer", sound->GetSignature())),
 		sound(sound) {}
 
 	/*--------------------------+
@@ -58,7 +58,7 @@ namespace page { namespace cache { namespace openal
 			if (alGetError())
 				THROW((err::Exception<err::CacheModuleTag, err::OpenalPlatformTag>("failed to initialize buffer") <<
 					boost::errinfo_api_function("alBufferData")))
-			return Instance(new ALuint(buffer), BufferDeleter());
+			return pointer(new ALuint(buffer), BufferDeleter());
 		}
 		catch (...)
 		{

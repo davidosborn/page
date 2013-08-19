@@ -41,9 +41,9 @@ namespace page { namespace cache
 		return static_cast<const D &>(*this).DoGetSignature();
 	}
 
-	/*-------------------+
-	| pointer comparison |
-	+-------------------*/
+	/*---------------------+
+	| signature comparison |
+	+---------------------*/
 
 	template <
 		typename D, typename T,
@@ -63,6 +63,46 @@ namespace page { namespace cache
 			const ProxyInterface<E, U> &b) noexcept
 	{
 		return a.GetSignature() != b.GetSignature();
+	}
+
+	template <
+		typename D, typename T,
+		typename E, typename U>
+		bool operator <(
+			const ProxyInterface<D, T> &a,
+			const ProxyInterface<E, U> &b) noexcept
+	{
+		return a.GetSignature() < b.GetSignature();
+	}
+
+	template <
+		typename D, typename T,
+		typename E, typename U>
+		bool operator >(
+			const ProxyInterface<D, T> &a,
+			const ProxyInterface<E, U> &b) noexcept
+	{
+		return a.GetSignature() > b.GetSignature();
+	}
+
+	template <
+		typename D, typename T,
+		typename E, typename U>
+		bool operator <=(
+			const ProxyInterface<D, T> &a,
+			const ProxyInterface<E, U> &b) noexcept
+	{
+		return a.GetSignature() <= b.GetSignature();
+	}
+
+	template <
+		typename D, typename T,
+		typename E, typename U>
+		bool operator >=(
+			const ProxyInterface<D, T> &a,
+			const ProxyInterface<E, U> &b) noexcept
+	{
+		return a.GetSignature() >= b.GetSignature();
 	}
 
 	/*-----------------+

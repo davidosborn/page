@@ -26,20 +26,22 @@ namespace page { namespace cache { namespace opengl
 		+-------*/
 
 		public:
-		using BasicProxy<ALuint>::pointer;
+		using BasicProxy<vid::opengl::Drawable>::pointer;
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		explicit DrawableProxy(const Proxy<res::Mesh> &);
 		explicit DrawableProxy(const phys::Form::Part &);
+		
+		private:
+		DrawableProxy(const Proxy<res::Mesh> &, util::Identifiable::Id);
 
 		/*--------------------------+
 		| BasicProxy implementation |
 		+--------------------------*/
 
-		private:
 		pointer DoLock() const override;
 
 		/*-------------+

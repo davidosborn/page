@@ -1,28 +1,48 @@
-#include <algorithm> // transform
 #include <functional> // mem_fn
-#include <iterator> // back_inserter, begin, end
+#include <iterator> // begin, end
+#include <sstream> // ostringstream
+
+#include <boost/range/adaptor/indirected.hpp>
+#include <boost/range/adaptor/transformed.hpp>
+#include <boost/range/algorithm/copy.hpp>
+#include <boost/range/iterator_range.hpp>
+
+#include "../../../util/io/separated_ostream_iterator.hpp"
 
 namespace page { namespace cache { namespace opengl
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	template <typename ShaderInputRange>
-		Program::Program(
+		ProgramProxy::ProgramProxy(
 			ShaderInputRange shaders,
-			ENABLE_IF_IMPL((util::is_range<ShaderInputRange>::value))) :
-				Program(std::begin(shaders), std::end(shaders)) {}
+			ENABLE_IF_IMPL(util::is_range<ShaderInputRange>::value)) :
+				BasicProxy<vid::opengl::Program>(MakeSignature(shaders)),
+				shaders(std::begin(shaders), std::end(shaders))
+	{
+		Init();
+	}
 
 	template <typename ShaderInputIterator>
-		Program::Program(
+		ProgramProxy::ProgramProxy(
 			ShaderInputIterator firstShader,
 			ShaderInputIterator lastShader,
-			ENABLE_IF_IMPL((util::is_iterator<ShaderInputIterator>::value)))
+			ENABLE_IF_IMPL(util::is_iterator<ShaderInputIterator>::value)) :
+				Program(boost::iterator_range(firstShader, lastShader)) {}
+	
+	template <typename ShaderInputRange>
+		std::string ProgramProxy::MakeSignature(
+			ShaderInputRange shaders,
+			ENABLE_IF_IMPL(util::is_range<ShaderInputRange>::value))
 	{
-		std::transform(firstShader, lastShader, std::back_inserter(shaders),
-			std::mem_fn(&Proxy<res::opengl::Shader>::Copy));
-
-		PostInit();
+		std::ostringstream ss;
+		boost::copy(
+			boost::adaptors::transform(
+				boost::adaptors::indirect(shaders),
+				std::mem_fn(&Proxy<res::Mesh>::GetSignature)),
+			util::separated_ostream_iterator<std::string>(ss, ','));
+		return Signature("OpenGL program", ss.str());
 	}
 }}}

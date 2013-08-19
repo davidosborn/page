@@ -7,7 +7,7 @@
 namespace page { namespace cache
 {
 	/**
-	 * A base class for the implementation of proxies of cached objects.
+	 * A base class for the implementations of proxies of cached objects.
 	 */
 	template <typename T>
 		class BasicProxy :

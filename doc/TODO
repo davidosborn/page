@@ -15,6 +15,7 @@ Provide SSE implementations (with an #ifdef).
 - "specialized algorithms" -> "standard-library compatibility"
 - "member variables" -> "data members"
 - avoid Serialize/Deserialize
+- don't always use ENABLE_IF((...)); only when there is a comma inside
 
 How are the math classes (esp. Matrix and Vector) being constructed, given that
 the data is in the derived class, so how does the base class initialize it?

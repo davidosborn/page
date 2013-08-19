@@ -58,11 +58,19 @@ namespace page { namespace cache
 				ENABLE_IF(util::is_range<MeshInputRange>::value));
 
 		private:
+		/**
+		 * Generates the appropriate signature for the constructor arguments.
+		 */
 		template <typename MeshInputRange>
 			static std::string MakeSignature(
 				MeshInputRange meshes,
 				const Proxy<res::Skeleton> &skeleton,
 				ENABLE_IF(util::is_range<MeshInputRange>::value));
+		
+		/**
+		 * Performs some additional initialization for the constructors.
+		 */
+		void Init();
 
 		/*--------------------------+
 		| BasicProxy implementation |

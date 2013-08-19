@@ -1,11 +1,12 @@
-#ifndef    page_local_cache_proxy_opengl_Program_hpp
-#   define page_local_cache_proxy_opengl_Program_hpp
+#ifndef    page_local_cache_proxy_opengl_ProgramProxy_hpp
+#   define page_local_cache_proxy_opengl_ProgramProxy_hpp
 
 #	include <vector>
 
 #	include "../../../util/type_traits/iterator.hpp" // is_iterator
 #	include "../../../util/type_traits/range.hpp" // is_range
 #	include "../../../util/type_traits/sfinae.hpp" // ENABLE_IF
+#	include "../BasicProxy.hpp"
 #	include "../Proxy.hpp"
 
 namespace page
@@ -19,70 +20,65 @@ namespace page { namespace cache { namespace opengl
 	/**
 	 * A proxy representing a shader program in the cache.
 	 */
-	class Program :
-		public Proxy<vid::opengl::Program>,
-		public virtual util::Cloneable<Program, Proxy<vid::opengl::Program>>
+	class ProgramProxy :
+		public BasicProxy<vid::opengl::Program>,
+		public virtual util::Cloneable<ProgramProxy, BasicProxy<vid::opengl::Program>>
 	{
-		/*------+
-		| types |
-		+------*/
+		/*-------+
+		| traits |
+		+-------*/
 
 		public:
-		typedef typename Proxy<vid::opengl::Program>::Instance Instance;
+		using BasicProxy<vid::opengl::Program>::pointer;
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-		public:
 		/**
-		 * Creates a proxy for the program from a range of shaders.
+		 * Creates a program proxy from a range of shaders.
 		 */
 		template <typename ShaderInputRange>
 			explicit Program(
-				ShaderInputRange,
-				ENABLE_IF((util::is_range<ShaderInputRange>::value)));
+				ShaderInputRange shaders,
+				ENABLE_IF(util::is_range<ShaderInputRange>::value));
 
 		/**
-		 * Creates a proxy for the program from a range of shaders.
+		 * Creates a program proxy from a range of shaders.
 		 */
 		template <typename ShaderInputIterator>
 			Program(
-				ShaderInputIterator first,
-				ShaderInputIterator last,
-				ENABLE_IF((util::is_iterator<ShaderInputIterator>::value)));
-
-		/*----------+
-		| observers |
-		+----------*/
-
-		public:
-		std::string GetType() const override;
-		std::string GetSource() const override;
-		operator bool() const override;
-
-		/*--------------+
-		| instantiation |
-		+--------------*/
+				ShaderInputIterator firstShader,
+				ShaderInputIterator lastShader,
+				ENABLE_IF(util::is_iterator<ShaderInputIterator>::value));
 
 		private:
-		Instance Make() const override;
+		/**
+		 * Generates the appropriate signature for the constructor arguments.
+		 */
+		template <typename ShaderInputRange>
+			static std::string ProgramProxy::MakeSignature(
+				ShaderInputRange shaders,
+				ENABLE_IF(util::is_range<ShaderInputRange>::value));
+				
+		/**
+		 * Performs some additional initialization for the constructors.
+		 */
+		void Init();
 
-		/*---------------+
-		| initialization |
-		+---------------*/
+		/*--------------------------+
+		| BasicProxy implementation |
+		+--------------------------*/
 
-		private:
-		void PostInit();
+		pointer DoLock() const override;
 
 		/*-------------+
 		| data members |
 		+-------------*/
 
-		private:
 		std::vector<Proxy<res::opengl::Shader>> shaders;
 	};
 }}}
 
-#	include "Program.tpp"
+#	include "ProgramProxy.tpp"
 #endif

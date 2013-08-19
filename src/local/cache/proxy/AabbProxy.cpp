@@ -49,7 +49,7 @@ namespace page { namespace cache
 				pose.dirtyPoseSig.connect(GetInvalidateFunction()) :
 				boost::signals::connection()),
 			transformCon(pose.dirtyTransformSig.connect(GetInvalidateFunction()));
-		return Instance(new math::Aabb<3>(MakeAabb(bounds, pose)),
+		return pointer(new math::Aabb<3>(MakeAabb(bounds, pose)),
 			std::bind(Delete, std::placeholders::_1,
 				poseCon.release(), transformCon.release()));
 	}

@@ -1,8 +1,9 @@
-#ifndef    page_local_cache_proxy_opengl_FontTexture_hpp
-#   define page_local_cache_proxy_opengl_FontTexture_hpp
+#ifndef    page_local_cache_proxy_opengl_FontTextureProxy_hpp
+#   define page_local_cache_proxy_opengl_FontTextureProxy_hpp
 
 #	include <GL/gl.h> // GLuint
 
+#	include "../BasicProxy.hpp"
 #	include "../Proxy.hpp"
 
 namespace page
@@ -16,45 +17,34 @@ namespace page { namespace cache { namespace opengl
 	/**
 	 * A proxy representing a font texture in the cache.
 	 */
-	class FontTexture :
-		public Proxy<vid::opengl::FontTexture>,
-		public virtual util::Cloneable<FontTexture, Proxy<vid::opengl::FontTexture>>
+	class FontTextureProxy :
+		public BasicProxy<vid::opengl::FontTexture>,
+		public virtual util::Cloneable<FontTextureProxy, BasicProxy<vid::opengl::FontTexture>>
 	{
-		/*------+
-		| types |
-		+------*/
+		/*-------+
+		| traits |
+		+-------*/
 
 		public:
-		typedef typename Proxy<vid::opengl::FontTexture>::Instance Instance;
+		using BasicProxy<vid::opengl::FontTexture>::pointer;
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-		public:
 		explicit FontTexture(const Proxy<res::Font> &, unsigned fontSize);
 
-		/*----------+
-		| observers |
-		+----------*/
-
-		public:
-		std::string GetType() const override;
-		std::string GetSource() const override;
-		operator bool() const override;
-
-		/*--------------+
-		| instantiation |
-		+--------------*/
+		/*--------------------------+
+		| BasicProxy implementation |
+		+--------------------------*/
 
 		private:
-		Instance Make() const override;
+		pointer DoLock() const override;
 
 		/*-------------+
 		| data members |
 		+-------------*/
 
-		private:
 		Proxy<res::Font> font;
 		unsigned fontSize;
 	};

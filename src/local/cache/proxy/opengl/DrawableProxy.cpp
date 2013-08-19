@@ -1,9 +1,8 @@
 #include <memory> // unique_ptr
 
-#include "../../../util/string/StringBuilder.hpp"
 #include "../../../vid/opengl/Drawable.hpp"
 #include "../Skin.hpp"
-#include "Drawable.hpp"
+#include "DrawableProxy.hpp"
 
 namespace page { namespace cache { namespace opengl
 {
@@ -30,40 +29,20 @@ namespace page { namespace cache { namespace opengl
 	+-------------*/
 
 	DrawableProxy::DrawableProxy(const Proxy<res::Mesh> &mesh) :
-		mesh(mesh), partId(0) {}
+		DrawableProxy(mesh, 0) {}
 
 	DrawableProxy::DrawableProxy(const phys::Form::Part &part) :
-		BasicProxy<vid::opengl::Drawable>(
-			std::bind(opengl::Repair,
-				std::placeholders::_1,
-				Skin(part.GetMesh(), part.GetForm()))),
-		mesh(part.GetMesh().Copy()), partId(part.GetId()) {}
+		DrawableProxy(part.GetMesh(), part.GetId()) {}
 
-	/*----------+
-	| observers |
-	+----------*/
+	DrawableProxy::DrawableProxy(const Proxy<res::Mesh> &mesh, util::Identifiable::Id partId) :
+		BasicProxy<vid::opengl::Drawable>(Signature("OpenGL drawable", mesh->GetSignature(), partId)),
+		mesh(mesh), partId(partId) {}
 
-	std::string Drawable::GetType() const
-	{
-		return "drawable";
-	}
+	/*--------------------------+
+	| BasicProxy implementation |
+	+--------------------------*/
 
-	std::string Drawable::GetSource() const
-	{
-		return util::StringBuilder() <<
-			mesh->GetSource() << ':' << partId;
-	}
-
-	Drawable::operator bool() const
-	{
-		return *mesh;
-	}
-
-	/*--------------+
-	| instantiation |
-	+--------------*/
-
-	Drawable::Instance Drawable::Make() const
+	auto DrawableProxy::DoLock() const -> pointer
 	{
 		if (partId)
 		{
@@ -72,14 +51,17 @@ namespace page { namespace cache { namespace opengl
 			bool dynamic = part.GetForm().IsPosed() || part.IsDeformed();
 			std::unique_ptr<vid::opengl::Drawable> drawable(
 				vid::opengl::MakeDrawable(**mesh, dynamic));
+
 			// update to current pose
 			if (dynamic)
 				drawable->Update(*Skin(part.GetMesh(), part.GetForm()));
+
+			std::bind(opengl::Repair, std::placeholders::_1, Skin(part.GetMesh(), part.GetForm()))),
 			// bind dirty signal handler
 			boost::signals::scoped_connection con(part.GetForm().dirtyPoseSig.connect(GetInvalidateFunction()));
-			return Instance(drawable.release(),
+			return pointer(drawable.release(),
 				std::bind(Delete, std::placeholders::_1, con.release()));
 		}
-		return Instance(vid::opengl::MakeDrawable(**mesh));
+		return pointer(vid::opengl::MakeDrawable(**mesh));
 	}
 }}}

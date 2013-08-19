@@ -63,9 +63,9 @@ namespace page { namespace cache
 		const std::string &GetSignature() const noexcept;
 	};
 
-	/*-------------------+
-	| pointer comparison |
-	+-------------------*/
+	/*---------------------+
+	| signature comparison |
+	+---------------------*/
 
 	template <
 		typename D, typename T,
@@ -78,6 +78,34 @@ namespace page { namespace cache
 		typename D, typename T,
 		typename E, typename U>
 		bool operator !=(
+			const ProxyInterface<D, T> &,
+			const ProxyInterface<E, U> &) noexcept;
+
+	template <
+		typename D, typename T,
+		typename E, typename U>
+		bool operator <(
+			const ProxyInterface<D, T> &,
+			const ProxyInterface<E, U> &) noexcept;
+
+	template <
+		typename D, typename T,
+		typename E, typename U>
+		bool operator >(
+			const ProxyInterface<D, T> &,
+			const ProxyInterface<E, U> &) noexcept;
+
+	template <
+		typename D, typename T,
+		typename E, typename U>
+		bool operator <=(
+			const ProxyInterface<D, T> &,
+			const ProxyInterface<E, U> &) noexcept;
+
+	template <
+		typename D, typename T,
+		typename E, typename U>
+		bool operator >=(
 			const ProxyInterface<D, T> &,
 			const ProxyInterface<E, U> &) noexcept;
 

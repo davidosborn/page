@@ -9,7 +9,8 @@ namespace page { namespace cache
 		class BasicProxy;
 
 	/**
-	 * A generic adaptor for proxies of cached objects.
+	 * A generic adaptor for proxies of cached objects, which provides value
+	 * semantics.
 	 */
 	template <typename T>
 		class Proxy : public ProxyInterface<Proxy<T>, T>
@@ -41,7 +42,7 @@ namespace page { namespace cache
 		+-------------*/
 
 		/**
-		 * The implementation.
+		 * The wrapped proxy, which forms the concrete implementation.
 		 */
 		std::shared_ptr<BasicProxy> impl;
 	};
