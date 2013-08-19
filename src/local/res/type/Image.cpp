@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <algorithm> // copy, max, min
 #include <cassert>
 #include <climits> // CHAR_BIT, UCHAR_MAX
@@ -85,7 +55,7 @@ namespace page
 				alignment *= CHAR_BIT;
 				return ((alignment - width * depth % alignment) % alignment + CHAR_BIT - 1) / CHAR_BIT;
 			}
-			inline unsigned GetDataSize(const math::Vector<2, unsigned> &size, unsigned depth, unsigned alignment)
+			inline unsigned GetDataSize(const math::Vec2u &size, unsigned depth, unsigned alignment)
 			{
 				return alignment ?
 					GetBytePitch(size.x, depth, alignment) * size.y :
@@ -518,7 +488,7 @@ namespace page
 			}
 			return destImg;
 		}
-		Image Scale(const Image &img, const math::Vector<2, unsigned> &size)
+		Image Scale(const Image &img, const math::Vec2u &size)
 		{
 			if (All(size == img.size)) return img;
 			Image destImg =
@@ -539,12 +509,12 @@ namespace page
 			Components components(img.channels.size()), accumComponents;
 			accumComponents.reserve(img.channels.size());
 			// initialize box filter metrics
-			math::Vector<2>
-				scale(math::Vector<2>(img.size) / size),
-				baseBoxOffset(Select(scale < 1, (scale - 1) / 2, math::Vector<2>())),
+			math::Vec2
+				scale(math::Vec2(img.size) / size),
+				baseBoxOffset(Select(scale < 1, (scale - 1) / 2, math::Vec2())),
 				boxOffset(baseBoxOffset),
 				boxSize(Select(scale < 1, math::ScaleVector<2>(), scale));
-			math::Vector<2, unsigned> pixelBoxPos;
+			math::Vec2u pixelBoxPos;
 			// process pixels
 			for (unsigned i = 0; i < size.y; ++i)
 			{
@@ -553,7 +523,7 @@ namespace page
 				for (unsigned i = 0; i < size.x; ++i)
 				{
 					// initialize box filter metrics
-					math::Vector<2, unsigned> pixelBoxSize(Ceil(boxOffset + boxSize));
+					math::Vec2u pixelBoxSize(Ceil(boxOffset + boxSize));
 					math::Aabb<2> boxCoverage(1 - boxOffset,
 						1 - (pixelBoxSize - (boxOffset + boxSize)));
 					if (pixelBoxPos.x + pixelBoxSize.x > img.size.x)
@@ -650,13 +620,13 @@ namespace page
 				// update source position
 				srcIter = srcRowIter;
 				srcBit = srcRowBit;
-				boxOffset = math::Vector<2>(baseBoxOffset.x, boxOffset.y + scale.y);
+				boxOffset = math::Vec2(baseBoxOffset.x, boxOffset.y + scale.y);
 				unsigned delta = static_cast<unsigned>(boxOffset.y);
 				boxOffset.y = std::fmod(boxOffset.y, 1);
 				srcBit += pitch * delta;
 				srcIter += srcBit / CHAR_BIT;
 				srcBit %= CHAR_BIT;
-				pixelBoxPos = math::Vector<2, unsigned>(0, pixelBoxPos.y + delta);
+				pixelBoxPos = math::Vec2u(0, pixelBoxPos.y + delta);
 			}
 			return destImg;
 		}

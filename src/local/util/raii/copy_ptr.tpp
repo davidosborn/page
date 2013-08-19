@@ -1,33 +1,4 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
+#include <algorithm> // swap
 #include <cassert>
 #include <ostream> // basic_ostream
 #include <utility> // forward, move
@@ -120,9 +91,9 @@ namespace page { namespace util
 		assert(cloner != nullptr);
 	}
 
-	/*------------------------+
-	| unique_ptr constructors |
-	+------------------------*/
+	/*-----------+
+	| unique_ptr |
+	+-----------*/
 
 	template <typename T>
 		copy_ptr<T>::copy_ptr(std::unique_ptr<T> &&other) :
@@ -145,6 +116,12 @@ namespace page { namespace util
 	{
 		assert(cloner != nullptr);
 	}
+
+	/*template <typename T>
+		copy_ptr<T>::operator std::unique_ptr<T>() && noexcept
+	{
+		return std::move(p);
+	}*/
 
 	/*---------------+
 	| copy semantics |
@@ -179,19 +156,6 @@ namespace page { namespace util
 	| move semantics |
 	+---------------*/
 
-	template <typename T>
-		copy_ptr<T>::copy_ptr(copy_ptr &&other) :
-			p(std::move(other.p)),
-			cloner(std::move(other.cloner)) {}
-
-	template <typename T>
-		copy_ptr<T> &copy_ptr<T>::operator =(copy_ptr &&other)
-	{
-		p = std::move(other.p);
-		cloner = std::move(other.cloner);
-		return *this;
-	}
-
 	template <typename T> template <typename U>
 		copy_ptr<T>::copy_ptr(copy_ptr<U> &&other) :
 			p(std::move(other.p)),
@@ -216,9 +180,9 @@ namespace page { namespace util
 	}
 
 	template <typename T>
-		const typename copy_ptr<T>::pointer &copy_ptr<T>::operator ->() const noexcept
+		T *copy_ptr<T>::operator ->() const noexcept
 	{
-		return p;
+		return p.get();
 	}
 
 	template <typename T>
@@ -271,21 +235,13 @@ namespace page { namespace util
 	template <typename T>
 		void copy_ptr<T>::reset(T *p)
 	{
-		swap(copy_ptr(p));
+		std::swap(copy_ptr(p));
 	}
 
 	template <typename T>
 		void copy_ptr<T>::reset(T *p, const cloner_type &cloner)
 	{
-		swap(copy_ptr(p, cloner));
-	}
-
-	template <typename T>
-		void copy_ptr<T>::swap(copy_ptr &other)
-	{
-		using std::swap;
-		swap(p,      other.p);
-		swap(cloner, other.cloner);
+		std::swap(copy_ptr(p, cloner));
 	}
 
 	/*-------------------+
@@ -367,12 +323,3 @@ namespace page { namespace util
 		return os << *p;
 	}
 }}
-
-namespace std
-{
-	template <typename T, typename U>
-		void swap(::page::util::copy_ptr<T> &a, ::page::util::copy_ptr<U> &b)
-	{
-		a.swap(b);
-	}
-}

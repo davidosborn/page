@@ -1,43 +1,12 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #ifndef    page_local_wnd_Window_hpp
 #   define page_local_wnd_Window_hpp
 
 #	include <memory> // unique_ptr
 #	include <string>
 
-#	include <boost/signal.hpp>
-
 #	include "../math/Vector.hpp"
 #	include "../util/class/Cloneable.hpp"
+#	include "../util/copyable_signal.hpp"
 
 namespace page
 {
@@ -57,8 +26,8 @@ namespace page { namespace wnd
 
 		// state
 		bool HasFocus() const;
-		const math::Vector<2, int> &GetPosition() const;
-		const math::Vector<2, unsigned> &GetSize() const;
+		const math::Vec2i &GetPosition() const;
+		const math::Vec2u &GetSize() const;
 
 		// update
 		virtual void Update() = 0;
@@ -69,20 +38,20 @@ namespace page { namespace wnd
 		vid::Driver &GetVideoDriver();
 
 		// signals
-		boost::signal<void ()> exitSig;
-		boost::signal<void (bool)> focusSig;
-		boost::signal<void (const math::Vector<2, int> &)> moveSig;
-		boost::signal<void (const math::Vector<2, unsigned> &)> sizeSig;
+		util::copyable_signal<void ()> exitSig;
+		util::copyable_signal<void (bool)> focusSig;
+		util::copyable_signal<void (const math::Vec2i &)> moveSig;
+		util::copyable_signal<void (const math::Vec2u &)> sizeSig;
 
 		// environment state
-		virtual math::Vector<2, unsigned> GetScreenSize() const = 0;
+		virtual math::Vec2u GetScreenSize() const = 0;
 
 		protected:
 		// deferred state initialization
 		// must be called at end of derived constructor
 		void InitState(bool focus,
-			const math::Vector<2, int> &position,
-			const math::Vector<2, unsigned> &size);
+			const math::Vec2i &position,
+			const math::Vec2u &size);
 
 		// preemptive destruction
 		// must be called at beginning of derived destructor
@@ -102,8 +71,8 @@ namespace page { namespace wnd
 		// signal handlers
 		void OnExit();
 		void OnFocus(bool);
-		void OnMove(const math::Vector<2, int> &);
-		void OnSize(const math::Vector<2, unsigned> &);
+		void OnMove(const math::Vec2i &);
+		void OnSize(const math::Vec2u &);
 
 		// drivers
 		std::unique_ptr<aud::Driver> audioDriver;
@@ -111,8 +80,8 @@ namespace page { namespace wnd
 		std::unique_ptr<vid::Driver> videoDriver;
 
 		bool focus;
-		math::Vector<2, int> pos;
-		math::Vector<2, unsigned> size;
+		math::Vec2i pos;
+		math::Vec2u size;
 	};
 }}
 

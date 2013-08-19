@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include "../../../err/lua.hpp" // CATCH_LUA_ERRORS, CheckError, luaL_dostring_unprotected
 #include "../../../game/Entity.hpp" // Entity::{Get,Set}{Position,Orientation,Scale}
 #include "../../../math/Euler.hpp"
@@ -111,7 +81,7 @@ namespace page { namespace script { namespace lua { namespace lib
 		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
 		if (!entity) return 0;
 		// load return value
-		math::Vector<3> position;
+		math::Vec3 position;
 		try
 		{
 			position = entity->GetPosition();
@@ -130,7 +100,7 @@ namespace page { namespace script { namespace lua { namespace lib
 		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
 		if (!entity) return 0;
 		// extract value argument
-		std::pair<math::Vector<3>, bool> value(
+		std::pair<math::Vec3, bool> value(
 			util::lua::GetHorizontalVector(state));
 		if (value.second) entity->SetPosition(value.first);
 		else entity->SetPosition(Swizzle(value.first, 0, 2));
@@ -179,7 +149,7 @@ namespace page { namespace script { namespace lua { namespace lib
 		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
 		if (!entity) return 0;
 		// load return value
-		math::Vector<3> scale;
+		math::Vec3 scale;
 		try
 		{
 			scale = entity->GetScale();
@@ -198,7 +168,7 @@ namespace page { namespace script { namespace lua { namespace lib
 		game::Entity *entity = static_cast<game::Entity *>(Class::GetInstance(state));
 		if (!entity) return 0;
 		// extract value argument
-		math::Vector<3> scale(util::lua::GetVector(state));
+		math::Vec3 scale(util::lua::GetVector(state));
 		try
 		{
 			entity->SetScale(scale);

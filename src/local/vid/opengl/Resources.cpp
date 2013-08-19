@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <cassert>
 #include <iostream> // cout
 #include <memory> // unique_ptr
@@ -597,7 +567,7 @@ namespace page
 						name(name) {}
 
 					virtual bool Check() const = 0;
-					virtual RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const = 0;
+					virtual RenderTargetPool *Make(const math::Vec2u &size) const = 0;
 
 					std::string name;
 				};
@@ -610,10 +580,10 @@ namespace page
 					{
 						return true;
 					}
-					RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const
+					RenderTargetPool *Make(const math::Vec2u &size) const
 					{
 						return new RenderTargetPool(
-							Ceil(blurRenderTargetSize * math::Vector<2>(Aspect(size), 1)),
+							Ceil(blurRenderTargetSize * math::Vec2(Aspect(size), 1)),
 							GL_RGB, 1, static_cast<FramebufferFlags>(
 								depthFramebufferFlag | filterFramebufferFlag));
 					}
@@ -627,10 +597,10 @@ namespace page
 					{
 						return true;
 					}
-					RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const
+					RenderTargetPool *Make(const math::Vec2u &size) const
 					{
 						return new RenderTargetPool(
-							Ceil(blurRenderTargetSize * math::Vector<2>(Aspect(size), 1)),
+							Ceil(blurRenderTargetSize * math::Vec2(Aspect(size), 1)),
 							GL_RGBA, 1, static_cast<FramebufferFlags>(
 								depthFramebufferFlag | filterFramebufferFlag));
 					}
@@ -644,7 +614,7 @@ namespace page
 					{
 						return *CVAR(opengl)::renderComposite;
 					}
-					RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const
+					RenderTargetPool *Make(const math::Vec2u &size) const
 					{
 						return new RenderTargetPool(
 							size >> *CVAR(opengl)::renderCompositeDown,
@@ -660,7 +630,7 @@ namespace page
 					{
 						return *CVAR(opengl)::renderComposite;
 					}
-					RenderTargetPool *Make(const math::Vector<2, unsigned> &size) const
+					RenderTargetPool *Make(const math::Vec2u &size) const
 					{
 						return new RenderTargetPool(
 							size >> *CVAR(opengl)::renderCompositeDown,
@@ -683,7 +653,7 @@ namespace page
 			}
 
 			// construct
-			Resources::Resources(const math::Vector<2, unsigned> &sizeForResize)
+			Resources::Resources(const math::Vec2u &sizeForResize)
 			{
 				// initialize programs
 				if (haveArbShaderObjects)
@@ -779,7 +749,7 @@ namespace page
 			}
 
 			// modifiers
-			void Resources::Resize(const math::Vector<2, unsigned> &size)
+			void Resources::Resize(const math::Vec2u &size)
 			{
 				// reset pointers before reinitializing
 				for (RenderTargetPools::iterator renderTargetPool(renderTargetPools.begin()); renderTargetPool != renderTargetPools.end(); ++renderTargetPool)

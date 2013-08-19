@@ -1,0 +1,31 @@
+1. GCC bug #30047 affects cfg/source/win32/RegSource.cpp.  A static buffer has been used to hack around the issue.
+
+2. -ftree-vectorize with -O3 causes a crash when taking screenshots.  Documented in doc/bugs/ftree-vectorize.  It could be an alignment or aliasing issue.
+
+	This is actually a problem with -mpfmath=sse, possibly related to GCC bug #25413.
+
+	This bug is fixed in GCC 4.3.1.
+
+3. Segfault since revision 523 when cache::Aabb was put to work.  Occurs when dirtyPoseSig calls cache::Purge(sig, name), as retrieved from cache::Aabb::GetPurge.  Segfaults on sig.size() during the std::unordered_map::erase operation.  Calling sig.size() in the debugger immediately before the call to erase does not produce a segfault.  Segfault disappears if cache::Aabb is not used.  Note that cache::Aabb now uses Invalidate instead of Purge.
+
+	Avoiding storing cache::Aabb as a member value seems to help.  Leaving the pose parameter set to true in cache::Aabb seems to help.  Debug AABB rendering seems to be unaffected by this bug.
+
+	It jumps to 0xfeeefeee, which means 0xfreefree, referring to freed memory.  This could suggest that the pointer to the address we're jumping to has been deallocated.  We need to set a breakpoint in the standard library (tr1_impl/functional:2017).  According to <http://forums.codeblocks.org/index.php?topic=4467.msg38323> passing -nx -readnow -fullname to gdb might help.
+
+	I checked with an assert, and the func that gets called by Caller is valid at the point of call.  So maybe the func was deallocated (its stored in a shared_ptr in Signal) but was valid enough to pass the assert.
+
+	If we comment out the body of cache::Invalidate, the segfault goes away.  Actually, if I just replace sig with an empty string in that function, the segfault still goes away.  Therefore, we can assume that, somewhere in the standard library, the signature string which is bound to cache::Invalidate is being lost.  Maybe try std::couting the string right before passing it to erase.
+
+	The bound invalidate call for the posed AABB goes through fine, but immediately after that, there is another invalidate call that segfaults before making to cache::Invalidate (but after util::Caller::.operator()).  That invalidate call is probably for the unposed version of the AABB.
+
+	See if it still segfaults in the same place without dbg.draw.bounds, and therefore without the posed AABB.  ANSWER: no, it does not segfault.  But I didn't see any AABB invalidation calls at all (there should have been something for HeroCamController's AABB).
+
+	If we explicitly invalidate the posed AABB after use, before it can be invalidated through a dirty signal, then the segfault goes away.  Presumably, this is because the posed AABB will be purged by the time cache::Invalidate gets called through the dirty signal, avoiding the call to std::unordered_map::erase, which would otherwise lead to a segfault during the next bound invalidation call, after util::Caller::operator() but before cache::Invalidate.  The call to std::unordered_map::erase only seems to lead to the segfault when it happens through a *bound* call to cache::Invalidate.
+
+	This bug is fixed in GCC 4.3.1.
+
+4. Sometimes (rarely) the walking animation doesn't synch up properly.  Just now, the legs were in a standing pose, while the feet and arms were in the striding pose.  The eyes and head were also detached.  This suggests that the separate meshes are not always synching up to the pose correctly.  Its probably a cache issue.
+
+5. Possibly related to bugs #2 and #4, -mpfmath=sse with -O3 causes some drawables to not get updated, leading to a complete loss of animation synchronization.  The problem might be caused by the effects of vectorizing optimizations on std::{function,shared_ptr}.
+
+	-mpfmath=sse has been disabled in configure until this is fixed.

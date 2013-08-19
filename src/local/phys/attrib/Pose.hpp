@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 // skeletal deformation
 
 #ifndef    page_local_phys_attrib_Pose_hpp
@@ -70,32 +40,32 @@ namespace page
 
 					// matrix access
 					const math::Matrix<3, 4> &GetSkinMatrix() const;
-					const math::Matrix<3> &GetNormSkinMatrix() const;
+					const math::Mat3 &GetNormSkinMatrix() const;
 					const math::Matrix<3, 4> &GetPoseMatrix() const;
-					const math::Matrix<3> &GetNormPoseMatrix() const;
+					const math::Mat3 &GetNormPoseMatrix() const;
 					const math::Matrix<3, 4> &GetInvPoseMatrix() const;
-					const math::Matrix<3> &GetNormInvPoseMatrix() const;
+					const math::Mat3 &GetNormInvPoseMatrix() const;
 					const math::Matrix<3, 4> &GetBindMatrix() const;
-					const math::Matrix<3> &GetNormBindMatrix() const;
+					const math::Mat3 &GetNormBindMatrix() const;
 					const math::Matrix<3, 4> &GetInvBindMatrix() const;
-					const math::Matrix<3> &GetNormInvBindMatrix() const;
+					const math::Mat3 &GetNormInvBindMatrix() const;
 
 					// bind-pose
 					void SetBind();
 					void Reset();
 
 					// bind-pose transformation
-					math::Vector<3> GetBindPosition() const;
+					math::Vec3 GetBindPosition() const;
 					math::Quat<> GetBindOrientation() const;
-					math::Vector<3> GetBindScale() const;
+					math::Vec3 GetBindScale() const;
 
 					// mark dirty on transformation
-					void SetPosition(const math::Vector<3> &);
+					void SetPosition(const math::Vec3 &);
 					void SetOrientation(const math::Quat<> &);
-					void SetNormal(const math::Vector<3> &);
-					void SetScale(const math::Vector<3> &);
+					void SetNormal(const math::Vec3 &);
+					void SetScale(const math::Vec3 &);
 					void SetMatrix(const math::Matrix<3, 4> &);
-					void SetMatrix(const math::Matrix<3> &);
+					void SetMatrix(const math::Mat3 &);
 
 					// owner access
 					Pose &GetPose();
@@ -115,18 +85,18 @@ namespace page
 					Children children;
 					mutable bool dirty, invDirty;
 					mutable math::Matrix<3, 4> skinMatrix;
-					mutable math::Matrix<3> normSkinMatrix;
+					mutable math::Mat3 normSkinMatrix;
 					mutable math::Matrix<3, 4> poseMatrix;
-					mutable math::Matrix<3> normPoseMatrix;
+					mutable math::Mat3 normPoseMatrix;
 					mutable math::Matrix<3, 4> invPoseMatrix;
-					mutable math::Matrix<3> normInvPoseMatrix;
+					mutable math::Mat3 normInvPoseMatrix;
 					math::Matrix<3, 4> bindMatrix;
-					math::Matrix<3> normBindMatrix;
+					math::Mat3 normBindMatrix;
 					math::Matrix<3, 4> invBindMatrix;
-					math::Matrix<3> normInvBindMatrix;
-					math::Vector<3> bindPosition;
+					math::Mat3 normInvBindMatrix;
+					math::Vec3 bindPosition;
 					math::Quat<> bindOrientation;
-					math::Vector<3> bindScale;
+					math::Vec3 bindScale;
 				};
 
 				// construct/copy/assign

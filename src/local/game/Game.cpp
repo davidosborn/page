@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <algorithm> // max, min
 #include <functional> // bind
 #include <iostream> // cout
@@ -49,9 +19,10 @@
 #include "../util/cpp.hpp" // STRINGIZE
 #include "../vid/Driver.hpp"
 #include "../wnd/Window.hpp"
+#include "../wnd/WindowRegistry.hpp"
 #include "Game.hpp"
-#include "Interface.hpp"
 #include "Scene.hpp"
+#include "UserInterface.hpp"
 
 // TEST: scripting
 #include "../cache/proxy/Resource.hpp"
@@ -77,26 +48,26 @@ namespace page { namespace game
 		std::cout << "creating window" << std::endl;
 		{
 			log::Indenter indenter;
-			wnd.reset(wnd::MakeWindow(STRINGIZE(NAME)));
+			window = GLOBAL(wnd::WindowRegistry).Make(STRINGIZE(NAME));
 			// bind signal handlers
 			using namespace std::placeholders;
-			wnd->exitSig.connect(std::bind(&Game::OnExit, this));
-			wnd->focusSig.connect(std::bind(&Game::OnFocus, this, _1));
+			window->exitSig.connect(std::bind(&Game::OnExit, this));
+			window->focusSig.connect(std::bind(&Game::OnFocus, this, _1));
 		}
 		std::cout << "initializing video driver" << std::endl;
 		{
 			log::Indenter indenter;
-			vid::Driver &driver(wnd->GetVideoDriver());
+			vid::Driver &driver(window->GetVideoDriver());
 		}
 		std::cout << "initializing audio driver" << std::endl;
 		{
 			log::Indenter indenter;
-			aud::Driver &driver(wnd->GetAudioDriver());
+			aud::Driver &driver(window->GetAudioDriver());
 		}
 		std::cout << "initializing input driver" << std::endl;
 		{
 			log::Indenter indenter;
-			inp::Driver &driver(wnd->GetInputDriver());
+			inp::Driver &driver(window->GetInputDriver());
 			// bind signal handlers
 			using namespace std::placeholders;
 			driver.keySig.connect(std::bind(&Game::OnKey, this, _1));
@@ -109,16 +80,16 @@ namespace page { namespace game
 		std::cout << "initializing scene" << std::endl;
 		{
 			log::Indenter indenter;
-			scene.reset(new Scene(wnd->GetAudioDriver()));
-			wnd->GetAudioDriver().Imbue(scene.get());
-			wnd->GetVideoDriver().Imbue(scene.get());
+			scene.reset(new Scene(window->GetAudioDriver()));
+			window->GetAudioDriver().Imbue(scene.get());
+			window->GetVideoDriver().Imbue(scene.get());
 		}
 		std::cout << "initializing user interface" << std::endl;
 		{
 			log::Indenter indenter;
-			interface.reset(new Interface(wnd->GetAudioDriver()));
-			wnd->GetInputDriver().Imbue(interface.get());
-			wnd->GetVideoDriver().Imbue(interface.get());
+			userInterface.reset(new UserInterface(window->GetAudioDriver()));
+			window->GetInputDriver().Imbue(userInterface.get());
+			window->GetVideoDriver().Imbue(userInterface.get());
 		}
 		std::cout << "initializing timer" << std::endl;
 		{
@@ -143,15 +114,15 @@ namespace page { namespace game
 			log::Indenter indenter;
 			while (!exit)
 			{
-				wnd->Update();
+				window->Update();
 				timer->Update();
-				if (wnd->HasFocus())
+				if (window->HasFocus())
 				{
 					if (float deltaTime = FixDeltaTime(timer->GetDelta()))
 					{
-						wnd->GetInputDriver().Update();
+						window->GetInputDriver().Update();
 						UpdateCursor();
-						interface->Update(deltaTime);
+						userInterface->Update(deltaTime);
 						UpdatePause(deltaTime);
 						if (timeScale)
 						{
@@ -160,10 +131,10 @@ namespace page { namespace game
 							UpdateScene();
 							UpdateMenu();*/
 							scriptDriver->Update(deltaTime * timeScale);
-							scene->Update(wnd->GetInputDriver(), deltaTime * timeScale);
+							scene->Update(window->GetInputDriver(), deltaTime * timeScale);
 						}
-						wnd->GetVideoDriver().Update();
-						wnd->GetAudioDriver().Update(deltaTime);
+						window->GetVideoDriver().Update();
+						window->GetAudioDriver().Update(deltaTime);
 						UpdateRecording();
 						GLOBAL(cache::Cache).Update(deltaTime);
 					}
@@ -194,10 +165,10 @@ namespace page { namespace game
 	// update
 	void Game::UpdateCursor()
 	{
-		if (wnd->GetInputDriver().GetCursorMode() == inp::Driver::pointCursorMode)
+		if (window->GetInputDriver().GetCursorMode() == inp::Driver::pointCursorMode)
 		{
-			math::Vector<2> cursorPos(wnd->GetInputDriver().GetCursorPosition());
-			if (!interface->UpdateCursor(cursorPos, Aspect(wnd->GetSize())))
+			math::Vec2 cursorPos(window->GetInputDriver().GetCursorPosition());
+			if (!userInterface->UpdateCursor(cursorPos, Aspect(window->GetSize())))
 			{
 				// FIXME: fall back to game-level cursor interaction
 			}
@@ -211,7 +182,7 @@ namespace page { namespace game
 				std::min(pauseLevel + deltaTime / pauseFadeInDuration,  1.f) :
 				std::max(pauseLevel - deltaTime / pauseFadeOutDuration, 0.f);
 			float invSoftPauseLevel = 1 - math::HermiteScale(pauseLevel, pauseFadeExponent);
-			wnd->GetVideoDriver().SetSceneSaturation(invSoftPauseLevel);
+			window->GetVideoDriver().SetSceneSaturation(invSoftPauseLevel);
 			timeScale = invSoftPauseLevel;
 		}
 	}
@@ -221,7 +192,7 @@ namespace page { namespace game
 		{
 			// FIXME: grab framebuffer and scale if clipQuality <= .75
 			// FIXME: don't box filter during scale if clipQuality <= 50
-			clipStream->Write(wnd->GetVideoDriver().RenderImage(clipStream->GetSize()));
+			clipStream->Write(window->GetVideoDriver().RenderImage(clipStream->GetSize()));
 		}
 	}
 
@@ -256,9 +227,9 @@ namespace page { namespace game
 		if (focus)
 		{
 			res::GetIndex().Refresh();
-			wnd->GetAudioDriver().Resume();
+			window->GetAudioDriver().Resume();
 		}
-		else wnd->GetAudioDriver().Pause();
+		else window->GetAudioDriver().Pause();
 	}
 	void Game::OnKey(inp::Key key)
 	{
@@ -275,15 +246,15 @@ namespace page { namespace game
 			{
 				// pause
 				// FIXME: waiting for implementation
-				//wnd->GetAudioDriver().Pause(pauseFadeInDuration);
-				interface->Pause();
+				//window->GetAudioDriver().Pause(pauseFadeInDuration);
+				userInterface->Pause();
 			}
 			else
 			{
 				// resume
 				// FIXME: waiting for implementation
-				//wnd->GetAudioDriver().Resume(pauseFadeOutDuration);
-				interface->Resume();
+				//window->GetAudioDriver().Resume(pauseFadeOutDuration);
+				userInterface->Resume();
 			}
 			break;
 			case inp::printKey: // take screenshot
@@ -294,7 +265,7 @@ namespace page { namespace game
 				{
 					timer->Pause();
 					GLOBAL(res::SaverRegistry).Save(
-						wnd->GetVideoDriver().RenderImage(*CVAR(screenshotSize)),
+						window->GetVideoDriver().RenderImage(*CVAR(screenshotSize)),
 						util::ExpandPath(*CVAR(screenshotFilePath), util::ExpandFlags::withImplicitWildcardSuffix),
 						*CVAR(screenshotFormat));
 					timer->Resume();
@@ -327,7 +298,7 @@ namespace page { namespace game
 			break;
 			case inp::tabKey: // toggle camera
 			{
-				inp::Driver &inputDriver(wnd->GetInputDriver());
+				inp::Driver &inputDriver(window->GetInputDriver());
 				if (scene->GetCameraMode() == phys::Scene::sceneCameraMode)
 				{
 					// switch to detail camera

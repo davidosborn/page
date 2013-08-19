@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <algorithm> // min
 #include <cassert>
 #include <cmath> // cos, sin
@@ -110,7 +80,7 @@ namespace page
 				matrixGuard.Push();
 				math::Aabb<2> frame(base.GetFrame());
 				glTranslatef(frame.min.x, frame.min.y, 0);
-				math::Vector<2> frameSize(Size(frame));
+				math::Vec2 frameSize(Size(frame));
 				glScalef(frameSize.x, frameSize.y, 1);
 				glOrtho(-3, 1, 3, -1, -1, 1);
 				// setup view frustum
@@ -171,14 +141,14 @@ namespace page
 					boost::optional<ShadowAttachment> shadowAttachment;
 					if (*CVAR(opengl)::renderShadow && res.HasShadow())
 					{
-						math::Vector<2, unsigned> shadowRenderTargetSize(
+						math::Vec2u shadowRenderTargetSize(
 							res.GetShadow().GetRenderTargetPool().GetSize());
-						math::Vector<3> shadowTexelSize(
+						math::Vec3 shadowTexelSize(
 							shadowSize / shadowRenderTargetSize,
 							// FIXME: it shouldn't be necessary to round in the
 							// direction of the shadow
 							(shadowFar - shadowNear) / Max(shadowRenderTargetSize));
-						math::Matrix<3> sunMatrix(LookMatrix(scene.GetSunDirection(), math::NormVector<3>()));
+						math::Mat3 sunMatrix(LookMatrix(scene.GetSunDirection(), math::NormVector<3>()));
 						math::OrthoFrustum<> shadowFrustum(
 							shadowNear, shadowFar, shadowSize, shadowSize,
 							sunMatrix * Round(Tpos(sunMatrix) * scene.GetFocus(), shadowTexelSize),
@@ -921,7 +891,7 @@ namespace page
 				for (Collidables::const_iterator iter(collidables.begin()); iter != collidables.end(); ++iter)
 				{
 					const phys::Collidable &collidable(**iter);
-					math::Vector<3> center(collidable.GetPosition());
+					math::Vec3 center(collidable.GetPosition());
 					float radius = collidable.GetRadius();
 					glBegin(GL_LINE_LOOP);
 					for (float i = 0; i < 360; i += 20)
@@ -1007,9 +977,9 @@ namespace page
 					// draw basis
 					math::Vector<3, GLfloat> axes[3] =
 					{
-						bone->GetPoseMatrix() * math::Vector<3>(.1, 0, 0),
-						bone->GetPoseMatrix() * math::Vector<3>(0, .1, 0),
-						bone->GetPoseMatrix() * math::Vector<3>(0, 0, .1)
+						bone->GetPoseMatrix() * math::Vec3(.1, 0, 0),
+						bone->GetPoseMatrix() * math::Vec3(0, .1, 0),
+						bone->GetPoseMatrix() * math::Vec3(0, 0, .1)
 					};
 					glColor4f(1.f, 0.f, 0.f, .5);
 					glVertex3fv(&*pos.begin());

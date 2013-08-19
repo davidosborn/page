@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <algorithm> // find
 #include <cassert>
 #include <cmath> // abs, signbit
@@ -35,10 +5,10 @@
 #include <vector>
 
 #include <boost/optional.hpp>
+#include <boost/range/iterator_range.hpp>
 
 #include "../../../math/intersect.hpp" // CapsuleSegmentIntersect, SweptCircleSegmentIntersectWeightTangent
 #include "../../../util/iterator/chain_iterator.hpp"
-#include "../../../util/iterator/range.hpp"
 #include "../Collidable.hpp"
 
 namespace page
@@ -57,18 +27,18 @@ namespace page
 					direction(force), dirty(true) {}
 
 				Collidable *collidable;
-				math::Vector<2> position, force, direction;
-				boost::optional<math::Vector<2>> constraint;
+				math::Vec2 position, force, direction;
+				boost::optional<math::Vec2> constraint;
 				res::TrackCrossings crossings;
 				bool dirty;
 			};
 
-			struct EdgeSegment : std::pair<math::Vector<2>, math::Vector<2>>
+			struct EdgeSegment : std::pair<math::Vec2, math::Vec2>
 			{
-				typedef std::pair<math::Vector<2>, math::Vector<2>> Base;
+				typedef std::pair<math::Vec2, math::Vec2> Base;
 
 				// construct
-				EdgeSegment(const math::Vector<2> &a, const math::Vector<2> &b)
+				EdgeSegment(const math::Vec2 &a, const math::Vec2 &b)
 				{
 					if (a.x < b.x || a.x == b.x && a.y < b.y)
 					{
@@ -131,7 +101,7 @@ namespace page
 
 				float mu;
 				Colliders::iterator collider;
-				math::Vector<2> tangent;
+				math::Vec2 tangent;
 			};
 		}
 
@@ -141,7 +111,7 @@ namespace page
 			using namespace detail;
 			// build list of potential colliders
 			Colliders activeColliders, passiveColliders;
-			for (const auto &collidable : util::make_range(first, last))
+			for (const auto &collidable : boost::make_iterator_range(first, last))
 			{
 				if (collidable.HasTrackFace())
 				{
@@ -164,12 +134,12 @@ namespace page
 			for (;;)
 			{
 				// build crossed track face edge lists
-				auto colliders(util::make_range(
+				auto colliders(boost::make_iterator_range(
 					// HACK: using constructor with explicit template parameter
 					// instead of factory function to get around GCC 4.6.1 bug
 					// related to std::initializer_list
 					util::chain_iterator<typename Colliders::iterator>({
-						util::make_range(activeColliders.begin(), activeColliders.end())},
+						boost::make_iterator_range(activeColliders.begin(), activeColliders.end())},
 						passiveColliders.begin()),
 					util::make_chain_iterator(passiveColliders.end())));
 				for (auto &collider : colliders)
@@ -244,7 +214,7 @@ namespace page
 								Swizzle(faceEdge->face->vertices[faceEdge->edge], 0, 2),
 								collider->direction) < 0)
 						{
-							std::pair<float, math::Vector<2>> mutan(
+							std::pair<float, math::Vec2> mutan(
 								SweptCircleSegmentIntersectWeightTangent(
 									collider->position,
 									collider->position + collider->direction,
@@ -420,12 +390,12 @@ namespace page
 				}
 				else
 				{
-					auto colliders(util::make_range(
+					auto colliders(boost::make_iterator_range(
 						// HACK: using constructor with explicit template
 						// parameter instead of factory function to get around
 						// GCC 4.6.1 bug related to std::initializer_list
 						util::chain_iterator<typename Colliders::iterator>({
-							util::make_range(activeColliders.begin(), activeColliders.end())},
+							boost::make_iterator_range(activeColliders.begin(), activeColliders.end())},
 							passiveColliders.begin()),
 						util::make_chain_iterator(passiveColliders.end())));
 					for (auto &collider : colliders)

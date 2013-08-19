@@ -1,3 +1,76 @@
+Finish cache/Signature.
+
+Need to fix deleters in cache/proxy.
+
+Update all of the proxy implementations (except ResourceProxy, which is already done).
+
+Get rid of @c for the most part.
+Switch /// back to the box comment for stuff from adventure.
+
+Use alignas(16) in math classes to allow them to work with SSE.
+Provide SSE implementations (with an #ifdef).
+
+- @defgroup
+- "constructors & destructor" -> "constructors"
+- "specialized algorithms" -> "standard-library compatibility"
+- "member variables" -> "data members"
+- avoid Serialize/Deserialize
+
+How are the math classes (esp. Matrix and Vector) being constructed, given that
+the data is in the derived class, so how does the base class initialize it?
+I think at least one class (Color?) is using the CRTP to solve this.
+This should be documented.
+
+=================
+
+We got rid of the repair function in cache::BasicProxy because we weren't using
+it and it wasn't clear how to properly use it.
+
+Get rid of Serialize/Deserialize.
+
+Implement zip_iterator.
+
+Finish Matrix and other math classes.
+
+The default implementation of swap in namespace std just uses the move constructor/
+move assignment operator, so just implement those and don't worry about implementing
+swap.
+
+Sean Parent:
+"Pass sink arguments by value and swap or move into place.
+A sink argument is any argument consumed or returned by the function.
+The argument to assignment is a sink argument.
+If you're going to do a copy anyway, put it in the function signature."
+
+Use the C++11 string conversion functions instead of boost::lexical_cast.
+
+Move is_range and is_iterator into a common type_traits file.
+
+We should get rid of Serialize and Deserialize because for containers like
+boost::indirected_range (which has its own operator<<) it wants to use the non-
+container version without the separator and it won't consider the one with the
+separator because it can be output via operator<<.  Just get rid of Serialize,
+its a bad idea.
+
+Lots of stuff in Bounds.cpp is commented out (make sure to uncomment it out!!)
+
+When to use @a versus @c?
+
+cache/proxy/Bounds.cpp has some old iterator (non-range) stuff to factor out.
+
+***proxy_iterator should look like this:
+typename Result = decltype(std::declval<UnaryOperation>()(*std::declval<Iterator>()))>
+(ie: dereferencing the iterator before passing it to the UnaryOperation!!)
+
+Use "using Base::Base" to get inherited constructors, instead of forwarding.
+Get rid of INHERIT_CONSTRUCTORS.
+
+Update util/iterator to use Boost/iterator.
+
+Switch to <chrono> for timing.
+
+Rename ui to gui and UserInterface to Gui.
+
 Document copy_ptr.
 
 Check all uses of Deleter, now that the Deleter stuff has been updated.

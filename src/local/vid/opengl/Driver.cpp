@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <algorithm> // min
 #include <climits> // CHAR_BIT
 #include <functional> // bind
@@ -61,11 +31,11 @@ namespace page
 			Driver::Driver(wnd::Window &wnd) : vid::Driver(wnd) {}
 
 			// off-screen rendering
-			res::Image Driver::RenderImage(const math::Vector<2, unsigned> &size)
+			res::Image Driver::RenderImage(const math::Vec2u &size)
 			{
 				// NOTE: reading from the framebuffer may produce indeterminate
 				// results when the OpenGL context is not entirely visible
-				math::Vector<2, int> wndSize(GetWindow().GetSize());
+				math::Vec2i wndSize(GetWindow().GetSize());
 				if (!All(wndSize))
 					THROW((err::Exception<err::VidModuleTag, err::OpenglPlatformTag>("viewport too small")))
 				// initialize destination image
@@ -85,11 +55,11 @@ namespace page
 					// render in sections using framebuffer
 					math::Aabb<2, int> box(
 						math::Aabb<2, int>(0, img.size) +
-						math::Vector<2, int>(0, wndSize.y - img.size.y));
+						math::Vec2i(0, wndSize.y - img.size.y));
 					res::Image::Data::iterator iter(img.data.begin());
 					for (;;)
 					{
-						math::Vector<2, unsigned> section(0,
+						math::Vec2u section(0,
 							std::min(wndSize.y - box.min.y, wndSize.y));
 						for (;;)
 						{
@@ -99,11 +69,11 @@ namespace page
 								GL_RGB, GL_UNSIGNED_BYTE, &*iter);
 							iter += section.x * img.channels.size();
 							if (box.max.x <= wndSize.x) break;
-							box -= math::Vector<2, int>(wndSize.x, 0);
+							box -= math::Vec2i(wndSize.x, 0);
 						}
 						iter += (section.y - 1) * img.size.x * img.channels.size();
 						if (box.min.y >= 0) break;
-						box += math::Vector<2, int>(-box.min.x, wndSize.y);
+						box += math::Vec2i(-box.min.x, wndSize.y);
 					}
 				}
 				else
@@ -184,7 +154,7 @@ namespace page
 			{
 				// FIXME: enable/disable luminance filter
 			}
-			void Driver::OnSize(const math::Vector<2, unsigned> &size)
+			void Driver::OnSize(const math::Vec2u &size)
 			{
 				glViewport(0, 0, size.x, size.y);
 				res->Resize(size);

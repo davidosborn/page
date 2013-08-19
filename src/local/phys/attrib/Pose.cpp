@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <algorithm> // find
 
 #include "Pose.hpp"
@@ -131,23 +101,23 @@ namespace page
 			// matrix access
 			const math::Matrix<3, 4> &Pose::Bone::GetSkinMatrix() const
 				{ return UpdateDirty(), skinMatrix; }
-			const math::Matrix<3> &Pose::Bone::GetNormSkinMatrix() const
+			const math::Mat3 &Pose::Bone::GetNormSkinMatrix() const
 				{ return UpdateDirty(), normSkinMatrix; }
 			const math::Matrix<3, 4> &Pose::Bone::GetPoseMatrix() const
 				{ return UpdateDirty(), poseMatrix; }
-			const math::Matrix<3> &Pose::Bone::GetNormPoseMatrix() const
+			const math::Mat3 &Pose::Bone::GetNormPoseMatrix() const
 				{ return UpdateDirty(), normPoseMatrix; }
 			const math::Matrix<3, 4> &Pose::Bone::GetInvPoseMatrix() const
 				{ return UpdateInvDirty(), invPoseMatrix; }
-			const math::Matrix<3> &Pose::Bone::GetNormInvPoseMatrix() const
+			const math::Mat3 &Pose::Bone::GetNormInvPoseMatrix() const
 				{ return UpdateInvDirty(), normInvPoseMatrix; }
 			const math::Matrix<3, 4> &Pose::Bone::GetBindMatrix() const
 				{ return bindMatrix; }
-			const math::Matrix<3> &Pose::Bone::GetNormBindMatrix() const
+			const math::Mat3 &Pose::Bone::GetNormBindMatrix() const
 				{ return normBindMatrix; }
 			const math::Matrix<3, 4> &Pose::Bone::GetInvBindMatrix() const
 				{ return invBindMatrix; }
-			const math::Matrix<3> &Pose::Bone::GetNormInvBindMatrix() const
+			const math::Mat3 &Pose::Bone::GetNormInvBindMatrix() const
 				{ return normInvBindMatrix; }
 
 			// bind-pose
@@ -182,15 +152,15 @@ namespace page
 			}
 
 			// bind-pose transformation
-			math::Vector<3> Pose::Bone::GetBindPosition() const
+			math::Vec3 Pose::Bone::GetBindPosition() const
 				{ return bindPosition; }
 			math::Quat<> Pose::Bone::GetBindOrientation() const
 				{ return bindOrientation; }
-			math::Vector<3> Pose::Bone::GetBindScale() const
+			math::Vec3 Pose::Bone::GetBindScale() const
 				{ return bindScale; }
 
 			// mark dirty on transformation
-			void Pose::Bone::SetPosition(const math::Vector<3> &position)
+			void Pose::Bone::SetPosition(const math::Vec3 &position)
 			{
 				// NOTE: comparing value to avoid redundant dirty marking
 				if (Any(position != PositionOrientationScale::GetPosition()))
@@ -210,7 +180,7 @@ namespace page
 					GetPose().dirtyPoseSig();
 				}
 			}
-			void Pose::Bone::SetNormal(const math::Vector<3> &normal)
+			void Pose::Bone::SetNormal(const math::Vec3 &normal)
 			{
 				// NOTE: comparing value to avoid redundant dirty marking
 				if (Any(normal != PositionOrientationScale::GetNormal()))
@@ -220,7 +190,7 @@ namespace page
 					GetPose().dirtyPoseSig();
 				}
 			}
-			void Pose::Bone::SetScale(const math::Vector<3> &scale)
+			void Pose::Bone::SetScale(const math::Vec3 &scale)
 			{
 				// NOTE: comparing value to avoid redundant dirty marking
 				if (Any(scale != PositionOrientationScale::GetScale()))
@@ -240,10 +210,10 @@ namespace page
 					GetPose().dirtyPoseSig();
 				}
 			}
-			void Pose::Bone::SetMatrix(const math::Matrix<3> &matrix)
+			void Pose::Bone::SetMatrix(const math::Mat3 &matrix)
 			{
 				// NOTE: comparing value to avoid redundant dirty marking
-				if (matrix != math::Matrix<3>(PositionOrientationScale::GetMatrix()))
+				if (matrix != math::Mat3(PositionOrientationScale::GetMatrix()))
 				{
 					PositionOrientationScale::SetMatrix(matrix);
 					MarkDirty();

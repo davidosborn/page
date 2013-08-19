@@ -1,0 +1,96 @@
+2011-08-15  David Osborn  <davidcosborn@gmail.com>
+
+* Fixed a missing function-call argument causing vid::opengl::ShaderOutlineResources to throw.
+
+2011-08-12  David Osborn  <davidcosborn@gmail.com>
+
+* Fixed a problem where the scene was getting clipped to the initial size of the window.
+
+2011-08-10  David Osborn  <davidcosborn@gmail.com>
+
+* Fixed a problem where glGetActiveUniform was including the array dimensions in the uniform name, but we were not matching for that in Program::FindUniform.  So now we remove the array dimensions from our copy of uniform name.
+
+2011-08-08  David Osborn  <davidcosborn@gmail.com>
+
+* Added some more libraries (mostly audio-related) to install-depends.sh.
+
+2011-08-06  David Osborn  <davidcosborn@gmail.com>
+
+* Changed some conditional operator expressions (in src/res/load) to have a more explicit type, in response to an instance of "return x ? function-pointer : 0" producing bad values (maybe related to GCC bug #43932).
+* Made it so that aud::Driver::Play attempts to load the sound immediately and throws if it can't (previously it was deferring until aud::Driver::Update).
+* Made it so that game::Scene issues a warning and keeps going if the music fails to play.
+
+2007-07-03  David Osborn  <page@david.osborn.name>
+
+* Fixed resolution independent screenshot mechanism to support sizes with constrained aspect ratios.
+* Made cursor size relative to display resolution rather than window size.
+
+2007-06-22  David Osborn  <page@david.osborn.name>
+
+* Fixed noise in vid::opengl::FontTexture by initializing the whole texture.
+* Fixed bug in env::win32::Window causing incorrect initial position and size when maximized.
+* Refactored some libpng initialization code into res::png adapters.
+
+2007-06-17  David Osborn  <page@david.osborn.name>
+
+* Finished inp::win32::Driver.
+
+2007-06-15  David Osborn  <page@david.osborn.name>
+
+* Finished Scale(res::Image) with box filtering.
+* Added non-Windows-XP support to res::win32::MakeWin32Cursor.
+* Added optional alignment in Convert(res::Image).
+
+2007-06-13  David Osborn  <page@david.osborn.name>
+
+* Added floating-point modulo operator support to Vector.
+
+2007-06-11  David Osborn  <page@david.osborn.name>
+
+* Fixed a bug in Vector causing ambiguity between insertion/extraction and the shift operators.
+
+2007-06-08  David Osborn  <page@david.osborn.name>
+
+* Designed inp::Driver and inp::Device.
+
+2007-06-07  David Osborn  <page@david.osborn.name>
+
+* Moved subversion repository to page.tigris.org.
+* Implemented vid::Driver.
+
+2007-06-06  David Osborn  <page@david.osborn.name>
+
+* Started a vid::opengl::TextureAtlas template.
+* Added vid::opengl::FontTexture for use in vid::Context::DrawText.
+* Added math::Vector::Content to provide the area/volume of a vector.
+* Added gradient and border support to vid::Context::DrawText.
+* Added license header to the top of all source files.
+
+2007-06-05  David Osborn  <page@david.osborn.name>
+
+* Implemented last bit of Convert(res::Image) function.
+* Added Convert(res::Image) specialization for bit-to-byte conversions.
+* Implemented OpenGL texture creation from images with incompatible formats.
+* Fixed GL_INTENSITY support.
+* Fixed code to compile on GCC 4.2.0.
+
+2007-06-04  David Osborn  <page@david.osborn.name>
+
+* Added ui::Interface and redesigned ui::Panel and ui::Widget.
+
+2007-06-03  David Osborn  <page@david.osborn.name>
+
+* Changed cfg::Var to use pointer semantics.
+* Created an env::Window class to take over from the flat env interface.
+
+2007-06-02  David Osborn  <page@david.osborn.name>
+
+* Removed excessive inlining of templates.
+* Moved OpenGL configuration variables into opengl namespace.
+* Implemented line wrapping during text rendering.
+
+2007-06-01  David Osborn  <page@david.osborn.name>
+
+* Added cache::Reference for creating proxies from existing objects.
+* Added util::GetTypeId for identifying incomplete types.
+* Added res::GetTypeDeleter for deleting incomplete resource types.

@@ -1,99 +1,169 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
+#ifndef    page_util_iterator_indirect_iterator_hpp
+#   define page_util_iterator_indirect_iterator_hpp
 
-// indirect iterator adapter
-// dereferences the iterator twice
-// inspired by Boost's indirect_iterator
-
-#ifndef    page_local_util_iterator_indirect_iterator_hpp
-#   define page_local_util_iterator_indirect_iterator_hpp
-
-#	include <iterator> // iterator_traits
-#	include <type_traits> // remove_cv
+#	include <iterator> // begin, end, iterator{,_traits}
 
 #	include "../type_traits/pointer.hpp" // remove_indirection
-#	include "iterator_adapter.hpp"
+#	include "../type_traits/range.hpp" // range_traits
+#	include "range.hpp"
 
-namespace page
+namespace page { namespace util
 {
-	namespace util
+	/**
+	 * An iterator that dereferences the underlying iterator twice.  It is
+	 * equivalent to @c boost::indirect_iterator.
+	 *
+	 * @note This class has been provided as a work around for
+	 *       <a href="https://svn.boost.org/trac/boost/ticket/5965">Boost bug
+	 *       #5965</a>.
+	 */
+	template <typename Iterator>
+		class indirect_iterator :
+			public std::iterator<
+				typename std::iterator_traits<Iterator>::iterator_category,
+				typename remove_indirection<
+					typename remove_indirection<Iterator>::type
+					>::type
+				>
 	{
-		template <typename Iterator, typename Value =
-			typename remove_indirection<typename std::iterator_traits<Iterator>::value_type>::type>
-			struct indirect_iterator :
-				iterator_adapter<indirect_iterator<Iterator, Value>, Iterator,
-					typename std::iterator_traits<Iterator>::iterator_category,
-					typename std::remove_cv<Value>::type,
-					typename std::iterator_traits<Iterator>::difference_type,
-					Value *, Value &>
+		template <typename>
+			friend class indirect_iterator;
+
+		public:
+		using typename indirect_iterator::iterator::difference_type;
+		using typename indirect_iterator::iterator::pointer;
+		using typename indirect_iterator::iterator::reference;
+
+		/// constructors
+		indirect_iterator(const Iterator &iter) :
+			iter(iter) {}
+
+		template <typename OtherIterator>
+			indirect_iterator(const indirect_iterator<OtherIterator> &other) :
+				indirect_iterator(other.iter) {}
+
+		/// iterator semantics
+		reference operator *() const
 		{
-			template <typename, typename> friend class indirect_iterator;
+			return **iter;
+		}
 
-			friend class iterator_facade<indirect_iterator<Iterator, Value>,
-				typename std::iterator_traits<Iterator>::iterator_category,
-				typename std::remove_cv<Value>::type,
-				typename std::iterator_traits<Iterator>::difference_type,
-				Value *, Value &>;
+		pointer operator ->() const
+		{
+			return *iter;
+		}
 
-			typedef iterator_adapter<indirect_iterator<Iterator, Value>, Iterator,
-				typename std::iterator_traits<Iterator>::iterator_category,
-				typename std::remove_cv<Value>::type,
-				typename std::iterator_traits<Iterator>::difference_type,
-				Value *, Value &> Base;
+		indirect_iterator &operator ++()
+		{
+			++iter;
+			return *this;
+		}
 
-			// HACK: GCC doesn't support using typename (bug #14258)
-			typedef typename Base::reference reference;
+		indirect_iterator &operator --()
+		{
+			--iter;
+			return *this;
+		}
 
-			// constructors
-			indirect_iterator();
-			explicit indirect_iterator(const Iterator &);
-			template <typename Iterator2, typename Value2>
-				indirect_iterator(const indirect_iterator<Iterator2, Value2> &);
+		indirect_iterator &operator ++(int)
+		{
+			indirect_iterator r(*this);
+			++*this;
+			return r;
+		}
 
-			private:
-			// dereference
-			reference Dereference() const;
-		};
+		indirect_iterator &operator --(int)
+		{
+			indirect_iterator r(*this);
+			--*this;
+			return r;
+		}
 
-		// reverse arithmetic
-		template <typename Iterator, typename Value>
-			indirect_iterator<Iterator, Value> operator +(
-				typename indirect_iterator<Iterator, Value>::difference_type,
-				const indirect_iterator<Iterator, Value> &);
+		bool operator +=(difference_type n)
+		{
+			std::advance(iter, n);
+			return *this;
+		}
 
-		// factory function template
-		template <typename Iterator>
-			inline indirect_iterator<Iterator> make_indirect_iterator(Iterator iter)
+		bool operator -=(difference_type n)
+		{
+			return *this += -n;
+		}
+
+		indirect_iterator operator +(difference_type n) const
+		{
+			return indirect_iterator(std::advance(iter, n));
+		}
+
+		indirect_iterator operator -(difference_type n) const
+		{
+			return *this + -n;
+		}
+
+		difference_type operator -(const indirect_iterator &other) const
+		{
+			return iter - other.iter;
+		}
+
+		bool operator ==(const indirect_iterator &other) const
+		{
+			return iter == other.iter;
+		}
+
+		bool operator !=(const indirect_iterator &other) const
+		{
+			return iter != other.iter;
+		}
+
+		bool operator <=(const indirect_iterator &other) const
+		{
+			return iter <= other.iter;
+		}
+
+		bool operator >=(const indirect_iterator &other) const
+		{
+			return iter >= other.iter;
+		}
+
+		bool operator <(const indirect_iterator &other) const
+		{
+			return iter < other.iter;
+		}
+
+		bool operator >(const indirect_iterator &other) const
+		{
+			return iter > other.iter;
+		}
+
+		/// data members
+		private:
+		Iterator iter;
+	};
+
+	/// factory functions
+	/**
+	 * Factory function (for convenience).
+	 */
+	template <typename Iterator>
+		indirect_iterator<Iterator> make_indirect_iterator(const Iterator &iter)
 			{ return indirect_iterator<Iterator>(iter); }
-	}
-}
 
-#	include "indirect_iterator.tpp"
+	/**
+	 * Returns a range over the iterators of the original range wrapped in @c
+	 * indirect_iterator.  This is equivalent to @c boost::adaptors::indirect.
+	 *
+	 * @note This function has been provided as a work around for
+	 *       <a href="https://svn.boost.org/trac/boost/ticket/5965">Boost bug
+	 *       #5965</a>.
+	 */
+	template <typename Range,
+		typename Iterator = typename range_traits<Range>::iterator>
+		range<indirect_iterator<Iterator>> make_indirect_range(const Range &range)
+	{
+		return make_range(
+			make_indirect_iterator(std::begin(range)),
+			make_indirect_iterator(std::end  (range)));
+	}
+}}
+
 #endif

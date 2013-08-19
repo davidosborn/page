@@ -38,20 +38,7 @@ This software is provided "as is", without any express or implied warranty. In n
 
 PAGE includes some third-party libraries, each with its own copying conditions, which have been reproduced here.
 
-@strong{The Loki Library}
-
-Copyright @copyright{} 2001 by Andrei Alexandrescu
-
-@noindent
-This code accompanies the book:
-Alexandrescu, Andrei. "Modern C++ Design: Generic Programming and Design Patterns Applied". Copyright (c) 2001. Addison-Wesley.
-
-@noindent
-Permission to use, copy, modify, distribute and sell this software for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation.
-
-@noindent
-The author or Addison-Welsey Longman make no representations about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty.
-@end copying
+XXX
 
 @titlepage
 @title PAGE
@@ -230,6 +217,10 @@ Portions of this software are based on the work of David Osborn.
 
 @noindent
 This software is provided "as is", without any express or implied warranty. In no event will the authors be liable for any damages arising out of the use of this software.
+
+PAGE includes some third-party libraries, each with its own copying conditions, which have been reproduced here.
+
+XXX
 
 @node Modification
 @section Modification

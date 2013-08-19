@@ -1,99 +1,92 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
+#ifndef    page_util_iterator_range_hpp
+#   define page_util_iterator_range_hpp
 
-#ifndef    page_local_util_iterator_range_hpp
-#   define page_local_util_iterator_range_hpp
+#	include <iterator> // iterator_traits
+#	include <type_traits> // add_const, make_unsigned
+#	include <utility> // pair
 
-#	include <utility> // declval, pair
-
-#	include "../type_traits/container.hpp" // is_range
+#	include "../type_traits/range.hpp" // is_range, range_traits
 #	include "../type_traits/sfinae.hpp" // ENABLE_IF
 
-namespace page
+namespace page { namespace util
 {
-	namespace util
+	/**
+	 * A iterator-range wrapper to provide more comprehensive support for range-
+	 * based for-loops and range-based programming in general.
+	 *
+	 * @note This class uses the <em>proxy pattern</em>.  The constness of the
+	 *       proxy affects only the operations that modify the state of the
+	 *       proxy, not those that modify the state of the targeted object.
+	 *
+	 * @note This class is mostly equivalent to @c boost::iterator_range, and
+	 *       has been retained to get around problems using @c
+	 *       boost::iterator_range with incomplete types.
+	 */
+	template <typename Iterator>
+		class range
 	{
+		template <typename>
+			friend class range;
+
+		/// container traits
+		public:
+		using value_type             = typename std::iterator_traits<Iterator>::value_type;
+		using reference              = typename std::iterator_traits<Iterator>::reference;
+		using const_reference        = typename std::add_const<reference>::type;
+		using iterator               = Iterator;
+		using const_iterator         = Iterator;
+		using reverse_iterator       = std::reverse_iterator<iterator>;
+		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+		using difference_type        = typename std::iterator_traits<Iterator>::difference_type;
+		using size_type              = typename std::make_unsigned<difference_type>::type;
+
+		/// constructors
+		range();
+		range(const iterator &first, const iterator &last);
+		range(const std::pair<iterator, iterator> &);
+
+		template <typename Range>
+			explicit range(const Range &, ENABLE_IF(is_range<Range>::value));
+
+		template <typename Iterator2>
+			range(const range<Iterator2> &);
+
+		/// iterators
+		iterator const&  begin()  const noexcept;
+		iterator const&  end()    const noexcept;
+		reverse_iterator rbegin() const;
+		reverse_iterator rend()   const;
+
+		/// observers
 		/**
-		 * A iterator-range wrapper to provide more comprehensive support for
-		 * range-based for-loops.
+		 * @return @a iter.
 		 */
-		template <typename Iterator> struct range
-		{
-			template <typename> friend class range;
+		operator const std::pair<iterator, iterator> &() const noexcept;
 
-			// ISO/IEC N3242 23.2.1.4 Container requirements
-			typedef typename std::iterator_traits<Iterator>::value_type      value_type;
-			typedef typename std::iterator_traits<Iterator>::reference       reference;
-			typedef typename std::add_const<reference>::type                 const_reference;
-			typedef Iterator                                                 iterator;
-			typedef Iterator                                                 const_iterator;
-			typedef typename std::iterator_traits<Iterator>::difference_type difference_type;
-			typedef typename std::make_unsigned<difference_type>::type       size_type;
+		/**
+		 * @return @c true if the range is empty.
+		 */
+		bool empty() const noexcept;
 
-			// constructors
-			range();
-			range(Iterator first, Iterator last);
-			range(const std::pair<Iterator, Iterator> &);
-			template <typename T> explicit range(T &, ENABLE_IF((is_range<T>::value)));
-			template <typename T> explicit range(const T &, ENABLE_IF((is_range<T>::value)));
-			template <typename Iterator2> range(const range<Iterator2> &);
+		/// data members
+		private:
+		/**
+		 * A @c std::pair containing the first and last iterators.
+		 */
+		const std::pair<iterator, iterator> iter;
+	};
 
-			// iterators
-			Iterator begin() const noexcept;
-			Iterator end()   const noexcept;
+	/// factory functions
+	template <typename Iterator>
+		range<Iterator> make_range(Iterator first, Iterator last);
 
-			// observers
-			bool empty() const noexcept;
+	template <typename Iterator>
+		range<Iterator> make_range(const std::pair<Iterator, Iterator> &);
 
-			// conversion
-			operator const std::pair<Iterator, Iterator> &() const;
-
-			private:
-			std::pair<Iterator, Iterator> pair;
-		};
-
-		// observers
-		template <typename Iterator>
-			bool in(const range<Iterator> &, Iterator);
-
-		// factory functions
-		template <typename Iterator>
-			range<Iterator> make_range(Iterator first, Iterator last);
-		template <typename Iterator>
-			range<Iterator> make_range(const std::pair<Iterator, Iterator> &);
-		template <typename T>
-			auto make_range(T &) -> range<decltype(std::begin(std::declval<T &>()))>;
-		template <typename T>
-			auto make_range(const T &) -> range<decltype(std::begin(std::declval<const T &>()))>;
-	}
-}
+	template <typename Range,
+		typename Iterator = typename range_traits<Range>::iterator>
+		range<Iterator> make_range(const Range &);
+}}
 
 #	include "range.tpp"
 #endif

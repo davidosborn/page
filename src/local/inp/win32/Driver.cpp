@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <cassert>
 #include <cctype> // isprint
 #include <cstdlib> // abs
@@ -41,7 +11,7 @@
 #include "../../math/Aabb.hpp"
 #include "../../math/win32.hpp" // Make{Rect,Vector}
 #include "../../res/type/Theme.hpp" // Theme::cursor
-#include "../../ui/Interface.hpp" // Interface::GetTheme
+#include "../../ui/UserInterface.hpp" // UserInterface::GetTheme
 #include "../../wnd/win32/Window.hpp" // Window->wnd::Window, Window::GetHwnd
 #include "../../wnd/Window.hpp" // Window::{{focus,message,move,size}Sig,Get{Position,Size},HasFocus}
 #include "Driver.hpp"
@@ -96,7 +66,7 @@ namespace page
 			{
 				State state;
 				// control
-				state.control.direction = math::Vector<2>(
+				state.control.direction = math::Vec2(
 						((GetAsyncKeyState(VK_RIGHT) & 0x8000) >> 15) -
 						((GetAsyncKeyState(VK_LEFT)  & 0x8000) >> 15),
 						((GetAsyncKeyState(VK_UP)    & 0x8000) >> 15) -
@@ -106,8 +76,8 @@ namespace page
 				// look
 				if (GetCursorMode() == lookCursorMode)
 				{
-					math::Vector<2> translation(
-						math::Vector<2>(GetRawCursorTranslation()) /
+					math::Vec2 translation(
+						math::Vec2(GetRawCursorTranslation()) /
 						GetWindow().GetScreenSize());
 					if (GetMouseButton(leftButton))
 					{
@@ -156,8 +126,8 @@ namespace page
 					math::Aabb<2, int> box(
 						AabbPositionSize(
 							GetWindow().GetPosition(),
-							math::Vector<2, int>(GetWindow().GetSize())));
-					math::Vector<2, int> center(Center(Shrink(box, 0, 1)));
+							math::Vec2i(GetWindow().GetSize())));
+					math::Vec2i center(Center(Shrink(box, 0, 1)));
 					SetCursorPos(center.x, center.y);
 					RECT rect(math::MakeRect(box));
 					ClipCursor(&rect);
@@ -166,21 +136,21 @@ namespace page
 			}
 
 			// system cursor state
-			math::Vector<2, unsigned> Driver::GetRawCursorPosition() const
+			math::Vec2u Driver::GetRawCursorPosition() const
 			{
 				POINT pt;
 				GetCursorPos(&pt);
 				return math::MakeVector(pt);
 			}
-			math::Vector<2, int> Driver::GetRawCursorTranslation() const
+			math::Vec2i Driver::GetRawCursorTranslation() const
 			{
 				POINT pt;
 				GetCursorPos(&pt);
 				math::Aabb<2, int> box(
 					AabbPositionSize(
 						GetWindow().GetPosition(),
-						math::Vector<2, int>(GetWindow().GetSize())));
-				math::Vector<2, int> center(Center(Shrink(box, 0, 1)));
+						math::Vec2i(GetWindow().GetSize())));
+				math::Vec2i center(Center(Shrink(box, 0, 1)));
 				SetCursorPos(center.x, center.y);
 				return math::MakeVector(pt) - center;
 			}
@@ -206,7 +176,7 @@ namespace page
 					ContainsMaxExclusive(
 						AabbPositionSize(
 							GetWindow().GetPosition(),
-							math::Vector<2, int>(GetWindow().GetSize())),
+							math::Vec2i(GetWindow().GetSize())),
 						GetRawCursorPosition()))
 				{
 					cursor.icon = Cursor::noIcon;
@@ -217,7 +187,7 @@ namespace page
 			}
 
 			// inspiration notification
-			void Driver::OnImbue(const ui::Interface *)
+			void Driver::OnImbue(const ui::UserInterface *)
 			{
 				UpdateCursor();
 			}
@@ -259,8 +229,8 @@ namespace page
 					if (cursor.visible && LOWORD(lparam) == HTCLIENT)
 					{
 						Cursor::Icon targetIcon =
-							GetWindow().HasFocus() && GetInterface() &&
-							GetInterface()->GetTheme().cursor ?
+							GetWindow().HasFocus() && GetUserInterface() &&
+							GetUserInterface()->GetTheme().cursor ?
 							Cursor::themeIcon : Cursor::arrowIcon;
 						HCURSOR handle;
 						switch (targetIcon)
@@ -270,7 +240,7 @@ namespace page
 							break;
 							case Cursor::themeIcon:
 							handle = *cache::win32::Cursor(
-								GetInterface()->GetTheme().cursor,
+								GetUserInterface()->GetTheme().cursor,
 								GetWindow().GetScreenSize().y);
 							break;
 							default: assert(!"invalid cursor icon");
@@ -325,7 +295,7 @@ namespace page
 				}
 				if (msg == mshMousewheel) OnMouseWheel(wparam, lparam);
 			}
-			void Driver::OnMove(const math::Vector<2, int> &position)
+			void Driver::OnMove(const math::Vec2i &position)
 			{
 				if (GetCursorMode() == lookCursorMode)
 				{
@@ -334,14 +304,14 @@ namespace page
 					math::Aabb<2, int> box(
 						AabbPositionSize(
 							position,
-							math::Vector<2, int>(GetWindow().GetSize())));
-					math::Vector<2, int> center(Center(Shrink(box, 0, 1)));
+							math::Vec2i(GetWindow().GetSize())));
+					math::Vec2i center(Center(Shrink(box, 0, 1)));
 					SetCursorPos(center.x, center.y);
 					RECT rect(math::MakeRect(box));
 					ClipCursor(&rect);
 				}
 			}
-			void Driver::OnSize(const math::Vector<2, unsigned> &size)
+			void Driver::OnSize(const math::Vec2u &size)
 			{
 				if (GetCursorMode() == lookCursorMode)
 				{
@@ -350,8 +320,8 @@ namespace page
 					math::Aabb<2, int> box(
 						AabbPositionSize(
 							GetWindow().GetPosition(),
-							math::Vector<2, int>(size)));
-					math::Vector<2, int> center(Center(Shrink(box, 0, 1)));
+							math::Vec2i(size)));
+					math::Vec2i center(Center(Shrink(box, 0, 1)));
 					SetCursorPos(center.x, center.y);
 					RECT rect(math::MakeRect(box));
 					ClipCursor(&rect);
@@ -370,8 +340,8 @@ namespace page
 				SetCapture(GetWindow().GetHwnd());
 				StartMouseRepeatTimer();
 				// cancel dragging
-				math::Vector<2, unsigned> position(math::MakeVector(lparam));
-				math::Vector<2> normPosition(NormClientVector(position));
+				math::Vec2u position(math::MakeVector(lparam));
+				math::Vec2 normPosition(NormClientVector(position));
 				ResetMouseDrag(normPosition);
 				// signal down
 				LONG time = GetMessageTime();
@@ -379,8 +349,8 @@ namespace page
 					button == mouse.downButton &&
 					time - mouse.downTime <= limits.doubleTime &&
 					All(Abs(
-						math::Vector<2, int>(position) -
-						math::Vector<2, int>(mouse.downPosition)) <= limits.doubleRange);
+						math::Vec2i(position) -
+						math::Vec2i(mouse.downPosition)) <= limits.doubleRange);
 				downSig(normPosition, button, mouse._double);
 				// update mouse state
 				mouse.down = true;
@@ -396,8 +366,8 @@ namespace page
 					ReleaseCapture();
 					StopMouseRepeatTimer();
 					// signal click/drop
-					math::Vector<2, unsigned> position(math::MakeVector(lparam));
-					math::Vector<2> normPosition(NormClientVector(position));
+					math::Vec2u position(math::MakeVector(lparam));
+					math::Vec2 normPosition(NormClientVector(position));
 					if (mouse.dragging)
 					{
 						dropSig(
@@ -417,10 +387,10 @@ namespace page
 				if (mouse.down && !mouse.dragging)
 				{
 					// check for dragging
-					math::Vector<2, unsigned> position(math::MakeVector(lparam));
+					math::Vec2u position(math::MakeVector(lparam));
 					if (Any(Abs(
-							math::Vector<2, int>(position) -
-							math::Vector<2, int>(mouse.downPosition)) >= limits.dragRange))
+							math::Vec2i(position) -
+							math::Vec2i(mouse.downPosition)) >= limits.dragRange))
 					{
 						StopMouseRepeatTimer();
 						dragSig(
@@ -450,7 +420,7 @@ namespace page
 			{
 				ResetMouseState(GetCursorPosition());
 			}
-			void Driver::ResetMouseState(const math::Vector<2> &position)
+			void Driver::ResetMouseState(const math::Vec2 &position)
 			{
 				assert(GetCursorMode() == pointCursorMode);
 				if (mouse.dragging) ResetMouseDrag(position);
@@ -458,7 +428,7 @@ namespace page
 				mouse.down = false;
 				mouse.downTime = 0;
 			}
-			void Driver::ResetMouseDrag(const math::Vector<2> &position)
+			void Driver::ResetMouseDrag(const math::Vec2 &position)
 			{
 				assert(GetCursorMode() == pointCursorMode);
 				if (mouse.dragging)
@@ -511,11 +481,11 @@ namespace page
 			}
 
 			// vector normalization
-			math::Vector<2> Driver::NormClientVector(const math::Vector<2, int> &v) const
+			math::Vec2 Driver::NormClientVector(const math::Vec2i &v) const
 			{
 				return Min(Max(EnterSpace(math::Aabb<2, int>(0, (GetWindow().GetSize() - 1)), v), 0), 1);
 			}
-			math::Vector<2> Driver::NormScreenVector(const math::Vector<2, int> &v) const
+			math::Vec2 Driver::NormScreenVector(const math::Vec2i &v) const
 			{
 				return NormClientVector(v - GetWindow().GetPosition());
 			}
@@ -525,10 +495,10 @@ namespace page
 			Driver::Limits::Limits()
 			{
 				doubleTime = GetDoubleClickTime();
-				doubleRange = math::Vector<2, int>(
+				doubleRange = math::Vec2i(
 					GetSystemMetrics(SM_CXDOUBLECLK),
 					GetSystemMetrics(SM_CYDOUBLECLK)) / 2;
-				dragRange = math::Vector<2, int>(
+				dragRange = math::Vec2i(
 					GetSystemMetrics(SM_CXDRAG),
 					GetSystemMetrics(SM_CYDRAG)) / 2;
 				if (!SystemParametersInfo(SPI_GETKEYBOARDDELAY, 0, &repeatDelay, 0))

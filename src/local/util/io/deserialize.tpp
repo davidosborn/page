@@ -1,44 +1,14 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
-#include <algorithm> // copy_n, min
+#include <algorithm> // fill_n, min
 #include <istream>
 #include <iterator> // {,back_}inserter, begin, end, istreambuf_iterator
 #include <sstream> // basic_istringstream
 #include <utility> // forward, move
 
+#include <boost/range/iterator_range.hpp>
+
 #include "../../err/Exception.hpp"
 #include "../algorithm/stdext.hpp" // copy_until
 #include "../container/tuple.hpp" // tuple_{,pop_}front
-#include "../iterator/range.hpp"
-#include "../iterator/repeat_iterator.hpp"
 #include "../locale/convert.hpp" // Convert
 #include "../type_traits/iterator.hpp" // output_iterator_value_type
 #include "skip.hpp" // Skip
@@ -254,7 +224,7 @@ namespace page
 						 * output iterator.
 						 */
 						auto m = std::min(r.second, max - n);
-						result = std::copy_n(make_repeat_iterator(T()), m, result);
+						result = std::fill_n(result, m, T());
 						n += m;
 						if (n == max) break;
 					}
@@ -390,7 +360,7 @@ namespace page
 		{
 			return Deserialize(
 				is,
-				make_range(first, last),
+				boost::make_iterator_range(first, last),
 				flags,
 				InputDelimiter<Char, CharTraits>(separator),
 				InputDelimiter<Char, CharTraits>(lastSeparator));

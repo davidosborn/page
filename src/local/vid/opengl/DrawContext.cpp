@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <GL/gl.h>
 
 #include "../../cache/proxy/opengl/Texture.hpp"
@@ -149,10 +119,10 @@ namespace page
 
 			// image rendering
 			void DrawContext::DrawQuad(const cache::Proxy<res::Image> &img,
-				const math::Vector<2> &co1, const math::Vector<2> &uv1,
-				const math::Vector<2> &co2, const math::Vector<2> &uv2,
-				const math::Vector<2> &co3, const math::Vector<2> &uv3,
-				const math::Vector<2> &co4, const math::Vector<2> &uv4,
+				const math::Vec2 &co1, const math::Vec2 &uv1,
+				const math::Vec2 &co2, const math::Vec2 &uv2,
+				const math::Vec2 &co3, const math::Vec2 &uv3,
+				const math::Vec2 &co4, const math::Vec2 &uv4,
 				const math::Vector<2, bool> &clamp)
 			{
 				MatrixGuard matrixGuard;
@@ -184,10 +154,10 @@ namespace page
 				// vertex arrays/buffers
 				// calculate metrics
 				const res::Font &font(*fontProxy);
-				math::Vector<2> scale(fontSize / math::Vector<2>(GetFrameAspect(), 1));
+				math::Vec2 scale(fontSize / math::Vec2(GetFrameAspect(), 1));
 				float width = (box.max.x - box.min.x) / scale.x;
 				std::string wrappedText(wrap ? Wrap(font, text, width) : text);
-				math::Vector<2> pen(box.min.x, box.min.y + font.maxBearing.y * scale.y);
+				math::Vec2 pen(box.min.x, box.min.y + font.maxBearing.y * scale.y);
 				// calculate glyph rendering coordinates
 				const FontTexture &texture(*cache::opengl::FontTexture(fontProxy,
 					std::ceil(fontSize * (Size(GetFrame()) * Size(GetPixelLogicalBox())).y)));
@@ -248,7 +218,7 @@ namespace page
 					{
 						if (const res::Font::Glyph *glyph = GetGlyph(font, *c))
 						{
-							math::Vector<2> co(pen);
+							math::Vec2 co(pen);
 							co.x += glyph->bearing.x * scale.x;
 							co.y -= glyph->bearing.y * scale.y;
 							glyphs.push_back(GlyphCoords(*texture.GetSection(*c),
@@ -264,7 +234,7 @@ namespace page
 					if (end == wrappedText.end()) break;
 					end = std::find_if((line = end) + 1, wrappedText.end(),
 						std::bind2nd(std::not_equal_to<char>(), '\n'));
-					pen = math::Vector<2>(box.min.x,
+					pen = math::Vec2(box.min.x,
 						pen.y + font.lineHeight * scale.y * (end - line));
 					line = end;
 				}
@@ -280,7 +250,7 @@ namespace page
 				// render borders
 				if (borderSize)
 				{
-					math::Vector<2>
+					math::Vec2
 						jitter(borderSize * scale),
 						diagJitter(jitter / std::sqrt(2.f));
 					glColor4fv(&*math::RgbaColor<GLfloat>(borderColor).begin());
@@ -395,7 +365,7 @@ namespace page
 				// because this function is not always rendering to the screen
 				// (ie: it might be doing a shadow buffer)
 				math::Aabb<2> uv(LeaveSpace(GetLogicalBox(), math::Aabb<2>(0,
-					math::Vector<2>(rt.framebuffer.GetSize()) /
+					math::Vec2(rt.framebuffer.GetSize()) /
 					rt.framebuffer.GetPow2Size())));
 				uv.min.y = 1 - uv.min.y;
 				uv.max.y = 1 - uv.max.y;
@@ -447,7 +417,7 @@ namespace page
 			// clipping modifiers
 			void DrawContext::DoSetClip(const math::Aabb<2> &clip)
 			{
-				math::Vector<2, int> wndSize(GetDriver().GetWindow().GetSize());
+				math::Vec2i wndSize(GetDriver().GetWindow().GetSize());
 				math::Aabb<2, int> scissor(Ceil(clip * wndSize));
 				glScissor(
 					scissor.min.x,
@@ -503,7 +473,7 @@ namespace page
 			void DrawContext::MultFrame(const math::Aabb<2> &frame)
 			{
 				glTranslatef(frame.min.x, frame.min.y, 0);
-				math::Vector<2> frameSize(Size(frame));
+				math::Vec2 frameSize(Size(frame));
 				glScalef(frameSize.x, frameSize.y, 1);
 			}
 		}

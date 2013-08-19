@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #ifndef    page_local_inp_Driver_hpp
 #   define page_local_inp_Driver_hpp
 
@@ -38,14 +8,14 @@
 
 #	include "../math/fwd.hpp" // Euler
 #	include "../math/Vector.hpp"
-#	include "../util/class/Uncopyable.hpp"
+#	include "../util/class/special_member_functions.hpp" // Uncopyable
 #	include "Button.hpp"
 #	include "Key.hpp"
 #	include "State.hpp"
 
 namespace page
 {
-	namespace ui { class Interface; }
+	namespace ui { class UserInterface; }
 	namespace wnd { class Window; }
 
 	namespace inp
@@ -69,14 +39,14 @@ namespace page
 			void SetCursorMode(CursorMode);
 
 			// cursor pointing state
-			const math::Vector<2> &GetCursorPosition() const;
+			const math::Vec2 &GetCursorPosition() const;
 
 			// cursor dragging state
 			bool IsDragging() const;
-			const math::Vector<2> &GetDragOrigin() const;
+			const math::Vec2 &GetDragOrigin() const;
 
 			// control state
-			const math::Vector<2> &GetDirection() const;
+			const math::Vec2 &GetDirection() const;
 			enum Modifier
 			{
 				runModifier,
@@ -97,15 +67,15 @@ namespace page
 			const wnd::Window &GetWindow() const;
 
 			// inspiration modifiers
-			void Imbue(const ui::Interface *);
+			void Imbue(const ui::UserInterface *);
 
 			// pointer signals
-			boost::signal<void (const math::Vector<2> &position, Button, bool _double)> downSig;
-			boost::signal<void (const math::Vector<2> &position, Button, bool _double)> clickSig;
-			boost::signal<void (const math::Vector<2> &origin, Button, bool _double)> dragSig;
-			boost::signal<void (const math::Vector<2> &origin, const math::Vector<2> &position, Button, bool _double)> dropSig;
-			boost::signal<void (const math::Vector<2> &origin, const math::Vector<2> &position, Button, bool _double)> cancelDragSig;
-			boost::signal<void (const math::Vector<2> &position, float scroll)> scrollSig;
+			boost::signal<void (const math::Vec2 &position, Button, bool _double)> downSig;
+			boost::signal<void (const math::Vec2 &position, Button, bool _double)> clickSig;
+			boost::signal<void (const math::Vec2 &origin, Button, bool _double)> dragSig;
+			boost::signal<void (const math::Vec2 &origin, const math::Vec2 &position, Button, bool _double)> dropSig;
+			boost::signal<void (const math::Vec2 &origin, const math::Vec2 &position, Button, bool _double)> cancelDragSig;
+			boost::signal<void (const math::Vec2 &position, float scroll)> scrollSig;
 
 			// key signals
 			boost::signal<void (Key)> keySig;
@@ -113,7 +83,7 @@ namespace page
 
 			protected:
 			// inspiration access
-			const ui::Interface *GetInterface() const;
+			const ui::UserInterface *GetUserInterface() const;
 
 			private:
 			// update
@@ -126,25 +96,25 @@ namespace page
 			virtual void DoSetCursorMode(CursorMode) = 0;
 
 			// system cursor state
-			virtual math::Vector<2, unsigned> GetRawCursorPosition() const = 0;
+			virtual math::Vec2u GetRawCursorPosition() const = 0;
 
 			// inspiration notification
-			virtual void OnImbue(const ui::Interface *);
+			virtual void OnImbue(const ui::UserInterface *);
 
 			// cursor signal handlers
-			void OnDown(const math::Vector<2> &, Button, bool);
-			void OnClick(const math::Vector<2> &, Button, bool);
-			void OnDrag(const math::Vector<2> &, Button, bool);
-			void OnDrop(const math::Vector<2> &, const math::Vector<2> &, Button, bool);
-			void OnCancelDrag(const math::Vector<2> &, const math::Vector<2> &, Button, bool);
-			void OnScroll(const math::Vector<2> &, float);
+			void OnDown(const math::Vec2 &, Button, bool);
+			void OnClick(const math::Vec2 &, Button, bool);
+			void OnDrag(const math::Vec2 &, Button, bool);
+			void OnDrop(const math::Vec2 &, const math::Vec2 &, Button, bool);
+			void OnCancelDrag(const math::Vec2 &, const math::Vec2 &, Button, bool);
+			void OnScroll(const math::Vec2 &, float);
 
 			// key signal handlers
 			void OnKey(Key);
 			void OnChar(char);
 
 			wnd::Window &wnd;
-			const ui::Interface *interface;
+			const ui::UserInterface *userInterface;
 
 			// devices
 			typedef std::vector<std::shared_ptr<Device>> Devices;
@@ -161,10 +131,10 @@ namespace page
 
 				// pointing
 				bool inRange;
-				math::Vector<2> position;
+				math::Vec2 position;
 				// dragging
 				bool dragging;
-				math::Vector<2> dragOrigin;
+				math::Vec2 dragOrigin;
 			} pointCursor;
 
 			// control/look state

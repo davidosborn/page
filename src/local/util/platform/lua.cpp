@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <utility> // pair
 
 #include <lua.hpp>
@@ -86,9 +56,9 @@ namespace page
 				}
 				return result;
 			}
-			std::pair<math::Vector<3>, bool> GetHorizontalVector(lua_State *state)
+			std::pair<math::Vec3, bool> GetHorizontalVector(lua_State *state)
 			{
-				std::pair<math::Vector<3>, bool> result(0, true);
+				std::pair<math::Vec3, bool> result(0, true);
 				if (!lua_istable(state, -1))
 				{
 					luaL_argcheck(state, lua_isnumber(state, -1), 2, "table or number expected");
@@ -131,9 +101,9 @@ namespace page
 				}
 				return result;
 			}
-			math::Vector<3> GetVector(lua_State *state)
+			math::Vec3 GetVector(lua_State *state)
 			{
-				math::Vector<3> result;
+				math::Vec3 result;
 				if (!lua_istable(state, -1))
 				{
 					luaL_argcheck(state, lua_isnumber(state, -1), 2, "table or number expected");
@@ -181,7 +151,7 @@ namespace page
 				lua_pushnumber(state, value.roll);
 				lua_rawset(state, -3);
 			}
-			void Push(lua_State *state, const math::Vector<2> &value)
+			void Push(lua_State *state, const math::Vec2 &value)
 			{
 				lua_createtable(state, 2, 0);
 				lua_pushinteger(state, 1);
@@ -191,7 +161,7 @@ namespace page
 				lua_pushnumber(state, value.y);
 				lua_rawset(state, -3);
 			}
-			void Push(lua_State *state, const math::Vector<3> &value)
+			void Push(lua_State *state, const math::Vec3 &value)
 			{
 				lua_createtable(state, 3, 0);
 				lua_pushinteger(state, 1);

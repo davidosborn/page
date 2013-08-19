@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #ifndef    page_local_inp_win32_Driver_hpp
 #   define page_local_inp_win32_Driver_hpp
 
@@ -61,21 +31,21 @@ namespace page
 				void ShowCursor(bool);
 
 				// system cursor state
-				math::Vector<2, unsigned> GetRawCursorPosition() const;
-				math::Vector<2, int> GetRawCursorTranslation() const;
+				math::Vec2u GetRawCursorPosition() const;
+				math::Vec2i GetRawCursorTranslation() const;
 				bool GetMouseButton(Button) const;
 
 				// cursor update
 				void UpdateCursor();
 
 				// inspiration notification
-				void OnImbue(const ui::Interface *);
+				void OnImbue(const ui::UserInterface *);
 
 				// window signal handlers
 				void OnFocus(bool focus);
 				void OnMessage(UINT, WPARAM, LPARAM);
-				void OnMove(const math::Vector<2, int> &);
-				void OnSize(const math::Vector<2, unsigned> &);
+				void OnMove(const math::Vec2i &);
+				void OnSize(const math::Vec2u &);
 				boost::signals::scoped_connection focusCon, messageCon, moveCon, sizeCon;
 
 				// window message handlers
@@ -86,8 +56,8 @@ namespace page
 
 				// mouse state
 				void ResetMouseState();
-				void ResetMouseState(const math::Vector<2> &position);
-				void ResetMouseDrag(const math::Vector<2> &position);
+				void ResetMouseState(const math::Vec2 &position);
+				void ResetMouseDrag(const math::Vec2 &position);
 
 				// mouse repeat timer
 				void StartMouseRepeatTimer();
@@ -98,8 +68,8 @@ namespace page
 				static void CALLBACK MouseRepeatTimerRouter(HWND, UINT, UINT_PTR, DWORD);
 
 				// vector normalization
-				math::Vector<2> NormClientVector(const math::Vector<2, int> &) const;
-				math::Vector<2> NormScreenVector(const math::Vector<2, int> &) const;
+				math::Vec2 NormClientVector(const math::Vec2i &) const;
+				math::Vec2 NormScreenVector(const math::Vec2i &) const;
 
 				// MSH_MOUSEWHEEL message
 				UINT mshMousewheel;
@@ -111,7 +81,7 @@ namespace page
 					Limits();
 
 					UINT doubleTime;
-					math::Vector<2, unsigned> doubleRange, dragRange;
+					math::Vec2u doubleRange, dragRange;
 					unsigned repeatDelay;
 					DWORD repeatSpeed;
 				} limits;
@@ -129,7 +99,7 @@ namespace page
 						themeIcon
 					} icon;
 					bool visible;
-					math::Vector<2, unsigned> pointPosition;
+					math::Vec2u pointPosition;
 				} cursor;
 
 				// mouse state
@@ -141,7 +111,7 @@ namespace page
 					bool down, dragging, _double, ignoreDown;
 					Button downButton;
 					LONG downTime;
-					math::Vector<2, unsigned> downPosition;
+					math::Vec2u downPosition;
 					float deltaScroll;
 					// repeating
 					bool repeating;

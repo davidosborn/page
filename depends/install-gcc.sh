@@ -10,7 +10,7 @@ set -e
 
 GNU_MIRROR=ftp://gnu.mirror.iweb.com/gnu
 
-GCC_VERSION=4.7.2
+GCC_VERSION=4.8.0
 GDB_VERSION=7.5.1
 GMP_VERSION=5.1.1
 MPFR_VERSION=3.1.2
@@ -67,8 +67,7 @@ cd ..
 # Depended on by: gdb
 
 wget $GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.bz2 -O- | tar -jx
-cd gcc-$GCC_VERSION
-cd .. && mkdir -p gcc-$GCC_VERSION-build && cd gcc-$GCC_VERSION-build
+mkdir -p gcc-$GCC_VERSION-build && cd gcc-$GCC_VERSION-build
 GCC_CONFIGURE_FLAGS="--enable-libstdcxx-debug --enable-languages=c,c++"
 test "$USING_MINGW" == yes && GCC_CONFIGURE_FLAGS="$GCC_CONFIGURE_FLAGS --build=pentium4-pc-mingw32 --disable-nls --disable-win32-registry --enable-threads"
 ../gcc-$GCC_VERSION/configure $GCC_CONFIGURE_FLAGS

@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <algorithm> // find, max, pop_heap, push_heap, reverse
 #include <cassert>
 #include <deque>
@@ -130,13 +100,13 @@ namespace page
 		}
 
 		// face functions
-		math::Vector<3> GetNormal(const Track::Face &face)
+		math::Vec3 GetNormal(const Track::Face &face)
 		{
 			return Norm(Cross(
 				face.vertices[1] - face.vertices[0],
 				face.vertices[2] - face.vertices[0]));
 		}
-		math::Vector<3> GetCenter(const Track::Face &face)
+		math::Vec3 GetCenter(const Track::Face &face)
 		{
 			return (face.vertices[0] + face.vertices[1] + face.vertices[2]) / 3;
 		}
@@ -150,7 +120,7 @@ namespace page
 		}
 
 		// binding
-		const Track::Face *GetBestFace(const Track &track, const math::Vector<3> &pos)
+		const Track::Face *GetBestFace(const Track &track, const math::Vec3 &pos)
 		{
 			const Track::Face *selFace = 0;
 			float selHeight;
@@ -162,7 +132,7 @@ namespace page
 					Swizzle(face->vertices[2], 0, 2)))
 					if (selFace)
 					{
-						math::Vector<2> bc(Barycentric(
+						math::Vec2 bc(Barycentric(
 							Swizzle(face->vertices[0], 0, 2),
 							Swizzle(face->vertices[1], 0, 2),
 							Swizzle(face->vertices[2], 0, 2),
@@ -179,13 +149,13 @@ namespace page
 		}
 
 		// edge crossing
-		TrackCrossings GetCrossings(const Track::Face &originFace, const math::Vector<2> &origin, const math::Vector<2> &target)
+		TrackCrossings GetCrossings(const Track::Face &originFace, const math::Vec2 &origin, const math::Vec2 &target)
 		{
 			TrackCrossings crossings;
-			math::Vector<2> position(origin);
+			math::Vec2 position(origin);
 			for (const Track::Face *face = &originFace;;)
 			{
-				math::Vector<2> vertices[] =
+				math::Vec2 vertices[] =
 				{
 					Swizzle(face->vertices[0], 0, 2),
 					Swizzle(face->vertices[1], 0, 2),
@@ -270,7 +240,7 @@ namespace page
 					if (face->neighbours[i])
 					{
 						const Track::Face &neighbour(*face->neighbours[i]);
-						struct math::Vector<2> vertices[2] =
+						struct math::Vec2 vertices[2] =
 						{
 							Swizzle(face->vertices[i], 0, 2),
 							Swizzle(face->vertices[(i + 1) % 3], 0, 2)

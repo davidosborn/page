@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #include <cassert>
 #include <cmath> // abs
 #include <functional> // bind
@@ -124,7 +94,7 @@ namespace page
 		}
 
 		// construct/destroy
-		Driver::Driver(wnd::Window &wnd) : wnd(wnd), interface(0),
+		Driver::Driver(wnd::Window &wnd) : wnd(wnd), userInterface(0),
 			cursorMode(pointCursorMode)
 		{
 			// connect signals
@@ -164,7 +134,7 @@ namespace page
 		}
 
 		// cursor pointing state
-		const math::Vector<2> &Driver::GetCursorPosition() const
+		const math::Vec2 &Driver::GetCursorPosition() const
 		{
 			assert(cursorMode == pointCursorMode);
 			return pointCursor.position;
@@ -176,14 +146,14 @@ namespace page
 			assert(cursorMode == pointCursorMode);
 			return pointCursor.dragging;
 		}
-		const math::Vector<2> &Driver::GetDragOrigin() const
+		const math::Vec2 &Driver::GetDragOrigin() const
 		{
 			assert(cursorMode == pointCursorMode && pointCursor.dragging);
 			return pointCursor.dragOrigin;
 		}
 
 		// control state
-		const math::Vector<2> &Driver::GetDirection() const
+		const math::Vec2 &Driver::GetDirection() const
 		{
 			return control.direction;
 		}
@@ -215,8 +185,8 @@ namespace page
 				pointCursor.position = EnterSpace(
 					AabbPositionSize(
 						wnd.GetPosition(),
-						math::Vector<2, int>(wnd.GetSize()) - 1),
-					math::Vector<2, int>(GetRawCursorPosition()));
+						math::Vec2i(wnd.GetSize()) - 1),
+					math::Vec2i(GetRawCursorPosition()));
 				pointCursor.inRange = Contains(math::Aabb<2>(0, 1), pointCursor.position);
 				pointCursor.position = Min(Max(pointCursor.position, 0), 1);
 			}
@@ -241,16 +211,16 @@ namespace page
 		}
 
 		// inspiration modifiers
-		void Driver::Imbue(const ui::Interface *interface)
+		void Driver::Imbue(const ui::UserInterface *userInterface)
 		{
-			this->interface = interface;
-			OnImbue(interface);
+			this->userInterface = userInterface;
+			OnImbue(userInterface);
 		}
 
 		// inspiration access
-		const ui::Interface *Driver::GetInterface() const
+		const ui::UserInterface *Driver::GetUserInterface() const
 		{
-			return interface;
+			return userInterface;
 		}
 
 		// update
@@ -267,22 +237,22 @@ namespace page
 		}
 
 		// inspiration notification
-		void Driver::OnImbue(const ui::Interface *) {}
+		void Driver::OnImbue(const ui::UserInterface *) {}
 
 		// cursor signal handlers
-		void Driver::OnDown(const math::Vector<2> &pos, Button btn, bool _double)
+		void Driver::OnDown(const math::Vec2 &pos, Button btn, bool _double)
 		{
 			std::cout << Repr(btn) << " mouse ";
 			if (_double) std::cout << "double-";
 			std::cout << "down at " << pos << std::endl;
 		}
-		void Driver::OnClick(const math::Vector<2> &pos, Button btn, bool _double)
+		void Driver::OnClick(const math::Vec2 &pos, Button btn, bool _double)
 		{
 			std::cout << Repr(btn) << " mouse ";
 			if (_double) std::cout << "double-";
 			std::cout << "click at " << pos << std::endl;
 		}
-		void Driver::OnDrag(const math::Vector<2> &origin, Button btn, bool _double)
+		void Driver::OnDrag(const math::Vec2 &origin, Button btn, bool _double)
 		{
 			std::cout << Repr(btn) << " mouse ";
 			if (_double) std::cout << "double-";
@@ -290,21 +260,21 @@ namespace page
 			pointCursor.dragging = true;
 			pointCursor.dragOrigin = origin;
 		}
-		void Driver::OnDrop(const math::Vector<2> &start, const math::Vector<2> &pos, Button btn, bool _double)
+		void Driver::OnDrop(const math::Vec2 &start, const math::Vec2 &pos, Button btn, bool _double)
 		{
 			std::cout << Repr(btn) << " mouse ";
 			if (_double) std::cout << "double-";
 			std::cout << "dropped at " << pos << std::endl;
 			pointCursor.dragging = false;
 		}
-		void Driver::OnCancelDrag(const math::Vector<2> &start, const math::Vector<2> &pos, Button btn, bool _double)
+		void Driver::OnCancelDrag(const math::Vec2 &start, const math::Vec2 &pos, Button btn, bool _double)
 		{
 			std::cout << Repr(btn) << " mouse ";
 			if (_double) std::cout << "double-";
 			std::cout << "drag cancelled at " << pos << std::endl;
 			pointCursor.dragging = false;
 		}
-		void Driver::OnScroll(const math::Vector<2> &pos, float delta)
+		void Driver::OnScroll(const math::Vec2 &pos, float delta)
 		{
 			std::cout << "mouse scrolled " << (delta > 0 ? "foward" : "backward") << ' ';
 			delta = std::abs(delta);

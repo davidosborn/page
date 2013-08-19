@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 // scene database
 // provides multiple views of contained objects
 
@@ -118,7 +88,7 @@ namespace page
 
 			// sound views
 			View<Sound>::Type GetSounds() const;
-			View<Sound>::Type GetClosestSounds(const math::Vector<3> &, unsigned n) const;
+			View<Sound>::Type GetClosestSounds(const math::Vec3 &, unsigned n) const;
 
 			// trackable views
 			View<Trackable>::Type GetTrackables() const;
@@ -127,7 +97,7 @@ namespace page
 			// atmospherics
 
 			// state
-			const math::Vector<3> &GetSunDirection() const;
+			const math::Vec3 &GetSunDirection() const;
 
 			// sunlight access
 			/*bool HasSunlight() const;
@@ -142,7 +112,7 @@ namespace page
 			const Precipitation &GetPrecipitation() const;*/
 
 			// modifiers
-			void SetSunDirection(const math::Vector<3> &);
+			void SetSunDirection(const math::Vec3 &);
 
 			////////////////////////////////////////////////////////////////////
 
@@ -184,9 +154,9 @@ namespace page
 			void Remove(const std::shared_ptr<Transformable> &);
 
 			// focus access
-			const math::Vector<3> &GetFocus() const;
+			const math::Vec3 &GetFocus() const;
 			void SetFocus();
-			void SetFocus(const math::Vector<3> &);
+			void SetFocus(const math::Vec3 &);
 			void SetFocus(const std::shared_ptr<const Body> &);
 
 			// camera mode
@@ -244,7 +214,7 @@ namespace page
 			struct
 			{
 				std::shared_ptr<const Body> target;
-				math::Vector<3> position;
+				math::Vec3 position;
 			} focus;
 
 			// camera state
@@ -261,7 +231,7 @@ namespace page
 			std::shared_ptr<FollowController> followCameraController;
 
 			// atmospherics
-			math::Vector<3> sunDirection;
+			math::Vec3 sunDirection;
 		};
 	}
 }

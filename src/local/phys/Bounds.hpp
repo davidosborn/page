@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #ifndef    page_local_phys_Bounds_hpp
 #   define page_local_phys_Bounds_hpp
 
@@ -35,76 +5,122 @@
 #	include <unordered_map>
 #	include <vector>
 
+#	include <boost/optional.hpp>
+
 #	include "../math/Aabb.hpp"
+#	include "../math/float.hpp" // Inf
 #	include "../math/Vector.hpp"
+#	include "../util/type_traits/range.hpp" // is_range
+#	include "../util/type_traits/sfinae.hpp" // ENABLE_IF
 
-namespace page
+namespace page { namespace res
 {
-	namespace res
-	{
-		class Mesh;
-		class Model;
-		class Skeleton;
-	}
+	class Mesh;
+	class Model;
+	class Skeleton;
+}}
 
-	namespace phys
+namespace page { namespace phys
+{
+	/**
+	 * A bounding skeleton.  Each bone defines a capsule boundary that should
+	 * enclose a mesh when attached to the associated skeleton.
+	 */
+	struct Bounds
 	{
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		/**
-		 * A bounding skeleton.  Each bone defines a capsule boundary that
-		 * should enclose a mesh when attached to the associated skeleton.
+		 * Creates a bounding skeleton using a model resource.  The model's
+		 * skeleton and meshes will be used to initialize the bounding skeleton.
 		 */
-		struct Bounds
+		explicit Bounds(const res::Model &);
+
+		/**
+		 * Creates a bounding skeleton using a range of mesh resources and an
+		 * optional skeleton resource.
+		 */
+		template <typename MeshInputRange>
+			explicit Bounds(
+				MeshInputRange,
+				const boost::optional<const res::Skeleton &> & = nullptr,
+				ENABLE_IF(util::is_range<MeshInputRange>::value));
+
+		/**
+		 * Creates a bounding skeleton using an optional skeleton resource.
+		 */
+		explicit Bounds(const boost::optional<const res::Skeleton &> & = nullptr);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		/**
+		 * An AABB for static content.  Any meshes that do not have bone weights
+		 * are assigned to this member.
+		 */
+		math::Aabb<3> staticBox = math::InverseInfiniteAabb<3>();
+
+		/**
+		 * A bounding bone.  A set of bones make up a bounding skeleton.  Each
+		 * bone describes a capsule that can be used to generate an AABB for a
+		 * specific pose.
+		 */
+		struct Bone
 		{
-			// construct
-			explicit Bounds(const res::Model &);
-			explicit Bounds(const res::Mesh &);
-			Bounds(
-				const res::Mesh &,
-				const res::Skeleton &);
-			template <typename MeshIterator>
-				Bounds(
-					MeshIterator first,
-					MeshIterator last);
-			template <typename MeshIterator>
-				Bounds(
-					MeshIterator first,
-					MeshIterator last,
-					const res::Skeleton &);
+			/**
+			 * The bone's name.  The name is used to bind it to a pose.
+			 */
+			std::string name;
 
-			math::Aabb<3> staticBox;
-			struct Bone
-			{
-				std::string name;
-				math::Vector<3> co[2];
-				float radius;
-			};
-			typedef std::vector<Bone> Bones;
-			Bones bones;
+			/**
+			 * The bone's origin.
+			 *
+			 * The @a origin and @a direction form a line that is used as a
+			 * foundation on which to build the bounding capsule.  The end
+			 * points of the capsule are positioned on the line according to
+			 * @a startWeight and @a endWeight.
+			 */
+			math::Vec3 origin;
 
-			private:
-			// initialization
-			template <typename MeshIterator>
-				void Init(
-					MeshIterator first,
-					MeshIterator last,
-					const res::Skeleton * = 0);
+			/**
+			 * The bone's direction.
+			 *
+			 * @sa origin
+			 */
+			math::Vec3 direction;
 
-			struct Scratch
-			{
-				struct Bone
-				{
-					math::Vector<3> co[2];
-					float min, max, radius;
-				};
-				typedef std::unordered_map<std::string, Bone> Bones;
-				Bones bones;
-			};
-			static void Init(Scratch &, const res::Skeleton &);
-			void Extend(Scratch &, const res::Mesh &);
-			void Apply(const Scratch &);
+			/**
+			 * A weight along the bone that determines the starting point of the
+			 * capsule.
+			 */
+			float startWeight = math::Inf<float>();
+
+			/**
+			 * A weight along the bone that determines the ending point of the
+			 * capsule.
+			 */
+			float endWeight = -math::Inf<float>();
+
+			/**
+			 * The radius of the bounding capsule.
+			 */
+			float radius = 0;
 		};
-	}
-}
+
+		/**
+		 * The bones that make up the bounding skeleton.
+		 */
+		std::unordered_map<std::string, Bone> bones;
+	};
+
+	/**
+	 * Adds a mesh to a bounding skeleton.
+	 */
+	void Add(Bounds &, const res::Mesh &);
+}}
 
 #	include "Bounds.tpp"
 #endif

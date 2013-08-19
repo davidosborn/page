@@ -1,0 +1,13 @@
+Polymorphic classes should be designed using the Non-Virtual Interface pattern.
+See cache::ProxyInterface.
+http://www.gotw.ca/publications/mill18.htm
+
+Use delegating constructors to avoid duplicate code in base class and member
+initializers.  See cache::SkinProxy, where poseId would otherwise have to be
+computed twice.
+
+When catching all exceptions, prefer to catch std::exception, not "...".
+
+Use the following to prevent ntdll.dll things in gdb:
+http://stackoverflow.com/questions/1621059/breakpoints-out-of-nowhere-when-debugging-with-gdb-inside-ntdll
+handle SIGTRAP nostop

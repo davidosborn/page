@@ -1,33 +1,3 @@
-/**
- * @section license
- *
- * Copyright (c) 2006-2013 David Osborn
- *
- * Permission is granted to use and redistribute this software in source and
- * binary form, with or without modification, subject to the following
- * conditions:
- *
- * 1. Redistributions in source form must retain the above copyright notice,
- *    this list of conditions, and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions, and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution, and in the same
- *    place and form as other copyright, license, and disclaimer information.
- *
- * As a special exception, distributions of derivative works in binary form may
- * include an acknowledgement in place of the above copyright notice, this list
- * of conditions, and the following disclaimer in the documentation and/or other
- * materials provided with the distribution, and in the same place and form as
- * other acknowledgements, similar in substance to the following:
- *
- *    Portions of this software are based on the work of David Osborn.
- *
- * This software is provided "as is", without any express or implied warranty.
- * In no event will the authors be liable for any damages arising out of the use
- * of this software.
- */
-
 #ifndef    page_local_err_tags_hpp
 #   define page_local_err_tags_hpp
 
@@ -88,9 +58,9 @@ namespace page { namespace err
 			audModule,
 			cacheModule,
 			cfgModule,
-			clipModule,
 			errModule,
 			gameModule,
+			guiModule,
 			inpModule,
 			logModule,
 			mathModule,
@@ -98,7 +68,6 @@ namespace page { namespace err
 			resModule,
 			scriptModule,
 			sysModule,
-			uiModule,
 			utilModule,
 			vidModule,
 			wndModule,
@@ -610,15 +579,6 @@ namespace page { namespace err
 	struct CfgModuleTag : Tag<TagId::cfgModule>, TagSet<ModuleTag> {};
 
 	/**
-	 * @class ClipModuleTag
-	 * A tag to be used when an error occurs within the clip module.
-	 *
-	 * @note The clip module is contained in the @c ::page::clip namespace and
-	 *       the @c src/local/clip directory.
-	 */
-	struct ClipModuleTag : Tag<TagId::clipModule>, TagSet<ModuleTag> {};
-
-	/**
 	 * @class ErrModuleTag
 	 * A tag to be used when an error occurs within the error module.
 	 *
@@ -635,6 +595,15 @@ namespace page { namespace err
 	 *       the @c src/local/game directory.
 	 */
 	struct GameModuleTag : Tag<TagId::gameModule>, TagSet<ModuleTag> {};
+
+	/**
+	 * @class GuiModuleTag
+	 * A tag to be used when an error occurs within the GUI module.
+	 *
+	 * @note The GUI module is contained in the @c ::page::gui namespace and the
+	 *       @c src/local/ui directory.
+	 */
+	struct GuiModuleTag : Tag<TagId::guiModule>, TagSet<ModuleTag> {};
 
 	/**
 	 * @class InpModuleTag
@@ -700,19 +669,10 @@ namespace page { namespace err
 	struct SysModuleTag : Tag<TagId::sysModule>, TagSet<ModuleTag> {};
 
 	/**
-	 * @class UiModuleTag
-	 * A tag to be used when an error occurs within the user-interface module.
-	 *
-	 * @note The user-interface module is contained in the @c ::page::ui
-	 *       namespace and the @c src/local/ui directory.
-	 */
-	struct UiModuleTag : Tag<TagId::uiModule>, TagSet<ModuleTag> {};
-
-	/**
 	 * @class UtilModuleTag
-	 * A tag to be used when an error occurs within the utilities module.
+	 * A tag to be used when an error occurs within the utility module.
 	 *
-	 * @note The utilities module is contained in the @c ::page::util namespace
+	 * @note The utility module is contained in the @c ::page::util namespace
 	 *       and the @c src/local/util directory.
 	 */
 	struct UtilModuleTag : Tag<TagId::utilModule>, TagSet<ModuleTag> {};

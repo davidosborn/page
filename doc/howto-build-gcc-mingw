@@ -1,0 +1,57 @@
+How to build GCC under MinGW
+
+Install MinGW and MSYS.  MSYS will be installed in a subdirectory of MinGW.
+
+	mingw-get install gcc g++ msys-base msys-m4 msys-make msys-wget msys-patch
+
+	echo c:\devel\mingw\mingw32 /usr/local >>c:\devel\mingw\msys\1.0\etc\fstab
+
+	setx PATH=c:\devel\mingw\mingw32\bin;c:\devel\mingw\bin;c:\devel\mingw\msys\1.0\bin
+	setx C_INCLUDE_PATH=c:\devel\mingw\mingw32\include;c:\devel\mingw\include;c:\devel\msys\1.0\include
+	setx CPLUS_INCLUDE_PATH=c:\devel\mingw\mingw32\include;c:\devel\mingw\include;c:\devel\msys\1.0\include
+	setx LIBRARY_PATH=c:\devel\mingw\mingw32\lib;c:\devel\mingw\lib;c:\devel\mingw\msys\1.0\lib
+
+Switch to the MSYS shell.
+
+	export GCC_VERSION=4.6.1 GMP_VERSION=5.0.2 MPFR_VERSION=3.0.1 MPC_VERSION=0.9
+
+Download GCC, GMP, MPFR, and MPC.
+
+	cd /c/devel
+	mkdir gcc
+	cd gcc
+
+	wget ftp://mirror.csclub.uwaterloo.ca/gnu/gcc/gcc-$GCC_VERSION/gcc-core-$GCC_VERSION.tar.bz2 -O- | tar jx
+	wget ftp://mirror.csclub.uwaterloo.ca/gnu/gcc/gcc-$GCC_VERSION/gcc-g++-$GCC_VERSION.tar.bz2  -O- | tar jx
+	wget ftp://mirror.csclub.uwaterloo.ca/gnu/gcc/gmp-$GMP_VERSION/gmp-$GMP_VERSION.tar.bz2      -O- | tar jx
+	wget ftp://mirror.csclub.uwaterloo.ca/gnu/gcc/mpfr-$MPFR_VERSION/mpfr-$MPFR_VERSION.tar.bz2  -O- | tar jx
+	wget http://www.multiprecision.org/mpc/download/mpc-$MPC_VERSION.tar.gz                      -O- | tar zx
+
+Apply patches.
+
+	cd /c/devel/gcc/gcc-$GCC_VERSION
+	patch delegating-constructors.patch
+	patch gcc-4.6.1-unique_ptr.patch
+
+Build and install GMP, MPFR, and MPC.
+
+	cd /c/devel/gcc/gmp-$GMP_VERSION
+	./configure --prefix=/mingw --program-prefix="" --disable-static --enable-shared
+	make install
+	make check
+
+	cd /c/devel/gcc/mpfr-$MPFR_VERSION
+	./configure --prefix=/mingw --program-prefix="" --disable-static --enable-shared
+	make install
+
+	cd /c/devel/gcc/mpc-$MPC_VERSION
+	./configure --prefix=/mingw --program-prefix="" --disable-static --enable-shared
+	make install
+
+Build and install GCC.
+
+	cd /c/devel/gcc
+	mkdir gcc-$GCC_VERSION-build
+	cd gcc-$GCC_VERSION-build
+	../gcc-$GCC_VERSION/configure --prefix=/mingw --program-prefix="" --build=i686-pc-mingw32 --disable-nls --disable-win32-registry --enable-libstdcxx-debug --enable-threads
+	make CFLAGS="-O -march=athlon-xp" LIBCFLAGS="-O2" LIBCXXFLAGS="-O2 -fno-implicit-templates" LDFLAGS="-s"
