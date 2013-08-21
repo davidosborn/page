@@ -1,14 +1,14 @@
 #include <cassert>
 
-#include "../../../cache/proxy/openal/Buffer.hpp"
+#include "../../../cache/proxy/openal/BufferProxy.hpp"
 #include "../../../res/type/Sound.hpp" // GetDuration
 #include "StaticBuffer.hpp"
 
 namespace page { namespace aud { namespace openal
 {
 	// construct/destroy
-	StaticBuffer::StaticBuffer(ALuint source, const util::resource_ptr<res::Sound> &sound, bool loop, float playPosition) :
-		source(source), buffer(cache::openal::Buffer(sound).Copy()),
+	StaticBuffer::StaticBuffer(ALuint source, const cache::Proxy<res::Sound> &sound, bool loop, float playPosition) :
+		source(source), buffer(cache::openal::BufferProxy(sound)),
 		lock(buffer.lock())
 	{
 		alSourcei(source, AL_BUFFER, *lock);

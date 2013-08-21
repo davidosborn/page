@@ -15,12 +15,14 @@ namespace page { namespace cache
 	template <typename T>
 		class Proxy : public ProxyInterface<Proxy<T>, T>
 	{
+		friend class ProxyInterface<Proxy<T>, T>;
+
 		/*-------+
 		| traits |
 		+-------*/
 
 		public:
-		using ProxyInterface<Proxy<T>, T>::pointer;
+		using typename ProxyInterface<Proxy<T>, T>::pointer;
 
 		/*-------------+
 		| constructors |
@@ -35,7 +37,7 @@ namespace page { namespace cache
 
 		private:
 		pointer DoLock() const;
-		const std::string &DoGetSignature() const noexcept;
+		const Signature &DoGetSignature() const noexcept;
 
 		/*-------------+
 		| data members |
@@ -44,7 +46,7 @@ namespace page { namespace cache
 		/**
 		 * The wrapped proxy, which forms the concrete implementation.
 		 */
-		std::shared_ptr<BasicProxy> impl;
+		std::shared_ptr<BasicProxy<T>> impl;
 	};
 }}
 

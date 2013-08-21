@@ -5,7 +5,7 @@ namespace page { namespace cache
 	+-------------*/
 
 	template <typename T>
-		BasicProxy<T>::BasicProxy(const std::string &signature) :
+		BasicProxy<T>::BasicProxy(const Signature &signature) :
 			signature(signature) {}
 
 	/*------------------------------+
@@ -13,7 +13,7 @@ namespace page { namespace cache
 	+------------------------------*/
 
 	template <typename T>
-		const std::string &BasicProxy<T>::DoGetSignature() const noexcept
+		const Signature &BasicProxy<T>::DoGetSignature() const noexcept
 	{
 		return signature;
 	}

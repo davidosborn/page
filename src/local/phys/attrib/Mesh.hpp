@@ -1,8 +1,7 @@
 #ifndef    page_local_phys_attrib_Mesh_hpp
 #   define page_local_phys_attrib_Mesh_hpp
 
-#	include "../../cache/fwd.hpp" // Proxy
-#	include "../../util/raii/copy_ptr.hpp"
+#	include "../../cache/proxy/Proxy.hpp"
 
 namespace page
 {
@@ -15,7 +14,7 @@ namespace page
 			struct Mesh
 			{
 				// construct
-				Mesh();
+				Mesh() = default;
 				explicit Mesh(const cache::Proxy<res::Mesh> &);
 
 				// access
@@ -23,7 +22,7 @@ namespace page
 				void SetMesh(const cache::Proxy<res::Mesh> &);
 
 				private:
-				util::copy_ptr<cache::Proxy<res::Mesh>> mesh;
+				cache::Proxy<res::Mesh> mesh;
 			};
 		}
 	}

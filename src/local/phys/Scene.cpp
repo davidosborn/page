@@ -1,9 +1,7 @@
 #include <algorithm> // remove, transform
 #include <cassert>
-#include <functional> // hash
 #include <iterator> // back_inserter
 
-#include "../cache/proxy/Proxy.hpp" // hash(Proxy)
 #include "../math/Euler.hpp"
 #include "../math/float.hpp" // DegToRad
 #include "../math/Plane.hpp"
@@ -653,12 +651,6 @@ namespace page
 				Sound &sound(**iter);
 				sound.Update(deltaTime);
 			}
-		}
-
-		// hash functions
-		std::size_t Scene::MaterialHash::operator ()(const util::copy_ptr<cache::Proxy<res::Material>> &mat) const
-		{
-			return std::hash<cache::Proxy<res::Material>>()(*mat);
 		}
 	}
 }

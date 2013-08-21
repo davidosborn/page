@@ -1,6 +1,5 @@
 #include <algorithm> // max, min
 
-#include "../../cache/proxy/Proxy.hpp"
 #include "../../math/interp.hpp" // HermiteScale
 #include "../../res/type/Image.hpp" // Image::size
 #include "../../res/type/Theme.hpp" // Theme::scale
@@ -17,7 +16,7 @@ namespace page { namespace ui
 	ImageWidget::ImageWidget(
 		cache::Proxy<res::Image> const& image,
 		math::Vec2               const& size) :
-			image(image.Copy()),
+			image(image),
 			size(size) {}
 
 	/*-----------------+

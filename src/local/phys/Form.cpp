@@ -1,6 +1,5 @@
 #include <cassert>
 
-#include "../cache/proxy/Proxy.hpp"
 #include "Form.hpp"
 
 namespace page
@@ -55,7 +54,7 @@ namespace page
 		}
 		Form::Form(const cache::Proxy<res::Model> &model) :
 			Pose(model && model->skeleton ? Pose(*model->skeleton) : Pose()),
-			model(model.Copy())
+			model(model)
 		{
 			if (model)
 			{

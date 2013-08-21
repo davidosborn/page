@@ -2,7 +2,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "../cache/proxy/Resource.hpp"
+#include "../cache/proxy/ResourceProxy.hpp"
 #include "../log/Stats.hpp"
 #include "../res/Index.hpp" // GetIndex, Index::Load
 #include "../res/type/Image.hpp"
@@ -68,7 +68,7 @@ namespace page { namespace game
 			Array(false), // picture and description
 			Array(true)   // list and picture/description
 		};
-		invArray[0].Insert(Image(cache::Resource<res::Image>("ui/inventory/default.png"), .25));
+		invArray[0].Insert(Image(cache::ResourceProxy<res::Image>("ui/inventory/default.png"), .25));
 		invArray[0].Insert(Text("For we can a priori and prior to all given objects have a knowledge of those conditions on which alone experience of them is possible, but never of the laws to which things may in themselves be subject, without reference to possible experience.", .25));
 		List invList(math::Vec2(.2, .5));
 		invList.Insert("toothpick");
@@ -84,10 +84,10 @@ namespace page { namespace game
 		// FIXME: implement*/
 		// create command bar
 		cmdBar.reset(new Array(true));
-		cmdBar->Insert(Image(cache::Resource<res::Image>("ui/command/menu.png")));
-		cmdBar->Insert(Image(cache::Resource<res::Image>("ui/command/inventory.png")));
-		cmdBar->Insert(Image(cache::Resource<res::Image>("ui/command/journal.png")));
-		cmdBar->Insert(Image(cache::Resource<res::Image>("ui/command/map.png")));
+		cmdBar->Insert(Image(cache::ResourceProxy<res::Image>("ui/command/menu.png")));
+		cmdBar->Insert(Image(cache::ResourceProxy<res::Image>("ui/command/inventory.png")));
+		cmdBar->Insert(Image(cache::ResourceProxy<res::Image>("ui/command/journal.png")));
+		cmdBar->Insert(Image(cache::ResourceProxy<res::Image>("ui/command/map.png")));
 		cmdBar->Insert(Edit());
 		Insert(cmdBar, math::Vec2(.5, 1));
 	}

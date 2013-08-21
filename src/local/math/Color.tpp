@@ -406,10 +406,10 @@ namespace page { namespace math
 #define DEFINE_OPERATORS(TYPE) \
 	DEFINE_BINARY_ARITHMETIC_OPERATOR(TYPE, *,  std::multiplies) \
 	DEFINE_BINARY_ARITHMETIC_OPERATOR(TYPE, /,  std::divides) \
-	DEFINE_BINARY_ARITHMETIC_OPERATOR(TYPE, %,  modulus) \
+	DEFINE_BINARY_ARITHMETIC_OPERATOR(TYPE, %,  util::modulus) \
 	DEFINE_BINARY_ARITHMETIC_OPERATOR(TYPE, +,  std::plus) \
 	DEFINE_BINARY_ARITHMETIC_OPERATOR(TYPE, -,  std::minus) \
-	DEFINE_UNARY_ARITHMETIC_OPERATOR (TYPE, +,  unary_plus) \
+	DEFINE_UNARY_ARITHMETIC_OPERATOR (TYPE, +,  util::unary_plus) \
 	DEFINE_UNARY_ARITHMETIC_OPERATOR (TYPE, -,  std::negate) \
 	DEFINE_BINARY_LOGICAL_OPERATOR   (TYPE, <,  std::less) \
 	DEFINE_BINARY_LOGICAL_OPERATOR   (TYPE, >,  std::greater) \
@@ -422,7 +422,7 @@ namespace page { namespace math
 	DEFINE_UNARY_LOGICAL_OPERATOR    (TYPE, !,  std::logical_not) \
 	DEFINE_ASSIGNMENT_OPERATOR       (TYPE, *,  std::multiplies) \
 	DEFINE_ASSIGNMENT_OPERATOR       (TYPE, /,  std::divides) \
-	DEFINE_ASSIGNMENT_OPERATOR       (TYPE, %,  modulus) \
+	DEFINE_ASSIGNMENT_OPERATOR       (TYPE, %,  util::modulus) \
 	DEFINE_ASSIGNMENT_OPERATOR       (TYPE, +,  std::plus) \
 	DEFINE_ASSIGNMENT_OPERATOR       (TYPE, -,  std::minus)
 

@@ -1,7 +1,7 @@
 #ifndef    page_local_vid_opengl_resources_ShaderMaterialResources_hpp
 #   define page_local_vid_opengl_resources_ShaderMaterialResources_hpp
 
-#	include "../../../cache/proxy/opengl/Program.hpp"
+#	include "../../../cache/proxy/opengl/ProgramProxy.hpp"
 #	include "../../../res/type/Material.hpp" // Material::Pass
 
 namespace page
@@ -32,7 +32,7 @@ namespace page
 					shadowMaterialMask   = 0x100,
 					allMaterialMask      = 0xfff
 				};
-				cache::opengl::Program GetProgram(
+				cache::opengl::ProgramProxy GetProgram(
 					const res::Material::Pass &,
 					MaterialMask = allMaterialMask,
 					bool fallback = false) const;

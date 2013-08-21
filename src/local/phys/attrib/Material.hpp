@@ -1,8 +1,7 @@
 #ifndef    page_local_phys_attrib_Material_hpp
 #   define page_local_phys_attrib_Material_hpp
 
-#	include "../../cache/fwd.hpp" // Proxy
-#	include "../../util/raii/copy_ptr.hpp"
+#	include "../../cache/proxy/Proxy.hpp"
 
 namespace page
 {
@@ -15,7 +14,7 @@ namespace page
 			struct Material
 			{
 				// construct
-				Material();
+				Material() = default;
 				explicit Material(const cache::Proxy<res::Material> &);
 
 				// access
@@ -23,7 +22,7 @@ namespace page
 				void SetMaterial(const cache::Proxy<res::Material> &);
 
 				private:
-				util::copy_ptr<cache::Proxy<res::Material>> material;
+				cache::Proxy<res::Material> material;
 			};
 		}
 	}

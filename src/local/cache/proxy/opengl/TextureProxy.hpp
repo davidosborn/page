@@ -27,7 +27,7 @@ namespace page { namespace cache { namespace opengl
 		+-------*/
 
 		public:
-		using BasicProxy<vid::opengl::Texture>::pointer;
+		using typename BasicProxy<vid::opengl::Texture>::pointer;
 
 		/*-------------+
 		| constructors |

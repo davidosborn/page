@@ -2,7 +2,7 @@
 
 #include <boost/optional.hpp>
 
-#include "../../../cache/proxy/Resource.hpp"
+#include "../../../cache/proxy/ResourceProxy.hpp"
 #include "../../../cfg/vars.hpp"
 #include "../../../cfg/vars.hpp"
 #include "../../../err/report.hpp" // ReportWarning, std::exception
@@ -35,8 +35,8 @@ namespace page
 					try
 					{
 						program.reset(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/outline.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/outline.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/outline.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/outline.vs")));
 						program->GetUniform("texSize");
 					}
 					catch (const std::exception &e)

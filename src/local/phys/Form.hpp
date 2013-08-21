@@ -3,11 +3,10 @@
 #ifndef    page_local_phys_Form_hpp
 #   define page_local_phys_Form_hpp
 
-#	include "../cache/fwd.hpp" // Proxy
+#	include "../cache/proxy/Proxy.hpp"
 #	include "../res/type/Model.hpp" // Model::Part
 #	include "../res/type/Scene.hpp" // Scene::Form
 #	include "../util/Identifiable.hpp"
-#	include "../util/raii/copy_ptr.hpp"
 #	include "attrib/Deformation.hpp"
 #	include "attrib/Material.hpp"
 #	include "attrib/Mesh.hpp"
@@ -71,7 +70,7 @@ namespace page
 			void InitParts();
 
 			Parts parts;
-			util::copy_ptr<cache::Proxy<res::Model>> model;
+			cache::Proxy<res::Model> model;
 		};
 	}
 }

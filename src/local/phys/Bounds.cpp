@@ -8,7 +8,6 @@
 #include "../util/functional/pointer.hpp" // dereference
 #include "../util/iterator/indirect_iterator.hpp"
 #include "../util/iterator/member_iterator.hpp"
-#include "../util/raii/copy_ptr.hpp"
 #include "attrib/Pose.hpp"
 #include "Bounds.hpp"
 

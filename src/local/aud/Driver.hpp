@@ -4,8 +4,8 @@
 #	include <memory> // shared_ptr
 #	include <vector>
 
+#	include "../cache/proxy/Proxy.hpp"
 #	include "../util/class/special_member_functions.hpp" // Uncopyable
-#	include "../util/raii/resource_ptr.hpp"
 
 namespace page
 {
@@ -63,7 +63,7 @@ namespace page { namespace aud
 		void Update(float deltaTime);
 
 		// modifiers
-		SoundProxy Play(const util::resource_ptr<res::Sound> &,
+		SoundProxy Play(const cache::Proxy<res::Sound> &,
 			bool loop = false, bool fade = false, float fadeDuration = 1);
 		void Stop();
 		void Pause();

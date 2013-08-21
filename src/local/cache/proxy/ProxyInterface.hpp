@@ -3,12 +3,16 @@
 
 #	include <iosfwd> // basic_ostream
 #	include <memory> // shared_ptr
-#	include <string>
 
 namespace page { namespace cache
 {
+	class Signature;
+
 	/**
+	 * The interface for proxies of cached objects.
 	 *
+	 * @note Uses the "Curiously-Recurring Template" and "Non-Virtual Interface"
+	 *       patterns.
 	 */
 	template <typename Derived, typename T>
 		class ProxyInterface
@@ -60,7 +64,7 @@ namespace page { namespace cache
 		/**
 		 * @return Derived::DoGetSignature().
 		 */
-		const std::string &GetSignature() const noexcept;
+		const Signature &GetSignature() const noexcept;
 	};
 
 	/*---------------------+
@@ -120,6 +124,26 @@ namespace page { namespace cache
 		std::basic_ostream<Char, CharTraits> &operator <<(
 			std::basic_ostream<Char, CharTraits> &, const ProxyInterface<D, T> &);
 }}
+
+////////// std::hash<ProxyInterface> ///////////////////////////////////////////
+
+namespace std
+{
+	template <typename>
+		struct hash;
+
+	/**
+	 * A specialization of std::hash for ::page::cache::ProxyInterface.
+	 */
+	template <typename D, typename T>
+		struct hash<::page::cache::ProxyInterface<D, T>>
+	{
+		using result_type   = typename hash<string>::result_type;
+		using argument_type = ::page::cache::ProxyInterface<D, T>;
+
+		result_type operator ()(const argument_type &) const noexcept;
+	};
+}
 
 #	include "ProxyInterface.tpp"
 #endif

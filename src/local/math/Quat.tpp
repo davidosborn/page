@@ -208,7 +208,7 @@ namespace page { namespace math
 	template <typename T> Quat<T> operator +(const Quat<T> &q)
 	{
 		Quat<T> r;
-		std::transform(q.begin(), q.end(), r.begin(), unary_plus<T>());
+		std::transform(q.begin(), q.end(), r.begin(), util::unary_plus<T>());
 		return r;
 	}
 	template <typename T> Quat<T> operator -(const Quat<T> &q)
@@ -265,7 +265,7 @@ namespace page { namespace math
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
 		Quat<R> r;
-		std::transform(q.begin(), q.end(), r.begin(), std::bind(modulus<R>(), std::placeholders::_1, t));
+		std::transform(q.begin(), q.end(), r.begin(), std::bind(util::modulus<R>(), std::placeholders::_1, t));
 		return r;
 	}
 	template <typename T, typename U> Quat<typename ArithmeticConversion<T, U>::Result> operator +(const Quat<T> &q, U t)
@@ -302,7 +302,7 @@ namespace page { namespace math
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
 		Quat<R> r;
-		std::transform(q.begin(), q.end(), r.begin(), std::bind(modulus<R>(), t, std::placeholders::_1));
+		std::transform(q.begin(), q.end(), r.begin(), std::bind(util::modulus<R>(), t, std::placeholders::_1));
 		return r;
 	}
 	template <typename T, typename U> Quat<typename ArithmeticConversion<T, U>::Result> operator +(T t, const Quat<U> &q)
@@ -363,7 +363,7 @@ namespace page { namespace math
 	}
 	template <typename T, typename U> Quat<T> &operator %=(Quat<T> &q, U t)
 	{
-		std::transform(q.begin(), q.end(), q.begin(), std::bind(modulus<T>(), std::placeholders::_1, t));
+		std::transform(q.begin(), q.end(), q.begin(), std::bind(util::modulus<T>(), std::placeholders::_1, t));
 		return q;
 	}
 	template <typename T, typename U> Quat<T> &operator +=(Quat<T> &q, U t)

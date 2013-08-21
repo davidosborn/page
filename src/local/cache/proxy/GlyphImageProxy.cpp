@@ -8,7 +8,7 @@ namespace page { namespace cache
 	+-------------*/
 
 	GlyphImageProxy::GlyphImageProxy(const Proxy<res::Font> &font, char ch, unsigned size) :
-		BasicProxy<res::Image>(Signature("glyph image", {font->GetSignature(), ch, size})),
+		BasicProxy(Signature("glyph image", font, ch, size)),
 		font(font), ch(ch), size(size) {}
 
 	/*--------------------------+

@@ -3,7 +3,8 @@
 
 namespace page { namespace cache
 {
-	template <typename> class Proxy;
+	template <typename>
+		class Proxy;
 }}
 
 #endif

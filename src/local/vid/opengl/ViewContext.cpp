@@ -4,9 +4,9 @@
 
 #include <GL/gl.h>
 
-#include "../../cache/proxy/Aabb.hpp"
-#include "../../cache/proxy/opengl/Drawable.hpp"
-#include "../../cache/proxy/opengl/Texture.hpp"
+#include "../../cache/proxy/AabbProxy.hpp"
+#include "../../cache/proxy/opengl/DrawableProxy.hpp"
+#include "../../cache/proxy/opengl/TextureProxy.hpp"
 #include "../../cfg/vars.hpp"
 #include "../../cfg/vars.hpp"
 #include "../../math/Color.hpp" // Rgb{,a}Color
@@ -58,7 +58,7 @@ namespace page
 				void Bind(const res::Material::Pass::Texture &texture,
 					MatrixGuard &matrixGuard, TextureFormat format = defaultTextureFormat)
 				{
-					Bind(*cache::opengl::Texture(texture.image, format));
+					Bind(*cache::opengl::TextureProxy(texture.image, format));
 					if (Any(texture.offset) || Any(texture.scale != 1))
 					{
 						glMatrixMode(GL_TEXTURE);
@@ -377,7 +377,7 @@ namespace page
 			}
 			void ViewContext::Draw(const phys::Form::Part &part, const VertexFormat &vertexFormat)
 			{
-				cache::opengl::Drawable(part)->Draw(vertexFormat);
+				cache::opengl::DrawableProxy(part)->Draw(vertexFormat);
 			}
 
 			// shader material setup
@@ -914,7 +914,7 @@ namespace page
 			void ViewContext::DrawBounds(const phys::Form &form)
 			{
 				if (!form.GetModel()) return;
-				math::Aabb<3> aabb(*cache::Aabb(form));
+				math::Aabb<3> aabb(*cache::AabbProxy(form));
 				AttribGuard attribGuard;
 				glPushAttrib(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 				glDisable(GL_ALPHA_TEST);

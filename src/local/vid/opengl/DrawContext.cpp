@@ -1,6 +1,6 @@
 #include <GL/gl.h>
 
-#include "../../cache/proxy/opengl/Texture.hpp"
+#include "../../cache/proxy/opengl/TextureProxy.hpp"
 #include "../../math/Vector.hpp"
 #include "../../wnd/Window.hpp" // Window::GetSize
 #include "../Driver.hpp" // Driver::GetWindow
@@ -26,7 +26,7 @@
 #include <cmath> // ceil, sqrt
 #include <functional> // bind2nd, not_equal_to
 #include <vector>
-#include "../../cache/proxy/opengl/FontTexture.hpp"
+#include "../../cache/proxy/opengl/FontTextureProxy.hpp"
 #include "../../math/Color.hpp" // RgbaColor
 #include "../../res/type/Font.hpp" // GetAdvance, GetGlyph, Wrap
 #include "../../util/functional/locale.hpp" // isspace_function
@@ -129,7 +129,7 @@ namespace page
 				FixMatrix(matrixGuard, true);
 				AttribGuard attribGuard;
 				glPushAttrib(GL_ENABLE_BIT);
-				Bind(*cache::opengl::Texture(img, defaultTextureFormat, filterTextureFlag, clamp));
+				Bind(*cache::opengl::TextureProxy(img, defaultTextureFormat, filterTextureFlag, clamp));
 				glEnable(GL_TEXTURE_2D);
 				glBegin(GL_QUADS);
 				glTexCoord2fv(&*uv1.begin()); glVertex2fv(&*co1.begin());
@@ -159,7 +159,7 @@ namespace page
 				std::string wrappedText(wrap ? Wrap(font, text, width) : text);
 				math::Vec2 pen(box.min.x, box.min.y + font.maxBearing.y * scale.y);
 				// calculate glyph rendering coordinates
-				const FontTexture &texture(*cache::opengl::FontTexture(fontProxy,
+				const FontTexture &texture(*cache::opengl::FontTextureProxy(fontProxy,
 					std::ceil(fontSize * (Size(GetFrame()) * Size(GetPixelLogicalBox())).y)));
 				typedef std::vector<GlyphCoords> Glyphs;
 				Glyphs glyphs;

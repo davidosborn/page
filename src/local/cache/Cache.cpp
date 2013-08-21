@@ -107,7 +107,7 @@ namespace page { namespace cache
 		if (iter != pool.end())
 		{
 			auto &datum(iter->second);
-			datum.atim = time;
+			datum.atime = time;
 		}
 	}
 

@@ -7,7 +7,7 @@
 
 #include <boost/optional.hpp>
 
-#include "../../../cache/proxy/Resource.hpp"
+#include "../../../cache/proxy/ResourceProxy.hpp"
 #include "../../../cfg/vars.hpp"
 #include "../../../cfg/vars.hpp"
 #include "../../../err/Exception.hpp"
@@ -56,10 +56,10 @@ namespace page
 					Program *MakeProgram() const
 					{
 						return new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow.vs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow-exponential.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow-exponential.vs"));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow.vs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow-exponential.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow-exponential.vs"));
 					}
 					RenderTargetPool *MakeRenderTargetPool(unsigned size) const
 					{
@@ -108,10 +108,10 @@ namespace page
 					Program *MakeProgram() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow.vs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow-packed.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow-packed.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow.vs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow-packed.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow-packed.vs")));
 						program->GetUniform("invFar");
 						return program.release();
 					}
@@ -134,10 +134,10 @@ namespace page
 					Program *MakeProgram() const
 					{
 						return new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow.vs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow-variance.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/shadow/shadow-variance.vs"));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow.vs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow-variance.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/shadow/shadow-variance.vs"));
 					}
 					RenderTargetPool *MakeRenderTargetPool(unsigned size) const
 					{

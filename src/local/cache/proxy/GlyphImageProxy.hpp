@@ -24,7 +24,7 @@ namespace page { namespace cache
 		+-------*/
 
 		public:
-		using BasicProxy<res::Image>::pointer;
+		using typename BasicProxy<res::Image>::pointer;
 
 		/*-------------+
 		| constructors |

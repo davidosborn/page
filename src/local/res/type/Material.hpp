@@ -3,7 +3,7 @@
 
 #	include <vector>
 
-#	include "../../cache/proxy/Resource.hpp"
+#	include "../../cache/proxy/ResourceProxy.hpp"
 #	include "../../math/Color.hpp" // Rgb{,a}Color
 #	include "../../math/Vector.hpp"
 
@@ -20,9 +20,9 @@ namespace page
 				struct Texture
 				{
 					Texture();
-					Texture(const cache::Resource<Image> &image);
+					Texture(const cache::ResourceProxy<Image> &image);
 
-					cache::Resource<Image> image;
+					cache::ResourceProxy<Image> image;
 					math::Vec2 offset, scale;
 					unsigned uvIndex; // break out the sunscreen!
 				};

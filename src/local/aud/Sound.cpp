@@ -1,6 +1,5 @@
 #include <cmath> // fmod
 
-#include "../cache/proxy/Proxy.hpp"
 #include "../res/type/Sound.hpp" // GetDuration
 #include "channel/AmbientChannel.hpp" // AmbientChannel::SetVolume
 #include "Sound.hpp"
@@ -9,14 +8,14 @@ namespace page { namespace aud
 {
 	// construct
 	Sound::Sound(const cache::Proxy<res::Sound> &sound, bool loop, bool fade, float fadeDuration) :
-		sound(sound.Copy()), playing(true), paused(false), loop(loop),
+		sound(sound), playing(true), paused(false), loop(loop),
 		fade(fade), fadeDuration(fadeDuration), level(!fade),
 		playPosition(0), volume(0), channel(0) {}
 
 	// attributes
 	const cache::Proxy<res::Sound> &Sound::GetSound() const
 	{
-		return *sound;
+		return sound;
 	}
 
 	// state
@@ -60,7 +59,7 @@ namespace page { namespace aud
 		{
 			// update play position
 			playPosition += deltaTime;
-			float duration = GetDuration(**sound);
+			float duration = GetDuration(*sound);
 			if (playPosition >= duration)
 			{
 				if (!loop)

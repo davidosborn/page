@@ -1,5 +1,8 @@
 #include <ostream> // basic_ostream
 
+#include "../../err/Exception.hpp"
+#include "../Signature.hpp"
+
 namespace page { namespace cache
 {
 	template <typename D, typename T>
@@ -32,7 +35,7 @@ namespace page { namespace cache
 	template <typename D, typename T>
 		ProxyInterface<D, T>::operator bool() const noexcept
 	{
-		return !GetSignature().empty();
+		return GetSignature();
 	}
 
 	template <typename D, typename T>
@@ -116,3 +119,14 @@ namespace page { namespace cache
 		return os << proxy.GetSignature();
 	}
 }}
+
+////////// std::hash<ProxyInterface> ///////////////////////////////////////////
+
+namespace std
+{
+	template <typename D, typename T>
+		auto hash<::page::cache::ProxyInterface<D, T>>::operator ()(const argument_type &proxy) const noexcept -> result_type
+	{
+		return hash<string>()(proxy.GetSignature());
+	}
+}

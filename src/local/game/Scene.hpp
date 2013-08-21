@@ -4,7 +4,7 @@
 #	include <memory> // unique_ptr
 
 #	include "../aud/Driver.hpp" // SoundProxy
-#	include "../cache/proxy/Resource.hpp"
+#	include "../cache/proxy/ResourceProxy.hpp"
 #	include "../phys/Scene.hpp"
 
 namespace page
@@ -24,7 +24,7 @@ namespace page { namespace game
 	{
 		// constructor/destructor
 		Scene(aud::Driver &, const res::Scene & =
-			*cache::Resource<res::Scene>("scene/village/village.scene"));//"scene/default.scene"));
+			*cache::ResourceProxy<res::Scene>("scene/village/village.scene"));//"scene/default.scene"));
 		/**
 		 * @note We need to define the destructor ourselves, even though it
 		 *       doesn't do anything, to allow @c std::unique_ptr to contain

@@ -1,9 +1,8 @@
 #ifndef    page_local_phys_Sound_hpp
 #   define page_local_phys_Sound_hpp
 
-#	include "../cache/fwd.hpp" // Proxy
+#	include "../cache/proxy/Proxy.hpp"
 #	include "../util/Identifiable.hpp"
-#	include "../util/raii/copy_ptr.hpp"
 #	include "attrib/Position.hpp"
 #	include "attrib/Volume.hpp"
 #	include "mixin/Controllable.hpp"
@@ -38,7 +37,7 @@ namespace page
 			void Update(const Frame &);
 
 			private:
-			util::copy_ptr<cache::Proxy<res::Sound>> sound;
+			cache::Proxy<res::Sound> sound;
 			bool playing, loop;
 			float playPosition;
 		};

@@ -29,7 +29,7 @@ namespace page { namespace cache { namespace opengl
 		+-------*/
 
 		public:
-		using BasicProxy<vid::opengl::Program>::pointer;
+		using typename BasicProxy<vid::opengl::Program>::pointer;
 
 		/*-------------+
 		| constructors |
@@ -53,14 +53,6 @@ namespace page { namespace cache { namespace opengl
 				ENABLE_IF(util::is_iterator<ShaderInputIterator>::value));
 
 		private:
-		/**
-		 * Generates the appropriate signature for the constructor arguments.
-		 */
-		template <typename ShaderInputRange>
-			static std::string ProgramProxy::MakeSignature(
-				ShaderInputRange shaders,
-				ENABLE_IF(util::is_range<ShaderInputRange>::value));
-				
 		/**
 		 * Performs some additional initialization for the constructors.
 		 */

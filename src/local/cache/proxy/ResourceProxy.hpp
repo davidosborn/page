@@ -20,7 +20,7 @@ namespace page { namespace cache
 		+-------*/
 
 		public:
-		using BasicProxy<T>::pointer;
+		using typename BasicProxy<T>::pointer;
 
 		/*-------------+
 		| constructors |

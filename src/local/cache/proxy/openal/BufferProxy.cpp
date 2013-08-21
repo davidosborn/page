@@ -28,12 +28,12 @@ namespace page { namespace cache { namespace openal
 		};
 	}
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	BufferProxy::BufferProxy(const Proxy<res::Sound> &sound) :
-		BasicProxy<ALuint>(Signature("OpenAL audio buffer", sound->GetSignature())),
+		BasicProxy(Signature("OpenAL audio buffer", sound)),
 		sound(sound) {}
 
 	/*--------------------------+

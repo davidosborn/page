@@ -25,7 +25,7 @@
 #include "UserInterface.hpp"
 
 // TEST: scripting
-#include "../cache/proxy/Resource.hpp"
+#include "../cache/proxy/ResourceProxy.hpp"
 #include "../res/type/Script.hpp"
 
 namespace page { namespace game
@@ -97,7 +97,7 @@ namespace page { namespace game
 			timer.reset(sys::MakeTimer());
 		}
 		// TEST: scripting
-		scriptDriver->Run(*cache::Resource<res::Script>("script/test.lua"));
+		scriptDriver->Run(*cache::ResourceProxy<res::Script>("script/test.lua"));
 	}
 	Game::~Game()
 	{

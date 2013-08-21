@@ -9,7 +9,7 @@
 namespace page { namespace util
 {
 	/**
-	 * A copy pointer with a customizable cloner.
+	 * A smart pointer with copy semantics and a customizable cloner.
 	 */
 	template <typename T>
 		class copy_ptr

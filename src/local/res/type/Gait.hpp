@@ -1,7 +1,7 @@
 #ifndef    page_local_res_type_Gait_hpp
 #   define page_local_res_type_Gait_hpp
 
-#	include "../../cache/proxy/Resource.hpp"
+#	include "../../cache/proxy/ResourceProxy.hpp"
 
 namespace page
 {
@@ -13,7 +13,7 @@ namespace page
 		{
 			struct State
 			{
-				cache::Resource<res::Animation> animation;
+				cache::ResourceProxy<res::Animation> animation;
 				float stride; // translation in metres, rotation in degrees
 			};
 

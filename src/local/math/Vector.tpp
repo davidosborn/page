@@ -245,7 +245,7 @@ namespace page { namespace math
 	template <unsigned n, typename T> Vector<n, T> operator +(const Vector<n, T> &v)
 	{
 		Vector<n, T> r;
-		std::transform(v.begin(), v.end(), r.begin(), unary_plus<T>());
+		std::transform(v.begin(), v.end(), r.begin(), util::unary_plus<T>());
 		return r;
 	}
 	template <unsigned n, typename T> Vector<n, T> operator -(const Vector<n, T> &v)
@@ -274,7 +274,7 @@ namespace page { namespace math
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
 		Vector<n, R> r;
-		std::transform(v1.begin(), v1.end(), v2.begin(), r.begin(), modulus<R>());
+		std::transform(v1.begin(), v1.end(), v2.begin(), r.begin(), util::modulus<R>());
 		return r;
 	}
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator +(const Vector<n, T> &v1, const Vector<n, U> &v2)
@@ -311,7 +311,7 @@ namespace page { namespace math
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
 		Vector<n, R> r;
-		std::transform(v.begin(), v.end(), r.begin(), std::bind(modulus<R>(), std::placeholders::_1, t));
+		std::transform(v.begin(), v.end(), r.begin(), std::bind(util::modulus<R>(), std::placeholders::_1, t));
 		return r;
 	}
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator +(const Vector<n, T> &v, U t)
@@ -348,7 +348,7 @@ namespace page { namespace math
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
 		Vector<n, R> r;
-		std::transform(v.begin(), v.end(), r.begin(), std::bind(modulus<R>(), t, std::placeholders::_1));
+		std::transform(v.begin(), v.end(), r.begin(), std::bind(util::modulus<R>(), t, std::placeholders::_1));
 		return r;
 	}
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator +(T t, const Vector<n, U> &v)
@@ -370,37 +370,37 @@ namespace page { namespace math
 	template <unsigned n, typename T> Vector<n, T> operator <<(const Vector<n, T> &v1, const Vector<n, unsigned> &v2)
 	{
 		Vector<n, T> r;
-		std::transform(v1.begin(), v1.end(), v2.begin(), r.begin(), bit_shl<T>());
+		std::transform(v1.begin(), v1.end(), v2.begin(), r.begin(), util::bit_shl<T>());
 		return r;
 	}
 	template <unsigned n, typename T> Vector<n, T> operator >>(const Vector<n, T> &v1, const Vector<n, unsigned> &v2)
 	{
 		Vector<n, T> r;
-		std::transform(v1.begin(), v1.end(), v2.begin(), r.begin(), bit_shr<T>());
+		std::transform(v1.begin(), v1.end(), v2.begin(), r.begin(), util::bit_shr<T>());
 		return r;
 	}
 	template <unsigned n, typename T> Vector<n, T> operator <<(const Vector<n, T> &v, unsigned t)
 	{
 		Vector<n, T> r;
-		std::transform(v.begin(), v.end(), r.begin(), std::bind(bit_shl<T>(), std::placeholders::_1, t));
+		std::transform(v.begin(), v.end(), r.begin(), std::bind(util::bit_shl<T>(), std::placeholders::_1, t));
 		return r;
 	}
 	template <unsigned n, typename T> Vector<n, T> operator >>(const Vector<n, T> &v, unsigned t)
 	{
 		Vector<n, T> r;
-		std::transform(v.begin(), v.end(), r.begin(), std::bind(bit_shr<T>(), std::placeholders::_1, t));
+		std::transform(v.begin(), v.end(), r.begin(), std::bind(util::bit_shr<T>(), std::placeholders::_1, t));
 		return r;
 	}
 	template <unsigned n, typename T> typename std::enable_if<std::is_integral<T>::value, Vector<n, T>>::type operator <<(T t, const Vector<n, unsigned> &v)
 	{
 		Vector<n, T> r;
-		std::transform(v.begin(), v.end(), r.begin(), std::bind(bit_shl<T>(), t, std::placeholders::_1));
+		std::transform(v.begin(), v.end(), r.begin(), std::bind(util::bit_shl<T>(), t, std::placeholders::_1));
 		return r;
 	}
 	template <unsigned n, typename T> typename std::enable_if<std::is_integral<T>::value, Vector<n, T>>::type operator >>(T t, const Vector<n, unsigned> &v)
 	{
 		Vector<n, T> r;
-		std::transform(v.begin(), v.end(), r.begin(), std::bind(bit_shr<T>(), t, std::placeholders::_1));
+		std::transform(v.begin(), v.end(), r.begin(), std::bind(util::bit_shr<T>(), t, std::placeholders::_1));
 		return r;
 	}
 
@@ -640,7 +640,7 @@ namespace page { namespace math
 	}
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator %=(Vector<n, T> &v1, const Vector<n, U> &v2)
 	{
-		std::transform(v1.begin(), v1.end(), v2.begin(), v1.begin(), modulus<T>());
+		std::transform(v1.begin(), v1.end(), v2.begin(), v1.begin(), util::modulus<T>());
 		return v1;
 	}
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator +=(Vector<n, T> &v1, const Vector<n, U> &v2)
@@ -655,12 +655,12 @@ namespace page { namespace math
 	}
 	template <unsigned n, typename T> Vector<n, T> &operator <<=(Vector<n, T> &v1, const Vector<n, unsigned> &v2)
 	{
-		std::transform(v1.begin(), v1.end(), v2.begin(), v1.begin(), bit_shl<T>());
+		std::transform(v1.begin(), v1.end(), v2.begin(), v1.begin(), util::bit_shl<T>());
 		return v1;
 	}
 	template <unsigned n, typename T> Vector<n, T> &operator >>=(Vector<n, T> &v1, const Vector<n, unsigned> &v2)
 	{
-		std::transform(v1.begin(), v1.end(), v2.begin(), v1.begin(), bit_shr<T>());
+		std::transform(v1.begin(), v1.end(), v2.begin(), v1.begin(), util::bit_shr<T>());
 		return v1;
 	}
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator &=(Vector<n, T> &v1, const Vector<n, U> &v2)
@@ -692,7 +692,7 @@ namespace page { namespace math
 	}
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator %=(Vector<n, T> &v, U t)
 	{
-		std::transform(v.begin(), v.end(), v.begin(), std::bind(modulus<T>(), std::placeholders::_1, t));
+		std::transform(v.begin(), v.end(), v.begin(), std::bind(util::modulus<T>(), std::placeholders::_1, t));
 		return v;
 	}
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator +=(Vector<n, T> &v, U t)
@@ -707,12 +707,12 @@ namespace page { namespace math
 	}
 	template <unsigned n, typename T> Vector<n, T> &operator <<=(Vector<n, T> &v, unsigned t)
 	{
-		std::transform(v.begin(), v.end(), v.begin(), std::bind(bit_shl<T>(), std::placeholders::_1, t));
+		std::transform(v.begin(), v.end(), v.begin(), std::bind(util::bit_shl<T>(), std::placeholders::_1, t));
 		return v;
 	}
 	template <unsigned n, typename T> Vector<n, T> &operator >>=(Vector<n, T> &v, unsigned t)
 	{
-		std::transform(v.begin(), v.end(), v.begin(), std::bind(bit_shr<T>(), std::placeholders::_1, t));
+		std::transform(v.begin(), v.end(), v.begin(), std::bind(util::bit_shr<T>(), std::placeholders::_1, t));
 		return v;
 	}
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator &=(Vector<n, T> &v, U t)

@@ -1,5 +1,6 @@
 #include <algorithm> // max, min
 
+#include "../../cache/proxy/AabbProxy.hpp"
 #include "../../inp/Driver.hpp" // Driver::Get{Lift,Rotation,Zoom}
 #include "../../math/Aabb.hpp"
 #include "../../math/Quat.hpp"
@@ -11,7 +12,7 @@ namespace page { namespace phys
 {
 	// construct
 	HeroCamController::HeroCamController(const inp::Driver &driver, const Form &target) :
-		Controller(constraintLayer), driver(driver), aabb(target, false),
+		Controller(constraintLayer), driver(driver), aabb(cache::AabbProxy(target, false)),
 		orientation(target.GetOrientation()), center(.5), distance(4),
 		dependencies(1, &target)
 	{
@@ -21,7 +22,7 @@ namespace page { namespace phys
 	// modifiers
 	void HeroCamController::SetTarget(const Form &target)
 	{
-		aabb = cache::Aabb(target, false);
+		aabb = cache::AabbProxy(target, false);
 		dependencies.back() = &target;
 	}
 

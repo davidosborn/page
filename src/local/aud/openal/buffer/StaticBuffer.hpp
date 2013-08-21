@@ -1,7 +1,7 @@
 #ifndef    page_local_aud_openal_buffer_StaticBuffer_hpp
 #   define page_local_aud_openal_buffer_StaticBuffer_hpp
 
-#	include "../../../util/raii/resource_ptr.hpp"
+#	include "../../../cache/proxy/Proxy.hpp"
 #	include "../Buffer.hpp"
 
 namespace page { namespace aud { namespace openal
@@ -9,7 +9,7 @@ namespace page { namespace aud { namespace openal
 	struct StaticBuffer : Buffer
 	{
 		// construct/destroy
-		StaticBuffer(ALuint source, const util::resource_ptr<res::Sound> &, bool loop, float playPosition);
+		StaticBuffer(ALuint source, const cache::Proxy<res::Sound> &, bool loop, float playPosition);
 		~StaticBuffer();
 
 		// update
@@ -17,8 +17,8 @@ namespace page { namespace aud { namespace openal
 
 		private:
 		ALuint source;
-		util::resource_ptr<ALuint> buffer;
-		decltype(buffer::shared_ptr) lock;
+		cache::Proxy<ALuint> buffer;
+		decltype(buffer.lock()) lock;
 	};
 }}}
 

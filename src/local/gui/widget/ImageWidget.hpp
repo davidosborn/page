@@ -1,8 +1,7 @@
 #ifndef    page_local_ui_widget_ImageWidget_hpp
 #   define page_local_ui_widget_ImageWidget_hpp
 
-#	include "../../cache/fwd.hpp" // Proxy
-#	include "../../util/raii/copy_ptr.hpp"
+#	include "../../cache/proxy/Proxy.hpp"
 #	include "Widget.hpp"
 
 namespace page { namespace res { class Image; }}
@@ -40,7 +39,7 @@ namespace page { namespace ui
 		/**
 		 * The widget's image content.
 		 */
-		util::copy_ptr<cache::Proxy<res::Image>> image;
+		cache::Proxy<res::Image> image;
 
 		/**
 		 * The widget's size.

@@ -1,7 +1,8 @@
 #ifndef    page_local_phys_controller_FollowController_hpp
 #   define page_local_phys_controller_FollowController_hpp
 
-#	include "../../cache/proxy/Aabb.hpp"
+#	include "../../cache/proxy/Proxy.hpp"
+#	include "../../math/fwd.hpp" // Aabb
 #	include "../../math/Quat.hpp"
 #	include "../../math/Vector.hpp"
 #	include "../Controller.hpp"
@@ -35,7 +36,7 @@ namespace page { namespace phys
 		// generate frame
 		Frame DoGetFrame(const Frame &, const Frame &) const;
 
-		cache::Aabb aabb;
+		cache::Proxy<math::Aabb<3>> aabb;
 		math::Vec3 center;
 		math::Quat<> orientation;
 		float distance;

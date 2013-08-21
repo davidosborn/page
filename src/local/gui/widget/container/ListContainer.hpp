@@ -4,9 +4,6 @@
 #	include <string>
 #	include <vector>
 
-#	include <boost/signal.hpp>
-
-#	include "../../util/raii/copy_ptr.hpp"
 #	include "../Widget.hpp"
 
 namespace page { namespace ui

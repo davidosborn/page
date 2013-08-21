@@ -1,7 +1,7 @@
 #ifndef    page_local_res_type_Theme_hpp
 #   define page_local_res_type_Theme_hpp
 
-#	include "../../cache/proxy/Resource.hpp"
+#	include "../../cache/proxy/ResourceProxy.hpp"
 #	include "../../math/Aabb.hpp"
 #	include "../../math/Color.hpp" // RgbaColor
 #	include "../../math/Vector.hpp"
@@ -18,11 +18,11 @@ namespace page
 		{
 			Theme();
 
-			cache::Resource<Cursor> cursor;
+			cache::ResourceProxy<Cursor> cursor;
 			float margin, scale;
 			struct Component
 			{
-				cache::Resource<Image> image;
+				cache::ResourceProxy<Image> image;
 				math::Vector<2, bool> flip;
 			};
 			struct Background : Component
@@ -63,7 +63,7 @@ namespace page
 			{
 				Text();
 
-				cache::Resource<Font> font;
+				cache::ResourceProxy<Font> font;
 				float size;
 			} text;
 			struct Window : Panel

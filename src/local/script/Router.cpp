@@ -1,4 +1,4 @@
-#include "../cache/proxy/Resource.hpp"
+#include "../cache/proxy/ResourceProxy.hpp"
 #include "../game/Character.hpp"
 #include "../game/Game.hpp" // Game::{GetScene,Quit}
 #include "../game/Object.hpp"
@@ -22,14 +22,14 @@ namespace page
 		std::shared_ptr<game::Character> Router::MakeCharacter(const std::string &path)
 		{
 			std::shared_ptr<game::Character> character(
-				new game::Character(*cache::Resource<res::Character>(path)));
+				new game::Character(*cache::ResourceProxy<res::Character>(path)));
 			game->GetScene().Insert(character);
 			return character;
 		}
 		std::shared_ptr<game::Object> Router::MakeObject(const std::string &path)
 		{
 			std::shared_ptr<game::Object> object(
-				new game::Object(*cache::Resource<res::Object>(path)));
+				new game::Object(*cache::ResourceProxy<res::Object>(path)));
 			game->GetScene().Insert(object);
 			return object;
 		}

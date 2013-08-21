@@ -27,7 +27,7 @@ namespace page { namespace cache
 		+-------*/
 
 		public:
-		using BasicProxy<math::Aabb<3>>::pointer;
+		using typename BasicProxy<math::Aabb<3>>::pointer;
 
 		/*-------------+
 		| constructors |

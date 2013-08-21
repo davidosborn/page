@@ -3,7 +3,7 @@
 
 #	include <string>
 
-#	include "../../cache/proxy/Resource.hpp"
+#	include "../../cache/proxy/ResourceProxy.hpp"
 
 namespace page
 {
@@ -24,8 +24,8 @@ namespace page
 				cache::Resource<res::Animation>
 					ambient, cheer, clap, dance, jump, sleep;
 			} animation;
-			cache::Resource<Gait> gait;
-			cache::Resource<Model> model;
+			cache::ResourceProxy<Gait> gait;
+			cache::ResourceProxy<Model> model;
 			float radius, scale;
 		};
 	}

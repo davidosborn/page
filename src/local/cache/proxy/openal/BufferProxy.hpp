@@ -22,7 +22,7 @@ namespace page { namespace cache { namespace openal
 		+-------*/
 
 		public:
-		using BasicProxy<ALuint>::pointer;
+		using typename BasicProxy<ALuint>::pointer;
 
 		/*-------------+
 		| constructors |

@@ -1,4 +1,6 @@
 #include "../../err/Exception.hpp"
+#include "../Signature.hpp"
+#include "BasicProxy.hpp"
 
 namespace page { namespace cache
 {
@@ -7,7 +9,7 @@ namespace page { namespace cache
 	+-------------*/
 
 	template <typename T>
-		Proxy<T>::Proxy(const ProxyImpl<T> &impl) :
+		Proxy<T>::Proxy(const BasicProxy<T> &impl) :
 			impl(impl.Clone()) {}
 
 	/*------------------------------+
@@ -21,8 +23,8 @@ namespace page { namespace cache
 	}
 
 	template <typename T>
-		const std::string &Proxy<T>::DoGetSignature() const noexcept
+		const Signature &Proxy<T>::DoGetSignature() const noexcept
 	{
-		return impl ? impl->GetSignature() : "";
+		return impl ? impl->GetSignature() : Signature();
 	}
 }}

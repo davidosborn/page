@@ -33,7 +33,7 @@ namespace page { namespace cache
 		+-------*/
 
 		public:
-		using BasicProxy<phys::Bounds>::pointer;
+		using typename BasicProxy<phys::Bounds>::pointer;
 
 		/*-------------+
 		| constructors |
@@ -58,15 +58,6 @@ namespace page { namespace cache
 				ENABLE_IF(util::is_range<MeshInputRange>::value));
 
 		private:
-		/**
-		 * Generates the appropriate signature for the constructor arguments.
-		 */
-		template <typename MeshInputRange>
-			static std::string MakeSignature(
-				MeshInputRange meshes,
-				const Proxy<res::Skeleton> &skeleton,
-				ENABLE_IF(util::is_range<MeshInputRange>::value));
-		
 		/**
 		 * Performs some additional initialization for the constructors.
 		 */

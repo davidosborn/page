@@ -156,7 +156,7 @@ namespace page { namespace math
 		const Slice<n, Iterator> &operator %=(const Slice<n, Iterator> &s1, const Slice<n, Iterator2> &s2)
 	{
 		std::transform(s1.begin(), s1.end(), s2.begin(), s1.begin(),
-			modulus<typename Slice<n, Iterator>::value_type>());
+			util::modulus<typename Slice<n, Iterator>::value_type>());
 		return s1;
 	}
 
@@ -197,7 +197,7 @@ namespace page { namespace math
 		const Slice<n, Iterator> &operator %=(const Slice<n, Iterator> &s, const Vector<n, T> &v)
 	{
 		std::transform(s.begin(), s.end(), v.begin(), s.begin(),
-			modulus<typename Slice<n, Iterator>::value_type>());
+			util::modulus<typename Slice<n, Iterator>::value_type>());
 		return s;
 	}
 
@@ -238,7 +238,7 @@ namespace page { namespace math
 		const Slice<n, Iterator> &operator %=(const Slice<n, Iterator> &s, T t)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
-			std::bind2nd(modulus<typename Slice<n, Iterator>::value_type>(), t));
+			std::bind2nd(util::modulus<typename Slice<n, Iterator>::value_type>(), t));
 		return s;
 	}
 

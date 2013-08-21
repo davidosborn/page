@@ -154,7 +154,7 @@ namespace page { namespace aud
 	}
 
 	// modifiers
-	SoundProxy Driver::Play(const util::resource_ptr<res::Sound> &res, bool loop, bool fade, float fadeDuration)
+	SoundProxy Driver::Play(const cache::Proxy<res::Sound> &res, bool loop, bool fade, float fadeDuration)
 	{
 		std::shared_ptr<Sound> sound(new Sound(res, loop, fade, fadeDuration));
 		*sound->GetSound(); // dereference sound resource to ensure it loaded properly

@@ -35,7 +35,7 @@ namespace page { namespace cache { namespace opengl
 		DrawableProxy(part.GetMesh(), part.GetId()) {}
 
 	DrawableProxy::DrawableProxy(const Proxy<res::Mesh> &mesh, util::Identifiable::Id partId) :
-		BasicProxy<vid::opengl::Drawable>(Signature("OpenGL drawable", mesh->GetSignature(), partId)),
+		BasicProxy(Signature("OpenGL drawable", mesh, partId)),
 		mesh(mesh), partId(partId) {}
 
 	/*--------------------------+

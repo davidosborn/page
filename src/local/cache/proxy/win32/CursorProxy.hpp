@@ -22,7 +22,7 @@ namespace page { namespace cache { namespace win32
 		+-------*/
 
 		public:
-		using BasicProxy<HCURSOR>::pointer;
+		using typename BasicProxy<HCURSOR>::pointer;
 
 		/*-------------+
 		| constructors |

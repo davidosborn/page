@@ -4,7 +4,7 @@
 #	include <string>
 #	include <vector>
 
-#	include "../../cache/proxy/Resource.hpp"
+#	include "../../cache/proxy/ResourceProxy.hpp"
 #	include "../../util/container/reference_vector.hpp"
 
 namespace page { namespace res
@@ -21,12 +21,12 @@ namespace page { namespace res
 		struct Part
 		{
 			std::string name;
-			cache::Resource<Mesh> mesh;
-			cache::Resource<Material> material;
+			cache::ResourceProxy<Mesh> mesh;
+			cache::ResourceProxy<Material> material;
 		};
 		typedef std::vector<Part> Parts;
 		Parts parts;
-		cache::Resource<Skeleton> skeleton;
+		cache::ResourceProxy<Skeleton> skeleton;
 	};
 
 	/**

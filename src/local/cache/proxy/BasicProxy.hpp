@@ -2,10 +2,14 @@
 #   define page_local_cache_proxy_BasicProxy_hpp
 
 #	include "../../util/class/Cloneable.hpp"
+#	include "../Signature.hpp"
 #	include "ProxyInterface.hpp"
 
 namespace page { namespace cache
 {
+	template <typename T>
+		class Proxy;
+
 	/**
 	 * A base class for the implementations of proxies of cached objects.
 	 */
@@ -14,12 +18,15 @@ namespace page { namespace cache
 			public ProxyInterface<BasicProxy<T>, T>,
 			public virtual util::Cloneable<BasicProxy<T>>
 	{
+		friend class Proxy<T>;
+		friend class ProxyInterface<Proxy<T>, T>;
+
 		/*-------+
 		| traits |
 		+-------*/
 
 		public:
-		using ProxyInterface<BasicProxy<T>, T>::pointer;
+		using typename ProxyInterface<BasicProxy<T>, T>::pointer;
 
 		/*-------------+
 		| constructors |
@@ -27,7 +34,7 @@ namespace page { namespace cache
 
 		protected:
 		BasicProxy() = default;
-		explicit BasicProxy(const std::string &signature);
+		explicit BasicProxy(const Signature &signature);
 
 		/*------------------------------+
 		| ProxyInterface implementation |
@@ -35,7 +42,7 @@ namespace page { namespace cache
 
 		private:
 		virtual pointer DoLock() const = 0;
-		const std::string &DoGetSignature() const noexcept;
+		const Signature &DoGetSignature() const noexcept;
 
 		/*-------------+
 		| data members |
@@ -44,7 +51,7 @@ namespace page { namespace cache
 		/**
 		 * A signature that uniquely identifies the resource.
 		 */
-		std::string signature;
+		Signature signature;
 	};
 }}
 

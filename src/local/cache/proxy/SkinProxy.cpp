@@ -13,7 +13,7 @@ namespace page { namespace cache
 		SkinProxy(mesh, pose.GetId()) {}
 
 	SkinProxy::SkinProxy(const Proxy<res::Mesh> &mesh, util::Identifiable::Id poseId) :
-		BasicProxy<T>(Signature("skin", {mesh->GetSignature(), poseId})),
+		BasicProxy(Signature("skin", mesh, poseId)),
 		mesh(mesh), poseId(poseId) {}
 
 	/*--------------------------+

@@ -3,7 +3,7 @@
 
 #	include <vector>
 
-#	include "../../cache/proxy/Resource.hpp"
+#	include "../../cache/proxy/ResourceProxy.hpp"
 #	include "../../math/Color.hpp" // RgbColor
 #	include "../../math/Quat.hpp"
 #	include "../../math/Vector.hpp"
@@ -25,17 +25,17 @@ namespace page
 				Form();
 
 				std::string name;
-				cache::Resource<Model> model;
+				cache::ResourceProxy<Model> model;
 				math::Vec3 position;
 				math::Quat<> orientation;
 				math::Vec3 scale;
 			};
 			typedef std::vector<Form> Forms;
 			Forms forms;
-			cache::Resource<CameraSet> cameraSet;
-			cache::Resource<Script> script;
-			cache::Resource<Sound> music;
-			cache::Resource<Track> track;
+			cache::ResourceProxy<CameraSet> cameraSet;
+			cache::ResourceProxy<Script> script;
+			cache::ResourceProxy<Sound> music;
+			cache::ResourceProxy<Track> track;
 			/*struct Instance
 			{
 				std::string model;

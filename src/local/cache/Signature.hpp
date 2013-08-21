@@ -10,6 +10,20 @@
 
 namespace page { namespace cache
 {
+	/*class Signature
+	{
+		public:
+		template <typename Args...>
+			Signature(const std::string &type, Args &&... args) :
+				string(type)
+		{
+
+		}
+
+		private:
+		std::string s;
+	};*/
+
 ////////// SigType /////////////////////////////////////////////////////////////
 
 	/**
@@ -162,7 +176,7 @@ namespace std
 	template <typename> struct hash;
 
 	/**
-	 * A specialization of @c hash for @c ::page::cache::Signature.
+	 * A specialization of std::hash for ::page::cache::Signature.
 	 */
 	template <> struct hash<::page::cache::Signature>
 	{

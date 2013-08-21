@@ -29,7 +29,7 @@ namespace page { namespace cache
 		+-------*/
 
 		public:
-		using BasicProxy<phys::Skin>::pointer;
+		using typename BasicProxy<phys::Skin>::pointer;
 
 		/*-------------+
 		| constructors |

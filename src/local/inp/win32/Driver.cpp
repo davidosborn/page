@@ -6,7 +6,7 @@
 
 #include <windows.h>
 
-#include "../../cache/proxy/win32/Cursor.hpp"
+#include "../../cache/proxy/win32/CursorProxy.hpp"
 #include "../../err/Exception.hpp"
 #include "../../math/Aabb.hpp"
 #include "../../math/win32.hpp" // Make{Rect,Vector}
@@ -239,7 +239,7 @@ namespace page
 							handle = LoadCursor(NULL, IDC_ARROW);
 							break;
 							case Cursor::themeIcon:
-							handle = *cache::win32::Cursor(
+							handle = *cache::win32::CursorProxy(
 								GetUserInterface()->GetTheme().cursor,
 								GetWindow().GetScreenSize().y);
 							break;

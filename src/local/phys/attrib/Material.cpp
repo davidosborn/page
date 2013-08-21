@@ -1,4 +1,4 @@
-#include "../../cache/proxy/Resource.hpp"
+#include "../../cache/proxy/ResourceProxy.hpp"
 #include "Material.hpp"
 
 namespace page
@@ -8,10 +8,8 @@ namespace page
 		namespace attrib
 		{
 			// construct
-			Material::Material() :
-				material(cache::Resource<res::Material>().Copy()) {}
 			Material::Material(const cache::Proxy<res::Material> &material) :
-				material(material.Copy()) {}
+				material(material) {}
 
 			// access
 			const cache::Proxy<res::Material> &Material::GetMaterial() const
@@ -20,7 +18,7 @@ namespace page
 			}
 			void Material::SetMaterial(const cache::Proxy<res::Material> &material)
 			{
-				this->material = material.Copy();
+				this->material = material;
 			}
 		}
 	}

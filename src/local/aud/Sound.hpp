@@ -1,7 +1,7 @@
 #ifndef    page_local_aud_Sound_hpp
 #   define page_local_aud_Sound_hpp
 
-#	include "../util/raii/resource_ptr.hpp"
+#	include "../cache/proxy/Proxy.hpp"
 
 namespace page { namespace res { class Sound; }}
 
@@ -16,7 +16,7 @@ namespace page { namespace aud
 			bool fade, float fadeDuration);
 
 		// attributes
-		const util::resource_ptr<res::Sound> &GetSound() const;
+		const cache::Proxy<res::Sound> &GetSound() const;
 
 		// state
 		bool IsAlive() const;
@@ -47,7 +47,7 @@ namespace page { namespace aud
 		void ReleaseChannel();
 
 		private:
-		util::resource_ptr<res::Sound> sound;
+		cache::Proxy<res::Sound> sound;
 		bool playing, paused, loop, fade;
 		float fadeDuration, level, playPosition, volume;
 		AmbientChannel *channel;

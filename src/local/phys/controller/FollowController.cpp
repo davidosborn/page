@@ -1,3 +1,4 @@
+#include "../../cache/proxy/AabbProxy.hpp"
 #include "../../math/Aabb.hpp"
 #include "../Form.hpp" // Form->Controllable
 #include "FollowController.hpp"
@@ -6,14 +7,14 @@ namespace page { namespace phys
 {
 	// construct
 	FollowController::FollowController(const Form &target, const math::Vec3 &center, const math::Quat<> &orientation, float distance) :
-		Controller(constraintLayer), aabb(target, false), center(center),
-		orientation(orientation), distance(distance),
+		Controller(constraintLayer), aabb(cache::AabbProxy(target, false)),
+		center(center), orientation(orientation), distance(distance),
 		dependencies(1, &target) {}
 
 	// modifiers
 	void FollowController::Follow(const Form &target)
 	{
-		aabb = cache::Aabb(target, false);
+		aabb = cache::AabbProxy(target, false);
 		dependencies.back() = &target;
 	}
 	void FollowController::Follow(const Form &target, const math::Vec3 &center)

@@ -4,7 +4,7 @@
 
 #include <boost/optional.hpp>
 
-#include "../../cache/proxy/Resource.hpp"
+#include "../../cache/proxy/ResourceProxy.hpp"
 #include "../../cfg/vars.hpp"
 #include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"
@@ -53,7 +53,7 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/color2alpha.fs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/color2alpha.fs")));
 						// initialize color weights
 						ProgramSaver programSaver;
 						Bind(*program);
@@ -76,7 +76,7 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/color2gray.fs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/color2gray.fs")));
 						program->GetUniform("grayness");
 						// initialize color weights
 						ProgramSaver programSaver;
@@ -102,8 +102,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/convolution-3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/convolution-3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
 						program->GetUniform("kernel");
 						program->GetUniform("texSize");
 						return program.release();
@@ -123,8 +123,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/convolution-3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/convolution-3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
 						program->GetUniform("kernel");
 						program->GetUniform("texSize");
 						return program.release();
@@ -144,8 +144,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/convolution-5.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/convolution-5.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
 						program->GetUniform("kernel");
 						program->GetUniform("texSize");
 						return program.release();
@@ -165,8 +165,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/convolution-5.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/convolution-5.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
 						program->GetUniform("kernel");
 						program->GetUniform("texSize");
 						return program.release();
@@ -186,8 +186,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-convolution-3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/exp-convolution-3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
 						program->GetUniform("kernel");
 						program->GetUniform("texSize");
 						return program.release();
@@ -207,8 +207,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-convolution-3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/exp-convolution-3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
 						program->GetUniform("kernel");
 						program->GetUniform("texSize");
 						return program.release();
@@ -228,8 +228,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-convolution-5.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/exp-convolution-5.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
 						program->GetUniform("kernel");
 						program->GetUniform("texSize");
 						return program.release();
@@ -249,8 +249,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-convolution-5.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/exp-convolution-5.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
 						program->GetUniform("kernel");
 						program->GetUniform("texSize");
 						return program.release();
@@ -270,8 +270,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-mean-3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/exp-mean-3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -290,8 +290,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-mean-3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/exp-mean-3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -310,8 +310,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-mean-5.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/exp-mean-5.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -330,8 +330,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/exp-mean-5.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/exp-mean-5.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -350,8 +350,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/mean-3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/mean-3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-3h.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -370,8 +370,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/mean-3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/mean-3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-3v.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -390,8 +390,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/mean-5.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/mean-5.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-5h.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -410,8 +410,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/mean-5.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/mean-5.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/separable-5v.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -430,8 +430,8 @@ namespace page
 					Program *Make() const
 					{
 						const std::unique_ptr<Program> program(new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/median-3x3.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/filter/median-3x3.vs")));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/median-3x3.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/filter/median-3x3.vs")));
 						program->GetUniform("texSize");
 						return program.release();
 					}
@@ -449,8 +449,8 @@ namespace page
 					Program *Make() const
 					{
 						return new Program(
-							*cache::Resource<res::opengl::Shader>("shader/glsl/normal.fs"),
-							*cache::Resource<res::opengl::Shader>("shader/glsl/normal.vs"));
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/normal.fs"),
+							*cache::ResourceProxy<res::opengl::Shader>("shader/glsl/normal.vs"));
 					}
 				};
 				typedef std::array<std::shared_ptr<ProgramIniter>, 20> ProgramIniters;

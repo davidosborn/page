@@ -3,7 +3,7 @@
 
 #	include <string>
 
-#	include "../../cache/proxy/Resource.hpp"
+#	include "../../cache/proxy/ResourceProxy.hpp"
 
 namespace page
 {
@@ -20,9 +20,9 @@ namespace page
 			std::string name;
 			struct Animation
 			{
-				cache::Resource<res::Animation> ambient;
+				cache::ResourceProxy<res::Animation> ambient;
 			} animation;
-			cache::Resource<Model> model;
+			cache::ResourceProxy<Model> model;
 			float radius, scale;
 		};
 	}

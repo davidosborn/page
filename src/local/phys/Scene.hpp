@@ -9,10 +9,9 @@
 #	include <unordered_map> // unordered_multimap
 #	include <vector>
 
-#	include "../cache/fwd.hpp" // Proxy
+#	include "../cache/proxy/Proxy.hpp"
 #	include "../math/fwd.hpp" // Vector, ViewFrustum
 #	include "../res/type/CameraSet.hpp" // CameraSet::Cameras
-#	include "../util/raii/copy_ptr.hpp"
 #	include "attrib/Ambient.hpp"
 #	include "Form.hpp" // Form::Part
 #	include "mixin/Controllable.hpp"
@@ -50,10 +49,6 @@ namespace page
 			////////////////////////////////////////////////////////////////////
 			// contained object views
 
-			private:
-			// hash function forward declarations for views
-			class MaterialHash;
-
 			public:
 			// view types
 			template <typename T> struct View
@@ -75,7 +70,7 @@ namespace page
 			// form views
 			View<Form>::Type GetForms() const;
 			View<Form>::Type GetVisibleForms(const math::ViewFrustum<> &) const;
-			typedef std::unordered_multimap<util::copy_ptr<cache::Proxy<res::Material>>, const Form::Part *, MaterialHash> FormsByMaterialView;
+			typedef std::unordered_multimap<cache::Proxy<res::Material>, const Form::Part *> FormsByMaterialView;
 			FormsByMaterialView GetVisibleFormsByMaterial(const math::ViewFrustum<> &) const;
 
 			// light views
@@ -184,12 +179,6 @@ namespace page
 			void UpdateDeltas();
 			void UpdateCameraTracking();
 			void UpdateObjects(float deltaTime);
-
-			// hash functions
-			struct MaterialHash : std::unary_function<util::copy_ptr<cache::Proxy<res::Material>>, std::size_t>
-			{
-				std::size_t operator ()(const util::copy_ptr<cache::Proxy<res::Material>> &) const;
-			};
 
 			// contained objects
 			template <typename T> struct Set

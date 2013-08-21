@@ -2,6 +2,8 @@
 #include <sstream>
 #include <utility> // forward
 
+#include <boost/range/adaptor/indirected.hpp>
+#include <boost/range/adaptor/transformed.hpp>
 #include <boost/range/algorithm/copy.hpp>
 #include <boost/tokenizer.hpp>
 
@@ -11,6 +13,22 @@
 
 namespace page { namespace cache
 {
+	namespace
+	{
+		std::string ProxiesToString(
+			ProxyInputRange proxies,
+			ENABLE_IF_IMPL(util::is_range<ProxyInputRange>::value))
+		{
+			std::ostringstream ss;
+			boost::copy(
+				boost::adaptors::transform(
+					boost::adaptors::indirect(shaders),
+					std::mem_fn(&Proxy<res::Mesh>::GetSignature)),
+				util::separated_ostream_iterator<std::string>(ss, ','));
+			return ss.str();
+		}
+	}
+
 ////////// SigType /////////////////////////////////////////////////////////////
 
 	SigType::SigType(const std::string &name, const std::vector<SigType> &params) :

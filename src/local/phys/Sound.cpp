@@ -1,6 +1,5 @@
 #include <cmath> // fmod
 
-#include "../cache/proxy/Proxy.hpp"
 #include "../res/type/Sound.hpp" // GetDuration
 #include "Sound.hpp"
 
@@ -10,7 +9,7 @@ namespace page
 	{
 		// construct
 		Sound::Sound(const cache::Proxy<res::Sound> &sound, bool loop) :
-			sound(sound.Copy()), playing(true), loop(loop), playPosition(0) {}
+			sound(sound), playing(true), loop(loop), playPosition(0) {}
 
 		// state
 		bool Sound::IsPlaying() const

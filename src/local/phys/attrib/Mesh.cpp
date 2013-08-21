@@ -1,4 +1,4 @@
-#include "../../cache/proxy/Resource.hpp"
+#include "../../cache/proxy/ResourceProxy.hpp"
 #include "Mesh.hpp"
 
 namespace page
@@ -8,9 +8,8 @@ namespace page
 		namespace attrib
 		{
 			// construct
-			Mesh::Mesh() : mesh(cache::Resource<res::Mesh>().Copy()) {}
 			Mesh::Mesh(const cache::Proxy<res::Mesh> &mesh) :
-				mesh(mesh.Copy()) {}
+				mesh(mesh) {}
 
 			// access
 			const cache::Proxy<res::Mesh> &Mesh::GetMesh() const
@@ -19,7 +18,7 @@ namespace page
 			}
 			void Mesh::SetMesh(const cache::Proxy<res::Mesh> &mesh)
 			{
-				this->mesh = mesh.Copy();
+				this->mesh = mesh;
 			}
 		}
 	}

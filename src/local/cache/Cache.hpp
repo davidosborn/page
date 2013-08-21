@@ -17,9 +17,9 @@ namespace page { namespace cache
 	namespace detail
 	{
 		/**
-		 * A data structure used by @c Cache to measure time.  It uses multiple
-		 * units, @a time and @a frame, to make a better decision about when to
-		 * drop a datum from the cache.
+		 * A data structure used by Cache to measure time.  It uses multiple
+		 * units to make a better decision about when to drop a datum from the
+		 * cache.
 		 */
 		struct CacheTime
 		{
@@ -95,15 +95,14 @@ namespace page { namespace cache
 	 * created on-demand.
 	 *
 	 * @note It is not usually necessary to interact with the cache directly.
-	 *       Check out @c Proxy and its derivatives, which are provided to
-	 *       simplify the process of caching resources.
+	 *       Check out Proxy and its related classes, which have been provided
+	 *       to simplify the process of caching resources.
 	 *
 	 * @fixme This class should track the usage patterns of its data and adjust
 	 *        their lifetimes for optimal balancing between cache coherence and
 	 *        memory management.
 	 */
-	class Cache :
-		public util::Monostate<Cache>
+	class Cache : public util::Monostate<Cache>
 	{
 		/*-------------+
 		| constructors |
@@ -239,7 +238,7 @@ namespace page { namespace cache
 			const std::type_info *type;
 
 			/**
-			 * A callback used to repair an @c invalid datum.
+			 * A callback used to repair an invalid datum.
 			 */
 			std::function<void ()> repair;
 
@@ -249,25 +248,25 @@ namespace page { namespace cache
 			mutable detail::CacheTime atime;
 
 			/**
-			 * @c true if the datum has been invalidated.
+			 * true if the datum has been invalidated.
 			 */
 			mutable bool invalid = false;
 		};
 
 		/**
-		 * A pool containing all of the cached data, where each datum is
-		 * accessible through its signature.
+		 * A pool containing all of the cached data, where each datum is keyed
+		 * by its signature.
 		 */
 		std::unordered_map<Signature, Datum> pool;
 
 		/**
-		 * The length of time that data remains in the cache before it gets
+		 * The length of time that data will remain in the cache before being
 		 * purged.
 		 */
 		const detail::CacheTime lifetime;
 
 		/**
-		 * A running count of how long the cache has been operating.
+		 * A running count of how long the cache has been operational.
 		 */
 		detail::CacheTime time;
 	};
