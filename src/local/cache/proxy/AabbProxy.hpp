@@ -43,11 +43,13 @@ namespace page { namespace cache
 		 */
 		AabbProxy(const Proxy<phys::Bounds> &, const phys::attrib::Pose &);
 
+		private:
+		AabbProxy(const Proxy<phys::Bounds> &, util::Identifiable::Id);
+
 		/*--------------------------+
 		| BasicProxy implementation |
 		+--------------------------*/
 
-		private:
 		pointer DoLock() const override;
 
 		/*-------------+

@@ -180,41 +180,54 @@ namespace page { namespace math
 ////////// free functions //////////////////////////////////////////////////////
 
 	/// initialization
-	template <unsigned n, typename T> typename std::enable_if<n != 4, Vector<n, T>>::type ZeroVector()
+	template <unsigned n, typename T>
+		typename std::enable_if<n != 4, Vector<n, T>>::type ZeroVector()
 	{
 		return Vector<n, T>(0);
 	}
-	template <unsigned n, typename T> typename std::enable_if<n != 4, Vector<n, T>>::type NormVector()
+
+	template <unsigned n, typename T>
+		typename std::enable_if<n == 4, Vector<n, T>>::type ZeroVector(T w)
+	{
+		return Vector<n, T>(0, w);
+	}
+
+	template <unsigned n, typename T>
+		typename std::enable_if<n != 4, Vector<n, T>>::type ScaleVector()
+	{
+		return Vector<n, T>(1);
+	}
+
+	template <unsigned n, typename T>
+		typename std::enable_if<n == 4, Vector<n, T>>::type ScaleVector(T w)
+	{
+		return Vector<n, T>(1, w);
+	}
+
+	template <unsigned n, typename T>
+		typename std::enable_if<n != 4, Vector<n, T>>::type NormVector()
 	{
 		Vector<n, T> r;
 		r[n - 1] = 1;
 		return r;
 	}
-	template <unsigned n, typename T> typename std::enable_if<n != 4, Vector<n, T>>::type ScaleVector()
+
+	template <unsigned n, typename T>
+		typename std::enable_if<n == 4, Vector<n, T>>::type NormVector(T w)
 	{
-		return Vector<n, T>(1);
+		return Vector<n, T>(0, 0, 1, w);
 	}
-	template <unsigned n, typename T> typename std::enable_if<n == 2 || n == 3, Vector<n, T>>::type UpVector()
+
+	template <unsigned n, typename T>
+		typename std::enable_if<n == 2 || n == 3, Vector<n, T>>::type UpVector()
 	{
 		Vector<n, T> r;
 		r[1] = 1;
 		return r;
 	}
 
-	/// 4 component initialization
-	template <unsigned n, typename T> typename std::enable_if<n == 4, Vector<n, T>>::type ZeroVector(T w)
-	{
-		return Vector<n, T>(0, w);
-	}
-	template <unsigned n, typename T> typename std::enable_if<n == 4, Vector<n, T>>::type NormVector(T w)
-	{
-		return Vector<n, T>(0, 0, 1, w);
-	}
-	template <unsigned n, typename T> typename std::enable_if<n == 4, Vector<n, T>>::type ScaleVector(T w)
-	{
-		return Vector<n, T>(1, w);
-	}
-	template <unsigned n, typename T> typename std::enable_if<n == 4, Vector<n, T>>::type UpVector(T w)
+	template <unsigned n, typename T>
+		typename std::enable_if<n == 4, Vector<n, T>>::type UpVector(T w)
 	{
 		return Vector<n, T>(0, 1, 0, w);
 	}

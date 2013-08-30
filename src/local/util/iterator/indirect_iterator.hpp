@@ -11,7 +11,7 @@ namespace page { namespace util
 {
 	/**
 	 * An iterator that dereferences the underlying iterator twice.  It is
-	 * equivalent to @c boost::indirect_iterator.
+	 * equivalent to boost::indirect_iterator.
 	 *
 	 * @note This class has been provided as a work around for
 	 *       <a href="https://svn.boost.org/trac/boost/ticket/5965">Boost bug

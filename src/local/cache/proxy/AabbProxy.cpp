@@ -32,7 +32,7 @@ namespace page { namespace cache
 		AabbProxy(bounds, pose.GetId()) {}
 
 	AabbProxy::AabbProxy(const Proxy<phys::Bounds> &bounds, util::Identifiable::Id poseId) :
-		BasicProxy(Signature("AABB", bounds, poseId)),
+		BasicProxy<math::Aabb<3>>(Signature("AABB", bounds, poseId)),
 		bounds(bounds), poseId(poseId) {}
 
 	/*--------------------------+

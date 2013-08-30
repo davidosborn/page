@@ -9,7 +9,7 @@ namespace page { namespace cache
 			MeshInputRange meshes,
 			const Proxy<res::Skeleton> &skeleton,
 			ENABLE_IF_IMPL(util::is_range<MeshInputRange>::value)) :
-				BasicProxy(Signature("bounds", meshes, skeleton)),
+				BasicProxy<phys::Bounds>(Signature("bounds", meshes, skeleton)),
 				meshes(meshes), skeleton(skeleton)
 	{
 		Init();

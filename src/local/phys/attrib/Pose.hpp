@@ -7,12 +7,12 @@
 #	include <unordered_map>
 #	include <vector>
 
+#	include <boost/iterator/indirect_iterator.hpp>
 #	include <boost/signal.hpp>
 
 #	include "../../math/Matrix.hpp"
 #	include "../../res/type/Skeleton.hpp" // Skeleton::Bone
 #	include "../../util/Identifiable.hpp"
-#	include "../../util/iterator/indirect_iterator.hpp"
 #	include "PositionOrientationScale.hpp"
 
 namespace page
@@ -115,8 +115,8 @@ namespace page
 
 				public:
 				// bone iterator types
-				typedef util::indirect_iterator<OrderedBones::const_iterator> BoneIterator;
-				typedef util::indirect_iterator<OrderedBones::const_iterator, const Bone> ConstBoneIterator;
+				typedef boost::indirect_iterator<OrderedBones::const_iterator> BoneIterator;
+				typedef boost::indirect_iterator<OrderedBones::const_iterator, const Bone> ConstBoneIterator;
 
 				// bone iterators
 				BoneIterator BeginBones();

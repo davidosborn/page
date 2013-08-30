@@ -8,7 +8,7 @@ namespace page { namespace cache { namespace opengl
 	+-------------*/
 
 	FontTextureProxy::FontTextureProxy(const Proxy<res::Font> &font, unsigned fontSize) :
-		BasicProxy(Signature("OpenGL font texture", font, fontSize)),
+		BasicProxy<vid::opengl::FontTexture>(Signature("OpenGL font texture", font, fontSize)),
 		font(font), fontSize(fontSize) {}
 
 	/*--------------------------+

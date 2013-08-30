@@ -12,7 +12,7 @@ namespace page { namespace cache { namespace opengl
 		ProgramProxy::ProgramProxy(
 			ShaderInputRange shaders,
 			ENABLE_IF_IMPL(util::is_range<ShaderInputRange>::value)) :
-				BasicProxy(Signature("OpenGL program", shaders)),
+				BasicProxy<vid::opengl::Program>(Signature("OpenGL program", shaders)),
 				shaders(std::begin(shaders), std::end(shaders))
 	{
 		Init();

@@ -33,7 +33,7 @@ namespace page { namespace cache { namespace openal
 	+-------------*/
 
 	BufferProxy::BufferProxy(const Proxy<res::Sound> &sound) :
-		BasicProxy(Signature("OpenAL audio buffer", sound)),
+		BasicProxy<ALuint>(Signature("OpenAL audio buffer", sound)),
 		sound(sound) {}
 
 	/*--------------------------+

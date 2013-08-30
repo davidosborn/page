@@ -9,7 +9,7 @@ namespace page { namespace cache
 
 	template <typename T>
 		ResourceProxy<T>::ResourceProxy(const std::string &path) :
-			BasicProxy(Signature(
+			BasicProxy<T>(Signature(
 				SigType("resource", GLOBAL(res::TypeRegistry).Query<T>().name),
 				path)),
 			path(path) {}

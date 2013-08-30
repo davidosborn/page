@@ -200,12 +200,57 @@ namespace page { namespace math
 		ZeroVector();
 
 	/**
-	 * Returns a 4-dimensional vector filled with zeros, with the last element
+	 * Returns a 4-dimensional vector filled with zeros, with the last component
 	 * defaulting to 1.
 	 */
 	template <unsigned n, typename T = DefaultType>
 		typename std::enable_if<n == 4, Vector<n, T>>::type
 		ZeroVector(T = 1);
+
+	/**
+	 * Returns a vector filled with ones.
+	 */
+	template <unsigned n, typename T = DefaultType>
+		typename std::enable_if<n != 4, Vector<n, T>>::type
+		ScaleVector();
+
+	/**
+	 * Returns a 4-dimensional vector filled with ones, with the last component
+	 * defaulting to 1.
+	 */
+	template <unsigned n, typename T = DefaultType>
+		typename std::enable_if<n == 4, Vector<n, T>>::type
+		ScaleVector(T = 1);
+
+	/**
+	 * Returns a unit vector pointing along the Z axis.
+	 */
+	template <unsigned n, typename T = DefaultType>
+		typename std::enable_if<n != 4, Vector<n, T>>::type
+		NormVector();
+
+	/**
+	 * Returns a 4-dimensional unit vector pointing along the Z axis, with the
+	 * last component defaulting to 0.
+	 */
+	template <unsigned n, typename T = DefaultType>
+		typename std::enable_if<n == 4, Vector<n, T>>::type
+		NormVector(T = 0);
+
+	/**
+	 * Returns a unit vector pointing along the Y axis.
+	 */
+	template <unsigned n, typename T = DefaultType>
+		typename std::enable_if<n != 4, Vector<n, T>>::type
+		UpVector();
+
+	/**
+	 * Returns a 4-dimensional unit vector pointing along the Y axis, with the
+	 * last component defaulting to 0.
+	 */
+	template <unsigned n, typename T = DefaultType>
+		typename std::enable_if<n == 4, Vector<n, T>>::type
+		UpVector(T = 0);
 
 	/// unary operators
 	template <unsigned n, typename T> Vector<n, T> &operator ++(Vector<n, T> &);

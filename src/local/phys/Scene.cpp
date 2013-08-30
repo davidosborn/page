@@ -2,6 +2,8 @@
 #include <cassert>
 #include <iterator> // back_inserter
 
+#include <boost/iterator/indirect_iterator.hpp>
+
 #include "../math/Euler.hpp"
 #include "../math/float.hpp" // DegToRad
 #include "../math/Plane.hpp"
@@ -10,7 +12,6 @@
 #include "../math/ViewFrustum.hpp"
 #include "../res/type/Scene.hpp"
 #include "../util/functional/pointer.hpp" // address_of
-#include "../util/iterator/indirect_iterator.hpp"
 #include "Body.hpp"
 #include "Camera.hpp"
 #include "controller/CameraFocusController.hpp"
@@ -62,8 +63,8 @@ namespace page
 			View<Body>::Type view;
 			view.reserve(bodies.size());
 			std::transform(
-				util::make_indirect_iterator(bodies.begin()),
-				util::make_indirect_iterator(bodies.end()),
+				boost::make_indirect_iterator(bodies.begin()),
+				boost::make_indirect_iterator(bodies.end()),
 				std::back_inserter(view), util::address_of<Body>());
 			return view;
 		}
@@ -73,8 +74,8 @@ namespace page
 			view.reserve(bodies.size());
 			// FIXME: should only copy visible bodies
 			std::transform(
-				util::make_indirect_iterator(bodies.begin()),
-				util::make_indirect_iterator(bodies.end()),
+				boost::make_indirect_iterator(bodies.begin()),
+				boost::make_indirect_iterator(bodies.end()),
 				std::back_inserter(view), util::address_of<Body>());
 			return view;
 		}
@@ -85,8 +86,8 @@ namespace page
 			View<Camera>::Type view;
 			view.reserve(cameras.size());
 			std::transform(
-				util::make_indirect_iterator(cameras.begin()),
-				util::make_indirect_iterator(cameras.end()),
+				boost::make_indirect_iterator(cameras.begin()),
+				boost::make_indirect_iterator(cameras.end()),
 				std::back_inserter(view), util::address_of<Camera>());
 			return view;
 		}
@@ -97,8 +98,8 @@ namespace page
 			View<Collidable>::Type view;
 			view.reserve(collidables.size());
 			std::transform(
-				util::make_indirect_iterator(collidables.begin()),
-				util::make_indirect_iterator(collidables.end()),
+				boost::make_indirect_iterator(collidables.begin()),
+				boost::make_indirect_iterator(collidables.end()),
 				std::back_inserter(view), util::address_of<Collidable>());
 			return view;
 		}
@@ -108,8 +109,8 @@ namespace page
 			view.reserve(collidables.size());
 			// FIXME: should only copy visible collidables
 			std::transform(
-				util::make_indirect_iterator(collidables.begin()),
-				util::make_indirect_iterator(collidables.end()),
+				boost::make_indirect_iterator(collidables.begin()),
+				boost::make_indirect_iterator(collidables.end()),
 				std::back_inserter(view), util::address_of<Collidable>());
 			return view;
 		}
@@ -120,8 +121,8 @@ namespace page
 			View<Form>::Type view;
 			view.reserve(forms.size());
 			std::transform(
-				util::make_indirect_iterator(forms.begin()),
-				util::make_indirect_iterator(forms.end()),
+				boost::make_indirect_iterator(forms.begin()),
+				boost::make_indirect_iterator(forms.end()),
 				std::back_inserter(view), util::address_of<Form>());
 			return view;
 		}
@@ -131,8 +132,8 @@ namespace page
 			view.reserve(forms.size());
 			// FIXME: should only copy visible forms
 			std::transform(
-				util::make_indirect_iterator(forms.begin()),
-				util::make_indirect_iterator(forms.end()),
+				boost::make_indirect_iterator(forms.begin()),
+				boost::make_indirect_iterator(forms.end()),
 				std::back_inserter(view), util::address_of<Form>());
 			return view;
 		}
@@ -149,8 +150,8 @@ namespace page
 			View<Light>::Type view;
 			view.reserve(lights.size());
 			std::transform(
-				util::make_indirect_iterator(lights.begin()),
-				util::make_indirect_iterator(lights.end()),
+				boost::make_indirect_iterator(lights.begin()),
+				boost::make_indirect_iterator(lights.end()),
 				std::back_inserter(view), util::address_of<Light>());
 			return view;
 		}
@@ -160,8 +161,8 @@ namespace page
 			view.reserve(lights.size());
 			// FIXME: should only copy influential lights
 			std::transform(
-				util::make_indirect_iterator(lights.begin()),
-				util::make_indirect_iterator(lights.end()),
+				boost::make_indirect_iterator(lights.begin()),
+				boost::make_indirect_iterator(lights.end()),
 				std::back_inserter(view), util::address_of<Light>());
 			return view;
 		}
@@ -172,8 +173,8 @@ namespace page
 			View<Particle>::Type view;
 			view.reserve(particles.size());
 			std::transform(
-				util::make_indirect_iterator(particles.begin()),
-				util::make_indirect_iterator(particles.end()),
+				boost::make_indirect_iterator(particles.begin()),
+				boost::make_indirect_iterator(particles.end()),
 				std::back_inserter(view), util::address_of<Particle>());
 			return view;
 		}
@@ -183,8 +184,8 @@ namespace page
 			view.reserve(particles.size());
 			// FIXME: should only copy visible particles
 			std::transform(
-				util::make_indirect_iterator(particles.begin()),
-				util::make_indirect_iterator(particles.end()),
+				boost::make_indirect_iterator(particles.begin()),
+				boost::make_indirect_iterator(particles.end()),
 				std::back_inserter(view), util::address_of<Particle>());
 			return view;
 		}
@@ -195,8 +196,8 @@ namespace page
 			View<Sound>::Type view;
 			view.reserve(sounds.size());
 			std::transform(
-				util::make_indirect_iterator(sounds.begin()),
-				util::make_indirect_iterator(sounds.end()),
+				boost::make_indirect_iterator(sounds.begin()),
+				boost::make_indirect_iterator(sounds.end()),
 				std::back_inserter(view), util::address_of<Sound>());
 			return view;
 		}
@@ -214,8 +215,8 @@ namespace page
 			View<Trackable>::Type view;
 			view.reserve(trackables.size());
 			std::transform(
-				util::make_indirect_iterator(trackables.begin()),
-				util::make_indirect_iterator(trackables.end()),
+				boost::make_indirect_iterator(trackables.begin()),
+				boost::make_indirect_iterator(trackables.end()),
 				std::back_inserter(view), util::address_of<Trackable>());
 			return view;
 		}
@@ -255,11 +256,11 @@ namespace page
 			UpdateControllables(Controller::preCollisionLayer, deltaTime);
 			UpdateForces();
 			UpdateCollidables(
-				util::make_indirect_iterator(collidables.begin()),
-				util::make_indirect_iterator(collidables.end()));
+				boost::make_indirect_iterator(collidables.begin()),
+				boost::make_indirect_iterator(collidables.end()));
 			UpdateTrackables(
-				util::make_indirect_iterator(trackables.begin()),
-				util::make_indirect_iterator(trackables.end()));
+				boost::make_indirect_iterator(trackables.begin()),
+				boost::make_indirect_iterator(trackables.end()));
 			UpdateDeltas();
 			UpdateControllables(Controller::postCollisionLayer, deltaTime);
 			// FIXME: update constraints

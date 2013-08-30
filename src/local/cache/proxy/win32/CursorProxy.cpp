@@ -26,7 +26,7 @@ namespace page { namespace cache { namespace win32
 	+-------------*/
 
 	CursorProxy::CursorProxy(const Proxy<res::Cursor> &cursor, unsigned size) :
-		BasicProxy(Signature("Win32 cursor", cursor, size)),
+		BasicProxy<HCURSOR>(Signature("Win32 cursor", cursor, size)),
 		cursor(cursor), size(size) {}
 
 	/*--------------------------+

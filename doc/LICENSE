@@ -22,3 +22,8 @@ other acknowledgements, similar in substance to the following:
 This software is provided "as is", without any express or implied warranty. In
 no event will the authors be liable for any damages arising out of the use of
 this software.
+
+--------------------------------------------------------------------------------
+
+Everything under the "src/thirdparty" directory is covered by a separate
+license.  Check the files in that directory for more information.
