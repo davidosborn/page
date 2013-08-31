@@ -1634,7 +1634,6 @@ local/cache/proxy/AabbProxy
 local/cache/proxy/BoundsProxy
 local/cache/proxy/GlyphImageProxy
 local/cache/proxy/SkinProxy
-local/cache/Signature
 local/cfg/var/BasicVar
 local/cfg/source/CmdlineSource
 local/cfg/source/FileSource
