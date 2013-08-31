@@ -1,3 +1,7 @@
+Consider replacing Deserialize with some kind of boost::tokenizer look-alike.
+Gotta reduce dependencies, particularly on heavyweight items like err/Exception
+and util/Deserialize, and anything involving lots of template metaprogramming.
+
 Things to fix in cache:
 - deleters (missing comments, should all be the same)
 - Signature needs to:

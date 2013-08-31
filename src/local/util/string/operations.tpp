@@ -22,7 +22,7 @@ namespace page
 		template <typename Char, typename CharTraits, typename... Parts>
 			std::basic_string<Char, CharTraits> Join(Parts &&... parts)
 		{
-			Serialize<Char, CharTraits>(std::tuple<Parts &&...>(std::forward<Parts>(parts)...), "");
+			return Serialize<Char, CharTraits>(std::tuple<Parts &&...>(std::forward<Parts>(parts)...), "");
 		}
 		///@}
 
