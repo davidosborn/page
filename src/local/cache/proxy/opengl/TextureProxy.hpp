@@ -41,12 +41,12 @@ namespace page { namespace cache { namespace opengl
 					vid::opengl::filterTextureFlag |
 					vid::opengl::mipmapTextureFlag),
 			const math::Vector<2, bool> &clamp = false);
-		
+
 		private:
 		/**
 		 * Generates the appropriate signature for the constructor arguments.
 		 */
-		static std::string MakeSignature(
+		static Signature MakeSignature(
 			const Proxy<res::Image> &image,
 			vid::opengl::TextureFormat format,
 			vid::opengl::TextureFlags flags,

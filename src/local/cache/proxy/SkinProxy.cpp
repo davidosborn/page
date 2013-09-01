@@ -1,6 +1,5 @@
 #include "../../phys/attrib/Pose.hpp" // Pose->util::Identifiable
 #include "../../phys/Skin.hpp"
-#include "../Signature.hpp"
 #include "SkinProxy.hpp"
 
 namespace page { namespace cache
