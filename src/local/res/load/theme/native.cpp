@@ -22,11 +22,11 @@ namespace page
 			// handlers
 			void OnCursor(Theme &theme, const std::string &value)
 			{
-				theme.cursor = cache::Resource<Cursor>(value);
+				theme.cursor = cache::ResourceProxy<Cursor>(value);
 			}
 			void OnListBackground(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.list.background.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.list.background.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListBackgroundFlip(Theme &theme, const std::string &value)
 			{
@@ -34,7 +34,7 @@ namespace page
 			}
 			void OnListBackgroundImage(Theme &theme, const std::string &value)
 			{
-				theme.list.background.image = cache::Resource<Image>(value);
+				theme.list.background.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListBackgroundOffset(Theme &theme, const std::string &value)
 			{
@@ -66,7 +66,7 @@ namespace page
 			}
 			void OnListDecorationImage(Theme &theme, const std::string &value)
 			{
-				theme.list.decorations.back().image = cache::Resource<Image>(value);
+				theme.list.decorations.back().image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListDecorationOffset(Theme &theme, const std::string &value)
 			{
@@ -82,7 +82,7 @@ namespace page
 					theme.list.frame.left.image =
 						theme.list.frame.top.image =
 						theme.list.frame.right.image =
-						theme.list.frame.bottom.image = cache::Resource<Image>(value);
+						theme.list.frame.bottom.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameFlip(Theme &theme, const std::string &value)
 			{
@@ -98,7 +98,7 @@ namespace page
 				theme.list.frame.left.image =
 					theme.list.frame.top.image =
 					theme.list.frame.right.image =
-					theme.list.frame.bottom.image = cache::Resource<Image>(value);
+					theme.list.frame.bottom.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameMirror(Theme &theme, const std::string &value)
 			{
@@ -109,7 +109,7 @@ namespace page
 			}
 			void OnListFrameBottom(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.list.frame.bottom.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.list.frame.bottom.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameBottomFlip(Theme &theme, const std::string &value)
 			{
@@ -117,11 +117,11 @@ namespace page
 			}
 			void OnListFrameBottomImage(Theme &theme, const std::string &value)
 			{
-				theme.list.frame.bottom.image = cache::Resource<Image>(value);
+				theme.list.frame.bottom.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameLeft(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.list.frame.left.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.list.frame.left.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameLeftFlip(Theme &theme, const std::string &value)
 			{
@@ -129,11 +129,11 @@ namespace page
 			}
 			void OnListFrameLeftImage(Theme &theme, const std::string &value)
 			{
-				theme.list.frame.left.image = cache::Resource<Image>(value);
+				theme.list.frame.left.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameRight(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.list.frame.right.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.list.frame.right.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameRightFlip(Theme &theme, const std::string &value)
 			{
@@ -141,11 +141,11 @@ namespace page
 			}
 			void OnListFrameRightImage(Theme &theme, const std::string &value)
 			{
-				theme.list.frame.right.image = cache::Resource<Image>(value);
+				theme.list.frame.right.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameTop(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.list.frame.top.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.list.frame.top.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListFrameTopFlip(Theme &theme, const std::string &value)
 			{
@@ -153,11 +153,11 @@ namespace page
 			}
 			void OnListFrameTopImage(Theme &theme, const std::string &value)
 			{
-				theme.list.frame.top.image = cache::Resource<Image>(value);
+				theme.list.frame.top.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListHighlight(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.list.highlight.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.list.highlight.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListHighlightFlip(Theme &theme, const std::string &value)
 			{
@@ -165,7 +165,7 @@ namespace page
 			}
 			void OnListHighlightImage(Theme &theme, const std::string &value)
 			{
-				theme.list.highlight.image = cache::Resource<Image>(value);
+				theme.list.highlight.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListHighlightOffset(Theme &theme, const std::string &value)
 			{
@@ -181,7 +181,7 @@ namespace page
 			}
 			void OnListSeparator(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.list.separator.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.list.separator.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListSeparatorFlip(Theme &theme, const std::string &value)
 			{
@@ -189,21 +189,21 @@ namespace page
 			}
 			void OnListSeparatorImage(Theme &theme, const std::string &value)
 			{
-				theme.list.separator.image = cache::Resource<Image>(value);
+				theme.list.separator.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnListText(Theme &theme, const std::string &value)
 			{
 				if (!value.empty())
 				{
 					util::Partitioned part(util::Partition(value));
-					theme.list.text.font = cache::Resource<Font>(part.first);
+					theme.list.text.font = cache::ResourceProxy<Font>(part.first);
 					if (!part.second.empty())
 						theme.list.text.size = boost::lexical_cast<float>(part.second);
 				}
 			}
 			void OnListTextFont(Theme &theme, const std::string &value)
 			{
-				theme.list.text.size = cache::Resource<Font>(value);
+				theme.list.text.size = cache::ResourceProxy<Font>(value);
 			}
 			void OnListTextSize(Theme &theme, const std::string &value)
 			{
@@ -222,14 +222,14 @@ namespace page
 				if (!value.empty())
 				{
 					util::Partitioned part(util::Partition(value));
-					theme.text.font = cache::Resource<Font>(part.first);
+					theme.text.font = cache::ResourceProxy<Font>(part.first);
 					if (!part.second.empty())
 						theme.text.size = boost::lexical_cast<float>(part.second);
 				}
 			}
 			void OnTextFont(Theme &theme, const std::string &value)
 			{
-				theme.text.font = cache::Resource<Font>(value);
+				theme.text.font = cache::ResourceProxy<Font>(value);
 			}
 			void OnTextSize(Theme &theme, const std::string &value)
 			{
@@ -237,7 +237,7 @@ namespace page
 			}
 			void OnWindowBackground(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.window.background.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.window.background.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowBackgroundFlip(Theme &theme, const std::string &value)
 			{
@@ -245,7 +245,7 @@ namespace page
 			}
 			void OnWindowBackgroundImage(Theme &theme, const std::string &value)
 			{
-				theme.window.background.image = cache::Resource<Image>(value);
+				theme.window.background.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowBackgroundOffset(Theme &theme, const std::string &value)
 			{
@@ -277,7 +277,7 @@ namespace page
 			}
 			void OnWindowDecorationImage(Theme &theme, const std::string &value)
 			{
-				theme.window.decorations.back().image = cache::Resource<Image>(value);
+				theme.window.decorations.back().image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowDecorationOffset(Theme &theme, const std::string &value)
 			{
@@ -293,7 +293,7 @@ namespace page
 					theme.window.frame.left.image =
 						theme.window.frame.top.image =
 						theme.window.frame.right.image =
-						theme.window.frame.bottom.image = cache::Resource<Image>(value);
+						theme.window.frame.bottom.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameFlip(Theme &theme, const std::string &value)
 			{
@@ -309,7 +309,7 @@ namespace page
 				theme.window.frame.left.image =
 					theme.window.frame.top.image =
 					theme.window.frame.right.image =
-					theme.window.frame.bottom.image = cache::Resource<Image>(value);
+					theme.window.frame.bottom.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameMirror(Theme &theme, const std::string &value)
 			{
@@ -320,7 +320,7 @@ namespace page
 			}
 			void OnWindowFrameBottom(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.window.frame.bottom.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.window.frame.bottom.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameBottomFlip(Theme &theme, const std::string &value)
 			{
@@ -328,11 +328,11 @@ namespace page
 			}
 			void OnWindowFrameBottomImage(Theme &theme, const std::string &value)
 			{
-				theme.window.frame.bottom.image = cache::Resource<Image>(value);
+				theme.window.frame.bottom.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameLeft(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.window.frame.left.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.window.frame.left.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameLeftFlip(Theme &theme, const std::string &value)
 			{
@@ -340,23 +340,23 @@ namespace page
 			}
 			void OnWindowFrameLeftImage(Theme &theme, const std::string &value)
 			{
-				theme.window.frame.left.image = cache::Resource<Image>(value);
+				theme.window.frame.left.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameRight(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.window.frame.right.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.window.frame.right.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameRightFlip(Theme &theme, const std::string &value)
 			{
 				Extract(value, theme.window.frame.right.flip);
 			}
-			void OnWindowFrameRightImage(Theme &theme, const std::string &value)
+			void OnWindowFrameRightcache::ResourceProxy<(Theme &theme, const std::string &value)
 			{
-				theme.window.frame.right.image = cache::Resource<Image>(value);
+				theme.window.frame.right.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameTop(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.window.frame.top.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.window.frame.top.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowFrameTopFlip(Theme &theme, const std::string &value)
 			{
@@ -364,7 +364,7 @@ namespace page
 			}
 			void OnWindowFrameTopImage(Theme &theme, const std::string &value)
 			{
-				theme.window.frame.top.image = cache::Resource<Image>(value);
+				theme.window.frame.top.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowMargin(Theme &theme, const std::string &value)
 			{
@@ -375,14 +375,14 @@ namespace page
 				if (!value.empty())
 				{
 					util::Partitioned part(util::Partition(value));
-					theme.window.title.text.font = cache::Resource<Font>(part.first);
+					theme.window.title.text.font = cache::ResourceProxy<Font>(part.first);
 					if (!part.second.empty())
 						theme.window.title.text.size = boost::lexical_cast<float>(part.second);
 				}
 			}
 			void OnWindowTitleBackground(Theme &theme, const std::string &value)
 			{
-				if (!value.empty()) theme.window.title.background.image = cache::Resource<Image>(value);
+				if (!value.empty()) theme.window.title.background.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowTitleBackgroundFlip(Theme &theme, const std::string &value)
 			{
@@ -390,7 +390,7 @@ namespace page
 			}
 			void OnWindowTitleBackgroundImage(Theme &theme, const std::string &value)
 			{
-				theme.window.title.background.image = cache::Resource<Image>(value);
+				theme.window.title.background.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnWindowTitleBackgroundOffset(Theme &theme, const std::string &value)
 			{
@@ -405,14 +405,14 @@ namespace page
 				if (!value.empty())
 				{
 					util::Partitioned part(util::Partition(value));
-					theme.window.title.text.font = cache::Resource<Font>(part.first);
+					theme.window.title.text.font = cache::ResourceProxy<Font>(part.first);
 					if (!part.second.empty())
 						theme.window.title.text.size = boost::lexical_cast<float>(part.second);
 				}
 			}
 			void OnWindowTitleTextFont(Theme &theme, const std::string &value)
 			{
-				theme.window.title.text.size = cache::Resource<Font>(value);
+				theme.window.title.text.size = cache::ResourceProxy<Font>(value);
 			}
 			void OnWindowTitleTextSize(Theme &theme, const std::string &value)
 			{

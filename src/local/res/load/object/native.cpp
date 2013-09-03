@@ -20,11 +20,11 @@ namespace page
 			// handlers
 			void OnAnimationAmbient(Object &object, const std::string &value)
 			{
-				object.animation.ambient = cache::Resource<Animation>(value);
+				object.animation.ambient = cache::ResourceProxy<Animation>(value);
 			}
 			void OnModel(Object &object, const std::string &value)
 			{
-				object.model = cache::Resource<Model>(value);
+				object.model = cache::ResourceProxy<Model>(value);
 			}
 			void OnName(Object &object, const std::string &value)
 			{

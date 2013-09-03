@@ -7,7 +7,7 @@ namespace page
 	{
 		// material pass texture construct
 		Material::Pass::Texture::Texture() : scale(1), uvIndex(0) {}
-		Material::Pass::Texture::Texture(const cache::Resource<Image> &image) :
+		Material::Pass::Texture::Texture(const cache::ResourceProxy<Image> &image) :
 			image(image), scale(1), uvIndex(0) {}
 
 		// material pass miscellaneous construct

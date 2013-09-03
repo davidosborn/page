@@ -4,7 +4,7 @@
 #include <functional> // bind, greater
 #include <iostream> // clog
 
-#include <boost/adaptors/indirected.hpp>
+#include <boost/range/adaptor/indirected.hpp>
 
 #include "../../err/Exception.hpp"
 #include "../../util/functional/member.hpp" // member_of

@@ -19,9 +19,9 @@ namespace page { namespace cache
 	BoundsProxy::BoundsProxy(const res::Model &model, bool pose) :
 		BoundsProxy(
 			GetGeometricallyDistinctMeshes(model),
-			pose ? model.skeleton : Proxy<res::Skeleton()) {}
+			pose ? model.skeleton : Proxy<res::Skeleton>()) {}
 
-	void BoundProxy::Init()
+	void BoundsProxy::Init()
 	{
 		// ensure dependencies are valid
 		assert(boost::find(meshes, nullptr) == meshes.end());
@@ -38,7 +38,6 @@ namespace page { namespace cache
 	auto BoundsProxy::DoLock() const -> pointer
 	{
 		return std::make_shared<phys::Bounds>(
-			util::make_indirect_range(util::make_indirect_range(meshes)),
-			*skeleton);
+			util::make_indirect_range(meshes), *skeleton);
 	}
 }}

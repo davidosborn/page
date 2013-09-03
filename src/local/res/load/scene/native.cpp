@@ -19,7 +19,7 @@ namespace page
 			// handlers
 			void OnCameraset(Scene &scene, const std::string &value)
 			{
-				scene.cameraSet = cache::Resource<CameraSet>(value);
+				scene.cameraSet = cache::ResourceProxy<CameraSet>(value);
 			}
 			void OnForm(Scene &scene, const std::string &value)
 			{
@@ -28,7 +28,7 @@ namespace page
 			}
 			void OnFormModel(Scene &scene, const std::string &value)
 			{
-				scene.forms.back().model = cache::Resource<Model>(value);
+				scene.forms.back().model = cache::ResourceProxy<Model>(value);
 			}
 			void OnFormOrientation(Scene &scene, const std::string &value)
 			{
@@ -44,15 +44,15 @@ namespace page
 			}
 			void OnMusic(Scene &scene, const std::string &value)
 			{
-				scene.music = cache::Resource<Sound>(value);
+				scene.music = cache::ResourceProxy<Sound>(value);
 			}
 			void OnScript(Scene &scene, const std::string &value)
 			{
-				scene.script = cache::Resource<Script>(value);
+				scene.script = cache::ResourceProxy<Script>(value);
 			}
 			void OnTrack(Scene &scene, const std::string &value)
 			{
-				scene.track = cache::Resource<Track>(value);
+				scene.track = cache::ResourceProxy<Track>(value);
 			}
 
 			// parser factory

@@ -29,11 +29,11 @@ namespace page
 			}
 			void OnPassAmbientTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().ambient.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().ambient.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassAmbientTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().ambient.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().ambient.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassAmbientTextureOffset(Material &mat, const std::string &value)
 			{
@@ -53,11 +53,11 @@ namespace page
 			}
 			void OnPassDiffuseTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().diffuse.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().diffuse.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassDiffuseTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().diffuse.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().diffuse.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassDiffuseTextureOffset(Material &mat, const std::string &value)
 			{
@@ -77,11 +77,11 @@ namespace page
 			}
 			void OnPassEmissiveTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().emissive.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().emissive.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassEmissiveTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().emissive.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().emissive.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassEmissiveTextureOffset(Material &mat, const std::string &value)
 			{
@@ -101,11 +101,11 @@ namespace page
 			}
 			void OnPassFresnelPowerTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().fresnel.power.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().fresnel.power.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassFresnelPowerTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().fresnel.power.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().fresnel.power.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassFresnelPowerTextureOffset(Material &mat, const std::string &value)
 			{
@@ -125,11 +125,11 @@ namespace page
 			}
 			void OnPassFresnelTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().fresnel.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().fresnel.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassFresnelTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().fresnel.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().fresnel.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassFresnelTextureOffset(Material &mat, const std::string &value)
 			{
@@ -145,11 +145,11 @@ namespace page
 			}
 			void OnPassGlossTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().gloss.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().gloss.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassGlossTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().gloss.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().gloss.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassGlossTextureOffset(Material &mat, const std::string &value)
 			{
@@ -169,11 +169,11 @@ namespace page
 			}
 			void OnPassMaskTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().mask.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().mask.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassMaskTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().mask.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().mask.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassMaskTextureOffset(Material &mat, const std::string &value)
 			{
@@ -193,11 +193,11 @@ namespace page
 			}
 			void OnPassNormalTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().normal.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().normal.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassNormalTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().normal.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().normal.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassNormalTextureOffset(Material &mat, const std::string &value)
 			{
@@ -217,11 +217,11 @@ namespace page
 			}
 			void OnPassSpecularPowerTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().specular.power.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().specular.power.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassSpecularPowerTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().specular.power.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().specular.power.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassSpecularPowerTextureOffset(Material &mat, const std::string &value)
 			{
@@ -241,11 +241,11 @@ namespace page
 			}
 			void OnPassSpecularTexture(Material &mat, const std::string &value)
 			{
-				if (!value.empty()) mat.passes.back().specular.texture.image = cache::Resource<Image>(value);
+				if (!value.empty()) mat.passes.back().specular.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassSpecularTextureImage(Material &mat, const std::string &value)
 			{
-				mat.passes.back().specular.texture.image = cache::Resource<Image>(value);
+				mat.passes.back().specular.texture.image = cache::ResourceProxy<Image>(value);
 			}
 			void OnPassSpecularTextureOffset(Material &mat, const std::string &value)
 			{

@@ -1,6 +1,7 @@
 #ifndef    page_local_cache_Signature_hpp
 #   define page_local_cache_Signature_hpp
 
+#	include <cstddef> // nullptr_t
 #	include <iosfwd> // [io]stream
 #	include <string>
 
@@ -19,25 +20,51 @@ namespace page { namespace cache
 	 */
 	class Signature
 	{
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
+		Signature() = default;
+		Signature(std::nullptr_t);
+
 		template <typename... Args>
 			explicit Signature(const std::string &type, Args &&...);
 
-		// string access
+		/*----------+
+		| observers |
+		+----------*/
+
 		std::string &str();
 		const std::string &str() const;
+
+		explicit operator bool() const;
+
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		private:
 		std::string s;
 	};
 
-	// stream insertion/extraction
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
+
 	std::ostream &operator <<(std::ostream &, const Signature &);
 	std::istream &operator >>(std::istream &, Signature &);
 
-	// comparison
+	/*-----------+
+	| comparison |
+	+-----------*/
+
 	bool operator ==(const Signature &, const Signature &);
 	bool operator !=(const Signature &, const Signature &);
+	bool operator < (const Signature &, const Signature &);
+	bool operator > (const Signature &, const Signature &);
+	bool operator <=(const Signature &, const Signature &);
+	bool operator >=(const Signature &, const Signature &);
 }}
 
 ////////// std::hash<Signature> ////////////////////////////////////////////////

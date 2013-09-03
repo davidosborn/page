@@ -4,6 +4,8 @@
 #	include <iosfwd> // basic_ostream
 #	include <memory> // shared_ptr
 
+#	include "BasicProxyInterface.hpp"
+
 namespace page { namespace cache
 {
 	class Signature;
@@ -15,7 +17,7 @@ namespace page { namespace cache
 	 *       patterns.
 	 */
 	template <typename Derived, typename T>
-		class ProxyInterface
+		class ProxyInterface : public BasicProxyInterface
 	{
 		/*-------+
 		| traits |
@@ -65,6 +67,25 @@ namespace page { namespace cache
 		 * @return Derived::DoGetSignature().
 		 */
 		const Signature &GetSignature() const noexcept;
+
+		/*-----------------+
+		| cache operations |
+		+-----------------*/
+
+		/**
+		 * @return A function that will touch the cached object.
+		 */
+		std::function<void ()> GetTouchFunction() const;
+
+		/**
+		 * @return A function that will invalidate the cached object.
+		 */
+		std::function<void ()> GetInvalidateFunction() const;
+
+		/**
+		 * @return A function that will purge the cached object.
+		 */
+		std::function<void ()> GetPurgeFunction() const;
 	};
 
 	/*---------------------+
@@ -112,6 +133,22 @@ namespace page { namespace cache
 		bool operator >=(
 			const ProxyInterface<D, T> &,
 			const ProxyInterface<E, U> &) noexcept;
+
+	/*-------------------+
+	| nullptr comparison |
+	+-------------------*/
+
+	template <typename D, typename T>
+		bool operator ==(const ProxyInterface<D, T> &, std::nullptr_t) noexcept;
+
+	template <typename D, typename T>
+		bool operator ==(std::nullptr_t, const ProxyInterface<D, T> &) noexcept;
+
+	template <typename D, typename T>
+		bool operator !=(const ProxyInterface<D, T> &, std::nullptr_t) noexcept;
+
+	template <typename D, typename T>
+		bool operator !=(std::nullptr_t, const ProxyInterface<D, T> &) noexcept;
 
 	/*-----------------+
 	| stream insertion |

@@ -17,6 +17,6 @@ namespace page { namespace cache
 
 	auto GlyphImageProxy::DoLock() const -> pointer
 	{
-		return std::make_shared<res::Image>(GetCharImage(**font, ch, size));
+		return std::make_shared<res::Image>(GetCharImage(*font, ch, size));
 	}
 }}

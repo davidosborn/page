@@ -31,7 +31,7 @@ namespace page
 			// FIXME: panel margin of zero is defaulting to theme margin,
 			// but we may need a panel margin of zero at some point
 			if (!theme.text.font)
-				theme.text.font = cache::Resource<Font>("font/default.ttf");
+				theme.text.font = cache::ResourceProxy<Font>("font/default.ttf");
 			if (!theme.text.size)
 				theme.text.size = 16;
 			if (!theme.window.margin)

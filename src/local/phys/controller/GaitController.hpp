@@ -1,7 +1,7 @@
 #ifndef    page_local_phys_controller_GaitController_hpp
 #   define page_local_phys_controller_GaitController_hpp
 
-#	include "../../cache/proxy/Proxy.hpp" // Proxy::Instance
+#	include "../../cache/proxy/Proxy.hpp"
 #	include "../../res/type/Gait.hpp" // Gait::State
 #	include "AnimationTargetController.hpp"
 
@@ -38,7 +38,7 @@ namespace page { namespace phys
 		float FixDeltaTime(float deltaTime);
 
 		const attrib::PositionOrientation &body;
-		cache::Proxy<res::Gait>::Instance gait;
+		cache::Proxy<res::Gait> gait;
 		State state;
 		float stride;
 	};

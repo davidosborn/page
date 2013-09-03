@@ -9,6 +9,9 @@ namespace page { namespace cache
 	+-------------*/
 
 	template <typename T>
+		Proxy<T>::Proxy(std::nullptr_t) {}
+
+	template <typename T>
 		Proxy<T>::Proxy(const BasicProxy<T> &impl) :
 			impl(impl.Clone()) {}
 
@@ -25,6 +28,7 @@ namespace page { namespace cache
 	template <typename T>
 		const Signature &Proxy<T>::DoGetSignature() const noexcept
 	{
-		return impl ? impl->GetSignature() : Signature();
+		static Signature nullSignature;
+		return impl ? impl->GetSignature() : nullSignature;
 	}
 }}

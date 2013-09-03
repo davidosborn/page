@@ -22,7 +22,7 @@ namespace page { namespace res
 		}
 		void OnImage(Cursor &cursor, const std::string &value)
 		{
-			cursor.image = cache::Resource<Image>(value);
+			cursor.image = cache::ResourceProxy<Image>(value);
 		}
 		void OnSize(Cursor &cursor, const std::string &value)
 		{

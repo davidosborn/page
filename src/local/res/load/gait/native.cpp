@@ -20,7 +20,7 @@ namespace page
 			// handlers
 			void OnRunAnimation(Gait &gait, const std::string &value)
 			{
-				gait.run.animation = cache::Resource<Animation>(value);
+				gait.run.animation = cache::ResourceProxy<Animation>(value);
 			}
 			void OnRunStride(Gait &gait, const std::string &value)
 			{
@@ -28,7 +28,7 @@ namespace page
 			}
 			void OnSneakAnimation(Gait &gait, const std::string &value)
 			{
-				gait.sneak.animation = cache::Resource<Animation>(value);
+				gait.sneak.animation = cache::ResourceProxy<Animation>(value);
 			}
 			void OnSneakStride(Gait &gait, const std::string &value)
 			{
@@ -36,7 +36,7 @@ namespace page
 			}
 			void OnTurnAnimation(Gait &gait, const std::string &value)
 			{
-				gait.turn.animation = cache::Resource<Animation>(value);
+				gait.turn.animation = cache::ResourceProxy<Animation>(value);
 			}
 			void OnTurnStride(Gait &gait, const std::string &value)
 			{
@@ -44,7 +44,7 @@ namespace page
 			}
 			void OnWalkAnimation(Gait &gait, const std::string &value)
 			{
-				gait.walk.animation = cache::Resource<Animation>(value);
+				gait.walk.animation = cache::ResourceProxy<Animation>(value);
 			}
 			void OnWalkStride(Gait &gait, const std::string &value)
 			{

@@ -6,7 +6,16 @@
 
 namespace page { namespace cache
 {
-	// string access
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Signature::Signature(std::nullptr_t) {}
+
+	/*----------+
+	| observers |
+	+----------*/
+
 	std::string &Signature::str()
 	{
 		return s;
@@ -17,7 +26,15 @@ namespace page { namespace cache
 		return s;
 	}
 
-	// stream insertion/extraction
+	Signature::operator bool() const
+	{
+		return !s.empty();
+	}
+
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
+
 	std::ostream &operator <<(std::ostream &os, const Signature &signature)
 	{
 		return os << signature.str();
@@ -28,7 +45,10 @@ namespace page { namespace cache
 		return is >> signature.str();
 	}
 
-	// comparison
+	/*-----------+
+	| comparison |
+	+-----------*/
+
 	bool operator ==(const Signature &a, const Signature &b)
 	{
 		return a.str() == b.str();
@@ -37,6 +57,26 @@ namespace page { namespace cache
 	bool operator !=(const Signature &a, const Signature &b)
 	{
 		return a.str() != b.str();
+	}
+
+	bool operator <(const Signature &a, const Signature &b)
+	{
+		return a.str() < b.str();
+	}
+
+	bool operator >(const Signature &a, const Signature &b)
+	{
+		return a.str() > b.str();
+	}
+
+	bool operator <=(const Signature &a, const Signature &b)
+	{
+		return a.str() <= b.str();
+	}
+
+	bool operator >=(const Signature &a, const Signature &b)
+	{
+		return a.str() >= b.str();
 	}
 }}
 

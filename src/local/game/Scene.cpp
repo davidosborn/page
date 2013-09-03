@@ -104,7 +104,7 @@ namespace page { namespace game
 		}
 		// create player
 		player.reset(new Player(std::shared_ptr<Character>(
-			new Character(*cache::Resource<res::Character>("character/male-1/male.char")))));
+			new Character(*cache::ResourceProxy<res::Character>("character/male-1/male.char")))));
 		Insert(std::static_pointer_cast<phys::Body>(player->GetCharacter()));
 		player->GetCharacter()->SetTrack(GetTrack());
 		SetFocus(player->GetCharacter());

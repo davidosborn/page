@@ -1,6 +1,8 @@
 #ifndef    page_local_cache_proxy_Proxy_hpp
 #   define page_local_cache_proxy_Proxy_hpp
 
+#	include <cstddef> // nullptr_t
+
 #	include "ProxyInterface.hpp"
 
 namespace page { namespace cache
@@ -29,6 +31,7 @@ namespace page { namespace cache
 		+-------------*/
 
 		Proxy() = default;
+		Proxy(std::nullptr_t);
 		Proxy(const BasicProxy<T> &);
 
 		/*------------------------------+

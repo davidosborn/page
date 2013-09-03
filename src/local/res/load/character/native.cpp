@@ -19,35 +19,35 @@ namespace page { namespace res
 		// handlers
 		void OnAnimationAmbient(Character &character, const std::string &value)
 		{
-			character.animation.ambient = cache::Resource<Animation>(value);
+			character.animation.ambient = cache::ResourceProxy<Animation>(value);
 		}
 		void OnAnimationCheer(Character &character, const std::string &value)
 		{
-			character.animation.cheer = cache::Resource<Animation>(value);
+			character.animation.checache::ResourceProxy<Animation>(value);
 		}
 		void OnAnimationClap(Character &character, const std::string &value)
 		{
-			character.animation.clap = cache::Resource<Animation>(value);
+			character.animation.clap = cache::ResourceProxy<Animation>(value);
 		}
 		void OnAnimationDance(Character &character, const std::string &value)
 		{
-			character.animation.dance = cache::Resource<Animation>(value);
+			character.animation.dance = cache::ResourceProxy<Animation>(value);
 		}
 		void OnAnimationJump(Character &character, const std::string &value)
 		{
-			character.animation.jump = cache::Resource<Animation>(value);
+			character.animation.jump = cache::ResourceProxy<Animation>(value);
 		}
 		void OnAnimationSleep(Character &character, const std::string &value)
 		{
-			character.animation.sleep = cache::Resource<Animation>(value);
+			character.animation.sleep = cache::ResourceProxy<Animation>(value);
 		}
 		void OnGait(Character &character, const std::string &value)
 		{
-			character.gait = cache::Resource<Gait>(value);
+			character.gait = cache::ResourceProxy<Gait>(value);
 		}
 		void OnModel(Character &character, const std::string &value)
 		{
-			character.model = cache::Resource<Model>(value);
+			character.model = cache::ResourceProxy<Model>(value);
 		}
 		void OnName(Character &character, const std::string &value)
 		{

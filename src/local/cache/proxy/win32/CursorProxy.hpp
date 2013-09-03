@@ -28,7 +28,7 @@ namespace page { namespace cache { namespace win32
 		| constructors |
 		+-------------*/
 
-		explicit Cursor(const Proxy<res::Cursor> &, unsigned size);
+		explicit CursorProxy(const Proxy<res::Cursor> &, unsigned size);
 
 		/*--------------------------+
 		| BasicProxy implementation |

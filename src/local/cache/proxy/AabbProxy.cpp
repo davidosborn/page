@@ -42,7 +42,7 @@ namespace page { namespace cache
 	auto AabbProxy::DoLock() const -> pointer
 	{
 		phys::attrib::Pose &pose(util::ReferenceFromId<phys::attrib::Pose>(poseId));
-		const phys::Bounds &bounds(**this->bounds);
+		const phys::Bounds &bounds(*this->bounds);
 		boost::signals::scoped_connection
 			poseCon(
 				pose.IsPosed() && !bounds.bones.empty() ?

@@ -1,5 +1,5 @@
 #include "../../../res/type/cursor/win32.hpp" // MakeWin32Cursor
-#include "Cursor.hpp"
+#include "CursorProxy.hpp"
 
 namespace page { namespace cache { namespace win32
 {
@@ -35,6 +35,6 @@ namespace page { namespace cache { namespace win32
 
 	auto CursorProxy::DoLock() const -> pointer
 	{
-		return pointer(new HCURSOR(res::win32::MakeWin32Cursor(**cursor, size)), CursorDeleter());
+		return pointer(new HCURSOR(res::win32::MakeWin32Cursor(*cursor, size)), CursorDeleter());
 	}
 }}}

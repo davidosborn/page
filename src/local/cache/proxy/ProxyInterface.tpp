@@ -35,13 +35,35 @@ namespace page { namespace cache
 	template <typename D, typename T>
 		ProxyInterface<D, T>::operator bool() const noexcept
 	{
-		return GetSignature();
+		return GetSignature() != nullptr;
 	}
 
 	template <typename D, typename T>
 		const Signature &ProxyInterface<D, T>::GetSignature() const noexcept
 	{
 		return static_cast<const D &>(*this).DoGetSignature();
+	}
+
+	/*-----------------+
+	| cache operations |
+	+-----------------*/
+
+	template <typename D, typename T>
+		std::function<void ()> ProxyInterface<D, T>::GetTouchFunction() const
+	{
+		return BasicProxyInterface::GetTouchFunction(GetSignature());
+	}
+
+	template <typename D, typename T>
+		std::function<void ()> ProxyInterface<D, T>::GetInvalidateFunction() const
+	{
+		return BasicProxyInterface::GetInvalidateFunction(GetSignature());
+	}
+
+	template <typename D, typename T>
+		std::function<void ()> ProxyInterface<D, T>::GetPurgeFunction() const
+	{
+		return BasicProxyInterface::GetPurgeFunction(GetSignature());
 	}
 
 	/*---------------------+
@@ -106,6 +128,34 @@ namespace page { namespace cache
 			const ProxyInterface<E, U> &b) noexcept
 	{
 		return a.GetSignature() >= b.GetSignature();
+	}
+
+	/*-------------------+
+	| nullptr comparison |
+	+-------------------*/
+
+	template <typename D, typename T>
+		bool operator ==(const ProxyInterface<D, T> &p, std::nullptr_t) noexcept
+	{
+		return !p;
+	}
+
+	template <typename D, typename T>
+		bool operator ==(std::nullptr_t, const ProxyInterface<D, T> &p) noexcept
+	{
+		return !p;
+	}
+
+	template <typename D, typename T>
+		bool operator !=(const ProxyInterface<D, T> &p, std::nullptr_t) noexcept
+	{
+		return p;
+	}
+
+	template <typename D, typename T>
+		bool operator !=(std::nullptr_t, const ProxyInterface<D, T> &p) noexcept
+	{
+		return p;
 	}
 
 	/*-----------------+

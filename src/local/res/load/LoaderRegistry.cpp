@@ -2,7 +2,7 @@
 #include <cassert>
 #include <functional> // bind, greater
 
-#include <boost/adaptors/indirected.hpp>
+#include <boost/range/adaptor/indirected.hpp>
 
 #include "../../err/Exception.hpp"
 #include "../../util/functional/member.hpp" // member_of

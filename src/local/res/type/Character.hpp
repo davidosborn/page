@@ -21,7 +21,7 @@ namespace page
 			std::string name;
 			struct Animation
 			{
-				cache::Resource<res::Animation>
+				cache::ResourceProxy<res::Animation>
 					ambient, cheer, clap, dance, jump, sleep;
 			} animation;
 			cache::ResourceProxy<Gait> gait;

@@ -2,7 +2,8 @@
 #include <cassert>
 #include <functional> // bind, mem_fn
 
-#include "../../../util/iterator/indirect_iterator.hpp"
+#include <boost/iterator/indirect_iterator.hpp>
+
 #include "../../../vid/opengl/Program.hpp"
 #include "Program.hpp"
 
@@ -28,7 +29,7 @@ namespace page { namespace cache { namespace opengl
 	auto ProgramProxy::DoLock() const -> pointer
 	{
 		return pointer(new vid::opengl::Program(
-			util::make_indirect_iterator(util::make_indirect_iterator(shaders.begin())),
-			util::make_indirect_iterator(util::make_indirect_iterator(shaders.end()))));
+			boost::make_indirect_iterator(shaders.begin()),
+			boost::make_indirect_iterator(shaders.end())));
 	}
 }}}

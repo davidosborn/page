@@ -50,7 +50,7 @@ namespace page { namespace cache { namespace opengl
 			phys::Form::Part &part(util::ReferenceFromId<phys::Form::Part>(partId));
 			bool dynamic = part.GetForm().IsPosed() || part.IsDeformed();
 			std::unique_ptr<vid::opengl::Drawable> drawable(
-				vid::opengl::MakeDrawable(**mesh, dynamic));
+				vid::opengl::MakeDrawable(*mesh, dynamic));
 
 			// update to current pose
 			if (dynamic)
@@ -62,6 +62,6 @@ namespace page { namespace cache { namespace opengl
 			return pointer(drawable.release(),
 				std::bind(Delete, std::placeholders::_1, con.release()));
 		}
-		return pointer(vid::opengl::MakeDrawable(**mesh));
+		return pointer(vid::opengl::MakeDrawable(*mesh));
 	}
 }}}

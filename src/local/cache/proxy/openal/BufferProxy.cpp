@@ -49,7 +49,7 @@ namespace page { namespace cache { namespace openal
 				boost::errinfo_api_function("alGenBuffers")))
 		try
 		{
-			const res::Sound &sound(**this->sound);
+			const res::Sound &sound(*this->sound);
 			const std::unique_ptr<res::AudioStream> stream(sound.decoder->Open());
 			std::vector<char> data(GetSize(sound));
 			data.resize(stream->Read(&*data.begin(), data.size()));

@@ -38,7 +38,7 @@ namespace page { namespace cache
 		SkinProxy(const Proxy<res::Mesh> &, const phys::attrib::Pose &);
 
 		private:
-		SkinProxy(const Proxy<res::Mesh> &, util::Identifiable::Id &poseId);
+		SkinProxy(const Proxy<res::Mesh> &, util::Identifiable::Id poseId);
 
 		/*--------------------------+
 		| BasicProxy implementation |

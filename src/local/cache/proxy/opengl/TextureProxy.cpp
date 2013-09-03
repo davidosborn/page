@@ -41,6 +41,6 @@ namespace page { namespace cache { namespace opengl
 
 	auto TextureProxy::DoLock() const -> pointer
 	{
-		return std::make_shared<vid::opengl::Texture>(**image, format, flags, clamp);
+		return std::make_shared<vid::opengl::Texture>(*image, format, flags, clamp);
 	}
 }}}

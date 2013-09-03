@@ -1631,6 +1631,7 @@ local/aud/NullDriver
 local/aud/Sound
 local/cache/Cache
 local/cache/proxy/AabbProxy
+local/cache/proxy/BasicProxyInterface
 local/cache/proxy/BoundsProxy
 local/cache/proxy/GlyphImageProxy
 local/cache/proxy/SkinProxy

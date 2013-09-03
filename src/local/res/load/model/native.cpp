@@ -23,15 +23,15 @@ namespace page
 			}
 			void OnPartMaterial(Model &model, const std::string &value)
 			{
-				model.parts.back().material = cache::Resource<Material>(value);
+				model.parts.back().material = cache::ResourceProxy<Material>(value);
 			}
 			void OnPartMesh(Model &model, const std::string &value)
 			{
-				model.parts.back().mesh = cache::Resource<Mesh>(value);
+				model.parts.back().mesh = cache::ResourceProxy<Mesh>(value);
 			}
 			void OnSkeleton(Model &model, const std::string &value)
 			{
-				model.skeleton = cache::Resource<Skeleton>(value);
+				model.skeleton = cache::ResourceProxy<Skeleton>(value);
 			}
 
 			// parser factory

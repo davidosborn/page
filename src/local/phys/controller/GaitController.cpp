@@ -12,7 +12,7 @@ namespace page { namespace phys
 	// construct
 	GaitController::GaitController(const attrib::PositionOrientation &body, const cache::Proxy<res::Gait> &gait) :
 		AnimationTargetController(postCollisionLayer, false), body(body),
-		gait(gait.Lock()), state(noState), stride(0) {}
+		gait(gait), state(noState), stride(0) {}
 
 	// modifiers
 	void GaitController::SetState(State state)

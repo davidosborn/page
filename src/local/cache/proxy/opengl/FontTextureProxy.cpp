@@ -17,6 +17,6 @@ namespace page { namespace cache { namespace opengl
 
 	auto FontTextureProxy::DoLock() const -> pointer
 	{
-		return pointer(new vid::opengl::FontTexture(**font, fontSize));
+		return pointer(new vid::opengl::FontTexture(*font, fontSize));
 	}
 }}}

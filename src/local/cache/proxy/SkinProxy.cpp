@@ -19,9 +19,9 @@ namespace page { namespace cache
 	| BasicProxy implementation |
 	+--------------------------*/
 
-	auto SkinProxy::DoLock() const override
+	auto SkinProxy::DoLock() const override -> pointer
 	{
-		return std::make_shared<phys::Skin>(**mesh,
+		return std::make_shared<phys::Skin>(*mesh,
 			util::ReferenceFromId<phys::attrib::Pose>(poseId));
 	}
 }}

@@ -19,7 +19,7 @@ namespace page { namespace cache
 			public virtual util::Cloneable<BasicProxy<T>>
 	{
 		friend class Proxy<T>;
-		friend class ProxyInterface<Proxy<T>, T>;
+		friend class ProxyInterface<BasicProxy<T>, T>;
 
 		/*-------+
 		| traits |
