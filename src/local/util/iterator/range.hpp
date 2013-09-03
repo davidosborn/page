@@ -28,7 +28,10 @@ namespace page { namespace util
 		template <typename>
 			friend class range;
 
-		/// container traits
+		/*-----------------+
+		| container traits |
+		+-----------------*/
+
 		public:
 		using value_type             = typename std::iterator_traits<Iterator>::value_type;
 		using reference              = typename std::iterator_traits<Iterator>::reference;
@@ -40,7 +43,10 @@ namespace page { namespace util
 		using difference_type        = typename std::iterator_traits<Iterator>::difference_type;
 		using size_type              = typename std::make_unsigned<difference_type>::type;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		range();
 		range(const iterator &first, const iterator &last);
 		range(const std::pair<iterator, iterator> &);
@@ -51,13 +57,19 @@ namespace page { namespace util
 		template <typename Iterator2>
 			range(const range<Iterator2> &);
 
-		/// iterators
+		/*----------+
+		| iterators |
+		+----------*/
+
 		iterator const&  begin()  const noexcept;
 		iterator const&  end()    const noexcept;
 		reverse_iterator rbegin() const;
 		reverse_iterator rend()   const;
 
-		/// observers
+		/*----------+
+		| observers |
+		+----------*/
+
 		/**
 		 * @return @a iter.
 		 */
@@ -68,7 +80,10 @@ namespace page { namespace util
 		 */
 		bool empty() const noexcept;
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		private:
 		/**
 		 * A @c std::pair containing the first and last iterators.
@@ -76,7 +91,10 @@ namespace page { namespace util
 		const std::pair<iterator, iterator> iter;
 	};
 
-	/// factory functions
+	/*------------------+
+	| factory functions |
+	+------------------*/
+
 	template <typename Iterator>
 		range<Iterator> make_range(Iterator first, Iterator last);
 

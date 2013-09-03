@@ -27,7 +27,10 @@ namespace page { namespace math
 		template <unsigned, typename>
 			friend class BasicSlice;
 
-		/// container traits
+		/*-----------------+
+		| container traits |
+		+-----------------*/
+
 		public:
 		using value_type             = typename std::iterator_traits<Iterator>::value_type;
 		using reference              = typename std::iterator_traits<Iterator>::reference;
@@ -39,14 +42,20 @@ namespace page { namespace math
 		using difference_type        = typename std::iterator_traits<Iterator>::difference_type;
 		using size_type              = typename std::make_unsigned<difference_type>::type;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		explicit BasicSlice(const iterator &);
 
 		template <typename Iterator2>
 			BasicSlice(const BasicSlice<n, Iterator2> &);
 
-		/// assignment
+		/*-----------+
+		| assignment |
+		+-----------*/
+
 		const BasicSlice &operator =(const value_type &) const;
 
 		const BasicSlice &operator =(const Vector<n, value_type> &) const;
@@ -56,20 +65,32 @@ namespace page { namespace math
 		template <typename Iterator2>
 			const BasicSlice &operator =(const BasicSlice<n, Iterator2> &) const;
 
-		/// conversion
+		/*-----------+
+		| conversion |
+		+-----------*/
+
 		public:
 		operator Vector<n, value_type>() const;
 
-		/// iterators
+		/*----------+
+		| iterators |
+		+----------*/
+
 		iterator const&  begin()  const noexcept;
 		iterator         end()    const;
 		reverse_iterator rbegin() const;
 		reverse_iterator rend()   const;
 
-		/// element access
+		/*---------------+
+		| element access |
+		+---------------*/
+
 		reference operator [](size_type) const;
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		private:
 		const Iterator iter;
 	};
@@ -167,7 +188,10 @@ namespace page { namespace math
 
 ////////////////////////////////////////////////////////////////////////////////
 
-	/// unary operators
+	/*----------------+
+	| unary operators |
+	+----------------*/
+
 	template <unsigned n, typename Iterator>
 		Slice<n, Iterator> &operator ++(Slice<n, Iterator> &);
 
@@ -186,7 +210,10 @@ namespace page { namespace math
 	template <unsigned n, typename Iterator>
 		Vector<n, typename Slice<n, Iterator>::value_type> operator -(const Slice<n, Iterator> &);
 
-	/// assignment operators
+	/*---------------------+
+	| assignment operators |
+	+---------------------*/
+
 	template <unsigned n, typename Iterator, typename Iterator2>
 		Slice<n, Iterator> &operator +=(Slice<n, Iterator> &, const Slice<n, Iterator2> &);
 
@@ -202,7 +229,10 @@ namespace page { namespace math
 	template <unsigned n, typename Iterator, typename Iterator2>
 		Slice<n, Iterator> &operator %=(Slice<n, Iterator> &, const Slice<n, Iterator2> &);
 
-	/// vector assignment operators
+	/*----------------------------+
+	| vector assignment operators |
+	+----------------------------*/
+
 	template <unsigned n, typename Iterator, typename T>
 		Slice<n, Iterator> &operator +=(Slice<n, Iterator> &, const Vector<n, T> &);
 
@@ -218,7 +248,10 @@ namespace page { namespace math
 	template <unsigned n, typename Iterator, typename T>
 		Slice<n, Iterator> &operator %=(Slice<n, Iterator> &, const Vector<n, T> &);
 
-	/// scalar assignment operators
+	/*----------------------------+
+	| scalar assignment operators |
+	+----------------------------*/
+
 	template <unsigned n, typename Iterator, typename T>
 		Slice<n, Iterator> &operator +=(Slice<n, Iterator> &, T);
 
@@ -234,7 +267,10 @@ namespace page { namespace math
 	template <unsigned n, typename Iterator, typename T>
 		Slice<n, Iterator> &operator %=(Slice<n, Iterator> &, T);
 
-	/// stream insertion & extraction
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
+
 	template <typename Char, typename CharTraits, unsigned n, typename Iterator>
 		std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &, const Slice<n, Iterator> &);
 

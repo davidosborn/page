@@ -8,12 +8,18 @@
 
 namespace page { namespace math { namespace win32
 {
-	/// from Win32
+	/*-----------+
+	| from Win32 |
+	+-----------*/
+
 	Aabb<2, LONG> MakeAabb(const RECT &);
 	Vector<2, LONG> MakeVector(const POINT &);
 	Vec2i MakeVector(const LPARAM &);
 
-	/// to Win32
+	/*---------+
+	| to Win32 |
+	+---------*/
+
 	POINT MakePoint(const Vector<2, LONG> &);
 	RECT MakeRect(const Aabb<2, LONG> &);
 }}}

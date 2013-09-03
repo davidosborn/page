@@ -8,9 +8,9 @@
 
 namespace page { namespace res { namespace clip
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	TheoraEncoder::TheoraEncoder(const Callback &cb, const math::Vec2u &size, float frameRate, float quality) :
 		Encoder(cb, Content(size) * 3),

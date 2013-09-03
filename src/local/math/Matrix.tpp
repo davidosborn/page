@@ -80,7 +80,10 @@ namespace page { namespace math
 
 ////////// BasicMatrix /////////////////////////////////////////////////////////
 
-	/// assignment
+	/*-----------+
+	| assignment |
+	+-----------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		BasicMatrix<nr, nc, T> &BasicMatrix<nr, nc, T>::operator =(T diagonal)
 	{
@@ -97,7 +100,10 @@ namespace page { namespace math
 		return *this;
 	}
 
-	/// conversion
+	/*-----------+
+	| conversion |
+	+-----------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		template <typename U>
 		BasicMatrix<nr, nc, T>::operator Matrix<nr, nc, U>() const
@@ -114,7 +120,10 @@ namespace page { namespace math
 		return detail::Convert<mr, mc, U>(*this);
 	}
 
-	/// element access
+	/*---------------+
+	| element access |
+	+---------------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		auto BasicMatrix<nr, nc, T>::operator [](size_type i) -> RowComponentIterator
 			{ return RowComponentIterator(data() + i); }
@@ -131,7 +140,10 @@ namespace page { namespace math
 		const T *BasicMatrix<nr, nc, T>::data() const noexcept
 			{ return static_cast<const Matrix<nr, nc, T> &>(*this)._data; }
 
-	/// iterators
+	/*----------+
+	| iterators |
+	+----------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		auto BasicMatrix<nr, nc, T>::begin() -> iterator
 			{ return data(); }
@@ -164,7 +176,10 @@ namespace page { namespace math
 		auto BasicMatrix<nr, nc, T>::rend() const -> const_reverse_iterator
 			{ return const_reverse_iterator(begin()); }
 
-	/// slices
+	/*-------+
+	| slices |
+	+-------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		auto BasicMatrix<nr, nc, T>::Row(size_type i) -> RowSlice
 			{ return RowSlice(RowComponentIterator(begin() + i)); }
@@ -189,7 +204,10 @@ namespace page { namespace math
 		auto BasicMatrix<nr, nc, T>::Diagonal() const -> ConstDiagonalSlice
 			{ return ConstDiagonalSlice(ConstDiagonalComponentIterator(begin())); }
 
-	/// slice factory functions
+	/*------------------------+
+	| slice factory functions |
+	+------------------------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		auto BasicMatrix<nr, nc, T>::MakeRowSlice::operator ()(const ColumnComponentIterator &iter) const -> RowSlice
 			{ return RowSlice(RowComponentIterator(iter)); }
@@ -206,7 +224,10 @@ namespace page { namespace math
 		auto BasicMatrix<nr, nc, T>::MakeConstColumnSlice::operator ()(const ConstRowComponentIterator &iter) const -> ConstColumnSlice
 			{ return ConstColumnSlice(iter.base()); }
 
-	/// slice iterators
+	/*----------------+
+	| slice iterators |
+	+----------------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		auto BasicMatrix<nr, nc, T>::BeginRows() -> RowIterator
 			{ return RowIterator(util::make_deferred_iterator(begin())); }
@@ -239,7 +260,10 @@ namespace page { namespace math
 		auto BasicMatrix<nr, nc, T>::EndColumns() const -> ConstColumnIterator
 			{ return ConstColumnIterator(util::make_deferred_iterator(ConstRowComponentIterator(begin()) + nc)); }
 
-	/// slice ranges
+	/*-------------+
+	| slice ranges |
+	+-------------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		auto BasicMatrix<nr, nc, T>::Rows() -> boost::iterator_range<RowIterator>
 			{ return boost::make_iterator_range(BeginRows(), EndRows()); }
@@ -258,7 +282,10 @@ namespace page { namespace math
 
 ////////// Matrix //////////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <unsigned nr, unsigned nc, typename T>
 		Matrix<nr, nc, T>::Matrix(T diagonal)
 	{
@@ -273,7 +300,10 @@ namespace page { namespace math
 
 ////////// Matrix<2,2> /////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename T>
 		Matrix<2, 2, T>::Matrix(T diagonal)
 	{
@@ -304,7 +334,10 @@ namespace page { namespace math
 
 ////////// Matrix<3,3> /////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename T>
 		Matrix<3, 3, T>::Matrix(T diagonal)
 	{
@@ -391,7 +424,10 @@ namespace page { namespace math
 
 ////////// Matrix<3,4> /////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename T>
 		Matrix<3, 4, T>::Matrix(T diagonal)
 	{
@@ -435,7 +471,10 @@ namespace page { namespace math
 
 ////////// Matrix<4,4> /////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename T>
 		Matrix<4, 4, T>::Matrix(T diagonal)
 	{
@@ -838,7 +877,10 @@ namespace page { namespace math
 		return r;
 	}
 
-	/// other operations
+	/*-----------------+
+	| other operations |
+	+-----------------*/
+
 	template <unsigned nr, unsigned nc, typename T, typename U>
 		Matrix<nr, nc, bool> Near(const Matrix<nr, nc, T> &a, const Matrix<nr, nc, U> &b)
 	{

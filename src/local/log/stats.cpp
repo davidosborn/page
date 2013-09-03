@@ -4,9 +4,9 @@ namespace page
 {
 	namespace log
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		Stats::Stats() :
 			runTime(0), frameCount(0),

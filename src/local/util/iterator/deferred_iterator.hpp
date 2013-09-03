@@ -19,14 +19,20 @@ namespace page { namespace util
 		// inherit constructors
 		using deferred_iterator::iterator_adaptor::iterator_adaptor;
 
-		/// iterator_adapter implementation
+		/*--------------------------------+
+		| iterator_adapter implementation |
+		+--------------------------------*/
+
 		typename deferred_iterator::reference dereference() const
 		{
 			return this->base();
 		}
 	};
 
-	/// factory functions
+	/*------------------+
+	| factory functions |
+	+------------------*/
+
 	/**
 	 * Factory function (for convenience).
 	 */

@@ -14,9 +14,9 @@ namespace page { namespace cfg
 {
 	class CommonState : public virtual BasicState
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		CommonState();

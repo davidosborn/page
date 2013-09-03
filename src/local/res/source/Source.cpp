@@ -18,9 +18,9 @@
 
 namespace page { namespace res
 {
-	/*----------------------------------------+
-	| constructors & special member functions |
-	+----------------------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Source::Source(const std::string &path) :
 		path(path) {}
@@ -35,8 +35,6 @@ namespace page { namespace res
 	}
 
 	void Source::Refresh() {}
-
-
 
 	void Source::Index(const Node &node)
 	{

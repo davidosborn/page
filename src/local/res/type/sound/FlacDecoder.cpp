@@ -7,9 +7,9 @@ namespace page
 {
 	namespace res
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		FlacDecoder::FlacDecoder(const std::shared_ptr<const Pipe> &pipe) :
 			pipe(pipe)

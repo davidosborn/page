@@ -22,9 +22,9 @@ namespace page { namespace gui
 		public WidgetContainer,
 		public util::Polymorphic<Root>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		explicit Root(const std::shared_ptr<const res::Theme> &);
 

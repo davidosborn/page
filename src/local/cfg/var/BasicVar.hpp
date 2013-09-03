@@ -26,9 +26,9 @@ namespace page { namespace cfg
 		template <typename Char, typename CharTraits>
 			friend std::basic_istream<Char, CharTraits> &operator >>(std::basic_istream<Char, CharTraits> &, BasicVar &);
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		protected:
 		explicit BasicVar(BasicState &, const std::string &key);
@@ -121,9 +121,9 @@ namespace page { namespace cfg
 	 */
 	bool operator <(const BasicVar &, const BasicVar &);
 
-	/*------------------------------+
-	| stream insertion & extraction |
-	+------------------------------*/
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
 
 	/**
 	 * Serialize a variable's value to a stream.

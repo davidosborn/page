@@ -24,9 +24,9 @@ namespace page { namespace res { namespace clip
 	 */
 	struct Stream : public util::Uncopyable<Stream>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		Stream(

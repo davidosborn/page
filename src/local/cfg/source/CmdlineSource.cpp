@@ -1,28 +1,24 @@
 #include "../../opt.hpp" // cfgVars
+#include "../../util/class/special_member_functions.hpp" // Uncopyable
 #include "CmdlineSource.hpp"
 
 namespace page { namespace cfg
 {
-////////// CmdlineSource::Reader definition ////////////////////////////////////
+////////// CmdlineSource::Reader ///////////////////////////////////////////////
 
 	/**
 	 * The implementation of @c CmdlineSource's reader.
 	 */
-	class CmdlineSource::Reader : public Source::Reader
+	class CmdlineSource::Reader :
+		public Source::Reader,
+		public util::Uncopyable<CmdlineSource::Reader>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit Reader(const CmdlineSource &);
-
-		/*----------------------+
-		| copy & move semantics |
-		+----------------------*/
-
-		public:
-		MAKE_UNCOPYABLE(Reader)
 
 		/*------------------------------+
 		| Source::Reader implementation |
@@ -41,9 +37,9 @@ namespace page { namespace cfg
 
 ////////// CmdlineSource ///////////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	CmdlineSource::CmdlineSource(int argc, const char *const *argv) :
 		Source("cmdline://", "command line") {}
@@ -57,11 +53,11 @@ namespace page { namespace cfg
 		return std::unique_ptr<Source::Reader>(new CmdlineSource::Reader(*this));
 	}
 
-////////// CmdlineSource::Reader implementation ////////////////////////////////
+////////// CmdlineSource::Reader ///////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	CmdlineSource::Reader::Reader(const CmdlineSource &source) :
 		Source::Reader(source) {}

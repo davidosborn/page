@@ -11,9 +11,9 @@ namespace page
 {
 	namespace res
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		FlacStream::FlacStream(const Pipe &pipe) : init(false),
 			sd(Open(pipe, std::bind(&FlacStream::Write, this,

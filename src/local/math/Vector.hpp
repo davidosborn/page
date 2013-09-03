@@ -22,7 +22,10 @@ namespace page { namespace math
 	template <unsigned n, typename T>
 		class BasicVector
 	{
-		/// container type-traits
+		/*----------------------+
+		| container type-traits |
+		+----------------------*/
+
 		public:
 		typedef T                                     value_type;
 		typedef value_type &                          reference;
@@ -34,18 +37,27 @@ namespace page { namespace math
 		typedef std::ptrdiff_t                        difference_type;
 		typedef std::size_t                           size_type;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		protected:
 		BasicVector(T = 0);
 		BasicVector(const BasicVector &);
 		template <unsigned m, typename U>
 			explicit BasicVector(const BasicVector<m, U> &);
 
-		/// assignment
+		/*-----------+
+		| assignment |
+		+-----------*/
+
 		BasicVector &operator =(T);
 		BasicVector &operator =(const BasicVector &);
 
-		/// iteration
+		/*----------+
+		| iteration |
+		+----------*/
+
 		public:
 		iterator       begin();
 		const_iterator begin() const;
@@ -57,7 +69,10 @@ namespace page { namespace math
 		reverse_iterator       rend();
 		const_reverse_iterator rend() const;
 
-		/// element access
+		/*---------------+
+		| element access |
+		+---------------*/
+
 		reference       operator [](size_type);
 		const_reference operator [](size_type) const;
 	};
@@ -72,20 +87,32 @@ namespace page { namespace math
 	{
 		typedef BasicVector<n, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		Vector(T = 0);
 		template <unsigned m, typename U>
 			explicit Vector(const Vector<m, U> &);
 
-		/// assignment
+		/*-----------+
+		| assignment |
+		+-----------*/
+
 		Vector &operator =(T);
 
-		/// conversion
+		/*-----------+
+		| conversion |
+		+-----------*/
+
 		template <typename U>
 			operator Vector<n, U>() const;
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		private:
 		T _data[n];
 	};
@@ -100,21 +127,33 @@ namespace page { namespace math
 	{
 		typedef BasicVector<2, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		Vector(T = 0);
 		Vector(T, T);
 		template <unsigned m, typename U>
 			explicit Vector(const Vector<m, U> &);
 
-		/// assignment
+		/*-----------+
+		| assignment |
+		+-----------*/
+
 		Vector &operator =(T);
 
-		/// conversion
+		/*-----------+
+		| conversion |
+		+-----------*/
+
 		template <typename U>
 			operator Vector<2, U>() const;
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		union
 		{
 			__extension__ struct { T x, y; };
@@ -132,7 +171,10 @@ namespace page { namespace math
 	{
 		typedef BasicVector<3, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		Vector(T = 0);
 		Vector(T, T, T);
@@ -140,14 +182,23 @@ namespace page { namespace math
 		template <unsigned m, typename U>
 			explicit Vector(const Vector<m, U> &);
 
-		/// assignment
+		/*-----------+
+		| assignment |
+		+-----------*/
+
 		Vector &operator =(T);
 
-		/// conversion
+		/*-----------+
+		| conversion |
+		+-----------*/
+
 		template <typename U>
 			operator Vector<3, U>() const;
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		union
 		{
 			__extension__ struct { T x, y, z; };
@@ -165,7 +216,10 @@ namespace page { namespace math
 	{
 		typedef BasicVector<4, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		Vector(T = 0, T = 1);
 		Vector(T, T, T, T = 1);
@@ -174,14 +228,23 @@ namespace page { namespace math
 		template <unsigned m, typename U>
 			explicit Vector(const Vector<m, U> &);
 
-		/// assignment
+		/*-----------+
+		| assignment |
+		+-----------*/
+
 		Vector &operator =(T);
 
-		/// conversion
+		/*-----------+
+		| conversion |
+		+-----------*/
+
 		template <typename U>
 			operator Vector<4, U>() const;
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		union
 		{
 			__extension__ struct { T x, y, z, w; };
@@ -191,7 +254,10 @@ namespace page { namespace math
 
 ////////// free functions //////////////////////////////////////////////////////
 
-	/// initialization
+	/*---------------+
+	| initialization |
+	+---------------*/
+
 	/**
 	 * Returns a vector filled with zeros.
 	 */
@@ -252,7 +318,10 @@ namespace page { namespace math
 		typename std::enable_if<n == 4, Vector<n, T>>::type
 		UpVector(T = 0);
 
-	/// unary operators
+	/*----------------+
+	| unary operators |
+	+----------------*/
+
 	template <unsigned n, typename T> Vector<n, T> &operator ++(Vector<n, T> &);
 	template <unsigned n, typename T> Vector<n, T> &operator --(Vector<n, T> &);
 
@@ -262,7 +331,10 @@ namespace page { namespace math
 	template <unsigned n, typename T> Vector<n, T> operator +(const Vector<n, T> &);
 	template <unsigned n, typename T> Vector<n, T> operator -(const Vector<n, T> &);
 
-	/// arithmetic operators
+	/*---------------------+
+	| arithmetic operators |
+	+---------------------*/
+
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator *(const Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator /(const Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator %(const Vector<n, T> &, const Vector<n, U> &);
@@ -281,7 +353,10 @@ namespace page { namespace math
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator +(T, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator -(T, const Vector<n, U> &);
 
-	/// shift operators
+	/*----------------+
+	| shift operators |
+	+----------------*/
+
 	template <unsigned n, typename T> Vector<n, T> operator <<(const Vector<n, T> &, const Vector<n, unsigned> &);
 	template <unsigned n, typename T> Vector<n, T> operator >>(const Vector<n, T> &, const Vector<n, unsigned> &);
 
@@ -291,7 +366,10 @@ namespace page { namespace math
 	template <unsigned n, typename T> typename std::enable_if<std::is_integral<T>::value, Vector<n, T>>::type operator <<(T, const Vector<n, unsigned> &);
 	template <unsigned n, typename T> typename std::enable_if<std::is_integral<T>::value, Vector<n, T>>::type operator >>(T, const Vector<n, unsigned> &);
 
-	/// relational operators
+	/*---------------------+
+	| relational operators |
+	+---------------------*/
+
 	template <unsigned n, typename T, typename U> Vector<n, bool> operator < (const Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, bool> operator > (const Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, bool> operator <=(const Vector<n, T> &, const Vector<n, U> &);
@@ -313,7 +391,10 @@ namespace page { namespace math
 	template <unsigned n, typename T, typename U> Vector<n, bool> operator ==(T, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, bool> operator !=(T, const Vector<n, U> &);
 
-	/// bitwise operators
+	/*------------------+
+	| bitwise operators |
+	+------------------*/
+
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator &(const Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator ^(const Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator |(const Vector<n, T> &, const Vector<n, U> &);
@@ -326,7 +407,10 @@ namespace page { namespace math
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator ^(T, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> operator |(T, const Vector<n, U> &);
 
-	/// logical operators
+	/*------------------+
+	| logical operators |
+	+------------------*/
+
 	template <unsigned n, typename T, typename U> Vector<n, bool> operator &&(const Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, bool> operator ||(const Vector<n, T> &, const Vector<n, U> &);
 
@@ -338,7 +422,10 @@ namespace page { namespace math
 
 	template <unsigned n, typename T> Vector<n, bool> operator !(const Vector<n, T> &);
 
-	/// compound assignment operators
+	/*------------------------------+
+	| compound assignment operators |
+	+------------------------------*/
+
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator *= (Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator /= (Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator %= (Vector<n, T> &, const Vector<n, U> &);
@@ -361,7 +448,10 @@ namespace page { namespace math
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator ^= (Vector<n, T> &, U);
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator |= (Vector<n, T> &, U);
 
-	/// boolean combiners
+	/*------------------+
+	| boolean combiners |
+	+------------------*/
+
 	/**
 	 * Returns @c true if all elements in the vector evaluate to @c true.
 	 */
@@ -372,7 +462,10 @@ namespace page { namespace math
 	 */
 	template <unsigned n, typename T> bool Any(const Vector<n, T> &);
 
-	/// minimum & maximum
+	/*----------------+
+	| minimum/maximum |
+	+----------------*/
+
 	template <unsigned n, typename T> T Min(const Vector<n, T> &);
 	template <unsigned n, typename T> T Max(const Vector<n, T> &);
 
@@ -385,7 +478,10 @@ namespace page { namespace math
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> Min(T, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> Max(T, const Vector<n, U> &);
 
-	/// swizzle
+	/*--------+
+	| swizzle |
+	+--------*/
+
 	/**
 	 * Builds a vector, taking an element from the @a source vector at each
 	 * index in @a indices.
@@ -398,17 +494,26 @@ namespace page { namespace math
 			const Vector<n, T> &source,
 			Indices... indices);
 
-	/// tolerant equivalence
+	/*---------------------+
+	| tolerant equivalence |
+	+---------------------*/
+
 	template <unsigned n, typename T, typename U> Vector<n, bool> Near(const Vector<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, bool> Near(const Vector<n, T> &, U);
 	template <unsigned n, typename T, typename U> Vector<n, bool> Near(T, const Vector<n, U> &);
 
-	/// quantization
+	/*-------------+
+	| quantization |
+	+-------------*/
+
 	template <unsigned n, typename T> Vector<n, T> Round(const Vector<n, T> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> Round(const Vector<n, T> &, U precision);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> Round(const Vector<n, T> &, const Vector<n, U> &precision);
 
-	/// other operations
+	/*-----------------+
+	| other operations |
+	+-----------------*/
+
 	template <unsigned n, typename T> Vector<n, T> Abs(const Vector<n, T> &);
 	template <typename T, typename U> typename ArithmeticConversion<T, U>::Result AngleBetween(const Vector<2, T> &, const Vector<2, U> &);
 	template <typename T, typename U> typename ArithmeticConversion<T, U>::Result AngleBetween(const Vector<3, T> &, const Vector<3, U> &);
@@ -427,7 +532,10 @@ namespace page { namespace math
 	template <unsigned n, typename T> T Sum(const Vector<n, T> &);
 	template <typename T> Vector<2, T> Transpose(const Vector<2, T> &);
 
-	/// coordinate-system transformation
+	/*---------------------------------+
+	| coordinate-system transformation |
+	+---------------------------------*/
+
 	/**
 	 * Performs a barycentric coordinate transformation.
 	 *
@@ -436,11 +544,17 @@ namespace page { namespace math
 	 */
 	template <typename T> Vector<2, T> Barycentric(const Vector<2, T> &, const Vector<2, T> &, const Vector<2, T> &, const Vector<2, T> &point);
 
-	/// stream insertion/extraction
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
+
 	template <typename Char, typename CharTraits, unsigned n, typename T> std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &, const Vector<n, T> &);
 	template <typename Char, typename CharTraits, unsigned n, typename T> std::basic_istream<Char, CharTraits> &operator >>(std::basic_istream<Char, CharTraits> &, Vector<n, T> &);
 
-	/// standard-library compatibility
+	/*-------------------------------+
+	| standard-library compatibility |
+	+-------------------------------*/
+
 	template <unsigned n, typename T> void swap(Vector<n, T> &, Vector<n, T> &);
 }}
 

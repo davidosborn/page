@@ -6,9 +6,9 @@
 
 namespace page { namespace gui
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Root::Root(const std::shared_ptr<const res::Theme> &theme) :
 		theme(theme) {}

@@ -10,9 +10,9 @@ namespace page { namespace res { namespace clip
 	 */
 	class FfmpegEncoder : public Encoder
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		FfmpegEncoder(

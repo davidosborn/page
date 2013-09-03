@@ -11,9 +11,9 @@ namespace page
 	{
 		class IndentFilter final : public PrefixFilter
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			using PrefixFilter::PrefixFilter;
 

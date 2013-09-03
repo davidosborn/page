@@ -19,9 +19,9 @@ namespace page { namespace res
 	 */
 	class Source
 	{
-		/*----------------------------------------+
-		| constructors & special member functions |
-		+----------------------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit Source(const std::string &path);

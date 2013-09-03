@@ -9,9 +9,9 @@ namespace page
 	{
 		class StdoutSink final : public Sink
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			StdoutSink();

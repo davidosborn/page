@@ -11,7 +11,7 @@
 #include "../../math/Aabb.hpp"
 #include "../../math/win32.hpp" // Make{Rect,Vector}
 #include "../../res/type/Theme.hpp" // Theme::cursor
-#include "../../ui/UserInterface.hpp" // UserInterface::GetTheme
+#include "../../gui/UserInterface.hpp" // UserInterface::GetTheme
 #include "../../wnd/win32/Window.hpp" // Window->wnd::Window, Window::GetHwnd
 #include "../../wnd/Window.hpp" // Window::{{focus,message,move,size}Sig,Get{Position,Size},HasFocus}
 #include "Driver.hpp"

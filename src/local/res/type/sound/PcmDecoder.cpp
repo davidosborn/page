@@ -8,9 +8,9 @@ namespace page
 {
 	namespace res
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		PcmDecoder::PcmDecoder(const std::shared_ptr<const Pipe> &pipe, unsigned channels, unsigned bitDepth, util::Endian endian) :
 			pipe(pipe), sampleSize(channels * bitDepth / 8)

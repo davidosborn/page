@@ -12,7 +12,10 @@ namespace page { namespace math
 
 ////////// BasicColor //////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename D, unsigned n, typename T> BasicColor<D, n, T>::BasicColor(T t)
 	{
 		std::fill(begin(), end(), t);
@@ -35,7 +38,10 @@ namespace page { namespace math
 		std::copy(v.begin(), v.end(), begin());
 	}
 
-	/// assignment
+	/*-----------+
+	| assignment |
+	+-----------*/
+
 	template <typename D, unsigned n, typename T> BasicColor<D, n, T> &BasicColor<D, n, T>::operator =(T t)
 	{
 		std::fill(begin(), end(), t);
@@ -47,7 +53,10 @@ namespace page { namespace math
 		return *this;
 	}
 
-	/// conversion
+	/*-----------+
+	| conversion |
+	+-----------*/
+
 	template <typename D, unsigned n, typename T> BasicColor<D, n, T>::operator Vector<n, T>() const
 	{
 		Vector<n, T> r;
@@ -55,7 +64,10 @@ namespace page { namespace math
 		return r;
 	}
 
-	/// iterators
+	/*----------+
+	| iterators |
+	+----------*/
+
 	template <typename D, unsigned n, typename T> typename BasicColor<D, n, T>::iterator BasicColor<D, n, T>::begin()
 		{ return static_cast<D &>(*this)._data; }
 	template <typename D, unsigned n, typename T> typename BasicColor<D, n, T>::const_iterator BasicColor<D, n, T>::begin() const
@@ -65,7 +77,10 @@ namespace page { namespace math
 	template <typename D, unsigned n, typename T> typename BasicColor<D, n, T>::const_iterator BasicColor<D, n, T>::end() const
 		{ return begin() + n; }
 
-	/// reverse iterators
+	/*------------------+
+	| reverse iterators |
+	+------------------*/
+
 	template <typename D, unsigned n, typename T> typename BasicColor<D, n, T>::reverse_iterator BasicColor<D, n, T>::rbegin()
 		{ return reverse_iterator(end()); }
 	template <typename D, unsigned n, typename T> typename BasicColor<D, n, T>::const_reverse_iterator BasicColor<D, n, T>::rbegin() const
@@ -75,7 +90,10 @@ namespace page { namespace math
 	template <typename D, unsigned n, typename T> typename BasicColor<D, n, T>::const_reverse_iterator BasicColor<D, n, T>::rend() const
 		{ return const_reverse_iterator(begin()); }
 
-	/// element access
+	/*---------------+
+	| element access |
+	+---------------*/
+
 	template <typename D, unsigned n, typename T> typename BasicColor<D, n, T>::reference BasicColor<D, n, T>::operator [](unsigned i)
 		{ return begin()[i]; }
 	template <typename D, unsigned n, typename T> typename BasicColor<D, n, T>::const_reference BasicColor<D, n, T>::operator [](unsigned i) const
@@ -83,7 +101,10 @@ namespace page { namespace math
 
 ////////// Color ///////////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <unsigned n, typename T> Color<n, T>::Color(T t) :
 		Base(t) {}
 	template <unsigned n, typename T> template <unsigned m, typename U> Color<n, T>::Color(const Color<m, U> &other) :
@@ -91,14 +112,20 @@ namespace page { namespace math
 	template <unsigned n, typename T> Color<n, T>::Color(const Vector<n, T> &v) :
 		Base(v) {}
 
-	/// assignment
+	/*-----------+
+	| assignment |
+	+-----------*/
+
 	template <unsigned n, typename T> Color<n, T> &Color<n, T>::operator =(T t)
 	{
 		Base::operator =(t);
 		return *this;
 	}
 
-	/// conversion
+	/*-----------+
+	| conversion |
+	+-----------*/
+
 	template <unsigned n, typename T> template <typename U> Color<n, T>::operator Color<n, U>() const
 	{
 		Color<n, U> r;
@@ -108,7 +135,10 @@ namespace page { namespace math
 
 ////////// HsvColor ////////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename T> HsvColor<T>::HsvColor(T t) :
 		Base(t) {}
 	template <typename T> HsvColor<T>::HsvColor(T h, T s, T v) :
@@ -136,14 +166,20 @@ namespace page { namespace math
 	template <typename T> HsvColor<T>::HsvColor(const Vector<3, T> &v) :
 		Base(v) {}
 
-	/// assignment
+	/*-----------+
+	| assignment |
+	+-----------*/
+
 	template <typename T> HsvColor<T> &HsvColor<T>::operator =(T t)
 	{
 		Base::operator =(t);
 		return *this;
 	}
 
-	/// conversion
+	/*-----------+
+	| conversion |
+	+-----------*/
+
 	template <typename T> template <typename U> HsvColor<T>::operator HsvColor<U>() const
 	{
 		HsvColor<U> r;
@@ -153,7 +189,10 @@ namespace page { namespace math
 
 ////////// RgbColor ////////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename T> RgbColor<T>::RgbColor(T t) :
 		Base(t) {}
 	template <typename T> RgbColor<T>::RgbColor(T r, T g, T b) :
@@ -187,14 +226,20 @@ namespace page { namespace math
 	template <typename T> RgbColor<T>::RgbColor(const YcbcrColor<T> &ycbcr) :
 		Base(YcbcrToRgbColorMatrix<T>() * Vector<3, T>(ycbcr)) {}
 
-	/// assignment
+	/*-----------+
+	| assignment |
+	+-----------*/
+
 	template <typename T> RgbColor<T> &RgbColor<T>::operator =(T t)
 	{
 		Base::operator =(t);
 		return *this;
 	}
 
-	/// conversion
+	/*-----------+
+	| conversion |
+	+-----------*/
+
 	template <typename T> template <typename U> RgbColor<T>::operator RgbColor<U>() const
 	{
 		RgbColor<U> r;
@@ -204,7 +249,10 @@ namespace page { namespace math
 
 ////////// RgbaColor ///////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename T> RgbaColor<T>::RgbaColor(T t, T a) :
 		Base(t), a(a) {}
 	template <typename T> RgbaColor<T>::RgbaColor(T r, T g, T b, T a) :
@@ -220,14 +268,20 @@ namespace page { namespace math
 	template <typename T> RgbaColor<T>::RgbaColor(const YcbcrColor<T> &ycbcr, T a) :
 		Base(RgbaColor(RgbColor<T>(ycbcr), a)) {}
 
-	/// assignment
+	/*-----------+
+	| assignment |
+	+-----------*/
+
 	template <typename T> RgbaColor<T> &RgbaColor<T>::operator =(T t)
 	{
 		Base::operator =(t);
 		return *this;
 	}
 
-	/// conversion
+	/*-----------+
+	| conversion |
+	+-----------*/
+
 	template <typename T> template <typename U> RgbaColor<T>::operator RgbaColor<U>() const
 	{
 		RgbaColor<U> r;
@@ -237,7 +291,10 @@ namespace page { namespace math
 
 ////////// YcbcrColor //////////////////////////////////////////////////////////
 
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename T> YcbcrColor<T>::YcbcrColor(T t) :
 		Base(t) {}
 	template <typename T> YcbcrColor<T>::YcbcrColor(T y, T cb, T cr) :
@@ -251,14 +308,20 @@ namespace page { namespace math
 	template <typename T> YcbcrColor<T>::YcbcrColor(const Vector<3, T> &v) :
 		Base(v) {}
 
-	/// assignment
+	/*-----------+
+	| assignment |
+	+-----------*/
+
 	template <typename T> YcbcrColor<T> &YcbcrColor<T>::operator =(T t)
 	{
 		Base::operator =(t);
 		return *this;
 	}
 
-	/// conversion
+	/*-----------+
+	| conversion |
+	+-----------*/
+
 	template <typename T> template <typename U> YcbcrColor<T>::operator YcbcrColor<U>() const
 	{
 		YcbcrColor<U> r;
@@ -268,7 +331,10 @@ namespace page { namespace math
 
 ////////// free functions //////////////////////////////////////////////////////
 
-	/// RGB initialization
+	/*-------------------+
+	| RGB initialization |
+	+-------------------*/
+
 	template <typename T> RgbColor<T> BlackRgbColor()
 	{
 		return RgbColor<T>();
@@ -283,7 +349,10 @@ namespace page { namespace math
 		return RgbColor<T>(.212671, .715160, .072169);
 	}
 
-	/// RGBA initialization
+	/*--------------------+
+	| RGBA initialization |
+	+--------------------*/
+
 	template <typename T> RgbaColor<T> ClearRgbaColor()
 	{
 		return RgbaColor<T>(0, 0);
@@ -301,7 +370,10 @@ namespace page { namespace math
 		return RgbaColor<T>(LuminanceCoefficientRgbColor<T>());
 	}
 
-	/// Y'CbCr initialization
+	/*----------------------+
+	| Y'CbCr initialization |
+	+----------------------*/
+
 	template <typename T> YcbcrColor<T> YcbcrBiasColor()
 	{
 		// http://www.mir.com/DMG/ycbcr.html
@@ -313,7 +385,10 @@ namespace page { namespace math
 		return YcbcrColor<T>(219, 224, 224) / 256;
 	}
 
-	/// matrix initialization
+	/*----------------------+
+	| matrix initialization |
+	+----------------------*/
+
 	template <typename T> Matrix<3, 3, T> RgbToYcbcrColorMatrix()
 	{
 		// http://www.mir.com/DMG/ycbcr.html
@@ -331,7 +406,10 @@ namespace page { namespace math
 			1,  1.772,     0);
 	}
 
-	/// operators
+	/*----------+
+	| operators |
+	+----------*/
+
 #define DEFINE_BINARY_ARITHMETIC_OPERATOR(TYPE, OP, FUNC) \
 	template <typename T, typename U> TYPE<typename ArithmeticConversion<T, U>::Result> operator OP(const TYPE<T> &c1, const TYPE<U> &c2) \
 	{ \
@@ -438,7 +516,10 @@ namespace page { namespace math
 #undef DEFINE_ASSIGNMENT_OPERATOR
 #undef DEFINE_OPERATORS
 
-	/// boolean combiners
+	/*------------------+
+	| boolean combiners |
+	+------------------*/
+
 	template <typename D, unsigned n, typename T> bool All(const BasicColor<D, n, T> &c)
 	{
 		Vector<n, bool> b(c.begin(), c.end());
@@ -450,7 +531,10 @@ namespace page { namespace math
 		return std::find(b.begin(), b.end(), true) != b.end();
 	}
 
-	/// min/max functions
+	/*------------------+
+	| min/max functions |
+	+------------------*/
+
 	template <typename D, unsigned n, typename T> T Min(const BasicColor<D, n, T> &c)
 	{
 		return *std::min_element(c.begin(), c.end());
@@ -502,7 +586,10 @@ namespace page { namespace math
 		return r;
 	}
 
-	/// color transformation
+	/*---------------------+
+	| color transformation |
+	+---------------------*/
+
 	template <typename T> HsvColor<T> Complement(const HsvColor<T> &c)
 	{
 		return HsvColor<T>(Wrap(c.h + T(.5), 0, 1), c.s, c.v);
@@ -520,7 +607,10 @@ namespace page { namespace math
 		return (c - .0625) / YcbcrColor<T>(.85546875, .875, .875);
 	}
 
-	/// stream insertion/extraction
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
+
 	template <typename Char, typename CharTraits, typename D, unsigned n, typename T>
 		std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &os, const BasicColor<D, n, T> &c)
 	{
@@ -552,7 +642,10 @@ namespace page { namespace math
 		return is;
 	}
 
-	/// standard-library compatibility
+	/*-------------------------------+
+	| standard-library compatibility |
+	+-------------------------------*/
+
 	template <typename D, unsigned n, typename T> void swap(BasicColor<D, n, T> &a, BasicColor<D, n, T> &b)
 	{
 		std::swap_ranges(a.begin(), a.end(), b.begin());

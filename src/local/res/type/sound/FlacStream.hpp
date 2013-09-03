@@ -16,9 +16,9 @@ namespace page
 
 		class FlacStream : public AudioStream
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			explicit FlacStream(const Pipe &);

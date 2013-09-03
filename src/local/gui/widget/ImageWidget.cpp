@@ -9,9 +9,9 @@
 
 namespace page { namespace ui
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	ImageWidget::ImageWidget(
 		cache::Proxy<res::Image> const& image,

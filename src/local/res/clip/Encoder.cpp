@@ -2,9 +2,9 @@
 
 namespace page { namespace res { namespace clip
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Encoder::Encoder(const Callback &cb, unsigned frameSize) :
 		cb(cb), frameSize(frameSize) {}

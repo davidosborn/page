@@ -5,7 +5,10 @@
 
 namespace page { namespace util
 {
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <typename Iterator>
 		range<Iterator>::range() :
 			range(iterator(), iterator()) {}
@@ -26,7 +29,10 @@ namespace page { namespace util
 		range<Iterator>::range(const range<Iterator2> &other) :
 			range(other.iter) {}
 
-	/// iterators
+	/*----------+
+	| iterators |
+	+----------*/
+
 	template <typename Iterator>
 		auto range<Iterator>::begin() const noexcept -> const iterator &
 	{
@@ -51,7 +57,10 @@ namespace page { namespace util
 		return reverse_iterator(begin());
 	}
 
-	/// observers
+	/*----------+
+	| observers |
+	+----------*/
+
 	template <typename Iterator>
 		range<Iterator>::operator const std::pair<iterator, iterator> &() const noexcept
 	{
@@ -64,7 +73,10 @@ namespace page { namespace util
 		return iter.first == iter.second;
 	}
 
-	/// factory functions
+	/*------------------+
+	| factory functions |
+	+------------------*/
+
 	template <typename Iterator>
 		range<Iterator> make_range(Iterator first, Iterator last)
 	{

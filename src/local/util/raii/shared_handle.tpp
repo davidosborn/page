@@ -118,7 +118,7 @@ namespace page
 			return shared_handle<T>(handle, deleter);
 		}
 
-		// specialized algorithms
+		// standard-library compatibility
 		template <typename T> void swap(shared_handle<T> &a, shared_handle<T> &b) noexcept
 		{
 			a.swap(b);

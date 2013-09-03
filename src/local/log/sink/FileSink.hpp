@@ -12,9 +12,9 @@ namespace page
 	{
 		class FileSink final : public Sink
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			explicit FileSink(std::string path);

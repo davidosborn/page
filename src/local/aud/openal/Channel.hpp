@@ -5,7 +5,7 @@
 
 #	include <AL/al.h> // ALuint
 
-#	include "../../cache/fwd.hpp" // Proxy
+#	include "../../cache/proxy/fwd.hpp" // Proxy
 #	include "../Channel.hpp"
 
 namespace page { namespace res { class Sound; }}

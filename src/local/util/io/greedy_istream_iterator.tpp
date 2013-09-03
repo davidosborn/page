@@ -35,9 +35,9 @@ namespace page
 			}
 		}
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		template <typename T, typename Char, typename CharTraits>
 			greedy_istream_iterator<T, Char, CharTraits>::

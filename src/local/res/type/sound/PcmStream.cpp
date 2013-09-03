@@ -6,9 +6,9 @@ namespace page
 {
 	namespace res
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		PcmStream::PcmStream(const Pipe &pipe, unsigned sampleSize) :
 			super(pipe.Open()), sampleSize(sampleSize) {}

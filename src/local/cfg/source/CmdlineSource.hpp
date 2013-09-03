@@ -12,9 +12,9 @@ namespace page { namespace cfg
 		public Source,
 		public virtual util::Cloneable<CmdlineSource, Source>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		CmdlineSource(int argc, const char *const *argv);

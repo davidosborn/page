@@ -4,7 +4,7 @@
 #	include <memory> // shared_ptr
 #	include <vector>
 
-#	include "../cache/proxy/Proxy.hpp"
+#	include "../cache/proxy/fwd.hpp" // Proxy
 #	include "../util/class/special_member_functions.hpp" // Uncopyable
 
 namespace page

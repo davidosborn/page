@@ -14,9 +14,9 @@ namespace page
 
 		class VorbisStream : public AudioStream
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			VorbisStream(const Pipe &);

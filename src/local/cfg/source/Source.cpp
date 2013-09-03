@@ -6,9 +6,9 @@ namespace page { namespace cfg
 {
 ////////// Source //////////////////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Source::Source(
 		const std::string &uri,
@@ -41,9 +41,9 @@ namespace page { namespace cfg
 
 ////////// Source::ReaderWriter ////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Source::ReaderWriter::ReaderWriter(const Source &source) :
 		source(source) {}
@@ -59,9 +59,9 @@ namespace page { namespace cfg
 
 ////////// Source::Reader //////////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Source::Reader::Reader(const Source &source) :
 		ReaderWriter(source) {}
@@ -83,9 +83,9 @@ namespace page { namespace cfg
 
 ////////// Source::Writer //////////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Source::Writer::Writer(const Source &source) :
 		ReaderWriter(source) {}

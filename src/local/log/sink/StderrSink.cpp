@@ -8,9 +8,9 @@ namespace page
 {
 	namespace log
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		StderrSink::StderrSink() :
 			streambuf(*(*CVAR(logSync) ? std::cout.rdbuf() : std::cerr.rdbuf())) {}

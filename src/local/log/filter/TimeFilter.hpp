@@ -12,9 +12,9 @@ namespace page
 		 */
 		class TimeFilter final : public PrefixFilter
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			using TimeFilter::TimeFilter;
 

@@ -67,7 +67,7 @@ namespace page
 		template <typename T> scoped_handle<T> make_scoped_handle(T);
 		template <typename T> scoped_handle<T> make_scoped_handle(T, typename scoped_handle<T>::deleter_type);
 
-		// specialized algorithms
+		// standard-library compatibility
 		template <typename T> void swap(scoped_handle<T> &, scoped_handle<T> &) noexcept;
 	}
 }

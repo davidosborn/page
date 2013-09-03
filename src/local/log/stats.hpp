@@ -10,9 +10,9 @@ namespace page
 		class Stats :
 			public util::Monostate<Stats>
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			Stats();

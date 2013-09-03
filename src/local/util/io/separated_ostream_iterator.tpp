@@ -4,9 +4,9 @@ namespace page
 {
 	namespace util
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		template <typename T, typename Char, typename CharTraits>
 		template <typename Separator>

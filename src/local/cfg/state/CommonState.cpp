@@ -106,9 +106,9 @@ namespace page { namespace cfg
 		}
 	}
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	CommonState::CommonState() :
 		audioVolume        (*this, "audio.volume",          1),

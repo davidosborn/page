@@ -57,9 +57,9 @@ namespace page { namespace cfg
 		 */
 		typedef std::function<ExternT (const T &)> ConvertOutFilter;
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit Var(

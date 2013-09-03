@@ -13,9 +13,9 @@ namespace page
 
 		class VorbisDecoder : public AudioDecoder
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			explicit VorbisDecoder(const std::shared_ptr<const Pipe> &);

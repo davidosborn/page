@@ -15,9 +15,9 @@ namespace page { namespace ui
 		public Widget,
 		public virtual util::Cloneable<TextWidget, Widget>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit TextWidget(

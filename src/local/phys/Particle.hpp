@@ -1,7 +1,7 @@
 #ifndef    page_local_phys_Particle_hpp
 #   define page_local_phys_Particle_hpp
 
-#	include "../cache/fwd.hpp" // Proxy
+#	include "../cache/proxy/fwd.hpp" // Proxy
 #	include "attrib/Ambient.hpp"
 #	include "attrib/Diffuse.hpp"
 #	include "attrib/Emissive.hpp"

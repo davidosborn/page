@@ -13,9 +13,9 @@ namespace page
 
 		class PcmStream : public AudioStream
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			PcmStream(const Pipe &, unsigned sampleSize);

@@ -7,9 +7,9 @@ namespace page
 {
 	namespace res
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		VorbisDecoder::VorbisDecoder(const std::shared_ptr<const Pipe> &pipe) :
 			pipe(pipe)

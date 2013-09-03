@@ -69,7 +69,7 @@ namespace page
 		template <typename T> unique_handle<T> make_unique_handle(T);
 		template <typename T> unique_handle<T> make_unique_handle(T, typename unique_handle<T>::deleter_type);
 
-		// specialized algorithms
+		// standard-library compatibility
 		template <typename T> void swap(unique_handle<T> &, unique_handle<T> &) noexcept;
 	}
 }

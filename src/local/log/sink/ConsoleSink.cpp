@@ -6,9 +6,9 @@ namespace page
 {
 	namespace log
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		ConsoleSink::ConsoleSink(const std::string &title) :
 			console(GLOBAL(wnd::ConsoleRegistry).Make(title)) {}

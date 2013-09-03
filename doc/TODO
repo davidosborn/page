@@ -1,45 +1,29 @@
+res/source/Source.[ch]pp should use the Non-Virtual Interface pattern.
+
 Consider replacing Deserialize with some kind of boost::tokenizer look-alike.
 Gotta reduce dependencies, particularly on heavyweight items like err/Exception
 and util/Deserialize, and anything involving lots of template metaprogramming.
 
 Things to fix in cache:
 - deleters (missing comments, should all be the same)
-- Signature needs to:
-	- accept first argument as type, remaining arguments as sources
-	- for source, convert range of proxies to comma-separated string of signatures
-	- for source, convert proxy to signature string
-	- if a proxy is null, its signature should be <type>()
-	- a range of proxies should yield "(sig1,sig2,sig3...)"
-	- a source that is not a proxy or a collection of proxies should yield just the value
 
-- ResourceProxy<...>() isn't necessary anymore; just use Proxy's default constructor
-- copy_ptr<Proxy> -> Proxy
-- cache/fwd.hpp might not be useful anymore
-- no more .Copy() with proxies necessary
-
-Finish cache/Signature.
-
-Need to fix deleters in cache/proxy.
-
-Update all of the proxy implementations (except ResourceProxy, which is already done).
-
-Get rid of @c for the most part.
-Switch /// back to the box comment for stuff from adventure.
+Consider getting rid of @c in doxygen comments.
 
 Use alignas(16) in math classes to allow them to work with SSE.
 Provide SSE implementations (with an #ifdef).
 
-- @defgroup
-- "constructors & destructor" -> "constructors"
-- "specialized algorithms" -> "standard-library compatibility"
-- "member variables" -> "data members"
-- avoid Serialize/Deserialize
-- don't always use ENABLE_IF((...)); only when there is a comma inside
+Avoid Serialize/Deserialize.
 
 How are the math classes (esp. Matrix and Vector) being constructed, given that
 the data is in the derived class, so how does the base class initialize it?
 I think at least one class (Color?) is using the CRTP to solve this.
 This should be documented.
+
+Sometimes we give @defgroup a name, sometimes we don't.  Is there a consistent solution?
+
+Consider switching from ENABLE_IF to std::enable_if.
+
+All the audio stuff is pretty out-of-date.
 
 =================
 

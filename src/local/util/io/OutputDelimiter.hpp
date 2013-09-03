@@ -16,9 +16,9 @@ namespace page
 			public:
 			typedef std::basic_string<Char, CharTraits> String;
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			/**
 			 * Creates an empty delimiter.
@@ -74,9 +74,9 @@ namespace page
 			 */
 			static const OutputDelimiter &GetSpaceDelimiter();
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			/**
@@ -85,9 +85,9 @@ namespace page
 			String string;
 		};
 
-		/*------------------------------+
-		| stream insertion & extraction |
-		+------------------------------*/
+		/*----------------------------+
+		| stream insertion/extraction |
+		+----------------------------*/
 
 		/**
 		 * Writes the delimiter to a stream.

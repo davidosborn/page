@@ -19,9 +19,9 @@ namespace page
 			 */
 			class Initializer
 			{
-				/*--------------------------+
-				| constructors & destructor |
-				+--------------------------*/
+				/*-------------+
+				| constructors |
+				+-------------*/
 
 				public:
 				Initializer() :

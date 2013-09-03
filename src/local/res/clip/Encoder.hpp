@@ -13,9 +13,9 @@ namespace page { namespace res { namespace clip
 	 */
 	class Encoder : public util::Uncopyable<Encoder>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		protected:
 		Encoder(const EncoderCallback &, unsigned frameSize);

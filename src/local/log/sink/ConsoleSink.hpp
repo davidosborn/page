@@ -16,9 +16,9 @@ namespace page
 	{
 		class ConsoleSink final : public Sink
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			explicit ConsoleSink(const std::string &title);

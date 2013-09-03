@@ -124,7 +124,7 @@ namespace page
 			return unique_handle<T>(handle, deleter);
 		}
 
-		// specialized algorithms
+		// standard-library compatibility
 		template <typename T> void swap(unique_handle<T> &a, unique_handle<T> &b) noexcept
 		{
 			a.swap(b);

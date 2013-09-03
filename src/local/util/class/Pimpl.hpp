@@ -55,9 +55,9 @@ namespace page { namespace util
 			return impl;
 		}
 
-		/*-----------------+
-		| member variables |
-		+-----------------*/
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		private:
 		std::shared_ptr<Impl> impl;

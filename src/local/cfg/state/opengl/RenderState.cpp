@@ -39,9 +39,9 @@ namespace page { namespace cfg { namespace opengl
 		}
 	}
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	RenderState::RenderState() :
 		renderBump         (*this, "render.bump",           true),

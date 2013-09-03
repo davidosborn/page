@@ -6,12 +6,12 @@
 #include "../log/Stats.hpp"
 #include "../res/Index.hpp" // GetIndex, Index::Load
 #include "../res/type/Image.hpp"
-#include "../ui/widget/Array.hpp"
-#include "../ui/widget/Edit.hpp"
-#include "../ui/widget/Image.hpp"
-#include "../ui/widget/List.hpp"
-#include "../ui/widget/Text.hpp"
-#include "../ui/widget/Window.hpp"
+#include "../gui/widget/Array.hpp"
+#include "../gui/widget/Edit.hpp"
+#include "../gui/widget/Image.hpp"
+#include "../gui/widget/List.hpp"
+#include "../gui/widget/Text.hpp"
+#include "../gui/widget/Window.hpp"
 #include "UserInterface.hpp"
 
 namespace page { namespace game

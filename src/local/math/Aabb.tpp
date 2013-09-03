@@ -2,7 +2,10 @@
 
 namespace page { namespace math
 {
-	/// constructors
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	template <unsigned n, typename T> Aabb<n, T>::Aabb(T t) :
 		min(t), max(t) {}
 	template <unsigned n, typename T> Aabb<n, T>::Aabb(const Vector<n, T> &v) :
@@ -14,13 +17,19 @@ namespace page { namespace math
 	template <unsigned n, typename T> template <unsigned m, typename U> Aabb<n, T>::Aabb(const Aabb<m, U> &other) :
 		min(other.min), max(other.max) {}
 
-	/// conversion
+	/*-----------+
+	| conversion |
+	+-----------*/
+
 	template <unsigned n, typename T> template <typename U> Aabb<n, T>::operator Aabb<n, U>() const
 	{
 		return Aabb<n, U>(min, max);
 	}
 
-	/// initialization
+	/*---------------+
+	| initialization |
+	+---------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> AabbPositionSize(const Vector<n, T> &position, const Vector<n, U> &size)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -31,7 +40,10 @@ namespace page { namespace math
 		return Aabb<n, T>(Inf<T>(), -Inf<T>());
 	}
 
-	/// unary operators
+	/*----------------+
+	| unary operators |
+	+----------------*/
+
 	template <unsigned n, typename T> Aabb<n, T> operator +(const Aabb<n, T> &a)
 	{
 		return a;
@@ -41,7 +53,10 @@ namespace page { namespace math
 		return Aabb<n, T>(-a.min, -a.max);
 	}
 
-	/// vector arithmetic operators
+	/*----------------------------+
+	| vector arithmetic operators |
+	+----------------------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> operator *(const Aabb<n, T> &a, const Vector<n, U> &v)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -63,7 +78,10 @@ namespace page { namespace math
 		return Aabb<n, R>(a.min - v, a.max - v);
 	}
 
-	/// reverse vector arithmetic operators
+	/*------------------------------------+
+	| reverse vector arithmetic operators |
+	+------------------------------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> operator *(const Vector<n, T> &v, const Aabb<n, U> &a)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -85,7 +103,10 @@ namespace page { namespace math
 		return Aabb<n, R>(v - a.min, v - a.max);
 	}
 
-	/// scalar arithmetic operators
+	/*----------------------------+
+	| scalar arithmetic operators |
+	+----------------------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> operator *(const Aabb<n, T> &a, U t)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -107,7 +128,10 @@ namespace page { namespace math
 		return Aabb<n, R>(a.min - t, a.max - t);
 	}
 
-	/// reverse scalar arithmetic operators
+	/*------------------------------------+
+	| reverse scalar arithmetic operators |
+	+------------------------------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> operator *(T t, const Aabb<n, U> &a)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -129,7 +153,10 @@ namespace page { namespace math
 		return Aabb<n, R>(t - a.min, t - a.max);
 	}
 
-	/// relational operators
+	/*---------------------+
+	| relational operators |
+	+---------------------*/
+
 	template <unsigned n, typename T, typename U> bool operator ==(const Aabb<n, T> &a1, const Aabb<n, U> &a2)
 	{
 		return All(a1.min == a2.min && a1.max == a2.max);
@@ -139,7 +166,10 @@ namespace page { namespace math
 		return Any(a1.min != a2.min || a1.max != a2.max);
 	}
 
-	/// vector assignment operators
+	/*----------------------------+
+	| vector assignment operators |
+	+----------------------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, T> &operator *=(Aabb<n, T> &a, const Vector<n, U> &v)
 	{
 		a.min *= v;
@@ -165,7 +195,10 @@ namespace page { namespace math
 		return a;
 	}
 
-	/// scalar assignment operators
+	/*----------------------------+
+	| scalar assignment operators |
+	+----------------------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, T> &operator *=(Aabb<n, T> &a, U t)
 	{
 		a.min *= t;
@@ -191,7 +224,10 @@ namespace page { namespace math
 		return a;
 	}
 
-	/// min/max
+	/*--------+
+	| min/max |
+	+--------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> Min(const Aabb<n, T> &a1, const Aabb<n, U> &a2)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -213,7 +249,10 @@ namespace page { namespace math
 		return Max(Aabb<n, T>(v), a);
 	}
 
-	/// grow/shrink
+	/*------------+
+	| grow/shrink |
+	+------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> Grow(const Aabb<n, T> &a, U t)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -255,7 +294,10 @@ namespace page { namespace math
 		return Aabb<n, R>(a.min + min, a.max - max);
 	}
 
-	/// containment
+	/*------------+
+	| containment |
+	+------------*/
+
 	template <unsigned n, typename T, typename U> bool Contains(const Aabb<n, T> &container, const Aabb<n, U> &a)
 	{
 		return All(a.min >= container.min && a.max <= container.max);
@@ -289,7 +331,10 @@ namespace page { namespace math
 		return All(v >= container.min && v < container.max);
 	}
 
-	/// spatial reference transformation
+	/*---------------------------------+
+	| spatial reference transformation |
+	+---------------------------------*/
+
 	template <unsigned n, typename T, typename U> Aabb<n, typename Real<typename ArithmeticConversion<T, U>::Result>::Type> EnterSpace(const Aabb<n, T> &space, const Aabb<n, U> &a)
 	{
 		typedef typename Real<typename ArithmeticConversion<T, U>::Result>::Type R;
@@ -314,7 +359,10 @@ namespace page { namespace math
 		return space.min + v * Size(space);
 	}
 
-	/// other operations
+	/*-----------------+
+	| other operations |
+	+-----------------*/
+
 	template <typename T> typename Real<T>::Type Aspect(const Aabb<2, T> &a)
 	{
 		typedef typename Real<T>::Type R;
@@ -341,7 +389,10 @@ namespace page { namespace math
 		return a.max - a.min;
 	}
 
-	/// stream insertion/extraction
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
+
 	template <typename Char, typename CharTraits, unsigned n, typename T>
 		std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &os, const Aabb<n, T> &a)
 	{
@@ -376,7 +427,10 @@ namespace page { namespace math
 		return is;
 	}
 
-	/// standard-library compatibility
+	/*-------------------------------+
+	| standard-library compatibility |
+	+-------------------------------*/
+
 	template <unsigned n, typename T> void swap(Aabb<n, T> &a, Aabb<n, T> &b)
 	{
 		using std::swap;

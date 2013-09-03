@@ -13,7 +13,10 @@ namespace page { namespace math
 
 	namespace detail
 	{
-		/// tolerant equality comparison implementations
+		/*---------------------------------------------+
+		| tolerant equality comparison implementations |
+		+---------------------------------------------*/
+
 		template <typename T> inline bool Near(T a, T b)
 		{
 			if (a == b) return true;
@@ -46,7 +49,10 @@ namespace page { namespace math
 		}
 	}
 
-	/// special constants
+	/*------------------+
+	| special constants |
+	+------------------*/
+
 	template <typename T> T Inf()
 	{
 		static const T inf =
@@ -81,7 +87,10 @@ namespace page { namespace math
 		return phi;
 	}
 
-	/// special constant comparisons
+	/*-----------------------------+
+	| special constant comparisons |
+	+-----------------------------*/
+
 	template <typename T> bool IsInf(T t)
 	{
 		return
@@ -96,14 +105,20 @@ namespace page { namespace math
 			std::isnan(t) : t == std::copysign(Nan<T>(), t);
 	}
 
-	/// tolerant equality comparison
+	/*-----------------------------+
+	| tolerant equality comparison |
+	+-----------------------------*/
+
 	template <typename T, typename U> bool Near(T a, U b)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
 		return detail::Near<R>(a, b);
 	}
 
-	/// quantization
+	/*-------------+
+	| quantization |
+	+-------------*/
+
 	template <typename T> T Round(T t)
 	{
 		return std::floor(t + T(.5));
@@ -113,7 +128,10 @@ namespace page { namespace math
 		return Round(t / precision) * precision;
 	}
 
-	/// wrapping
+	/*---------+
+	| wrapping |
+	+---------*/
+
 	template <typename T, typename U>
 		typename ArithmeticConversion<T, U>::Result Wrap(T t, U min, U max)
 	{
@@ -121,7 +139,10 @@ namespace page { namespace math
 		return std::fmod(std::fmod(t - min, range) + range, range) + min;
 	}
 
-	/// angle conversions
+	/*------------------+
+	| angle conversions |
+	+------------------*/
+
 	template <typename T> T DegToRad(T t) { return t * Pi<T>() / 180; }
 	template <typename T> T DegToRev(T t) { return t / 360; }
 	template <typename T> T RadToDeg(T t) { return t * 180 / Pi<T>(); }
@@ -129,7 +150,10 @@ namespace page { namespace math
 	template <typename T> T RevToDeg(T t) { return t * 360; }
 	template <typename T> T RevToRad(T t) { return t * (Pi<T>() * 2); }
 
-	/// angle calculations
+	/*-------------------+
+	| angle calculations |
+	+-------------------*/
+
 	template <typename T> T AngleGivenSides(T a, T b, T c)
 	{
 		return std::acos((a * a + b * b - c * c) / (a * b * 2));
@@ -147,7 +171,10 @@ namespace page { namespace math
 		return AngleGivenSides(SideGivenSidesAngle(a, b, c), b, a);
 	}
 
-	/// volume conversions
+	/*-------------------+
+	| volume conversions |
+	+-------------------*/
+
 	template <typename T> T DecibelToLinear(T t)
 	{
 		return std::pow(10, t / 20);

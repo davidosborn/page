@@ -6,9 +6,9 @@ namespace page
 {
 	namespace log
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		Indenter::Indenter() :
 			Indenter(util::Share(GLOBAL(IndentFilterState))) {}

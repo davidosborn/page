@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../../../err/Exception.hpp"
+#include "../../../util/class/special_member_functions.hpp" // Uncopyable
 #include "RegistrySource.hpp"
 
 #ifndef QWORD
@@ -14,11 +15,113 @@
 
 namespace page { namespace cfg { namespace win32
 {
+////////// RegistrySource::Reader //////////////////////////////////////////////
+
+	/**
+	 * The implementation of @c RegistrySource's reader.
+	 */
+	class RegistrySource::Reader :
+		public Source::Reader,
+		public util::Uncopyable<RegistrySource::Reader>
+	{
+		/*-------------+
+		| constructors |
+		+-------------*/
+
+		public:
+		explicit Reader(const RegistrySource &);
+		~Reader();
+
+		/*------------------------------+
+		| Source::Reader implementation |
+		+------------------------------*/
+
+		public:
+		boost::optional<std::string> Read(const std::string &key) override;
+		boost::optional<std::vector<std::string>> ReadSequence(const std::string &key) override;
+
+		private:
+		/**
+		 * A data structure for storing a raw registry value returned by
+		 * @c RegQueryValueEx.
+		 */
+		struct RegistryValue
+		{
+			std::vector<BYTE> content;
+			DWORD type;
+		};
+
+		/**
+		 * Read a registry value, store its type, and return its content.
+		 */
+		boost::optional<RegistryValue> ReadValue(const std::string &key) const;
+
+		/**
+		 * Parse a registry value and converts it to a string.
+		 */
+		static std::string ParseValue(const RegistryValue &);
+
+		/*-----------------------------------------+
+		| Source::ReaderWriter covariant overrides |
+		+-----------------------------------------*/
+
+		public:
+		const RegistrySource &GetSource() const;
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		HKEY key;
+	};
+
+////////// RegistrySource::Writer //////////////////////////////////////////////
+
+	/**
+	 * The implementation of @c RegistrySource's writer.
+	 */
+	class RegistrySource::Writer :
+		public Source::Writer,
+		public util::Uncopyable<RegistrySource::Writer>
+	{
+		/*-------------+
+		| constructors |
+		+-------------*/
+
+		public:
+		explicit Writer(const RegistrySource &);
+		~Writer();
+
+		/*------------------------------+
+		| Source::Writer implementation |
+		+------------------------------*/
+
+		public:
+		void Write(const std::string &key, const std::string &value) override;
+		void WriteSequence(const std::string &key, const std::vector<std::string> &value) override;
+		void Remove(const std::string &key) override;
+
+		/*-----------------------------------------+
+		| Source::ReaderWriter covariant overrides |
+		+-----------------------------------------*/
+
+		public:
+		const RegistrySource &GetSource() const;
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		HKEY key;
+	};
+
 ////////// RegistrySource //////////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	RegistrySource::RegistrySource(HKEY key, const std::string &path) :
 		Source(MakeUri(key, path), "registry"),
@@ -47,9 +150,9 @@ namespace page { namespace cfg { namespace win32
 
 ////////// RegistrySource::Writer //////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	RegistrySource::Reader::Reader(const RegistrySource &source) :
 		Source::Reader(source)
@@ -235,9 +338,9 @@ namespace page { namespace cfg { namespace win32
 
 ////////// RegistrySource::Writer //////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	RegistrySource::Writer::Writer(const RegistrySource &source) :
 		Source::Writer(source)

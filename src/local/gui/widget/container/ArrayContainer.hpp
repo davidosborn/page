@@ -11,9 +11,9 @@ namespace page { namespace ui
 		public WidgetContainer,
 		public virtual util::Cloneable<Array, Widget, WidgetContainer>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit Array(bool horizontal, bool margin = true);

@@ -5,9 +5,9 @@
 
 namespace page { namespace ui
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	TextWidget::TextWidget(
 		std::string       const& text,

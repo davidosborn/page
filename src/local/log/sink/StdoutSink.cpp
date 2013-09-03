@@ -7,9 +7,9 @@ namespace page
 {
 	namespace log
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		StdoutSink::StdoutSink() :
 			streambuf(*std::cout.rdbuf()) {}

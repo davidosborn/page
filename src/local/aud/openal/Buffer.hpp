@@ -3,7 +3,7 @@
 
 #	include <AL/al.h> // ALuint
 
-#	include "../../cache/fwd.hpp" // Proxy
+#	include "../../cache/proxy/fwd.hpp" // Proxy
 #	include "../../util/class/special_member_functions.hpp" // Uncopyable
 
 namespace page { namespace res { class Sound; }}

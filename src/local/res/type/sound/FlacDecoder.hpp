@@ -13,9 +13,9 @@ namespace page
 
 		class FlacDecoder : public AudioDecoder
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			explicit FlacDecoder(const std::shared_ptr<const Pipe> &);

@@ -7,9 +7,9 @@ namespace page
 {
 	namespace log
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		FileSink::FileSink(std::string path) :
 			fs(util::AbsolutePath(path))

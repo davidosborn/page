@@ -14,9 +14,9 @@ namespace page { namespace cfg
 		public Source,
 		public virtual util::Cloneable<FileSource, Source>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit FileSource(const std::string &);

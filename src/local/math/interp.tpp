@@ -6,7 +6,10 @@
 
 namespace page { namespace math
 {
-	/// standard interpolation
+	/*-----------------------+
+	| standard interpolation |
+	+-----------------------*/
+
 	template <typename T, typename U>
 		T Lerp(T a, T b, U mu)
 	{
@@ -75,7 +78,10 @@ namespace page { namespace math
 		return Norm(a + (b - a) * mu1 + (c - a) * mu2);
 	}
 
-	/// linear interpolation
+	/*---------------------+
+	| linear interpolation |
+	+---------------------*/
+
 	template <typename T, typename U>
 		T LinearInterp(T a, T b, U mu)
 	{
@@ -88,7 +94,10 @@ namespace page { namespace math
 		return Slerp(a, b, mu);
 	}
 
-	/// cubic interpolation
+	/*--------------------+
+	| cubic interpolation |
+	+--------------------*/
+
 	template <typename T, typename U>
 		T CubicInterp(T a, T b, T c, T d, U mu)
 	{
@@ -105,7 +114,10 @@ namespace page { namespace math
 		return Squad(a, b, c, d, mu);
 	}
 
-	/// non-linear interpolation
+	/*------------------------+
+	| non-linear interpolation |
+	+------------------------*/
+
 	template <typename T, typename U>
 		T HermiteInterp(T a, T b, U mu)
 	{
@@ -125,7 +137,10 @@ namespace page { namespace math
 		return a + (b - a) * (std::copysign(d, c) * .5f + .5f);
 	}
 
-	/// non-linear scaling
+	/*-------------------+
+	| non-linear scaling |
+	+-------------------*/
+
 	template <typename T>
 		T HermiteScale(T mu)
 	{
@@ -138,7 +153,10 @@ namespace page { namespace math
 		return HermiteInterp<T>(0, 1, mu, exp);
 	}
 
-	/// convolution-filter kernels
+	/*------------------------+
+	| convolution-filter kernels |
+	+------------------------*/
+
 	template <unsigned n, typename T>
 		std::array<T, n> HermiteConvolutionKernel(T size)
 	{

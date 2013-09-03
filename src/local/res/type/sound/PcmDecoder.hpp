@@ -14,9 +14,9 @@ namespace page
 
 		class PcmDecoder : public AudioDecoder
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			PcmDecoder(

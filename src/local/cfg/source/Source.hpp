@@ -18,9 +18,9 @@ namespace page { namespace cfg
 	 */
 	class Source : public virtual util::Cloneable<Source>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		protected:
 		/**
@@ -105,9 +105,9 @@ namespace page { namespace cfg
 	 */
 	class Source::ReaderWriter
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		protected:
 		explicit ReaderWriter(const Source &);
@@ -140,9 +140,9 @@ namespace page { namespace cfg
 	 */
 	class Source::Reader : public ReaderWriter
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		protected:
 		explicit Reader(const Source &);
@@ -175,9 +175,9 @@ namespace page { namespace cfg
 	 */
 	class Source::Writer : public ReaderWriter
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		protected:
 		explicit Writer(const Source &);

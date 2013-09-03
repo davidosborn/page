@@ -12,9 +12,9 @@ namespace page
 		 */
 		class Filter : public BranchableStream
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			using BranchableStream::BranchableStream;
 

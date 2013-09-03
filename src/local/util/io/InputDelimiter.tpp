@@ -7,9 +7,9 @@ namespace page
 {
 	namespace util
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		template <typename Char, typename CharTraits>
 			InputDelimiter<Char, CharTraits>::InputDelimiter() {}
@@ -26,14 +26,14 @@ namespace page
 					nullptr) {}
 
 		template <typename Char, typename CharTraits> template <typename InputRange>
-			InputDelimiter<Char, CharTraits>::InputDelimiter(InputRange range, ENABLE_IF_IMPL((is_range<InputRange>::value))) :
+			InputDelimiter<Char, CharTraits>::InputDelimiter(InputRange range, ENABLE_IF_IMPL(is_range<InputRange>::value)) :
 				InputDelimiter(
 					std::begin(range) != std::end(range) ?
 					[&range](Char c) { return std::find(std::begin(range), std::end(range), c) != std::end(range); } :
 					nullptr) {}
 
 		template <typename Char, typename CharTraits> template <typename InputIterator>
-			InputDelimiter<Char, CharTraits>::InputDelimiter(InputIterator first, InputIterator last, ENABLE_IF_IMPL((is_iterator<InputIterator>::value))) :
+			InputDelimiter<Char, CharTraits>::InputDelimiter(InputIterator first, InputIterator last, ENABLE_IF_IMPL(is_iterator<InputIterator>::value)) :
 				InputDelimiter(
 					first != last ?
 					[&first, &last](Char c) { return std::find(first, last, c) != last; } :

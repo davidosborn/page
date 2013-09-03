@@ -26,9 +26,9 @@ namespace page
 			typedef std::basic_istream<Char, CharTraits> Stream;
 			typedef InputDelimiter<Char, CharTraits>     Delimiter;
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			/**
@@ -61,9 +61,9 @@ namespace page
 			bool operator ==(const separated_istream_iterator &) const;
 			bool operator !=(const separated_istream_iterator &) const;
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			Stream *is = nullptr;

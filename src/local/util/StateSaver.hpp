@@ -66,9 +66,9 @@ namespace page { namespace util
 			public Polymorphic<StateSaver>,
 			public Uncopyable<StateSaver>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		/**

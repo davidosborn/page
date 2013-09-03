@@ -9,9 +9,9 @@ namespace page
 	{
 		class PrefixFilter : public LineFilter
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			using LineFilter::LineFilter;
 

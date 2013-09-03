@@ -27,9 +27,9 @@ namespace page { namespace cfg
 #	endif
 		public util::Monostate<State>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		/**

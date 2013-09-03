@@ -8,7 +8,10 @@ namespace page { namespace math
 	 */
 	typedef float DefaultType;
 
-	/// classes
+	/*--------+
+	| classes |
+	+--------*/
+
 	template <unsigned, typename = DefaultType>
 		class Aabb;
 
@@ -45,7 +48,10 @@ namespace page { namespace math
 	template <typename = DefaultType>
 		class ViewFrustum;
 
-	/// color classes
+	/*--------------+
+	| color classes |
+	+--------------*/
+
 	template <unsigned, typename = DefaultType>
 		class Color;
 
@@ -61,7 +67,10 @@ namespace page { namespace math
 	template <typename = DefaultType>
 		class YcbcrColor;
 
-	/// aliases
+	/*--------+
+	| aliases |
+	+--------*/
+
 	typedef Matrix<3> Mat3;
 	typedef Matrix<4> Mat4;
 

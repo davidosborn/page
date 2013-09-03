@@ -17,9 +17,9 @@ namespace page
 		 */
 		class BufferStream : public BranchableStream
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			using BranchableStream::BranchableStream;
 

@@ -4,9 +4,9 @@
 
 namespace page { namespace cfg
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	template <typename T, typename ExternT>
 		Var<T, ExternT>::Var(

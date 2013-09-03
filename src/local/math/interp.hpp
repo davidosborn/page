@@ -7,7 +7,10 @@
 
 namespace page { namespace math
 {
-	/// standard interpolation
+	/*-----------------------+
+	| standard interpolation |
+	+-----------------------*/
+
 	/**
 	 * Linear interpolation.
 	 */
@@ -62,7 +65,10 @@ namespace page { namespace math
 	template <typename T, typename U>
 		Quat<T> Bilerp(const Quat<T> &, const Quat<T> &, const Quat<T> &, U, U);
 
-	/// linear interpolation
+	/*---------------------+
+	| linear interpolation |
+	+---------------------*/
+
 	/**
 	 * @defgroup
 	 * A standard entry-point for linear interpolation, which delegates to the
@@ -75,7 +81,10 @@ namespace page { namespace math
 		Quat<T> LinearInterp(const Quat<T> &, const Quat<T> &, U);
 	///@}
 
-	/// cubic interpolation
+	/*--------------------+
+	| cubic interpolation |
+	+--------------------*/
+
 	/**
 	 * @defgroup
 	 * A standard entry-point for cubic interpolation, which delegates to the
@@ -88,7 +97,10 @@ namespace page { namespace math
 		Quat<T> CubicInterp(const Quat<T> &, const Quat<T> &, const Quat<T> &, const Quat<T> &, U);
 	///@}
 
-	/// non-linear interpolation
+	/*-------------------------+
+	| non-linear interpolation |
+	+-------------------------*/
+
 	/**
 	 * Hermite-spline interpolation.
 	 */
@@ -101,7 +113,10 @@ namespace page { namespace math
 	template <typename T, typename U, typename V>
 		T HermiteInterp(T, T, U, V exp);
 
-	/// non-linear scaling
+	/*-------------------+
+	| non-linear scaling |
+	+-------------------*/
+
 	/**
 	 * Hermite-spline scaling.
 	 */
@@ -114,7 +129,10 @@ namespace page { namespace math
 	template <typename T, typename U>
 		T HermiteScale(T, U exp);
 
-	/// convolution-filter kernels
+	/*---------------------------+
+	| convolution-filter kernels |
+	+---------------------------*/
+
 	/**
 	 * Generates a hermite-spline convolution-kernel.
 	 */

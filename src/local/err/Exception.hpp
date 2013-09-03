@@ -23,9 +23,9 @@ namespace page { namespace err
 		public virtual std::exception,
 		public virtual boost::exception
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit BasicException(const char *description = "unknown error") :
@@ -47,9 +47,9 @@ namespace page { namespace err
 			return description.c_str();
 		}
 
-		/*-----------------+
-		| member variables |
-		+-----------------*/
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		private:
 		/**
@@ -250,9 +250,9 @@ namespace page { namespace err
 		using ExactMatch = Permutations;
 		///@}
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		Exception() {}

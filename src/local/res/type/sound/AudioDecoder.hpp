@@ -11,9 +11,9 @@ namespace page
 
 		class AudioDecoder
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			virtual ~AudioDecoder() = default;

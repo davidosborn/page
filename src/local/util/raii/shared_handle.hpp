@@ -64,7 +64,7 @@ namespace page
 		template <typename T> shared_handle<T> make_shared_handle(T);
 		template <typename T> shared_handle<T> make_shared_handle(T, typename shared_handle<T>::deleter_type);
 
-		// specialized algorithms
+		// standard-library compatibility
 		template <typename T> void swap(shared_handle<T> &, shared_handle<T> &) noexcept;
 	}
 }

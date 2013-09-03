@@ -6,9 +6,9 @@ namespace page
 {
 	namespace res
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		VorbisStream::VorbisStream(const Pipe &pipe) : vf(vorbis::Open(pipe))
 		{

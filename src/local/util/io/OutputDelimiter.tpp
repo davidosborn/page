@@ -2,9 +2,9 @@ namespace page
 {
 	namespace util
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		template <typename Char, typename CharTraits>
 			OutputDelimiter<Char, CharTraits>::OutputDelimiter() {}
@@ -63,9 +63,9 @@ namespace page
 			return delimiter;
 		}
 
-		/*------------------------------+
-		| stream insertion & extraction |
-		+------------------------------*/
+		/*----------------------------+
+		| stream insertion/extraction |
+		+----------------------------*/
 
 		template <typename Char, typename CharTraits>
 			std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &os, const OutputDelimiter<Char, CharTraits> &delimiter)

@@ -16,9 +16,9 @@ namespace page { namespace ui
 		public WidgetContainer,
 		public virtual util::Cloneable<Window, Widget>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit Window(const std::string &title = "");

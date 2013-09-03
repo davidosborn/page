@@ -13,9 +13,9 @@ namespace page
 		 */
 		class LineFilter : public Filter
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			using Filter::Filter;
 

@@ -20,9 +20,9 @@ namespace page { namespace ui
 
 ////////// WidgetSize //////////////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	WidgetSize::WidgetSize(
 		math::Vec2            const& min,
@@ -31,9 +31,9 @@ namespace page { namespace ui
 
 ////////// Widget //////////////////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Widget::Widget(
 		math::Vec2 const& position,

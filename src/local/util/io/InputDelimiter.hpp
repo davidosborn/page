@@ -21,9 +21,9 @@ namespace page
 			public:
 			typedef std::function<bool (Char)> Predicate;
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			/**
 			 * Creates a delimiter that will never match.
@@ -47,7 +47,7 @@ namespace page
 			 */
 			template <typename InputRange>
 				InputDelimiter(InputRange,
-					ENABLE_IF((is_range<InputRange>::value)));
+					ENABLE_IF(is_range<InputRange>::value));
 
 			/**
 			 * Create a delimiter that will match any of the specified
@@ -57,7 +57,7 @@ namespace page
 				InputDelimiter(
 					InputIterator first,
 					InputIterator last,
-					ENABLE_IF((is_iterator<InputIterator>::value)));
+					ENABLE_IF(is_iterator<InputIterator>::value));
 
 			/**
 			 * Creates a delimiter that will match according to a predicate.
@@ -102,9 +102,9 @@ namespace page
 			 */
 			static const InputDelimiter &GetSpaceDelimiter();
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			/**

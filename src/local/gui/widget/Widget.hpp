@@ -41,9 +41,9 @@ namespace page { namespace ui
 			max
 		};
 
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		explicit WidgetSize(
 			math::Vec2            const& min  = 0,
@@ -71,9 +71,9 @@ namespace page { namespace ui
 	 */
 	class Widget : public virtual util::Cloneable<Widget>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit Widget(

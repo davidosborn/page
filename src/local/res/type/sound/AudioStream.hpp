@@ -9,16 +9,16 @@ namespace page
 	{
 		class AudioStream
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			virtual ~AudioStream() = default;
 
-			/*----------------------+
-			| copy & move semantics |
-			+----------------------*/
+			/*--------------------+
+			| copy/move semantics |
+			+--------------------*/
 
 			MAKE_UNCOPYABLE(AudioStream)
 

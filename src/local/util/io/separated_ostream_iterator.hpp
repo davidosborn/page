@@ -26,9 +26,9 @@ namespace page
 			typedef std::basic_ostream<Char, CharTraits> Stream;
 			typedef OutputDelimiter<Char, CharTraits>    Delimiter;
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			/**
@@ -48,9 +48,9 @@ namespace page
 			separated_ostream_iterator &operator ++();
 			separated_ostream_iterator &operator ++(int);
 
-			/*-----------------+
-			| member variables |
-			+-----------------*/
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			Stream &os;

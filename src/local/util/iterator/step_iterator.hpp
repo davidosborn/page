@@ -19,7 +19,10 @@ namespace page { namespace util
 		// inherit constructors
 		using step_iterator::iterator_adaptor::iterator_adaptor;
 
-		/// iterator_adapter implementation
+		/*--------------------------------+
+		| iterator_adapter implementation |
+		+--------------------------------*/
+
 		void increment()
 		{
 			std::advance(this->base_reference(), step);
@@ -36,7 +39,10 @@ namespace page { namespace util
 		}
 	};
 
-	/// factory functions
+	/*------------------+
+	| factory functions |
+	+------------------*/
+
 	/**
 	 * Factory function (for convenience).
 	 */

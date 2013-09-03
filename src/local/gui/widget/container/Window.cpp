@@ -8,9 +8,9 @@
 
 namespace page { namespace ui
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Window::Window(const std::string &title) :
 		Window(title, nullptr) {}

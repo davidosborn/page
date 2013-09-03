@@ -10,9 +10,9 @@
 
 namespace page { namespace res { namespace clip
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	Stream::Stream(
 		const std::string &path,

@@ -40,9 +40,9 @@ namespace page
 			typedef typename container_type::difference_type difference_type;
 			typedef typename container_type::size_type size_type;
 
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			reference_vector();

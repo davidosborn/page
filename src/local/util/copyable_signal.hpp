@@ -13,17 +13,17 @@ namespace page { namespace util
 	template <typename Signature>
 		class copyable_signal : public boost::signal<Signature>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		template <typename... Args>
 			explicit copyable_signal(Args &&...);
 
-		/*----------------------+
-		| copy & move semantics |
-		+----------------------*/
+		/*--------------------+
+		| copy/move semantics |
+		+--------------------*/
 
 		/**
 		 * Does nothing; the connections are not copied.

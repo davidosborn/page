@@ -28,7 +28,10 @@ namespace page { namespace math
 	template <unsigned nr, unsigned nc, typename T>
 		class BasicMatrix
 	{
-		/// container traits
+		/*-----------------+
+		| container traits |
+		+-----------------*/
+
 		public:
 		using value_type             = T;
 		using reference              = value_type &;
@@ -40,7 +43,10 @@ namespace page { namespace math
 		using difference_type        = std::ptrdiff_t;
 		using size_type              = std::size_t;
 
-		/// assignment
+		/*-----------+
+		| assignment |
+		+-----------*/
+
 		protected:
 		/**
 		 * Turns the matrix into a scalar matrix with the specified diagonal
@@ -54,7 +60,10 @@ namespace page { namespace math
 		 */
 		BasicMatrix &operator =(const Vector<nr < nc ? nr : nc, T> &diagonal);
 
-		/// conversion
+		/*-----------+
+		| conversion |
+		+-----------*/
+
 		public:
 		/**
 		 * Permits implicit conversion of the component type.
@@ -68,7 +77,10 @@ namespace page { namespace math
 		template <unsigned mr, unsigned mc, typename U>
 			explicit operator Matrix<mr, mc, U>() const;
 
-		/// component-iterator types
+		/*-------------------------+
+		| component-iterator types |
+		+-------------------------*/
+
 		/**
 		 * An iterator over the components of a row.
 		 */
@@ -99,7 +111,10 @@ namespace page { namespace math
 		 */
 		using ConstDiagonalComponentIterator = util::step_iterator<const_iterator, nr + 1>;
 
-		/// element access
+		/*---------------+
+		| element access |
+		+---------------*/
+
 		/**
 		 * @return An iterator over the components of the row at @index,
 		 * starting at the first component of the row.
@@ -124,7 +139,10 @@ namespace page { namespace math
 		 */
 		const T *data() const noexcept;
 
-		/// iterators
+		/*----------+
+		| iterators |
+		+----------*/
+
 		/**
 		 * @return An iterator over the matrix's components, which points to the
 		 * first component.
@@ -173,7 +191,10 @@ namespace page { namespace math
 		 */
 		const_reverse_iterator rend() const;
 
-		/// slice types
+		/*------------+
+		| slice types |
+		+------------*/
+
 		using RowSlice           = Slice<nc, RowComponentIterator>;
 		using ConstRowSlice      = Slice<nc, ConstRowComponentIterator>;
 		using ColumnSlice        = Slice<nr, ColumnComponentIterator>;
@@ -181,7 +202,10 @@ namespace page { namespace math
 		using DiagonalSlice      = Slice<nr < nc ? nr : nc, DiagonalComponentIterator>;
 		using ConstDiagonalSlice = Slice<nr < nc ? nr : nc, ConstDiagonalComponentIterator>;
 
-		/// slices
+		/*-------+
+		| slices |
+		+-------*/
+
 		/**
 		 * @return A slice representing the row at @a index.
 		 */
@@ -212,7 +236,10 @@ namespace page { namespace math
 		 */
 		ConstDiagonalSlice Diagonal() const;
 
-		/// slice factory functions
+		/*------------------------+
+		| slice factory functions |
+		+------------------------*/
+
 		private:
 		/**
 		 * A factory function that produces a @a RowSlice from a @a
@@ -262,7 +289,10 @@ namespace page { namespace math
 			ConstColumnSlice operator ()(const ConstRowComponentIterator &) const;
 		};
 
-		/// slice-iterator types
+		/*---------------------+
+		| slice-iterator types |
+		+---------------------*/
+
 		public:
 		/**
 		 * An iterator over slices representing the matrix's rows.
@@ -300,7 +330,10 @@ namespace page { namespace math
 				MakeConstColumnSlice>
 			ConstColumnIterator;
 
-		/// slice iterators
+		/*----------------+
+		| slice iterators |
+		+----------------*/
+
 		/**
 		 * @return An iterator over slices representing the matrix's rows,
 		 * starting at the first row.
@@ -349,7 +382,10 @@ namespace page { namespace math
 		 */
 		ConstColumnIterator EndColumns() const;
 
-		/// slice ranges
+		/*-------------+
+		| slice ranges |
+		+-------------*/
+
 		/**
 		 * @return A range providing iteration over slices of the matrix's rows.
 		 */
@@ -383,7 +419,10 @@ namespace page { namespace math
 	{
 		typedef BasicMatrix<nr, nc, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		/**
 		 * @defgroup
@@ -401,7 +440,10 @@ namespace page { namespace math
 		explicit Matrix(const Vector<nr < nc ? nr : nc, T> &diagonal);
 		///@}
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		private:
 		/**
 		 * The matrix components, represented by an array.  The array is
@@ -448,7 +490,10 @@ namespace page { namespace math
 	{
 		typedef BasicMatrix<2, 2, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		/**
 		 * @defgroup
@@ -486,7 +531,10 @@ namespace page { namespace math
 			const Vector<2, T> &);
 		///@}
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		union
 		{
 			/**
@@ -521,7 +569,10 @@ namespace page { namespace math
 	{
 		typedef BasicMatrix<3, 3, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		/**
 		 * @defgroup
@@ -583,7 +634,10 @@ namespace page { namespace math
 		///@}
 
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		union
 		{
 			/**
@@ -619,7 +673,10 @@ namespace page { namespace math
 	{
 		typedef BasicMatrix<3, 4, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		/**
 		 * @defgroup
@@ -680,7 +737,10 @@ namespace page { namespace math
 		explicit Matrix(const Quat<T> &);
 		///@}
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		union
 		{
 			/**
@@ -717,7 +777,10 @@ namespace page { namespace math
 	{
 		typedef BasicMatrix<4, 4, T> Base;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
 		/**
 		 * @defgroup
@@ -785,7 +848,10 @@ namespace page { namespace math
 		explicit Matrix(const Quat<T> &);
 		///@}
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		union
 		{
 			/**
@@ -878,7 +944,10 @@ namespace page { namespace math
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator +=(Matrix<nr, nc, T> &, U);
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator -=(Matrix<nr, nc, T> &, U);
 
-	/// transformation extraction
+	/*--------------------------+
+	| transformation extraction |
+	+--------------------------*/
+
 	/**
 	 * Returns the translation component of an affine-transformation matrix.
 	 */
@@ -924,7 +993,10 @@ namespace page { namespace math
 	template <typename T>
 		Vector<3, T> GetScale(const Matrix<4, 4, T> &);
 
-	/// other operations
+	/*-----------------+
+	| other operations |
+	+-----------------*/
+
 	/**
 	 * Returns a boolean matrix containing the results of calling Near()
 	 * with each pair of elements from the two input matrices.
@@ -947,7 +1019,10 @@ namespace page { namespace math
 	template <unsigned nr, unsigned nc, typename T>
 		Matrix<nr, nc, T> Norm(Matrix<nr, nc, T>);
 
-	/// AABB transformation
+	/*--------------------+
+	| AABB transformation |
+	+--------------------*/
+
 	/**
 	 * Transforms a 3-dimensional AABB by a 3x3 affine-transformation
 	 * matrix.
@@ -964,7 +1039,10 @@ namespace page { namespace math
 		Aabb<3, typename ArithmeticConversion<T, U>::Result>
 		operator *(const Matrix<3, 4, T> &, const Aabb<3, U> &);
 
-	/// vector transformation
+	/*----------------------+
+	| vector transformation |
+	+----------------------*/
+
 	/**
 	 * Transforms an n-dimensional vector by an mxn affine-transformation
 	 * matrix.
@@ -996,7 +1074,10 @@ namespace page { namespace math
 	template <unsigned n, typename T, typename U>
 		Vector<n, T> &operator *=(Vector<n, T> &, const Matrix<n, n, U> &);
 
-	/// stream insertion/extraction
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
+
 	/**
 	 * Serializes a matrix to a stream.
 	 */
@@ -1009,7 +1090,10 @@ namespace page { namespace math
 	template <typename Char, typename CharTraits, unsigned nr, unsigned nc, typename T>
 		std::basic_istream<Char, CharTraits> &operator >>(std::basic_istream<Char, CharTraits> &, Matrix<nr, nc, T> &);
 
-	/// standard-library compatibility
+	/*-------------------------------+
+	| standard-library compatibility |
+	+-------------------------------*/
+
 	/**
 	 * Swaps the contents of two matrices.
 	 */

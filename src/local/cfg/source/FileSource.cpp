@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "../../err/Exception.hpp"
+#include "../../util/class/special_member_functions.hpp" // Uncopyable
 #include "../../util/string/operations.hpp" // Partition, Trim
 #include "../../util/string/StringBuilder.hpp"
 #include "../../util/path/filesystem.hpp" // {Absolute,Pretty,Url}Path
@@ -10,26 +11,21 @@
 
 namespace page { namespace cfg
 {
-////////// FileSource::Reader definition ///////////////////////////////////////
+////////// FileSource::Reader //////////////////////////////////////////////////
 
 	/**
 	 * The implementation of @c FileSource's reader.
 	 */
-	class FileSource::Reader : public Source::Reader
+	class FileSource::Reader :
+		public Source::Reader,
+		public util::Uncopyable<FileSource::Reader>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit Reader(const FileSource &);
-
-		/*----------------------+
-		| copy & move semantics |
-		+----------------------*/
-
-		public:
-		MAKE_UNCOPYABLE(Reader)
 
 		/*------------------------------+
 		| Source::Reader implementation |
@@ -57,27 +53,22 @@ namespace page { namespace cfg
 		std::unordered_map<std::string, std::string> vars;
 	};
 
-////////// FileSource::Writer definition ///////////////////////////////////////
+////////// FileSource::Writer //////////////////////////////////////////////////
 
 	/**
 	 * The implementation of @c FileSource's writer.
 	 */
-	class FileSource::Writer : public Source::Writer
+	class FileSource::Writer :
+		public Source::Writer,
+		public util::Uncopyable<FileSource::Writer>
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		explicit Writer(const FileSource &);
 		~Writer();
-
-		/*----------------------+
-		| copy & move semantics |
-		+----------------------*/
-
-		public:
-		MAKE_UNCOPYABLE(Writer)
 
 		/*------------------------------+
 		| Source::Writer implementation |
@@ -108,9 +99,9 @@ namespace page { namespace cfg
 
 ////////// FileSource //////////////////////////////////////////////////////////
 
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	FileSource::FileSource(const std::string &path) :
 		Source(
@@ -132,7 +123,7 @@ namespace page { namespace cfg
 		return std::unique_ptr<Source::Writer>(new FileSource::Writer(*this));
 	}
 
-////////// FileSource::Reader implementation ///////////////////////////////////
+////////// FileSource::Reader //////////////////////////////////////////////////
 
 	FileSource::Reader::Reader(const FileSource &source) :
 		Source::Reader(source)
@@ -173,7 +164,7 @@ namespace page { namespace cfg
 		return boost::none;
 	}
 
-////////// FileSource::Writer implementation ///////////////////////////////////
+////////// FileSource::Writer //////////////////////////////////////////////////
 
 	FileSource::Writer::Writer(const FileSource &source) :
 		Source::Writer(source) {}

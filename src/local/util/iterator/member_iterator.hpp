@@ -36,7 +36,10 @@ namespace page { namespace util
 		 */
 		typedef typename std::iterator_traits<Iterator>::value_type member_of;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		member_iterator(const Iterator &iter, Value member_of::*member) :
 			member_iterator::iterator_adaptor(iter), member(member) {}
 
@@ -44,18 +47,27 @@ namespace page { namespace util
 			member_iterator(const member_iterator<OtherIterator, OtherValue> &other) :
 				member_iterator(other.base(), other.member) {}
 
-		/// iterator_adapter implementation
+		/*--------------------------------+
+		| iterator_adapter implementation |
+		+--------------------------------*/
+
 		private:
 		typename member_iterator::reference dereference() const
 		{
 			return (*this->base()).*member;
 		}
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		Value member_of::*member;
 	};
 
-	/// factory functions
+	/*------------------+
+	| factory functions |
+	+------------------*/
+
 	/**
 	 * Factory function (for convenience).
 	 */

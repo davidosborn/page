@@ -5,9 +5,9 @@ namespace page
 {
 	namespace log
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		template <typename... Branches>
 			BranchableStream::BranchableStream(Branches &&... branches) :

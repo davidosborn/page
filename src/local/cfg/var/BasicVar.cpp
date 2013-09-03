@@ -6,9 +6,9 @@
 
 namespace page { namespace cfg
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	BasicVar::BasicVar(BasicState &state, const std::string &key) :
 		state(state), key(key)

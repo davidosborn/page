@@ -3,7 +3,7 @@
 #include "../cfg/vars.hpp"
 #include "../phys/Camera.hpp" // Camera::GetOpacity, GetViewFrustum
 #include "../phys/Scene.hpp" // Scene::GetCameras
-#include "../ui/UserInterface.hpp" // UserInterface::Draw
+#include "../gui/UserInterface.hpp" // UserInterface::Draw
 #include "DrawContext.hpp" // DrawContext::{{alpha,median}Filter,GetFilterCaps,MakeViewContext,Push{Alpha,Median}Filter,ScaleBias}
 #include "ViewContext.hpp" // ViewContext::Draw
 

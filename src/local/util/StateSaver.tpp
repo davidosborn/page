@@ -1,8 +1,8 @@
 namespace page { namespace util
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	template <typename D>
 		StateSaver<D>::~StateSaver()

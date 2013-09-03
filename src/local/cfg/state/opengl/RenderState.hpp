@@ -10,9 +10,9 @@ namespace page { namespace cfg { namespace opengl
 {
 	class RenderState : public virtual BasicState
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		RenderState();

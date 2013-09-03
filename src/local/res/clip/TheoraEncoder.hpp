@@ -15,9 +15,9 @@ namespace page { namespace res { namespace clip
 	 */
 	class TheoraEncoder : public Encoder
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		public:
 		TheoraEncoder(

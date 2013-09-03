@@ -7,9 +7,9 @@ namespace page
 {
 	namespace util
 	{
-		/*--------------------------+
-		| constructors & destructor |
-		+--------------------------*/
+		/*-------------+
+		| constructors |
+		+-------------*/
 
 		template <typename T>
 			reference_vector<T>::reference_vector() {}

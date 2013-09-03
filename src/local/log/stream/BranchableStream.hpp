@@ -17,9 +17,9 @@ namespace page
 		 */
 		class BranchableStream : public Stream
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			/**

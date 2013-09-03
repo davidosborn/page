@@ -34,7 +34,10 @@ namespace page { namespace util
 		using typename indirect_iterator::iterator::pointer;
 		using typename indirect_iterator::iterator::reference;
 
-		/// constructors
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		indirect_iterator(const Iterator &iter) :
 			iter(iter) {}
 
@@ -42,7 +45,10 @@ namespace page { namespace util
 			indirect_iterator(const indirect_iterator<OtherIterator> &other) :
 				indirect_iterator(other.iter) {}
 
-		/// iterator semantics
+		/*-------------------+
+		| iterator semantics |
+		+-------------------*/
+
 		reference operator *() const
 		{
 			return **iter;
@@ -135,12 +141,18 @@ namespace page { namespace util
 			return iter > other.iter;
 		}
 
-		/// data members
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		private:
 		Iterator iter;
 	};
 
-	/// factory functions
+	/*------------------+
+	| factory functions |
+	+------------------*/
+
 	/**
 	 * Factory function (for convenience).
 	 */

@@ -6,7 +6,10 @@
 
 namespace page { namespace math { namespace win32
 {
-	/// from Win32
+	/*-----------+
+	| from Win32 |
+	+-----------*/
+
 	Aabb<2, LONG> MakeAabb(const RECT &rect)
 	{
 		return Aabb<2, LONG>(
@@ -26,7 +29,10 @@ namespace page { namespace math { namespace win32
 			GET_Y_LPARAM(lparam));
 	}
 
-	/// to Win32
+	/*---------+
+	| to Win32 |
+	+---------*/
+
 	POINT MakePoint(const Vector<2, LONG> &v)
 	{
 		POINT pt = {v.x, v.y};

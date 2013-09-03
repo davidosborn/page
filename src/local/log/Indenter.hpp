@@ -17,9 +17,9 @@ namespace page
 		 */
 		class Indenter : public util::Unmovable<Indenter>
 		{
-			/*--------------------------+
-			| constructors & destructor |
-			+--------------------------*/
+			/*-------------+
+			| constructors |
+			+-------------*/
 
 			public:
 			Indenter();

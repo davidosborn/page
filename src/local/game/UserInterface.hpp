@@ -3,7 +3,7 @@
 
 #	include <memory> // shared_ptr
 
-#	include "../ui/UserInterface.hpp"
+#	include "../gui/UserInterface.hpp"
 
 namespace page
 {

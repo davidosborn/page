@@ -12,9 +12,9 @@
 
 namespace page { namespace cfg
 {
-	/*--------------------------+
-	| constructors & destructor |
-	+--------------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
 	State::State()
 	{
