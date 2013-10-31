@@ -1,7 +1,7 @@
 #ifndef    page_local_res_type_TypeRegistry_hpp
 #   define page_local_res_type_TypeRegistry_hpp
 
-#	include <functional>
+#	include <functional> // function
 #	include <string>
 #	include <type_traits> // {false,true}_type
 #	include <typeindex>
@@ -18,10 +18,11 @@ namespace page { namespace res
 ////////// PostLoader //////////////////////////////////////////////////////////
 
 	/**
-	 * A pointer to a function that is called after loading a type, which will
-	 * perform whatever additional initialization is necessary.
+	 * A function that is called after loading a type, which will perform
+	 * whatever additional initialization is necessary.
 	 *
-	 * @note If @c !*this, then @c (*this)(...) is a nop.
+	 * @note If the function is initialized to @c nullptr, calling it will do
+	 * nothing.
 	 */
 	class PostLoader
 	{
@@ -79,6 +80,8 @@ namespace page { namespace res
 
 	/**
 	 * A place for registering types.
+	 *
+	 * @addtogroup registry
 	 */
 	class TypeRegistry : public util::Monostate<TypeRegistry>
 	{

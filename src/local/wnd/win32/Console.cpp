@@ -32,5 +32,5 @@ namespace page { namespace wnd { namespace win32
 				boost::errinfo_api_function("WriteConsole")))
 	}
 
-	REGISTER_CONSOLE(Console, "Win32 console")
+	REGISTER_CONSOLE(Console, STRINGIZE(WIN32_NAME) " console")
 }}}

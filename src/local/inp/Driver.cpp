@@ -4,6 +4,7 @@
 #include <iomanip> // setw
 #include <iostream> // cout
 #include <string>
+#include <utility> // move
 
 #include <boost/io/ios_state.hpp> // ios_all_saver
 
@@ -11,7 +12,7 @@
 #include "../math/float.hpp" // Near
 #include "../wnd/Window.hpp"
 #include "Device.hpp" // Device::Update
-#include "device/registry.hpp" // MakeDevices
+#include "DeviceRegistry.hpp" // DeviceRegistry::MakeAll
 #include "Driver.hpp"
 
 namespace page { namespace inp
@@ -37,7 +38,8 @@ namespace page { namespace inp
 		}
 
 		// initialize devices
-		devices = MakeDevices(window);
+		for (auto &device : GLOBAL(DeviceRegistry).MakeAll(window))
+			devices.push_back(std::shared_ptr<Device>(std::move(device)));
 	}
 
 	/*------------+
@@ -90,7 +92,7 @@ namespace page { namespace inp
 		return cursor;
 	}
 
-	void Driver::SetCursor(const cache::ProxyInterface<res::Cursor> &cursor)
+	void Driver::SetCursor(const cache::Proxy<res::Cursor> &cursor)
 	{
 		DoSetCursor(cursor);
 		this->cursor = cursor;
@@ -186,21 +188,21 @@ namespace page { namespace inp
 
 	void Driver::OnDown(const math::Vec2 &pos, Button btn, bool _double)
 	{
-		std::cout << Repr(btn) << " mouse ";
+		std::cout << GetName(btn) << " mouse ";
 		if (_double) std::cout << "double-";
 		std::cout << "down at " << pos << std::endl;
 	}
 
 	void Driver::OnClick(const math::Vec2 &pos, Button btn, bool _double)
 	{
-		std::cout << Repr(btn) << " mouse ";
+		std::cout << GetName(btn) << " mouse ";
 		if (_double) std::cout << "double-";
 		std::cout << "click at " << pos << std::endl;
 	}
 
 	void Driver::OnDrag(const math::Vec2 &origin, Button btn, bool _double)
 	{
-		std::cout << Repr(btn) << " mouse ";
+		std::cout << GetName(btn) << " mouse ";
 		if (_double) std::cout << "double-";
 		std::cout << "dragging from " << origin << std::endl;
 		cursorPointState.dragging = true;
@@ -209,7 +211,7 @@ namespace page { namespace inp
 
 	void Driver::OnDrop(const math::Vec2 &start, const math::Vec2 &pos, Button btn, bool _double)
 	{
-		std::cout << Repr(btn) << " mouse ";
+		std::cout << GetName(btn) << " mouse ";
 		if (_double) std::cout << "double-";
 		std::cout << "dropped at " << pos << std::endl;
 		cursorPointState.dragging = false;
@@ -217,7 +219,7 @@ namespace page { namespace inp
 
 	void Driver::OnCancelDrag(const math::Vec2 &start, const math::Vec2 &pos, Button btn, bool _double)
 	{
-		std::cout << Repr(btn) << " mouse ";
+		std::cout << GetName(btn) << " mouse ";
 		if (_double) std::cout << "double-";
 		std::cout << "drag cancelled at " << pos << std::endl;
 		cursorPointState.dragging = false;
@@ -239,7 +241,7 @@ namespace page { namespace inp
 
 	void Driver::OnKey(Key key)
 	{
-		std::cout << "received " << Repr(key) << " key" << std::endl;
+		std::cout << "received " << GetName(key) << " key" << std::endl;
 	}
 
 	void Driver::OnChar(char c)
@@ -254,14 +256,8 @@ namespace page { namespace inp
 		iosFormatSaver.restore();
 
 		// print friendly representation if available
-		std::string repr(Repr(c));
+		std::string repr(GetName(c));
 		if (!repr.empty()) std::cout << " (" << repr << ')';
 		std::cout << " entered" << std::endl;
 	}
-
-	// FIXME: I just switched to this from the old C-style MakeDriver technique
-	// but I think this needs to be registered with a factory that matches the
-	// Window implementation (ie: one for Win32, one for X11, etc).  More
-	// thought is warranted.
-	REGISTER_INPUT_DRIVER(Driver, "Win32 input driver")
 }}

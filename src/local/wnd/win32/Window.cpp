@@ -422,5 +422,5 @@ namespace page { namespace wnd { namespace win32
 		return name;
 	}
 
-	REGISTER_WINDOW(Window, "Win32 window")
+	REGISTER_WINDOW(Window, STRINGIZE(WIN32_NAME) " window")
 }}}

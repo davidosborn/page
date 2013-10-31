@@ -5,10 +5,7 @@
 
 #	include "../Driver.hpp"
 
-namespace page
-{
-	namespace wnd { namespace win32 { class Window; }}
-}
+namespace page { namespace wnd { namespace win32 { class Window; }}}
 
 namespace page { namespace inp { namespace win32
 {

@@ -26,7 +26,7 @@ namespace page { namespace inp
 	struct ControlState
 	{
 		math::Vec2 direction;
-		Modifier::BitSet modifiers = 0;
+		Modifier::Type modifiers = Modifier::none;
 	};
 
 	/**

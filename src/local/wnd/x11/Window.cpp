@@ -212,5 +212,5 @@ namespace page { namespace wnd { namespace x11
 		// FIXME: implement
 	}
 
-	REGISTER_WINDOW(Window, "X11 window")
+	REGISTER_WINDOW(Window, STRINGIZE(X11_NAME) " window")
 }}}

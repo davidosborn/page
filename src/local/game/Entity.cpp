@@ -1,5 +1,8 @@
-#include "../phys/controller/FrameController.hpp"
+#include "../phys/node/Body.hpp"
 #include "Entity.hpp"
+
+// FIXME: disabled, because we don't need it right now
+//#include "../phys/controller/FrameController.hpp"
 
 namespace page { namespace game
 {

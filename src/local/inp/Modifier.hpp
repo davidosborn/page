@@ -1,14 +1,16 @@
 #ifndef    page_local_inp_Modifier_hpp
 #   define page_local_inp_Modifier_hpp
 
+#	include "../util/Flags.hpp"
+
 namespace page { namespace inp
 {
 	/**
 	 * Control modifiers.
 	 */
-	struct Modifier
+	struct Modifier : util::Flags
 	{
-		enum BitSet
+		enum
 		{
 			/**
 			 * A modifier that quickens the controlled entity.

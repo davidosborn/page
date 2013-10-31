@@ -1,8 +1,8 @@
 #ifndef    page_local_res_load_LoaderRegistry_hpp
 #   define page_local_res_load_LoaderRegistry_hpp
 
-#	include <forward_list>
 #	include <functional> // function
+#	include <list>
 #	include <memory> // {shared,unique}_ptr
 #	include <string>
 #	include <typeinfo> // type_info
@@ -18,13 +18,13 @@ namespace page { namespace res
 	class Pipe;
 
 	/**
-	 * A pointer to a function that forms the implementation of a loader.
+	 * A function that forms the implementation of a loader.
 	 */
 	using Loader = std::function<std::unique_ptr<void> (const std::shared_ptr<const Pipe> &)>;
 
 	/**
-	 * A pointer to a function that, when called, will return @c true if the
-	 * format of the specified pipe is compatible with the loader.
+	 * A factory function that will return @c true if the format of the
+	 * specified pipe is compatible with the loader.
 	 */
 	using LoaderCompatibleFunction = std::function<bool (const Pipe &)>;
 
@@ -101,6 +101,8 @@ namespace page { namespace res
 
 	/**
 	 * A place for registering loaders.
+	 *
+	 * @addtogroup registry
 	 */
 	class LoaderRegistry : public util::Monostate<LoaderRegistry>
 	{
@@ -139,9 +141,9 @@ namespace page { namespace res
 		private:
 		struct TypeRecord
 		{
-			std::forward_list<Record> records;
-			std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> mimeTypes;
-			std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> extensions;
+			std::list<Record> records;
+			std::unordered_map<std::string, std::list<typename decltype(records)::const_iterator>> mimeTypes;
+			std::unordered_map<std::string, std::list<typename decltype(records)::const_iterator>> extensions;
 		};
 		std::unordered_map<std::type_index, TypeRecord> types;
 	};

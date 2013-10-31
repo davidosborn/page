@@ -17,6 +17,6 @@ namespace page
 		Material::Pass::Gloss::Gloss() : value(0) {}
 		Material::Pass::Mask::Mask() : value(1) {}
 
-		REGISTER_TYPE(Material, "material", 0)
+		REGISTER_TYPE(Material, "material")
 	}
 }

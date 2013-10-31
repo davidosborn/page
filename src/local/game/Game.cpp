@@ -13,6 +13,7 @@
 #include "../inp/Driver.hpp"
 #include "../log/Indenter.hpp"
 #include "../math/interp.hpp" // HermiteScale
+#include "../phys/node/Body.hpp" // Body->Node
 #include "../phys/Scene.hpp"
 #include "../res/clip/Stream.hpp"
 #include "../res/Index.hpp" // Index::Refresh

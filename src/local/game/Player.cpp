@@ -1,7 +1,8 @@
 #include "../inp/Driver.hpp" // Driver::Get{Direction,Modifier}
 #include "../math/Euler.hpp"
 #include "../phys/controller/PathfindingController.hpp" // LocomotionController::SetForce, PathfindingController->LocomotionController
-#include "Character.hpp" // Character::pathfindingController
+#include "../phys/node/Body.hpp"
+#include "Character.hpp" // Character::{GetBody,pathfindingController}
 #include "Player.hpp"
 
 namespace page { namespace game
@@ -30,9 +31,9 @@ namespace page { namespace game
 
 	void Player::Update(const inp::Driver &driver)
 	{
-		math::Vec2 dir(driver.GetDirection() * (driver.GetModifier(inp::Driver::Modifier::run) + 1));
+		math::Vec2 dir(driver.GetDirection() * (driver.GetModifier(inp::Modifier::run) + 1));
 		math::Vec2 fwd(Rotate(math::Vec2(0, dir.y),
-			math::Euler<>(character->GetOrientation()).yaw));
+			math::Euler<>(character->GetBody().GetOrientation()).yaw));
 		character->pathfindingController->SetForce(math::Vec3(fwd.x, 0, fwd.y) * 2);
 		character->pathfindingController->SetForce(math::Euler<>(-dir.x, 0, 0) * 2);
 	}

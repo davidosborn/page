@@ -5,6 +5,6 @@ namespace page
 {
 	namespace res
 	{
-		REGISTER_TYPE(Cursor, "cursor", 0)
+		REGISTER_TYPE(Cursor, "cursor")
 	}
 }

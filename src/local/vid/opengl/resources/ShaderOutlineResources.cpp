@@ -4,7 +4,6 @@
 
 #include "../../../cache/proxy/ResourceProxy.hpp"
 #include "../../../cfg/vars.hpp"
-#include "../../../cfg/vars.hpp"
 #include "../../../err/report.hpp" // ReportWarning, std::exception
 #include "../../../log/Indenter.hpp"
 #include "../../../math/Vector.hpp"

@@ -36,22 +36,9 @@ namespace page { namespace res { namespace clip
 	| registration |
 	+-------------*/
 
-	namespace
-	{
-		/**
-		 * A static initializer which registers @c FfmpegEncoder with
-		 * @c Encoder::Factory.
-		 */
-		struct Initializer
-		{
-			Initializer()
-			{
-				// FIXME: may need extensions and names for all FFmpeg-supported formats
-				GLOBAL(Encoder::Factory).Register<FfmpegEncoder>(
-					0,
-					Encoder::Factory::Criteria{{"ffmpeg"}},
-					Encoder::Factory::Data{};
-			}
-		} initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
-	}
+	// FIXME: consider adding names and extensions for all formats supported by FFmpeg
+	REGISTER_ENCODER(FfmpegEncoder,
+		STRINGIZE(FFMPEG_NAME),
+		{"ffmpeg"},
+		{"mpg"})
 }}}

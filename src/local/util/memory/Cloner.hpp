@@ -7,7 +7,7 @@
 namespace page { namespace util
 {
 	/**
-	 * A pointer to a cloner function, for use with smart pointers.
+	 * A cloner function, for use with smart pointers.
 	 */
 	template <typename T>
 		using Cloner = std::function<std::unique_ptr<T> (const T &)>;

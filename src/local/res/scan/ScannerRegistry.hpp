@@ -1,8 +1,8 @@
 #ifndef    page_local_res_scan_ScannerRegistry_hpp
 #   define page_local_res_scan_ScannerRegistry_hpp
 
-#	include <forward_list>
 #	include <functional> // function
+#	include <list>
 #	include <memory> // shared_ptr
 #	include <string>
 #	include <unordered_map>
@@ -95,6 +95,8 @@ namespace page { namespace res
 
 	/**
 	 * A place for registering scanners.
+	 *
+	 * @addtogroup registry
 	 */
 	class ScannerRegistry : public util::Monostate<ScannerRegistry>
 	{
@@ -125,9 +127,9 @@ namespace page { namespace res
 		bool Scan(const Node &, const ScanCallback &) const;
 
 		private:
-		std::forward_list<Record> records;
-		std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> mimeTypes;
-		std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> extensions;
+		std::list<Record> records;
+		std::unordered_map<std::string, std::list<typename decltype(records)::const_iterator>> mimeTypes;
+		std::unordered_map<std::string, std::list<typename decltype(records)::const_iterator>> extensions;
 
 		static const unsigned lockSize;
 	};

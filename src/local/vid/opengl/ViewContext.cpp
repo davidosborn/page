@@ -8,7 +8,6 @@
 #include "../../cache/proxy/opengl/DrawableProxy.hpp"
 #include "../../cache/proxy/opengl/TextureProxy.hpp"
 #include "../../cfg/vars.hpp"
-#include "../../cfg/vars.hpp"
 #include "../../math/Color.hpp" // Rgb{,a}Color
 #include "../../math/float.hpp" // DegToRad
 #include "../../math/interp.hpp" // HermiteConvolutionKernel

@@ -10,10 +10,9 @@
 #include "../../err/Exception.hpp"
 #include "../../math/Aabb.hpp"
 #include "../../math/win32.hpp" // Make{Rect,Vector}
-#include "../../res/type/Theme.hpp" // Theme::cursor
-#include "../../gui/UserInterface.hpp" // UserInterface::GetTheme
 #include "../../wnd/win32/Window.hpp" // Window->wnd::Window, Window::GetHwnd
 #include "../../wnd/Window.hpp" // Window::{{focus,message,move,size}Sig,Get{Position,Size},HasFocus}
+#include "../DriverRegistry.hpp" // REGISTER_DRIVER
 #include "Driver.hpp"
 
 namespace page { namespace inp { namespace win32
@@ -47,7 +46,7 @@ namespace page { namespace inp { namespace win32
 		mshMousewheel = RegisterWindowMessage(TEXT("MSWHEEL_ROLLMSG"));
 
 		// initialize cursor
-		UpdateCursor();
+		RefreshCursor();
 	}
 
 	/*--------------+
@@ -75,12 +74,13 @@ namespace page { namespace inp { namespace win32
 
 	void Driver::DoSetCursor(const cache::Proxy<res::Cursor> &cursor)
 	{
-		UpdateCursor();
+		RefreshCursor();
 	}
 
 	PollState Driver::Poll() const
 	{
-		State state;
+		PollState state;
+
 		// control
 		state.control.direction = math::Vec2(
 				((GetAsyncKeyState(VK_RIGHT) & 0x8000) >> 15) -
@@ -89,6 +89,7 @@ namespace page { namespace inp { namespace win32
 				((GetAsyncKeyState(VK_DOWN)  & 0x8000) >> 15));
 		state.control.modifiers[runModifier] = GetAsyncKeyState(VK_SHIFT)   & 0x8000;
 		state.control.modifiers[altModifier] = GetAsyncKeyState(VK_CONTROL) & 0x8000;
+
 		// look
 		if (GetCursorMode() == lookCursorMode)
 		{
@@ -111,10 +112,12 @@ namespace page { namespace inp { namespace win32
 			state.look.zoom += mouseState.deltaScroll;
 			const_cast<Driver &>(*this).mouseState.deltaScroll = 0;
 		}
+
 		// events
 		// FIXME: we should be putting key/char events here, rather than
 		// firing them off directly from OnMessage
-		return state;
+
+		return pollState;
 	}
 
 	math::Vec2u Driver::GetRawCursorPosition() const
@@ -133,7 +136,7 @@ namespace page { namespace inp { namespace win32
 		if (show == cursorState.visible) return;
 		if (show)
 		{
-			ClipCursor(0);
+			ClipCursor(NULL);
 			SetCursorPos(
 				cursorState.pointPosition.x,
 				cursorState.pointPosition.y);
@@ -144,13 +147,13 @@ namespace page { namespace inp { namespace win32
 			ResetMouseState();
 			cursorState.pointPosition = Driver::GetRawCursorPosition();
 			::ShowCursor(FALSE);
-			math::Aabb<2, int> box(
+			auto box(
 				AabbPositionSize(
 					GetWindow().GetPosition(),
 					math::Vec2i(GetWindow().GetSize())));
-			math::Vec2i center(Center(Shrink(box, 0, 1)));
+			auto center(Center(Shrink(box, 0, 1)));
 			SetCursorPos(center.x, center.y);
-			RECT rect(math::MakeRect(box));
+			auto rect(math::MakeRect(box));
 			ClipCursor(&rect);
 		}
 		cursorState.visible = show;
@@ -176,10 +179,11 @@ namespace page { namespace inp { namespace win32
 	{
 		POINT pt;
 		GetCursorPos(&pt);
-		auto box(AabbPositionSize(
-			GetWindow().GetPosition(),
-			math::Vec2i(GetWindow().GetSize())));
-		math::Vec2i center(Center(Shrink(box, 0, 1)));
+		auto box(
+			AabbPositionSize(
+				GetWindow().GetPosition(),
+				math::Vec2i(GetWindow().GetSize())));
+		auto center(Center(Shrink(box, 0, 1)));
 		SetCursorPos(center.x, center.y);
 		return math::MakeVector(pt) - center;
 	}
@@ -311,14 +315,14 @@ namespace page { namespace inp { namespace win32
 		if (GetCursorMode() == lookCursorMode)
 		{
 			// update cursor clipping
-			ClipCursor(0);
-			math::Aabb<2, int> box(
+			ClipCursor(NULL);
+			auto box(
 				AabbPositionSize(
 					position,
 					math::Vec2i(GetWindow().GetSize())));
-			math::Vec2i center(Center(Shrink(box, 0, 1)));
+			auto center(Center(Shrink(box, 0, 1)));
 			SetCursorPos(center.x, center.y);
-			RECT rect(math::MakeRect(box));
+			auto rect(math::MakeRect(box));
 			ClipCursor(&rect);
 		}
 	}
@@ -328,14 +332,14 @@ namespace page { namespace inp { namespace win32
 		if (GetCursorMode() == lookCursorMode)
 		{
 			// update cursor clipping
-			ClipCursor(0);
-			math::Aabb<2, int> box(
+			ClipCursor(NULL);
+			auto box(
 				AabbPositionSize(
 					GetWindow().GetPosition(),
 					math::Vec2i(size)));
-			math::Vec2i center(Center(Shrink(box, 0, 1)));
+			auto center(Center(Shrink(box, 0, 1)));
 			SetCursorPos(center.x, center.y);
-			RECT rect(math::MakeRect(box));
+			auto rect(math::MakeRect(box));
 			ClipCursor(&rect);
 		}
 	}
@@ -354,12 +358,14 @@ namespace page { namespace inp { namespace win32
 		}
 		SetCapture(GetWindow().GetHwnd());
 		StartMouseRepeatTimer();
+
 		// cancel dragging
-		math::Vec2u position(math::MakeVector(lparam));
-		math::Vec2 normPosition(NormClientVector(position));
+		auto position(math::MakeVector(lparam));
+		auto normPosition(NormClientVector(position));
 		ResetMouseDrag(normPosition);
+
 		// signal down
-		LONG time = GetMessageTime();
+		auto time = GetMessageTime();
 		mouseState._double =
 			button == mouseState.downButton &&
 			time - mouseState.downTime <= systemSettings.doubleTime &&
@@ -367,6 +373,7 @@ namespace page { namespace inp { namespace win32
 				math::Vec2i(position) -
 				math::Vec2i(mouseState.downPosition)) <= systemSettings.doubleRange);
 		downSig(normPosition, button, mouseState._double);
+
 		// update mouse state
 		mouseState.down = true;
 		mouseState.downButton = button;
@@ -381,6 +388,7 @@ namespace page { namespace inp { namespace win32
 		{
 			ReleaseCapture();
 			StopMouseRepeatTimer();
+
 			// signal click/drop
 			math::Vec2u position(math::MakeVector(lparam));
 			math::Vec2 normPosition(NormClientVector(position));
@@ -393,6 +401,7 @@ namespace page { namespace inp { namespace win32
 				mouseState.downTime = 0;
 			}
 			else clickSig(normPosition, button, mouseState._double);
+
 			// update mouse state
 			mouseState.down = false;
 		}
@@ -421,7 +430,7 @@ namespace page { namespace inp { namespace win32
 	void Driver::OnMouseWheel(WPARAM wparam, LPARAM lparam)
 	{
 		if (!wparam) return;
-		float delta = static_cast<float>(GET_WHEEL_DELTA_WPARAM(wparam)) / WHEEL_DELTA;
+		auto delta = static_cast<float>(GET_WHEEL_DELTA_WPARAM(wparam)) / WHEEL_DELTA;
 		switch (GetCursorMode())
 		{
 			case pointCursorMode:
@@ -526,7 +535,7 @@ namespace page { namespace inp { namespace win32
 	| data members |
 	+-------------*/
 
-	auto Driver::GetLimits() -> Limits
+	Driver::Limits::Limits()
 	{
 		doubleTime = GetDoubleClickTime();
 		doubleRange = math::Vec2i(
@@ -544,4 +553,6 @@ namespace page { namespace inp { namespace win32
 				boost::errinfo_api_function("SystemParametersInfo")))
 		repeatSpeed = 400 - repeatSpeed * 12;
 	}
+
+	REGISTER_DRIVER(Driver, wnd::win32::Window, STRINGIZE(WIN32_NAME) " input driver")
 }}}

@@ -165,24 +165,10 @@ namespace page { namespace res { namespace clip
 	| registration |
 	+-------------*/
 
-	namespace
-	{
-		/**
-		 * A static initializer which registers @c TheoraEncoder with
-		 * @c Encoder::Factory.
-		 */
-		struct Initializer
-		{
-			Initializer()
-			{
-				GLOBAL(Encoder::Factory).Register<TheoraEncoder>(
-					50,
-					Encoder::Factory::Criteria{
-						{"theora"},
-						{"video/ogg", "video/theora"},
-						{"ogv", "ogx"}},
-					Encoder::Factory::Data{"ogv"});
-			}
-		} initializer __attribute__((init_priority(REG_INIT_PRIORITY)));
-	}
+	REGISTER_ENCODER(TheoraEncoder,
+		STRINGIZE(THEORA_NAME),
+		{"theora"},
+		{"ogv", "ogx"},
+		true,
+		50)
 }}}

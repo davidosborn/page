@@ -1622,6 +1622,19 @@ add_cxx_sources()
 	done
 }
 
+# FIXME: temporarily removed from sources until ready to compile
+#local/gui/DrawContext
+#local/gui/UserInterface
+#local/gui/widget/ButtonWidget
+#local/gui/widget/container/ArrayContainer
+#local/gui/widget/container/ListContainer
+#local/gui/widget/container/WidgetContainer
+#local/gui/widget/container/Window
+#local/gui/widget/EditWidget
+#local/gui/widget/ImageWidget
+#local/gui/widget/TextWidget
+#local/gui/widget/Widget
+
 add_cxx_sources <<\EOF
 local/aud/Channel
 local/aud/channel/AmbientChannel
@@ -1651,20 +1664,10 @@ local/game/Entity
 local/game/Game
 local/game/Object
 local/game/Player
-local/gui/DrawContext
-local/gui/UserInterface
-local/gui/widget/ButtonWidget
-local/gui/widget/container/ArrayContainer
-local/gui/widget/container/ListContainer
-local/gui/widget/container/WidgetContainer
-local/gui/widget/container/Window
-local/gui/widget/EditWidget
-local/gui/widget/ImageWidget
-local/gui/widget/TextWidget
-local/gui/widget/Widget
 local/inp/Device
-local/inp/device/registry
+local/inp/DeviceRegistry
 local/inp/Driver
+local/inp/DriverRegistry
 local/inp/PollState
 local/log/filter/Filter
 local/log/filter/IndentFilter

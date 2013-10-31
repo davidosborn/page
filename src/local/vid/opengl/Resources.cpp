@@ -6,7 +6,6 @@
 
 #include "../../cache/proxy/ResourceProxy.hpp"
 #include "../../cfg/vars.hpp"
-#include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"
 #include "../../err/report.hpp" // ReportWarning, std::exception
 #include "../../math/Color.hpp" // {{,Black,White}Rgba,LuminanceCoefficientRgb}Color

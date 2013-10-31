@@ -8,6 +8,6 @@ namespace page
 		// form construct
 		Scene::Form::Form() : scale(math::ScaleVector<3>()) {}
 
-		REGISTER_TYPE(Scene, "scene", 0)
+		REGISTER_TYPE(Scene, "scene")
 	}
 }

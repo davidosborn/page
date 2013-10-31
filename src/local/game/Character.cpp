@@ -4,6 +4,7 @@
 #include "../phys/controller/GaitController.hpp"
 #include "../phys/controller/LipsyncController.hpp"
 #include "../phys/controller/PathfindingController.hpp"
+#include "../phys/node/Body.hpp"
 #include "../res/type/Character.hpp"
 #include "../util/lang.hpp" // EditSpeech
 #include "Character.hpp"

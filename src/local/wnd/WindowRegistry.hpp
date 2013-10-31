@@ -1,8 +1,8 @@
 #ifndef    page_local_wnd_WindowRegistry_hpp
 #   define page_local_wnd_WindowRegistry_hpp
 
-#	include <forward_list>
-#	include <functional>
+#	include <functional> // function
+#	include <list>
 #	include <memory> // unique_ptr
 #	include <string>
 
@@ -14,8 +14,8 @@ namespace page { namespace wnd
 	class Window;
 
 	/**
-	 * A pointer to a factory function that, when called, will return a new
-	 * @c Window object, constructed with the given arguments.
+	 * A factory function that will return a new @c Window object, constructed
+	 * with the provided arguments.
 	 */
 	using WindowFactoryFunction = std::function<std::unique_ptr<Window> (const std::string &title)>;
 
@@ -59,6 +59,8 @@ namespace page { namespace wnd
 
 	/**
 	 * A place for registering @c Window classes.
+	 *
+	 * @addtogroup registry
 	 */
 	class WindowRegistry : public util::Monostate<WindowRegistry>
 	{
@@ -88,7 +90,7 @@ namespace page { namespace wnd
 		std::unique_ptr<Window> Make(const std::string &title) const;
 
 		private:
-		std::forward_list<Record> records;
+		std::list<Record> records;
 	};
 }}
 
@@ -97,7 +99,7 @@ namespace page { namespace wnd
 	/**
 	 * Registers a type with @c WindowRegistry.
 	 */
-#	define REGISTER_CONSOLE(T, ...) \
+#	define REGISTER_WINDOW(T, ...) \
 		namespace \
 		{ \
 			struct Initializer() \

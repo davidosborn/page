@@ -22,6 +22,6 @@ namespace page
 				bone->parent = &*bones.begin() + (otherBone - other.bones.begin());
 		}
 
-		REGISTER_TYPE(Skeleton, "skeleton", 0)
+		REGISTER_TYPE(Skeleton, "skeleton")
 	}
 }

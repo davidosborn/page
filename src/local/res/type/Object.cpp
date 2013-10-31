@@ -8,6 +8,6 @@ namespace page
 		// construct
 		Object::Object() : radius(0), scale(1) {}
 
-		REGISTER_TYPE(Object, "object", 0)
+		REGISTER_TYPE(Object, "object")
 	}
 }

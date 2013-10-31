@@ -1,8 +1,8 @@
 #ifndef    page_local_wnd_ConsoleRegistry_hpp
 #   define page_local_wnd_ConsoleRegistry_hpp
 
-#	include <forward_list>
-#	include <functional>
+#	include <functional> // function
+#	include <list>
 #	include <memory> // unique_ptr
 #	include <string>
 
@@ -14,8 +14,8 @@ namespace page { namespace wnd
 	class Console;
 
 	/**
-	 * A pointer to a factory function that, when called, will return a new
-	 * @c Console object, constructed with the given arguments.
+	 * A factory function that will return a new @c Console object, constructed
+	 * with the provided arguments.
 	 */
 	using ConsoleFactoryFunction = std::function<std::unique_ptr<Console> (const std::string &title)>;
 
@@ -59,6 +59,8 @@ namespace page { namespace wnd
 
 	/**
 	 * A place for registering @c Console classes.
+	 *
+	 * @addtogroup registry
 	 */
 	class ConsoleRegistry : public util::Monostate<ConsoleRegistry>
 	{
@@ -88,7 +90,7 @@ namespace page { namespace wnd
 		std::unique_ptr<Console> Make(const std::string &title) const;
 
 		private:
-		std::forward_list<Record> records;
+		std::list<Record> records;
 	};
 }}
 

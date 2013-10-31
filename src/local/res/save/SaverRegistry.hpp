@@ -1,9 +1,9 @@
 #ifndef    page_local_res_save_SaverRegistry_hpp
 #   define page_local_res_save_SaverRegistry_hpp
 
-#	include <forward_list>
 #	include <functional> // function
 #	include <iosfwd> // ostream
+#	include <list>
 #	include <memory> // unique_ptr
 #	include <string>
 #	include <typeinfo> // type_info
@@ -21,7 +21,10 @@ namespace page { namespace res
 ////////// Saver ///////////////////////////////////////////////////////////////
 
 	/**
-	 * A pointer to a function that forms the implementation of a saver.
+	 * A function that forms the implementation of a saver.
+	 *
+	 * @note If the function is initialized to @c nullptr, calling it will do
+	 * nothing.
 	 */
 	class Saver
 	{
@@ -108,6 +111,8 @@ namespace page { namespace res
 
 	/**
 	 * A place for registering savers.
+	 *
+	 * @addtogroup registry
 	 */
 	class SaverRegistry : public util::Monostate<SaverRegistry>
 	{
@@ -185,9 +190,9 @@ namespace page { namespace res
 		private:
 		struct TypeRecord
 		{
-			std::forward_list<Record> records;
-			std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> formats;
-			std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> extensions;
+			std::list<Record> records;
+			std::unordered_map<std::string, std::list<typename decltype(records)::const_iterator>> formats;
+			std::unordered_map<std::string, std::list<typename decltype(records)::const_iterator>> extensions;
 		};
 		std::unordered_map<std::type_index, TypeRecord> types;
 	};

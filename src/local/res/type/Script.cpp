@@ -5,6 +5,6 @@ namespace page
 {
 	namespace res
 	{
-		REGISTER_TYPE(Script, "script", 0)
+		REGISTER_TYPE(Script, "script")
 	}
 }

@@ -985,9 +985,9 @@ namespace page { namespace math
 		// http://www.gamedev.net/community/forums/topic.asp?topic_id=359053&#2357351
 		return std::atan2(Len(Cross(v1, v2)), Dot(v1, v2));
 	}
-	template <typename T> typename Real<T>::Type Aspect(const Vector<2, T> &v)
+	template <typename T> typename Real<T>::type Aspect(const Vector<2, T> &v)
 	{
-		typedef typename Real<T>::Type R;
+		typedef typename Real<T>::type R;
 		return R(v.x) / v.y;
 	}
 	template <unsigned n, typename T> Vector<n, T> Ceil(const Vector<n, T> &v)

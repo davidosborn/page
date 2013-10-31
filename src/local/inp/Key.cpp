@@ -4,7 +4,7 @@
 
 namespace page { namespace inp
 {
-	std::string Repr(Key key)
+	std::string GetName(Key key)
 	{
 		switch (key)
 		{

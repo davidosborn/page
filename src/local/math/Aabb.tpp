@@ -339,16 +339,16 @@ namespace page { namespace math
 	| spatial reference transformation |
 	+---------------------------------*/
 
-	template <unsigned n, typename T, typename U> Aabb<n, typename Real<typename ArithmeticConversion<T, U>::Result>::Type> EnterSpace(const Aabb<n, T> &space, const Aabb<n, U> &a)
+	template <unsigned n, typename T, typename U> Aabb<n, typename Real<typename ArithmeticConversion<T, U>::Result>::type> EnterSpace(const Aabb<n, T> &space, const Aabb<n, U> &a)
 	{
-		typedef typename Real<typename ArithmeticConversion<T, U>::Result>::Type R;
+		typedef typename Real<typename ArithmeticConversion<T, U>::Result>::type R;
 		return Aabb<n, R>(
 			EnterSpace(space, a.min),
 			EnterSpace(space, a.max));
 	}
-	template <unsigned n, typename T, typename U> Vector<n, typename Real<typename ArithmeticConversion<T, U>::Result>::Type> EnterSpace(const Aabb<n, T> &space, const Vector<n, U> &v)
+	template <unsigned n, typename T, typename U> Vector<n, typename Real<typename ArithmeticConversion<T, U>::Result>::type> EnterSpace(const Aabb<n, T> &space, const Vector<n, U> &v)
 	{
-		typedef typename Real<typename ArithmeticConversion<T, U>::Result>::Type R;
+		typedef typename Real<typename ArithmeticConversion<T, U>::Result>::type R;
 		return Vector<n, R>(v - space.min) / Size(space);
 	}
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> LeaveSpace(const Aabb<n, T> &space, const Aabb<n, U> &a)
@@ -367,9 +367,9 @@ namespace page { namespace math
 	| other operations |
 	+-----------------*/
 
-	template <typename T> typename Real<T>::Type Aspect(const Aabb<2, T> &a)
+	template <typename T> typename Real<T>::type Aspect(const Aabb<2, T> &a)
 	{
-		typedef typename Real<T>::Type R;
+		typedef typename Real<T>::type R;
 		return R(a.max.x - a.min.x) / (a.max.y - a.min.y);
 	}
 	template <unsigned n, typename T> Aabb<n, T> Ceil(const Aabb<n, T> &a)

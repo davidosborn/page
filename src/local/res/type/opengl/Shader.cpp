@@ -7,7 +7,7 @@ namespace page
 	{
 		namespace opengl
 		{
-			REGISTER_TYPE(Shader, "shader", 0)
+			REGISTER_TYPE(Shader, "shader")
 		}
 	}
 }

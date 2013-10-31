@@ -9,7 +9,6 @@
 
 #include "../../../cache/proxy/ResourceProxy.hpp"
 #include "../../../cfg/vars.hpp"
-#include "../../../cfg/vars.hpp"
 #include "../../../err/Exception.hpp"
 #include "../../../err/report.hpp" // ReportWarning, std::exception
 #include "../../../log/Indenter.hpp"

@@ -1,9 +1,16 @@
 #include <algorithm> // lower_bound
 #include <cassert>
 #include <functional> // bind, greater
+#include <iostream> // cout
 
+#include <boost/optional.hpp>
+
+#include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"
+#include "../../err/report.hpp" // ReportWarning
+#include "../../log/Indenter.hpp"
 #include "../../util/functional/member.hpp" // member_of
+#include "Console.hpp" // Console::~Console
 #include "ConsoleRegistry.hpp"
 
 namespace page { namespace wnd
@@ -76,7 +83,7 @@ namespace page { namespace wnd
 			}
 		}
 
-		THROW((err::Exception<err::ResModuleTag, err::NotFoundTag>("console not found") <<
+		THROW((err::Exception<err::WndModuleTag, err::NotFoundTag>("console not found") <<
 			boost::errinfo_file_name(path)))
 	}
 }}

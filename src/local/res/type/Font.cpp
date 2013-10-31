@@ -191,6 +191,6 @@ namespace page
 				font.lineHeight * CountLines(font, first, last, width));
 		}
 
-		REGISTER_TYPE(Font, "font", 0)
+		REGISTER_TYPE(Font, "font")
 	}
 }

@@ -1,8 +1,8 @@
 #ifndef    page_local_res_clip_EncoderRegistry_hpp
 #   define page_local_res_clip_EncoderRegistry_hpp
 
-#	include <forward_list>
 #	include <functional> // function
+#	include <list>
 #	include <memory> // unique_ptr
 #	include <string>
 #	include <unordered_map>
@@ -17,13 +17,14 @@ namespace page { namespace res { namespace clip
 	class Encoder;
 
 	/**
-	 *
+	 * A function that is called by an encoder when it has encoded data that
+	 * needs to be written.
 	 */
 	typedef std::function<void (const void *, unsigned)> EncoderCallback;
 
 	/**
-	 * A pointer to a factory function that, when called, will return a new
-	 * @c Encoder object, constructed with the given arguments.
+	 * A factory function that will return a new @c Encoder object, constructed
+	 * with the provided arguments.
 	 */
 	using EncoderFactoryFunction = std::function<
 		std::unique_ptr<Encoder> (
@@ -42,26 +43,26 @@ namespace page { namespace res { namespace clip
 		/**
 		 * Constructor.
 		 *
-		 * @note The first extension in @c extensions will become the value of
+		 * @note The first extension in @a extensions will become the value of
 		 *       @c defaultExtension.
 		 */
 		EncoderRegistryRecord(
-			std::string              const& name,
 			EncoderFactoryFunction   const& factoryFunction,
+			std::string              const& name,
 			std::vector<std::string> const& formats          = {},
 			std::vector<std::string> const& extensions       = {},
 			bool                            binary           = true,
 			int                             priority         = 0);
 
 		/**
-		 * The name of the encoder.
-		 */
-		std::string name;
-
-		/**
 		 * @copydoc EncoderFactoryFunction
 		 */
 		EncoderFactoryFunction factoryFunction;
+
+		/**
+		 * The name of the encoder.
+		 */
+		std::string name;
 
 		/**
 		 * The formats that this encoder recognizes.
@@ -96,6 +97,8 @@ namespace page { namespace res { namespace clip
 
 	/**
 	 * A place for registering encoders.
+	 *
+	 * @addtogroup registry
 	 */
 	class EncoderRegistry : public util::Monostate<EncoderRegistry>
 	{
@@ -106,9 +109,9 @@ namespace page { namespace res { namespace clip
 
 		public:
 		/**
-		 * Registers a encoder.
+		 * Registers an encoder.
 		 */
-		template <typename... RecordArgs>
+		template <typename T, typename... RecordArgs>
 			void Register(RecordArgs &&...);
 
 		private:
@@ -135,9 +138,9 @@ namespace page { namespace res { namespace clip
 			bool                  bestMatch = true) const;
 
 		private:
-		std::forward_list<Record> records;
-		std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> formats;
-		std::unordered_map<std::string, std::forward_list<typename decltype(records)::const_iterator>> extensions;
+		std::list<Record> records;
+		std::unordered_map<std::string, std::list<typename decltype(records)::const_iterator>> formats;
+		std::unordered_map<std::string, std::list<typename decltype(records)::const_iterator>> extensions;
 	};
 }}
 

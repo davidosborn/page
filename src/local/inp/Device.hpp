@@ -2,7 +2,7 @@
 #   define page_local_inp_Device_hpp
 
 #	include "../util/class/special_member_functions.hpp" // Polymorphic, Uncopyable
-#	include "State.hpp"
+#	include "PollState.hpp"
 
 namespace page { namespace inp
 {

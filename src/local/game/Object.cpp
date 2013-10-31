@@ -1,4 +1,5 @@
 #include "../phys/controller/AnimationController.hpp"
+#include "../phys/node/Body.hpp"
 #include "../res/type/Object.hpp"
 #include "Object.hpp"
 

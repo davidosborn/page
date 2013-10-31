@@ -31,8 +31,8 @@ namespace page
 		};
 
 		/**
-		 * A function object that wraps @c operator @c new and returns a
-		 * @c std::unique_ptr.
+		 * A function object that wraps @c operator @c new and returns a @c
+		 * std::unique_ptr.
 		 */
 		template <typename T, typename... Args>
 			struct factory_function

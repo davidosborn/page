@@ -21,5 +21,5 @@ namespace page { namespace wnd { namespace x11
 		// FIXME: implement
 	}
 
-	REGISTER_CONSOLE(Console, "X11 console")
+	REGISTER_CONSOLE(Console, STRINGIZE(X11_NAME) " console")
 }}}

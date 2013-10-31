@@ -1,8 +1,8 @@
 #ifndef    page_local_res_source_SourceRegistry_hpp
 #   define page_local_res_source_SourceRegistry_hpp
 
-#	include <forward_list>
-#	include <functional>
+#	include <functional> // function
+#	include <list>
 #	include <memory> // unique_ptr
 #	include <string>
 
@@ -12,14 +12,14 @@
 namespace page { namespace res
 {
 	/**
-	 * A pointer to a factory function that, when called, will return a new
-	 * @c Source object, constructed with the given arguments.
+	 * A factory function that will return a new @c Source object, constructed
+	 * with the provided arguments.
 	 */
 	using SourceFactoryFunction = std::function<std::unique_ptr<Source> (const std::string &path)>;
 
 	/**
-	 * A pointer to a function that, when called, will return @c true if the
-	 * source is capable of handling the specified path.
+	 * A function that will return @c true if the source is capable of handling
+	 * the specified path.
 	 */
 	using SourceCompatibleFunction = std::function<bool (const std::string &path)>;
 
@@ -57,6 +57,8 @@ namespace page { namespace res
 
 	/**
 	 * A place for registering @c Source classes.
+	 *
+	 * @addtogroup registry
 	 */
 	class SourceRegistry : public util::Monostate<SourceRegistry>
 	{
@@ -86,7 +88,7 @@ namespace page { namespace res
 		std::unique_ptr<Source> Make(const std::string &path) const;
 
 		private:
-		std::forward_list<Record> records;
+		std::list<Record> records;
 	};
 }}
 

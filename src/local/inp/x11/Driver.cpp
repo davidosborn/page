@@ -7,6 +7,7 @@
 #include "../../util/algorithm/stdext.hpp" // for_each_if
 #include "../../util/functional/locale.hpp" // isprint_function
 #include "../../wnd/x11/Window.hpp"
+#include "../DriverRegistry.hpp" // REGISTER_DRIVER
 #include "Driver.hpp"
 
 namespace page { namespace inp { namespace x11
@@ -145,13 +146,6 @@ namespace page { namespace inp { namespace x11
 		KeyCode keycode = XKeysymToKeycode(GetWindow().GetDisplay(), keysym);
 		return keys[keycode / CHAR_BIT] & 1 << keycode % CHAR_BIT;
 	}
-}}}
 
-namespace page { namespace inp
-{
-	// factory function
-	Driver *MakeDriver(wnd::Window &wnd)
-	{
-		return new x11::Driver(dynamic_cast<wnd::x11::Window &>(wnd));
-	}
-}}
+	REGISTER_DRIVER(Driver, wnd::x11::Window, STRINGIZE(X11_NAME) " input driver")
+}}}

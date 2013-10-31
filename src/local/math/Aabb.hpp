@@ -149,8 +149,8 @@ namespace page { namespace math
 	| spatial reference transformation |
 	+---------------------------------*/
 
-	template <unsigned n, typename T, typename U> Aabb<n, typename Real<typename ArithmeticConversion<T, U>::Result>::Type> EnterSpace(const Aabb<n, T> &, const Aabb<n, U> &);
-	template <unsigned n, typename T, typename U> Vector<n, typename Real<typename ArithmeticConversion<T, U>::Result>::Type> EnterSpace(const Aabb<n, T> &, const Vector<n, U> &);
+	template <unsigned n, typename T, typename U> Aabb<n, typename Real<typename ArithmeticConversion<T, U>::Result>::type> EnterSpace(const Aabb<n, T> &, const Aabb<n, U> &);
+	template <unsigned n, typename T, typename U> Vector<n, typename Real<typename ArithmeticConversion<T, U>::Result>::type> EnterSpace(const Aabb<n, T> &, const Vector<n, U> &);
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> LeaveSpace(const Aabb<n, T> &, const Aabb<n, U> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> LeaveSpace(const Aabb<n, T> &, const Vector<n, U> &);
 
@@ -158,7 +158,7 @@ namespace page { namespace math
 	| other operations |
 	+-----------------*/
 
-	template <typename T> typename Real<T>::Type Aspect(const Aabb<2, T> &);
+	template <typename T> typename Real<T>::type Aspect(const Aabb<2, T> &);
 	template <unsigned n, typename T> Aabb<n, T> Ceil(const Aabb<n, T> &);
 	template <unsigned n, typename T> Vector<n, T> Center(const Aabb<n, T> &);
 	template <unsigned n, typename T, typename U> Vector<n, typename ArithmeticConversion<T, U>::Result> Center(const Aabb<n, T> &, const Vector<n, U> &);

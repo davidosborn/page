@@ -4,8 +4,9 @@
 #	include <memory> // shared_ptr
 #	include <string>
 
-#	include "../phys/node/Body.hpp"
 #	include "../util/class/special_member_functions.hpp" // Polymorphic
+
+namespace page { namespace phys { class Body; }}
 
 namespace page { namespace game
 {

@@ -1,17 +1,14 @@
 #ifndef    page_local_util_Flags_hpp
 #   define page_local_util_Flags_hpp
 
-namespace page
+namespace page { namespace util
 {
-	namespace util
+	struct Flags
 	{
-		struct Flags
-		{
-			typedef int Type;
+		typedef int Type;
 
-			enum { none = 0 };
-		};
-	}
-}
+		enum { none = 0 };
+	};
+}}
 
 #endif

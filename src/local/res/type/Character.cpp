@@ -8,6 +8,6 @@ namespace page
 		// construct
 		Character::Character() : radius(0), scale(1) {}
 
-		REGISTER_TYPE(Character, "character", 0)
+		REGISTER_TYPE(Character, "character")
 	}
 }
