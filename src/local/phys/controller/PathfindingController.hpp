@@ -1,6 +1,3 @@
-// pathfinding controller
-// supports targeted locomotion across a track
-
 #ifndef    page_local_phys_controller_PathfindingController_hpp
 #   define page_local_phys_controller_PathfindingController_hpp
 
@@ -12,10 +9,15 @@ namespace page { namespace phys
 	class Body;
 	class Collidable;
 
-	class PathfindingController :
-		public LocomotionController,
-		public virtual util::Cloneable<PathfindingController, LocomotionController>
+	/**
+	 * Pathfinding controller.
+	 *
+	 * Supports targeted locomotion across a track.
+	 */
+	class PathfindingController : public LocomotionController
 	{
+		IMPLEMENT_CLONEABLE(PathfindingController, Controller)
+
 		public:
 		// construct
 		explicit PathfindingController(const Body &);

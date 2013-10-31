@@ -5,31 +5,18 @@
 #include "DrawContext.hpp" // DrawContext::GetBase
 #include "Widget.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/*----------+
 	| constants |
 	+----------*/
 
-	constexpr float Widget::glowFadeInDuration     = 1.0 / 16;
-	constexpr float Widget::glowFadeOutDuration    = 0.5;
-	constexpr float Widget::glowFadeExponent       = 1.5;
-	constexpr float Widget::visibilityFadeInDuration  = 0.5;
-	constexpr float Widget::visibilityFadeOutDuration = 0.5;
-	constexpr float Widget::visibilityFadeExponent    = 1.5;
-
-////////// WidgetSize //////////////////////////////////////////////////////////
-
-	/*-------------+
-	| constructors |
-	+-------------*/
-
-	WidgetSize::WidgetSize(
-		math::Vec2            const& min,
-		math::Vector<2, Mode> const& mode) :
-			min(min), mode(mode) {}
-
-////////// Widget //////////////////////////////////////////////////////////////
+	const float Widget::glowFadeInDuration        = 1.0 / 16;
+	const float Widget::glowFadeOutDuration       = 0.5;
+	const float Widget::glowFadeExponent          = 1.5;
+	const float Widget::visibilityFadeInDuration  = 0.5;
+	const float Widget::visibilityFadeOutDuration = 0.5;
+	const float Widget::visibilityFadeExponent    = 1.5;
 
 	/*-------------+
 	| constructors |
@@ -57,9 +44,9 @@ namespace page { namespace ui
 		return minSize;
 	}
 
-	WidgetSize Widget::GetSize(const res::Theme &theme) const
+	WidgetSizeConstraints Widget::GetSizeConstraints(const res::Theme &theme) const
 	{
-		Size size(CalcSize(theme));
+		auto size(GetSizeConstraints(theme));
 		size.min = Max(size.min, minSize * theme.scale);
 		return size;
 	}

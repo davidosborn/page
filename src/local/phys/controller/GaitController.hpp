@@ -9,10 +9,10 @@ namespace page { namespace phys
 {
 	namespace attrib { class PositionOrientation; }
 
-	class GaitController :
-		public AnimationTargetController,
-		public virtual util::Cloneable<GaitController, AnimationTargetController>
+	class GaitController : public AnimationTargetController
 	{
+		IMPLEMENT_CLONEABLE(GaitController, Controller)
+
 		public:
 		// construct
 		GaitController(

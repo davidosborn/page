@@ -7,7 +7,7 @@
 
 #	include "../../math/fwd.hpp" // OrthoFrustum
 #	include "../../math/Matrix.hpp"
-#	include "../../phys/Form.hpp" // Form::Part
+#	include "../../phys/node/Form.hpp" // Form::Part
 #	include "../../phys/Scene.hpp" // Scene::View
 #	include "../../res/type/Material.hpp" // Material::Pass
 #	include "../ViewContext.hpp"

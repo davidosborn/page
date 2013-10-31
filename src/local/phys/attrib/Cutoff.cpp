@@ -1,35 +1,41 @@
 #include "Cutoff.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Cutoff::Cutoff(float value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	float Cutoff::GetCutoff() const
 	{
-		namespace attrib
-		{
-			// construct
-			Cutoff::Cutoff(float cutoff) : cutoff(cutoff) {}
-
-			// access
-			float Cutoff::GetCutoff() const
-			{
-				return cutoff;
-			}
-			void Cutoff::SetCutoff(float cutoff)
-			{
-				this->cutoff = cutoff;
-			}
-
-			// frame serialization
-			Frame Cutoff::GetFrame() const
-			{
-				Frame frame;
-				frame.cutoff = cutoff;
-				return frame;
-			}
-			void Cutoff::Update(const Frame &frame)
-			{
-				if (frame.cutoff) cutoff = *frame.cutoff;
-			}
-		}
+		return value;
 	}
-}
+
+	void Cutoff::SetCutoff(float value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Cutoff::GetFrame() const
+	{
+		Frame frame;
+		frame.cutoff = value;
+		return frame;
+	}
+
+	void Cutoff::SetFrame(const Frame &frame)
+	{
+		if (frame.cutoff) value = *frame.cutoff;
+	}
+}}}

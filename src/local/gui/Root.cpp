@@ -13,9 +13,9 @@ namespace page { namespace gui
 	Root::Root(const std::shared_ptr<const res::Theme> &theme) :
 		theme(theme) {}
 
-	/*-----------+
-	| properties |
-	+-----------*/
+	/*------+
+	| theme |
+	+------*/
 
 	const res::Theme &Root::GetTheme() const
 	{

@@ -7,54 +7,67 @@
 #	include "../Frame.hpp"
 #	include "../mixin/Transformable.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Normal :
+		public virtual Transformable
 	{
-		namespace attrib
-		{
-			struct Normal : virtual Transformable
-			{
-				// construct
-				explicit Normal(const math::Vec3 & = math::NormVector<3>());
-				explicit Normal(const math::Quat<> &);
-				explicit Normal(const math::Mat3 &);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::Vec3 &GetNormal() const;
-				void SetNormal(const math::Vec3 &);
+		public:
+		explicit Normal(const math::Vec3 & = math::NormVector<3>());
+		explicit Normal(const math::Quat<> &);
+		explicit Normal(const math::Mat3 &);
 
-				// orientation access
-				math::Quat<> GetOrientation() const;
-				void SetOrientation(const math::Quat<> &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				// matrix access
-				math::Mat3 GetMatrix() const;
-				math::Mat3 GetInvMatrix() const;
-				void SetMatrix(const math::Mat3 &);
+		const math::Vec3 &GetNormal() const;
+		void SetNormal(const math::Vec3 &);
 
-				// transform state
-				const math::Vec3 &GetLastNormal() const;
-				math::Quat<> GetLastOrientation() const;
-				const math::Quat<> &GetTorque() const;
-				const math::Quat<> &GetSpin() const;
+		// orientation view
+		math::Quat<> GetOrientation() const;
+		void SetOrientation(const math::Quat<> &);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		// matrix view
+		math::Mat3 GetMatrix() const;
+		math::Mat3 GetInvMatrix() const;
+		void SetMatrix(const math::Mat3 &);
 
-				// transform modifiers
-				void BakeTransform();
-				void UpdateForce();
-				void UpdateDelta();
+		// transformation observers
+		const math::Vec3 &GetLastNormal() const;
+		math::Quat<> GetLastOrientation() const;
+		const math::Quat<> &GetTorque() const;
+		const math::Quat<> &GetSpin() const;
 
-				private:
-				math::Vec3 normal, lastNormal;
-				math::Quat<> torque, spin;
-			};
-		}
-	}
-}
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-----------------------------+
+		| Transformable implementation |
+		+-----------------------------*/
+
+		public:
+		void BakeTransform() override;
+		void UpdateForce() override;
+		void UpdateDelta() override;
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::Vec3 value, lastValue = value;
+		math::Quat<> torque, spin;
+	};
+}}}
 
 #endif

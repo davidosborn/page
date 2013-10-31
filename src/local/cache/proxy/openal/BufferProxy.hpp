@@ -13,10 +13,10 @@ namespace page { namespace cache { namespace openal
 	/**
 	 * A proxy representing an OpenAL buffer in the cache.
 	 */
-	class BufferProxy :
-		public BasicProxy<ALuint>,
-		public virtual util::Cloneable<BufferProxy, BasicProxy<ALuint>>
+	class BufferProxy : public BasicProxy<ALuint>
 	{
+		IMPLEMENT_CLONEABLE(BufferProxy, BasicProxy<ALuint>)
+
 		/*-------+
 		| traits |
 		+-------*/

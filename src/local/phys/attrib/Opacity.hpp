@@ -3,31 +3,39 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Opacity
 	{
-		namespace attrib
-		{
-			struct Opacity
-			{
-				// construct
-				explicit Opacity(float = 1);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetOpacity() const;
-				void SetOpacity(float);
+		public:
+		explicit Opacity(float = 1);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float opacity;
-			};
-		}
-	}
-}
+		float GetOpacity() const;
+		void SetOpacity(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

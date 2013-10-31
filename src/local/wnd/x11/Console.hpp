@@ -5,10 +5,10 @@
 
 namespace page { namespace wnd { namespace x11
 {
-	class Console :
-		public wnd::Console,
-		public virtual util::Cloneable<Console, wnd::Console>
+	class Console : public wnd::Console
 	{
+		IMPLEMENT_CLONEABLE(Console, wnd::Console)
+
 		public:
 		explicit Console(const std::string &title);
 

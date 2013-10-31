@@ -6,7 +6,7 @@ namespace page
 	namespace phys
 	{
 		// construct
-		AnimationTargetController::AnimationTargetController(Layer layer, bool sync) :
+		AnimationTargetController::AnimationTargetController(AnimationLayer layer, bool sync) :
 			Controller(layer), sync(sync), playPosition(0) {}
 
 		// modifiers

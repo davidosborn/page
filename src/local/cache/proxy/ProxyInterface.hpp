@@ -14,7 +14,8 @@ namespace page { namespace cache
 	 * The interface for proxies of cached objects.
 	 *
 	 * @note Uses the "Curiously-Recurring Template" and "Non-Virtual Interface"
-	 *       patterns.
+	 *       patterns.  The derived class must implement DoLock() and
+	 *       DoGetSignature().
 	 */
 	template <typename Derived, typename T>
 		class ProxyInterface : public BasicProxyInterface
@@ -27,7 +28,7 @@ namespace page { namespace cache
 		/**
 		 * The type of the cached object.
 		 */
-		using element_type = T;
+		using element_type = const T;
 
 		/**
 		 * The type of a shared reference to the cached object.

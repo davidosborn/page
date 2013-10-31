@@ -1,31 +1,31 @@
 #include <algorithm> // max
 #include <functional> // bind
 
-#include "../../res/type/Theme.hpp" // Theme::margin
-#include "../../vid/DrawContext.hpp" // DrawContext::{FrameSaver,PushFrame}
-#include "../DrawContext.hpp"
-#include "Array.hpp"
+#include "../../../res/type/Theme.hpp" // Theme::margin
+#include "../../../vid/DrawContext.hpp" // DrawContext::{FrameSaver,PushFrame}
+#include "../../DrawContext.hpp"
+#include "ArrayContainer.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	// construct
-	Array::Array(bool horizontal, bool margin) :
+	ArrayContainer::ArrayContainer(bool horizontal, bool margin) :
 		horizontal(horizontal), margin(margin) {}
 
 	// cursor event notification
-	bool Array::OnOver(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
+	bool ArrayContainer::OnOver(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
 	{
 		using namespace std::placeholders;
 		return CheckHit(pos, theme, size,
 			std::bind(&Widget::OnOver, _1, _2, theme, _3));
 	}
-	bool Array::OnDown(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
+	bool ArrayContainer::OnDown(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
 	{
 		using namespace std::placeholders;
 		return CheckHit(pos, theme, size,
 			std::bind(&Widget::OnDown, _1, _2, theme, _3));
 	}
-	bool Array::OnClick(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
+	bool ArrayContainer::OnClick(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
 	{
 		using namespace std::placeholders;
 		return CheckHit(pos, theme, size,
@@ -33,15 +33,15 @@ namespace page { namespace ui
 	}
 
 	// metrics
-	Array::Size Array::CalcSize(const res::Theme &theme) const
+	auto ArrayContainer::CalcSize(const res::Theme &theme) const -> WidgetSize
 	{
 		// FIXME: support different sizing modes
-		Size size;
+		WidgetSize size;
 		if (!widgets.empty())
 			for (Widgets::const_iterator iter(widgets.begin());;)
 			{
 				const Widget &child(**iter);
-				Size childSize(child.GetSize(theme));
+				auto childSize(child.GetSize(theme));
 				size.min[!horizontal] += childSize.min[!horizontal];
 				size.min[horizontal] = std::max(childSize.min[horizontal], size.min[horizontal]);
 				if (++iter == widgets.end()) break;
@@ -51,7 +51,7 @@ namespace page { namespace ui
 	}
 
 	// rendering
-	void Array::DoDraw(DrawContext &context) const
+	void ArrayContainer::DoDraw(DrawContext &context) const
 	{
 		const res::Theme &theme(context.GetTheme());
 		math::Vec2 scale(context.GetScale());
@@ -81,7 +81,7 @@ namespace page { namespace ui
 	}
 
 	// update
-	void Array::DoUpdate(float deltaTime)
+	void ArrayContainer::DoUpdate(float deltaTime)
 	{
 		for (Widgets::iterator iter(widgets.begin()); iter != widgets.end(); ++iter)
 		{
@@ -91,14 +91,14 @@ namespace page { namespace ui
 	}
 
 	// child hit detection
-	bool Array::CheckHit(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size, const HitCallback &cb)
+	bool ArrayContainer::CheckHit(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size, const HitCallback &cb)
 	{
 		bool result = false;
 		math::Vec2 pen;
 		for (Widgets::const_iterator iter(widgets.begin()); iter != widgets.end(); ++iter)
 		{
 			Widget &child(**iter);
-			Size childSize(child.GetSize(theme));
+			auto childSize(child.GetSize(theme));
 			// FIXME: support different sizing modes
 			math::Aabb<2> aabb(AabbPositionSize(pen, childSize.min));
 			if (Contains(aabb, pos))

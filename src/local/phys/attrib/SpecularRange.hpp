@@ -4,39 +4,49 @@
 #	include "../../math/Color.hpp" // RgbColor
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class SpecularRange
 	{
-		namespace attrib
-		{
-			struct SpecularRange
-			{
-				// construct
-				explicit SpecularRange(const math::RgbColor<> & = 1);
-				SpecularRange(
-					const math::RgbColor<> &min,
-					const math::RgbColor<> &max);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::RgbColor<> &GetMinSpecular() const;
-				const math::RgbColor<> &GetMaxSpecular() const;
-				void SetMinSpecular(const math::RgbColor<> &);
-				void SetMaxSpecular(const math::RgbColor<> &);
-				void SetSpecularRange(
-					const math::RgbColor<> &min,
-					const math::RgbColor<> &max);
+		public:
+		explicit SpecularRange(const math::RgbColor<> & = 1);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		SpecularRange(
+			const math::RgbColor<> &min,
+			const math::RgbColor<> &max);
 
-				private:
-				math::RgbColor<> min, max;
-			};
-		}
-	}
-}
+		/*----------+
+		| accessors |
+		+----------*/
+
+		const math::RgbColor<> &GetMinSpecular() const;
+		const math::RgbColor<> &GetMaxSpecular() const;
+		void SetMinSpecular(const math::RgbColor<> &);
+		void SetMaxSpecular(const math::RgbColor<> &);
+		void SetSpecularRange(const math::RgbColor<> &);
+		void SetSpecularRange(
+			const math::RgbColor<> &min,
+			const math::RgbColor<> &max);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::RgbColor<> min, max;
+	};
+}}}
 
 #endif

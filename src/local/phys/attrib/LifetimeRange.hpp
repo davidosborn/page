@@ -3,35 +3,44 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class LifetimeRange
 	{
-		namespace attrib
-		{
-			struct LifetimeRange
-			{
-				// construct
-				explicit LifetimeRange(float = 0);
-				LifetimeRange(float min, float max);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetMinLifetime() const;
-				float GetMaxLifetime() const;
-				void SetMinLifetime(float);
-				void SetMaxLifetime(float);
-				void SetLifetimeRange(float min, float max);
+		public:
+		explicit LifetimeRange(float = 0);
+		LifetimeRange(float min, float max);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float min, max;
-			};
-		}
-	}
-}
+		float GetMinLifetime() const;
+		float GetMaxLifetime() const;
+		void SetMinLifetime(float);
+		void SetMaxLifetime(float);
+		void SetLifetimeRange(float);
+		void SetLifetimeRange(float min, float max);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float min, max;
+	};
+}}}
 
 #endif

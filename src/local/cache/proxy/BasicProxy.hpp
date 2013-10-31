@@ -16,7 +16,7 @@ namespace page { namespace cache
 	template <typename T>
 		class BasicProxy :
 			public ProxyInterface<BasicProxy<T>, T>,
-			public virtual util::Cloneable<BasicProxy<T>>
+			public util::Cloneable<BasicProxy<T>>
 	{
 		friend class Proxy<T>;
 		friend class ProxyInterface<BasicProxy<T>, T>;

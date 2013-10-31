@@ -1,35 +1,41 @@
 #include "Falloff.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Falloff::Falloff(float value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	float Falloff::GetFalloff() const
 	{
-		namespace attrib
-		{
-			// construct
-			Falloff::Falloff(float falloff) : falloff(falloff) {}
-
-			// access
-			float Falloff::GetFalloff() const
-			{
-				return falloff;
-			}
-			void Falloff::SetFalloff(float falloff)
-			{
-				this->falloff = falloff;
-			}
-
-			// frame serialization
-			Frame Falloff::GetFrame() const
-			{
-				Frame frame;
-				frame.falloff = falloff;
-				return frame;
-			}
-			void Falloff::Update(const Frame &frame)
-			{
-				if (frame.falloff) falloff = *frame.falloff;
-			}
-		}
+		return value;
 	}
-}
+
+	void Falloff::SetFalloff(float value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Falloff::GetFrame() const
+	{
+		Frame frame;
+		frame.falloff = value;
+		return frame;
+	}
+
+	void Falloff::SetFrame(const Frame &frame)
+	{
+		if (frame.falloff) value = *frame.falloff;
+	}
+}}}

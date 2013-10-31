@@ -1,7 +1,7 @@
 #ifndef    page_local_cache_proxy_opengl_DrawableProxy_hpp
 #   define page_local_cache_proxy_opengl_DrawableProxy_hpp
 
-#	include "../../../phys/Form.hpp" // Form::Part
+#	include "../../../phys/node/Form.hpp" // Form::Part
 #	include "../../../util/Identifiable.hpp" // Identifiable::Id
 #	include "../BasicProxy.hpp"
 #	include "../Proxy.hpp"
@@ -17,10 +17,10 @@ namespace page { namespace cache { namespace opengl
 	/**
 	 * A proxy representing an instance of vid::opengl::Drawable in the cache.
 	 */
-	class DrawableProxy :
-		public BasicProxy<vid::opengl::Drawable>,
-		public virtual util::Cloneable<DrawableProxy, BasicProxy<vid::opengl::Drawable>>
+	class DrawableProxy : public BasicProxy<vid::opengl::Drawable>
 	{
+		IMPLEMENT_CLONEABLE(DrawableProxy, BasicProxy<vid::opengl::Drawable>)
+
 		/*-------+
 		| traits |
 		+-------*/
@@ -34,7 +34,7 @@ namespace page { namespace cache { namespace opengl
 
 		explicit DrawableProxy(const Proxy<res::Mesh> &);
 		explicit DrawableProxy(const phys::Form::Part &);
-		
+
 		private:
 		DrawableProxy(const Proxy<res::Mesh> &, util::Identifiable::Id);
 

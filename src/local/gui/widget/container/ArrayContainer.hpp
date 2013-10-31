@@ -1,22 +1,23 @@
-#ifndef    page_local_ui_widget_container_Array_hpp
-#   define page_local_ui_widget_container_Array_hpp
+#ifndef    page_local_ui_widget_container_ArrayContainer_hpp
+#   define page_local_ui_widget_container_ArrayContainer_hpp
 
 #	include "Widget.hpp"
 #	include "WidgetContainer.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
-	class Array :
+	class ArrayContainer :
 		public Widget,
-		public WidgetContainer,
-		public virtual util::Cloneable<Array, Widget, WidgetContainer>
+		public WidgetContainer
 	{
+		IMPLEMENT_CLONEABLE(ArrayContainer, Widget)
+
 		/*-------------+
 		| constructors |
 		+-------------*/
 
 		public:
-		explicit Array(bool horizontal, bool margin = true);
+		explicit ArrayContainer(bool horizontal, bool margin = true);
 
 		// cursor event notification
 		bool OnOver(const math::Vec2 &position, const res::Theme &, const math::Vec2 &size);
@@ -25,7 +26,7 @@ namespace page { namespace ui
 
 		private:
 		// metrics
-		Size CalcSize(const res::Theme &) const;
+		WidgetSize CalcSize(const res::Theme &) const;
 
 		// rendering
 		void DoDraw(DrawContext &) const;

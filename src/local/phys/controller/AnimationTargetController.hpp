@@ -1,24 +1,26 @@
-// interpolated animation switching controller
-// similar attributes should be controlled in each animation to avoid popping
-// animations should have same duration if synchronizing
-
 #ifndef    page_local_phys_controller_AnimationTargetController_hpp
 #   define page_local_phys_controller_AnimationTargetController_hpp
 
 #	include <memory> // shared_ptr
 #	include <vector>
 
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
 	class AnimationController;
 
+	/**
+	 * An interpolated animation-switching controller.
+	 *
+	 * @note Similar attributes should be controlled in each animation to avoid
+	 * popping, and animations should have same duration when synchronizing.
+	 */
 	class AnimationTargetController : public Controller
 	{
 		public:
 		// construct
-		explicit AnimationTargetController(Layer, bool sync = true);
+		explicit AnimationTargetController(AnimationLayer, bool sync = true);
 
 		// modifiers
 		void SetTarget(); // no target

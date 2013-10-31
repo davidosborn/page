@@ -1,35 +1,41 @@
 #include "Size.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Size::Size(float value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	float Size::GetSize() const
 	{
-		namespace attrib
-		{
-			// construct
-			Size::Size(float size) : size(size) {}
-
-			// access
-			float Size::GetSize() const
-			{
-				return size;
-			}
-			void Size::SetSize(float size)
-			{
-				this->size = size;
-			}
-
-			// frame serialization
-			Frame Size::GetFrame() const
-			{
-				Frame frame;
-				frame.size = size;
-				return frame;
-			}
-			void Size::Update(const Frame &frame)
-			{
-				if (frame.size) size = *frame.size;
-			}
-		}
+		return value;
 	}
-}
+
+	void Size::SetSize(float value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Size::GetFrame() const
+	{
+		Frame frame;
+		frame.size = value;
+		return frame;
+	}
+
+	void Size::SetFrame(const Frame &frame)
+	{
+		if (frame.size) value = *frame.size;
+	}
+}}}

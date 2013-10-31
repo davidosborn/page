@@ -10,83 +10,126 @@
 #	include "../math/Quat.hpp"
 #	include "../math/Vector.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	/**
+	 * A data structure containing the controllable state of a node.
+	 */
+	struct Frame
 	{
-		struct Frame
-		{
-			template <typename T> struct Channel
-			{
-				typedef boost::optional<T> Type;
-			};
-			template <typename T> struct Range
-			{
-				Range() : min(T()), max(T()) {}
-				Range(const T &min, const T &max) : min(min), max(max) {}
+		/**
+		 * A channel, which is an optional portion of the node's state.
+		 */
+		template <typename T>
+			using Channel = boost::optional<T>;
 
-				T min, max;
-			};
-			// channels
-			Channel<math::RgbColor<>>::Type         ambient;
-			Channel<Range<math::RgbColor<>>>::Type  ambientRange;
-			Channel<math::DefaultType>::Type        aspect;
-			Channel<math::DefaultType>::Type        attenuation;
-			Channel<math::DefaultType>::Type        cutoff;
-			Channel<math::DefaultType>::Type        depth;
-			Channel<math::RgbColor<>>::Type         diffuse;
-			Channel<Range<math::RgbColor<>>>::Type  diffuseRange;
-			Channel<math::RgbColor<>>::Type         emissive;
-			Channel<Range<math::RgbColor<>>>::Type  emissiveRange;
-			Channel<math::DefaultType>::Type        exposure;
-			Channel<math::DefaultType>::Type        falloff;
-			Channel<math::DefaultType>::Type        fov;
-			Channel<Range<math::DefaultType>>::Type lifetimeRange;
-			Channel<math::Vec3>::Type               normal;
-			Channel<math::DefaultType>::Type        opacity;
-			Channel<Range<math::DefaultType>>::Type opacityRange;
-			Channel<math::Quat<>>::Type             orientation;
-			Channel<math::Vec3>::Type               position;
-			Channel<math::DefaultType>::Type        range;
-			Channel<math::Vec3>::Type               scale;
-			Channel<math::DefaultType>::Type        size;
-			Channel<Range<math::DefaultType>>::Type sizeRange;
-			Channel<math::RgbColor<>>::Type         specular;
-			Channel<Range<math::RgbColor<>>>::Type  specularRange;
-			Channel<Range<math::DefaultType>>::Type speedRange;
-			Channel<math::Vec2>::Type               texCoord;
-			Channel<math::DefaultType>::Type        volume;
-			// bone channels
-			struct Bone
-			{
-				Channel<math::Vec3>::Type   position;
-				Channel<math::Quat<>>::Type orientation;
-				Channel<math::Vec3>::Type   scale;
-			};
-			typedef std::unordered_map<std::string, Bone> Bones;
-			Bones bones;
-			// vertex channels
-			struct Vertex
-			{
-				Channel<math::Vec3>::Type position;
-				Channel<math::Vec3>::Type normal;
-				Channel<math::Vec2>::Type texCoord;
-			};
-			typedef std::unordered_map<unsigned, Vertex> Vertices;
-			Vertices vertices;
+		/**
+		 * A data structure for ranged state, with a minimum and maximum value.
+		 */
+		template <typename T> struct Range
+		{
+			Range() : min(T()), max(T()) {}
+			Range(const T &min, const T &max) : min(min), max(max) {}
+
+			T min, max;
 		};
 
-		// concatenation
-		Frame operator +(const Frame &, const Frame &);
-		Frame &operator +=(Frame &, const Frame &);
+		/*---------------+
+		| basic channels |
+		+---------------*/
 
-		// blending
-		void Blend(Frame &dest, const Frame &src, float alpha);
-		void Blend(Frame &dest, const Frame &src, float alpha, const Frame &base);
+		Channel<math::RgbColor<>>         ambient;
+		Channel<Range<math::RgbColor<>>>  ambientRange;
+		Channel<math::DefaultType>        aspect;
+		Channel<math::DefaultType>        attenuation;
+		Channel<math::DefaultType>        cutoff;
+		Channel<math::DefaultType>        depth;
+		Channel<math::RgbColor<>>         diffuse;
+		Channel<Range<math::RgbColor<>>>  diffuseRange;
+		Channel<math::RgbColor<>>         emissive;
+		Channel<Range<math::RgbColor<>>>  emissiveRange;
+		Channel<math::DefaultType>        exposure;
+		Channel<math::DefaultType>        falloff;
+		Channel<math::DefaultType>        fov;
+		Channel<Range<math::DefaultType>> lifetimeRange;
+		Channel<math::Vec3>               normal;
+		Channel<math::DefaultType>        opacity;
+		Channel<Range<math::DefaultType>> opacityRange;
+		Channel<math::Quat<>>             orientation;
+		Channel<math::Vec3>               position;
+		Channel<math::DefaultType>        range;
+		Channel<math::Vec3>               scale;
+		Channel<math::DefaultType>        size;
+		Channel<Range<math::DefaultType>> sizeRange;
+		Channel<math::RgbColor<>>         specular;
+		Channel<Range<math::RgbColor<>>>  specularRange;
+		Channel<Range<math::DefaultType>> speedRange;
+		Channel<math::Vec2>               texCoord;
+		Channel<math::DefaultType>        volume;
 
-		// masking
-		void Mask(Frame &dest, const Frame &mask);
-	}
-}
+		/*--------------+
+		| bone channels |
+		+--------------*/
+
+		struct Bone
+		{
+			Channel<math::Vec3>   position;
+			Channel<math::Quat<>> orientation;
+			Channel<math::Vec3>   scale;
+		};
+		std::unordered_map<std::string, Bone> bones;
+
+		/*--------------+
+		| part channels |
+		+--------------*/
+
+		struct Part
+		{
+			Channel<math::Vec3>   position;
+			Channel<math::Quat<>> orientation;
+			Channel<math::Vec3>   scale;
+		};
+		std::unordered_map<unsigned, Part> parts;
+
+		/*----------------+
+		| vertex channels |
+		+----------------*/
+
+		struct Vertex
+		{
+			Channel<math::Vec3> position;
+			Channel<math::Vec3> normal;
+			Channel<math::Vec2> texCoord;
+		};
+		std::unordered_map<unsigned, Vertex> vertices;
+	};
+
+	/*-----------+
+	| operations |
+	+-----------*/
+
+	/**
+	 * Merges two frames, with the second frame overriding any channels in the
+	 * first frame that have been set.
+	 */
+	Frame operator +(Frame, const Frame &);
+
+	/**
+	 * Merges two frames, with the second frame overriding any channels in the
+	 * first frame that have been set.
+	 */
+	Frame &operator +=(Frame &, const Frame &);
+
+	/**
+	 * Blends two frames by an alpha value.
+	 */
+	void Blend(Frame &dest, const Frame &src, float alpha);
+
+	/**
+	 * Applies a mask to a frame.  If a channel is not set in the masking frame,
+	 * that channel will not be set in the destination frame either.
+	 */
+	void Mask(Frame &dest, const Frame &mask);
+}}
 
 #endif

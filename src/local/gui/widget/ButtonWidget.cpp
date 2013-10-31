@@ -3,7 +3,7 @@
 #include "../DrawContext.hpp"
 #include "ButtonWidget.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/*-----------------+
 	| Widget overrides |

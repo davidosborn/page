@@ -3,15 +3,12 @@
 
 #	include "../math/Aabb.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
-	{
-		class Bounds;
-		namespace attrib { class Pose; }
+	class Bounds;
+	namespace attrib { class Pose; }
 
-		math::Aabb<3> MakeAabb(const Bounds &, const attrib::Pose &);
-	}
-}
+	math::Aabb<3> MakeAabb(const Bounds &, const attrib::Pose &);
+}}
 
 #endif

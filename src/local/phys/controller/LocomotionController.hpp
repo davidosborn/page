@@ -1,7 +1,3 @@
-// locomotion controller
-// affects top-level position/orientation attributes
-// supports either targeted movement or discrete velocity/rotation forces
-
 #ifndef    page_local_phys_controller_LocomotionController_hpp
 #   define page_local_phys_controller_LocomotionController_hpp
 
@@ -10,16 +6,22 @@
 #	include "../../math/Euler.hpp"
 #	include "../../math/Quat.hpp"
 #	include "../../math/Vector.hpp"
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
 	namespace attrib { class PositionOrientation; }
 
-	class LocomotionController :
-		public Controller,
-		public virtual util::Cloneable<LocomotionController, Controller>
+	/**
+	 * Locomotion controller.
+	 *
+	 * Affects top-level position/orientation attributes.
+	 * Supports either targeted movement or discrete velocity/rotation forces.
+	 */
+	class LocomotionController : public Controller
 	{
+		IMPLEMENT_CLONEABLE(LocomotionController, Controller)
+
 		public:
 		// construct
 		explicit LocomotionController(const attrib::PositionOrientation &);

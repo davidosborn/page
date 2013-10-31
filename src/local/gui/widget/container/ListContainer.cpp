@@ -1,19 +1,19 @@
 #include <algorithm> // min
 
-#include "../../res/type/Font.hpp" // Font::lineHeight
-#include "../../res/type/Theme.hpp" // GetThickness, Theme::{list,scale}
-#include "../DrawContext.hpp"
-#include "List.hpp"
+#include "../../../res/type/Font.hpp" // Font::lineHeight
+#include "../../../res/type/Theme.hpp" // GetThickness, Theme::{list,scale}
+#include "../../DrawContext.hpp"
+#include "ListContainer.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	// construct
-	List::List(const math::Vec2 &size) :
+	ListContainer::ListContainer(const math::Vec2 &size) :
 		size(size), selection(items.end()) {}
-	List::List(const List &other) : Widget(other),
+	ListContainer::ListContainer(const ListContainer &other) : Widget(other),
 		size(other.size), items(other.items),
 		selection(items.begin() + (other.selection - other.items.begin())) {}
-	List &List::operator =(const List &other)
+	ListContainer &ListContainer::operator =(const ListContainer &other)
 	{
 		Widget::operator =(other);
 		size = other.size;
@@ -23,7 +23,7 @@ namespace page { namespace ui
 	}
 
 	// modifiers
-	void List::Insert(const std::string &item)
+	void ListContainer::Insert(const std::string &item)
 	{
 		Items::difference_type index = selection - items.begin();
 		items.push_back(item);
@@ -31,25 +31,25 @@ namespace page { namespace ui
 	}
 
 	// cursor event notification
-	bool List::OnOver(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
+	bool ListContainer::OnOver(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
 	{
 		// FIXME: implement
 	}
-	bool List::OnClick(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
+	bool ListContainer::OnClick(const math::Vec2 &pos, const res::Theme &theme, const math::Vec2 &size)
 	{
 		// FIXME: implement
 	}
 
 	// metrics
-	List::Size List::CalcSize(const res::Theme &theme) const
+	auto ListContainer::CalcSize(const res::Theme &theme) const -> WidgetSize
 	{
 		// FIXME: when size is zero, calculate it using the maximum line
 		// width and number of list items
-		return Size(Select(size, size * theme.scale, 0), Size::grow);
+		return WidgetSize(Select(size, size * theme.scale, 0), WidgetSize::Mode::grow);
 	}
 
 	// rendering
-	void List::DoDraw(DrawContext &context) const
+	void ListContainer::DoDraw(DrawContext &context) const
 	{
 		const res::Theme &theme(context.GetTheme());
 		math::Vec2 scale(context.GetScale());

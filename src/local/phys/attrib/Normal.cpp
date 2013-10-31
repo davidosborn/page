@@ -2,108 +2,121 @@
 
 #include "Normal.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Normal::Normal(const math::Vec3 &value) :
+		value(value) {}
+
+	Normal::Normal(const math::Quat<> &orientation) :
+		value(orientation * math::NormVector<3>()) {}
+
+	Normal::Normal(const math::Mat3 &matrix) :
+		value(GetRotation(matrix) * math::NormVector<3>()) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	const math::Vec3 &Normal::GetNormal() const
 	{
-		namespace attrib
+		return value;
+	}
+
+	void Normal::SetNormal(const math::Vec3 &value)
+	{
+		assert(All(Near(value, Norm(value))));
+		// NOTE: comparing value to avoid redundant dirty marking
+		if (value != this->value)
 		{
-			// construct
-			Normal::Normal(const math::Vec3 &normal) :
-				normal(normal), lastNormal(normal) {}
-			Normal::Normal(const math::Quat<> &orientation) :
-				normal(orientation * math::NormVector<3>()),
-				lastNormal(normal) {}
-			Normal::Normal(const math::Mat3 &matrix) :
-				normal(GetRotation(matrix) * math::NormVector<3>()),
-				lastNormal(normal) {}
-
-			// access
-			const math::Vec3 &Normal::GetNormal() const
-			{
-				return normal;
-			}
-			void Normal::SetNormal(const math::Vec3 &normal)
-			{
-				assert(All(Near(normal, Norm(normal))));
-				// NOTE: comparing value to avoid redundant dirty marking
-				if (Any(normal != this->normal))
-				{
-					// HACK: normalize to correct floating-point drift
-					this->normal = Norm(normal);
-					dirtyTransformSig();
-				}
-			}
-
-			// orientation access
-			math::Quat<> Normal::GetOrientation() const
-			{
-				return math::Quat<>(math::NormVector<3>(), normal);
-			}
-			void Normal::SetOrientation(const math::Quat<> &orientation)
-			{
-				assert(Near(orientation, Norm(orientation)));
-				SetNormal(orientation * math::NormVector<3>());
-			}
-
-			// matrix access
-			math::Mat3 Normal::GetMatrix() const
-			{
-				return RotationMatrix(math::NormVector<3>(), normal);
-			}
-			math::Mat3 Normal::GetInvMatrix() const
-			{
-				return Tpos(GetMatrix());
-			}
-			void Normal::SetMatrix(const math::Mat3 &matrix)
-			{
-				SetNormal(GetRotation(matrix) * math::NormVector<3>());
-			}
-
-			// transform state
-			const math::Vec3 &Normal::GetLastNormal() const
-			{
-				return lastNormal;
-			}
-			math::Quat<> Normal::GetLastOrientation() const
-			{
-				return math::Quat<>(math::NormVector<3>(), lastNormal);
-			}
-			const math::Quat<> &Normal::GetTorque() const
-			{
-				return torque;
-			}
-			const math::Quat<> &Normal::GetSpin() const
-			{
-				return spin;
-			}
-
-			// frame serialization
-			Frame Normal::GetFrame() const
-			{
-				Frame frame;
-				frame.normal = normal;
-				return frame;
-			}
-			void Normal::Update(const Frame &frame)
-			{
-				if (frame.normal) SetNormal(*frame.normal);
-				else if (frame.orientation) SetOrientation(*frame.orientation);
-			}
-
-			// transform modifiers
-			void Normal::BakeTransform()
-			{
-				lastNormal = normal;
-			}
-			void Normal::UpdateForce()
-			{
-				torque = math::Quat<>(lastNormal, normal);
-			}
-			void Normal::UpdateDelta()
-			{
-				spin = math::Quat<>(lastNormal, normal);
-			}
+			// HACK: normalize to correct floating-point drift
+			this->value = Norm(value);
+			dirtyTransformSig();
 		}
 	}
-}
+
+	math::Quat<> Normal::GetOrientation() const
+	{
+		return math::Quat<>(math::NormVector<3>(), value);
+	}
+
+	void Normal::SetOrientation(const math::Quat<> &orientation)
+	{
+		assert(Near(orientation, Norm(orientation)));
+		SetNormal(orientation * math::NormVector<3>());
+	}
+
+	math::Mat3 Normal::GetMatrix() const
+	{
+		return RotationMatrix(math::NormVector<3>(), value);
+	}
+
+	math::Mat3 Normal::GetInvMatrix() const
+	{
+		return Tpos(GetMatrix());
+	}
+
+	void Normal::SetMatrix(const math::Mat3 &matrix)
+	{
+		SetNormal(GetRotation(matrix) * math::NormVector<3>());
+	}
+
+	const math::Vec3 &Normal::GetLastNormal() const
+	{
+		return lastValue;
+	}
+
+	math::Quat<> Normal::GetLastOrientation() const
+	{
+		return math::Quat<>(math::NormVector<3>(), lastValue);
+	}
+
+	const math::Quat<> &Normal::GetTorque() const
+	{
+		return torque;
+	}
+
+	const math::Quat<> &Normal::GetSpin() const
+	{
+		return spin;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Normal::GetFrame() const
+	{
+		Frame frame;
+		frame.normal = value;
+		return frame;
+	}
+
+	void Normal::SetFrame(const Frame &frame)
+	{
+		if (frame.normal) SetNormal(*frame.normal);
+		else if (frame.orientation) SetOrientation(*frame.orientation);
+	}
+
+	/*-----------------------------+
+	| Transformable implementation |
+	+-----------------------------*/
+
+	void Normal::BakeTransform()
+	{
+		lastValue = value;
+	}
+
+	void Normal::UpdateForce()
+	{
+		torque = math::Quat<>(lastValue, value);
+	}
+
+	void Normal::UpdateDelta()
+	{
+		spin = math::Quat<>(lastValue, value);
+	}
+}}}

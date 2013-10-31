@@ -340,18 +340,18 @@ pkg_init_win32()
 	WIN32_CPPFLAGS="$WIN32_CPPFLAGS -DWINVER=0x400"
 	WIN32_CPPFLAGS="$WIN32_CPPFLAGS -isystem $topdir/src/system/win32"
 
-	# We set the Win32 headers to work with unicode by default as a way to
+	# Set the Win32 headers to work with unicode by default as a way to
 	# encourage our code to explicitly specify the unicode/non-unicode version
 	# when it matters.
 	WIN32_CPPFLAGS+=" -DUNICODE -D_UNICODE"
 
-	# We undefine __STRICT_ANSI__ to prevent certain features from being
-	# disabled in the system headers.  This includes __arg[cv], which are used
-	# in main.cpp.
+	# Undefine __STRICT_ANSI__ to prevent certain features from being disabled
+	# in the system headers.  This includes __arg[cv], which are used in
+	# main.cpp.
 	WIN32_CPPFLAGS+=" -U__STRICT_ANSI__"
 
-	# We set this flag to produce a GUI application (without a console window).
-	WIN32_CFLAGS="$WIN32_CFLAGS -mwindows"
+	# Set this flag to produce a GUI application (without a console window).
+	WIN32_LDFLAGS="$WIN32_LDFLAGS -mwindows"
 
 	# FIXME: We only need to link with winmm.lib if we're using Win32 for audio.
 	WIN32_LIBS="$WIN32_LIBS -lshlwapi -lwinmm"
@@ -1651,12 +1651,21 @@ local/game/Entity
 local/game/Game
 local/game/Object
 local/game/Player
-local/game/Scene
-local/game/UserInterface
+local/gui/DrawContext
+local/gui/UserInterface
+local/gui/widget/ButtonWidget
+local/gui/widget/container/ArrayContainer
+local/gui/widget/container/ListContainer
+local/gui/widget/container/WidgetContainer
+local/gui/widget/container/Window
+local/gui/widget/EditWidget
+local/gui/widget/ImageWidget
+local/gui/widget/TextWidget
+local/gui/widget/Widget
 local/inp/Device
 local/inp/device/registry
 local/inp/Driver
-local/inp/State
+local/inp/PollState
 local/log/filter/Filter
 local/log/filter/IndentFilter
 local/log/filter/IndentFilterState
@@ -1716,15 +1725,13 @@ local/phys/attrib/SpecularRange
 local/phys/attrib/SpeedRange
 local/phys/attrib/TexCoord
 local/phys/attrib/Volume
-local/phys/Body
 local/phys/Bounds
-local/phys/Camera
-local/phys/Controller
 local/phys/controller/AnimationController
 local/phys/controller/AnimationTargetController
 local/phys/controller/BlinkController
 local/phys/controller/CameraFocusController
 local/phys/controller/ConstrainPositionToPlaneController
+local/phys/controller/Controller
 local/phys/controller/EyeController
 local/phys/controller/FollowController
 local/phys/controller/FrameController
@@ -1735,19 +1742,21 @@ local/phys/controller/LipsyncController
 local/phys/controller/LocomotionController
 local/phys/controller/PathfindingController
 local/phys/controller/TargetController
-local/phys/Emitter
-local/phys/Form
 local/phys/Frame
-local/phys/Light
 local/phys/mixin/Collidable
 local/phys/mixin/Controllable
 local/phys/mixin/Positionable
 local/phys/mixin/Trackable
 local/phys/mixin/Transformable
-local/phys/Particle
+local/phys/node/Body
+local/phys/node/Camera
+local/phys/node/Emitter
+local/phys/node/Form
+local/phys/node/Light
+local/phys/node/Particle
+local/phys/node/Sound
 local/phys/Scene
 local/phys/Skin
-local/phys/Sound
 local/res/adapt/text
 local/res/adapt/text/ParseTree
 local/res/adapt/text/LineIterator
@@ -1819,17 +1828,6 @@ local/script/Router
 local/sys/info
 local/sys/process
 local/sys/Timer
-local/ui/DrawContext
-local/ui/UserInterface
-local/ui/widget/ButtonWidget
-local/ui/widget/container/ArrayContainer
-local/ui/widget/container/ListContainer
-local/ui/widget/container/WidgetContainer
-local/ui/widget/container/Window
-local/ui/widget/EditWidget
-local/ui/widget/ImageWidget
-local/ui/widget/TextWidget
-local/ui/widget/Widget
 local/util/bit
 local/util/container/ScratchBuffer
 local/util/cstring

@@ -15,9 +15,9 @@
 #include "../../math/OrthoFrustum.hpp"
 #include "../../math/Vector.hpp"
 #include "../../math/ViewFrustum.hpp"
-#include "../../phys/Form.hpp" // Form::{Get{Matrix,Parts},IsPosed,Part::{Get{Form,Material,Matrix},IsDeformed}}
-#include "../../phys/Light.hpp" // Light::Get{Ambient,Cutoff,Diffuse,{Max,Min}Range,Normal,Position,Specular}
 #include "../../phys/mixin/Collidable.hpp" // Collidable::Get{Position,Radius}
+#include "../../phys/node/Form.hpp" // Form::{Get{Matrix,Parts},IsPosed,Part::{Get{Form,Material,Matrix},IsDeformed}}
+#include "../../phys/node/Light.hpp" // Light::Get{Ambient,Cutoff,Diffuse,{Max,Min}Range,Normal,Position,Specular}
 #include "../../res/type/Track.hpp"
 #include "../Driver.hpp" // Driver::GetViewport
 #include "activeTexture.hpp" // {,Can}AllocActiveTexture, GetActiveTextureIndex

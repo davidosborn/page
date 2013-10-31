@@ -1,3 +1,58 @@
+Specify dependencies in Controller constructor, not through pure-virtual function.
+
+Optimization: use polling rather than dirty signals.
+
+Does Attribute need to take a Derived template parameter to ensure that it can
+be the base class of multiple classes that will be combined in multiple
+inheritance?
+
+Get rid of the crazy Cloneable template and use MAKE_CLONEABLE instead.
+
+There shouldn't be a node hierarchy.  Instead, we should have a flat list of
+nodes in the Scene.  In the future, we can put this flat list of nodes into an
+octree data structure for visibility culling, but for now we will just use a
+flat list.  There should be a 3D Widget to which you can attach a scene.  You
+should be able to attach the same scene to multiple 3D widgets, and you should
+be able to specify a camera for the 3D widget to use (which should default to
+the current camera based on that player's location).
+
+Cloneable forces us to use virtual inheritance where we don't really need it.  A
+simpler approach could be taken where we have a Cloneable interface for the base
+class, and the derived classes must simply implement the DoClone function.  If
+they don't, it may produce a bug, but at least we won't have a complex Cloneable
+class requiring virtual inheritance, which could slow things down.
+
+Positionable does nothing of value.  Get rid of it.  attrib::Position can be
+used in its place.  attrib::Position should really be named attrib::Positionable
+because it is a base class for nodes having the position attribute, not a class
+for composition of the position attribute.  Same with all the other attrib
+classes.
+
+Exception inherited virtually from ExceptionInheritor, while Clonable did not
+inherit virtually from CloneableInheritor.  I don't think they need to inherit
+virtually at that point, so I removed it.  Check if this causes any bugs.
+
+Attributes should be registered with the controllable node that contains them.
+Controllable should be able to produce a Frame containing its attributes in
+their current state, and it should be able to assign a Frame to its attributes
+(ie: serialization and deserialization, in this case, to/from a Frame).
+Frames should also be able to be merged/blended, so that controllers can
+receive a frame, modify it, and send it back.  You don't want to make it hard
+for a controller to work on a frame, which was one nice thing with our previous
+design, as it provided a frame with all attributes as optionals.
+
+Working on attribute registration in Controllable.
+
+-------------------------
+
+Why is game::UserInterface inheriting from gui::Root?  Use composition instead.
+
+Why is the video module responsible for rendering the GUI?  The video module
+should provide a widget with some kind of DrawContext that the widget can use to
+draw itself.
+
+-------------------------
+
 res/source/Source.[ch]pp should use the Non-Virtual Interface pattern.
 
 Consider replacing Deserialize with some kind of boost::tokenizer look-alike.

@@ -601,7 +601,7 @@ namespace page { namespace err
 	 * A tag to be used when an error occurs within the GUI module.
 	 *
 	 * @note The GUI module is contained in the @c ::page::gui namespace and the
-	 *       @c src/local/ui directory.
+	 *       @c src/local/gui directory.
 	 */
 	struct GuiModuleTag : Tag<TagId::guiModule>, TagSet<ModuleTag> {};
 

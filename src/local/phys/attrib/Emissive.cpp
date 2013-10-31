@@ -1,36 +1,41 @@
 #include "Emissive.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Emissive::Emissive(const math::RgbColor<> &value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	const math::RgbColor<> &Emissive::GetEmissive() const
 	{
-		namespace attrib
-		{
-			// construct
-			Emissive::Emissive(const math::RgbColor<> &emissive) :
-				emissive(emissive) {}
-
-			// access
-			const math::RgbColor<> &Emissive::GetEmissive() const
-			{
-				return emissive;
-			}
-			void Emissive::SetEmissive(const math::RgbColor<> &emissive)
-			{
-				this->emissive = emissive;
-			}
-
-			// frame serialization
-			Frame Emissive::GetFrame() const
-			{
-				Frame frame;
-				frame.emissive = emissive;
-				return frame;
-			}
-			void Emissive::Update(const Frame &frame)
-			{
-				if (frame.emissive) emissive = *frame.emissive;
-			}
-		}
+		return value;
 	}
-}
+
+	void Emissive::SetEmissive(const math::RgbColor<> &value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Emissive::GetFrame() const
+	{
+		Frame frame;
+		frame.emissive = value;
+		return frame;
+	}
+
+	void Emissive::SetFrame(const Frame &frame)
+	{
+		if (frame.emissive) value = *frame.emissive;
+	}
+}}}

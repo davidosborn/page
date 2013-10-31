@@ -3,36 +3,74 @@
 
 #	include "Trackable.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	/**
+	 * A mixin which makes the derived node collidable.  Collidable nodes are
+	 * capable of being involved in collision detection and response on the
+	 * track.
+	 */
+	class Collidable : public Trackable
 	{
-		struct Collidable : Trackable
+		/*------+
+		| types |
+		+------*/
+
+		public:
+		/**
+		 * The available types of colliders.
+		 *
+		 * @note Track walls count as passive colliders.
+		 */
+		enum class Type
 		{
-			enum Type
-			{
-				// NOTE: track walls count as passive colliders
-				active,  // collidable against active and passive colliders
-				passive, // collidable against active colliders
-				inactive // not collidable
-			};
+			/**
+			 * Collidable against active and passive colliders.
+			 */
+			active,
 
-			// construct
-			explicit Collidable(Type = inactive, float radius = 1);
+			/**
+			 * Collidable against active colliders.
+			 */
+			passive,
 
-			// state
-			Type GetType() const;
-			float GetRadius() const;
-
-			// modifiers
-			void SetType(Type);
-			void SetRadius(float);
-
-			private:
-			Type type;
-			float radius;
+			/**
+			 * Not collidable.
+			 */
+			inactive
 		};
-	}
-}
+
+		/*-------------+
+		| constructors |
+		+-------------*/
+
+		explicit Collidable(Type = Type::inactive, float radius = 1);
+
+		/*----------+
+		| accessors |
+		+----------*/
+
+		Type GetType() const;
+		void SetType(Type);
+
+		float GetRadius() const;
+		void SetRadius(float);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		/**
+		 * The type of the collider.
+		 */
+		Type type;
+
+		/**
+		 * The radius of the collider.
+		 */
+		float radius;
+	};
+}}
 
 #endif

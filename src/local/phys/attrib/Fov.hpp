@@ -3,31 +3,42 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/**
+	 * The field-of-view for cameras, measured in degrees.
+	 */
+	class Fov
 	{
-		namespace attrib
-		{
-			struct Fov // field-of-view
-			{
-				// construct
-				explicit Fov(float = 75);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetFov() const;
-				void SetFov(float);
+		public:
+		explicit Fov(float = 75);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float fov;
-			};
-		}
-	}
-}
+		float GetFov() const;
+		void SetFov(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

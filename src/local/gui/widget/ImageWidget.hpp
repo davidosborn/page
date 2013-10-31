@@ -6,15 +6,15 @@
 
 namespace page { namespace res { class Image; }}
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/**
 	 * A widget that displays an image.
 	 */
-	class ImageWidget :
-		public Widget,
-		public virtual util::Cloneable<ImageWidget, Widget>
+	class ImageWidget : public Widget
 	{
+		IMPLEMENT_CLONEABLE(ImageWidget, Widget)
+
 		/*-------------+
 		| constructors |
 		+-------------*/

@@ -4,40 +4,50 @@
 #	include "Normal.hpp"
 #	include "Position.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class PositionNormal :
+		public Position,
+		public Normal
 	{
-		namespace attrib
-		{
-			struct PositionNormal : Position, Normal
-			{
-				// construct
-				explicit PositionNormal(
-					const math::Vec3 & = 0,
-					const math::Vec3 & = math::NormVector<3>());
-				PositionNormal(
-					const math::Vec3 &,
-					const math::Quat<> &);
-				explicit PositionNormal(const math::Matrix<3, 4> &);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// matrix access
-				math::Matrix<3, 4> GetMatrix() const;
-				math::Matrix<3, 4> GetInvMatrix() const;
-				void SetMatrix(const math::Matrix<3, 4> &);
+		public:
+		explicit PositionNormal(
+			const math::Vec3 & = 0,
+			const math::Vec3 & = math::NormVector<3>());
+		PositionNormal(
+			const math::Vec3 &,
+			const math::Quat<> &);
+		explicit PositionNormal(const math::Mat34 &);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				// transform modifiers
-				void BakeTransform();
-				void UpdateForce();
-				void UpdateDelta();
-			};
-		}
-	}
-}
+		math::Mat34 GetMatrix() const;
+		math::Mat34 GetInvMatrix() const;
+		void SetMatrix(const math::Mat34 &);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-----------------------------+
+		| Transformable implementation |
+		+-----------------------------*/
+
+		public:
+		void BakeTransform() override;
+		void UpdateForce() override;
+		void UpdateDelta() override;
+	};
+}}}
 
 #endif

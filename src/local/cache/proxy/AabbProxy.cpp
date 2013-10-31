@@ -1,7 +1,7 @@
 #include "../../phys/aabb.hpp" // MakeAabb
 #include "../../phys/attrib/Pose.hpp" // Pose->util::Identifiable, Pose::dirty{Pose,Transform}Sig
 #include "../../phys/Bounds.hpp" // Bounds::bones
-#include "../../phys/Form.hpp" // Form::GetModel
+#include "../../phys/node/Form.hpp" // Form::GetModel
 #include "AabbProxy.hpp"
 #include "BoundsProxy.hpp"
 
@@ -41,7 +41,7 @@ namespace page { namespace cache
 
 	auto AabbProxy::DoLock() const -> pointer
 	{
-		phys::attrib::Pose &pose(util::ReferenceFromId<phys::attrib::Pose>(poseId));
+		phys::attrib::Pose &pose(util::GetReferenceById<phys::attrib::Pose>(poseId));
 		const phys::Bounds &bounds(*this->bounds);
 		boost::signals::scoped_connection
 			poseCon(

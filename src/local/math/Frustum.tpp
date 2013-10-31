@@ -113,7 +113,7 @@ namespace page { namespace math
 	{
 		os << CharTraits::to_char_type('(');
 		std::copy(f.begin(), f.end(),
-			util::separated_ostream_iterator<Plane, Char, CharTraits>(os, CharTraits::to_char_type(',')));
+			util::separated_ostream_iterator<typename Frustum<T>::Plane, Char, CharTraits>(os, CharTraits::to_char_type(',')));
 		os << CharTraits::to_char_type(')');
 		return os;
 	}
@@ -128,7 +128,7 @@ namespace page { namespace math
 
 		// read planes
 		std::copy_n(
-			util::separated_istream_iterator<Plane, Char, CharTraits>(is, CharTraits::to_char_type(',')),
+			util::separated_istream_iterator<typename Frustum<T>::Plane, Char, CharTraits>(is, CharTraits::to_char_type(',')),
 			6, f.begin());
 
 		// read closing bracket

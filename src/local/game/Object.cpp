@@ -8,11 +8,14 @@ namespace page { namespace game
 	Object::Object(const res::Object &object) :
 		Entity(object.name, object.model)
 	{
+		auto &body(GetBody());
+
 		// initialize attributes
-		if (object.radius) SetRadius(object.radius);
-		SetScale(GetScale() * object.scale);
+		if (object.radius) body.SetRadius(object.radius);
+		body.SetScale(body.GetScale() * object.scale);
+
 		// initialize controllers
 		if (object.animation.ambient)
-			InsertController(phys::AnimationController(*object.animation.ambient));
+			body.AttachController(phys::AnimationController(*object.animation.ambient));
 	}
 }}

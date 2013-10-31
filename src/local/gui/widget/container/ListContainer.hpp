@@ -1,22 +1,22 @@
-#ifndef    page_local_ui_widget_container_List_hpp
-#   define page_local_ui_widget_container_List_hpp
+#ifndef    page_local_ui_widget_container_ListContainer_hpp
+#   define page_local_ui_widget_container_ListContainer_hpp
 
 #	include <string>
 #	include <vector>
 
 #	include "../Widget.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
-	class List :
-		public Widget,
-		public virtual util::Cloneable<List, Widget>
+	class ListContainer : public Widget
 	{
+		IMPLEMENT_CLONEABLE(ListContainer, Widget)
+
 		public:
 		// construct/copy
-		List(const math::Vec2 &size = 0);
-		List(const List &);
-		List &operator =(const List &);
+		ListContainer(const math::Vec2 &size = 0);
+		ListContainer(const ListContainer &);
+		ListContainer &operator =(const ListContainer &);
 
 		// modifiers
 		void Insert(const std::string &);
@@ -27,7 +27,7 @@ namespace page { namespace ui
 
 		private:
 		// metrics
-		Size CalcSize(const res::Theme &) const;
+		WidgetSize CalcSize(const res::Theme &) const;
 
 		// rendering
 		void DoDraw(DrawContext &) const;

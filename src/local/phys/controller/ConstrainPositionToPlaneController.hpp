@@ -2,14 +2,14 @@
 #   define page_local_phys_controller_ConstrainPositionToPlaneController_hpp
 
 #	include "../../math/Plane.hpp"
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
-	class ConstrainPositionToPlaneController :
-		public Controller,
-		public virtual util::Cloneable<ConstrainPositionToPlaneController, Controller>
+	class ConstrainPositionToPlaneController : public Controller
 	{
+		IMPLEMENT_CLONEABLE(ConstrainPositionToPlaneController, Controller)
+
 		public:
 		// construct
 		explicit ConstrainPositionToPlaneController(const math::Plane<3> &);

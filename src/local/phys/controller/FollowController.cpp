@@ -7,7 +7,7 @@ namespace page { namespace phys
 {
 	// construct
 	FollowController::FollowController(const Form &target, const math::Vec3 &center, const math::Quat<> &orientation, float distance) :
-		Controller(constraintLayer), aabb(cache::AabbProxy(target, false)),
+		Controller(AnimationLayer::postConstraint), aabb(cache::AabbProxy(target, false)),
 		center(center), orientation(orientation), distance(distance),
 		dependencies(1, &target) {}
 

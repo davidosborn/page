@@ -186,7 +186,7 @@ namespace page { namespace phys
 
 	// construct
 	LipsyncController::LipsyncController(const attrib::Pose &pose) :
-		TargetController(preCollisionLayer, .25)
+		TargetController(AnimationLayer::preCollision, .25)
 	{
 		assert(Check(pose));
 	}

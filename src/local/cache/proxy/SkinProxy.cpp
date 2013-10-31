@@ -22,6 +22,6 @@ namespace page { namespace cache
 	auto SkinProxy::DoLock() const override -> pointer
 	{
 		return std::make_shared<phys::Skin>(*mesh,
-			util::ReferenceFromId<phys::attrib::Pose>(poseId));
+			util::GetReferenceById<phys::attrib::Pose>(poseId));
 	}
 }}

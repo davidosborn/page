@@ -102,7 +102,7 @@ namespace page { namespace err
 		 * An intermediate class for deriving new exception classes from
 		 * multiple base classes.
 		 *
-		 * @note This could be replaced with @c util::PublicVirtualInheritor if
+		 * @todo This could be replaced with @c util::PublicVirtualInheritor if
 		 *       the compiler supported it.
 		 */
 		template <typename... Bases>
@@ -120,9 +120,8 @@ namespace page { namespace err
 		};
 
 		/**
-		 * @return A type which inherits from a normalized instantiation of
-		 *         @c ExceptionPermutation for each permutation of the
-		 *         provided tags.
+		 * Returns a type that inherits from a normalized instantiation of
+		 * ExceptionPermutation for each permutation of the provided tags.
 		 */
 		template <typename... _Tags>
 			struct GetExceptionPermutations
@@ -198,7 +197,7 @@ namespace page { namespace err
 	 */
 	template <typename... _Tags>
 		class Exception final :
-			public virtual detail::GetExceptionPermutations<_Tags...>::type
+			public detail::GetExceptionPermutations<_Tags...>::type
 	{
 		/*------+
 		| types |

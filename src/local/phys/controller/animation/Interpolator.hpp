@@ -1,6 +1,3 @@
-// key frame interpolator
-// inspired by CatMother's anim::Interpolator
-
 #ifndef    page_local_phys_controller_animation_Interpolator_hpp
 #   define page_local_phys_controller_animation_Interpolator_hpp
 
@@ -10,6 +7,11 @@ namespace page
 {
 	namespace phys
 	{
+		/**
+		 * Key frame interpolator.
+		 *
+		 * @note Inspired by CatMother's anim::Interpolator.
+		 */
 		template <typename T> struct Interpolator
 		{
 			enum InterpolationType

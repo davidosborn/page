@@ -2,7 +2,7 @@
 
 #include "../../../math/float.hpp" // DecibelToLinear
 #include "../../../math/Vector.hpp"
-#include "../../../phys/Sound.hpp" // Sound::Get{IsLooping,Orientation,{,Play}Position,Sound,Velocity}
+#include "../../../phys/node/Sound.hpp" // Sound::Get{IsLooping,Orientation,{,Play}Position,Sound,Velocity}
 #include "SpatialChannel.hpp"
 
 namespace page { namespace aud { namespace openal

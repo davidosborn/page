@@ -1,6 +1,3 @@
-// lip-sync controller
-// expects bind-pose with closed mouth and neutral expression
-
 #ifndef    page_local_phys_controller_LipsyncController_hpp
 #   define page_local_phys_controller_LipsyncController_hpp
 
@@ -12,10 +9,15 @@ namespace page { namespace phys
 {
 	namespace attrib { class Pose; }
 
-	class LipsyncController :
-		public TargetController,
-		public virtual util::Cloneable<LipsyncController, TargetController>
+	/**
+	 * Lip-sync controller.
+	 *
+	 * @note Expects a bind-pose with closed mouth and neutral expression.
+	 */
+	class LipsyncController : public TargetController
 	{
+		IMPLEMENT_CLONEABLE(LipsyncController, Controller)
+
 		public:
 		// construct
 		explicit LipsyncController(const attrib::Pose &);

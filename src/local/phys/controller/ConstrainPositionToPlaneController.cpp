@@ -5,7 +5,7 @@ namespace page { namespace phys
 {
 	// construct
 	ConstrainPositionToPlaneController::ConstrainPositionToPlaneController(const math::Plane<3> &plane) :
-		Controller(constraintLayer), plane(plane) {}
+		Controller(AnimationLayer::postConstraint), plane(plane) {}
 
 	// modifiers
 	void ConstrainPositionToPlaneController::SetPlane(const math::Plane<3> &plane)

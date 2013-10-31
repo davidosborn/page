@@ -1,20 +1,23 @@
-// interpolated frame matching controller
-// similar attributes should be defined in each frame to avoid popping
-
 #ifndef    page_local_phys_controller_TargetController_hpp
 #   define page_local_phys_controller_TargetController_hpp
 
 #	include <vector>
 
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
+	/**
+	 * Interpolated frame matching controller.
+	 *
+	 * @note Similar attributes should be defined in each frame to avoid
+	 * popping.
+	 */
 	class TargetController : public Controller
 	{
 		public:
 		// construct
-		explicit TargetController(Layer, float fadeDuration = 1);
+		explicit TargetController(AnimationLayer, float fadeDuration = 1);
 
 		protected:
 		// modifiers

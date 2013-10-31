@@ -31,10 +31,8 @@ namespace page { namespace util
 		 * An intermediate class for deriving new cloneable classes from
 		 * multiple base classes.
 		 *
-		 * @tparam Bases The classes to inherit from.
-		 *
-		 * @fixme This could be replaced with @c PublicVirtualInheritor if the
-		 *        compiler supported it.
+		 * @todo This could be replaced with @c PublicVirtualInheritor if the
+		 *       compiler supported it.
 		 */
 		template <typename... Bases>
 			class CloneableInheritor :
@@ -83,7 +81,7 @@ namespace page { namespace util
 	 * Makes the derived class cloneable, which means that it has the @c Clone
 	 * and @c Copy member functions declared here, and it is polymorphic.
 	 *
-	 * This specialization is for abstract base classes.
+	 * This specialization is for top-level base classes.
 	 *
 	 * @tparam Derived The abstract class that is to be cloneable, which
 	 *         directly inherits from this class.
@@ -165,7 +163,7 @@ namespace page { namespace util
 	 */
 	template <typename Derived, typename... Bases>
 		class Cloneable :
-			boost::mpl::unpack<detail::CloneableInheritor>::apply<
+			public boost::mpl::unpack<detail::CloneableInheritor>::apply<
 				typename boost::mpl::unique<
 					typename boost::mpl::remove_if<
 						boost::mpl::vector<
@@ -221,5 +219,16 @@ namespace page { namespace util
 		}
 	};
 }}
+
+	/**
+	 * Implements the Cloneable interface for a derived class using its copy
+	 * constructor.
+	 */
+#	define IMPLEMENT_CLONEABLE(DERIVED, BASE) \
+		BASE *DoClone() const override \
+		{ \
+			return new DERIVED(*this); \
+		}
+
 
 #endif

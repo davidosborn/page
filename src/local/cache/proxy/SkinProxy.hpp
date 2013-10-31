@@ -20,10 +20,10 @@ namespace page { namespace cache
 	/**
 	 * A proxy representing an instance of phys::Skin in the cache.
 	 */
-	class SkinProxy :
-		public BasicProxy<phys::Skin>,
-		public virtual util::Cloneable<SkinProxy, BasicProxy<phys::Skin>>
+	class SkinProxy : public BasicProxy<phys::Skin>
 	{
+		IMPLEMENT_CLONEABLE(SkinProxy, BasicProxy<phys::Skin>)
+
 		/*-------+
 		| traits |
 		+-------*/

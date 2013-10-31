@@ -5,10 +5,10 @@
 
 namespace page { namespace phys
 {
-	class IdleController :
-		public AnimationTargetController,
-		public virtual util::Cloneable<IdleController, AnimationTargetController>
+	class IdleController : public AnimationTargetController
 	{
+		IMPLEMENT_CLONEABLE(IdleController, Controller)
+
 		public:
 		// construct
 		IdleController();

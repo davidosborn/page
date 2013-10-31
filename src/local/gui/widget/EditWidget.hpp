@@ -5,15 +5,15 @@
 
 #	include "Widget.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/**
 	 * An edit-box widget.
 	 */
-	class EditWidget :
-		public Widget,
-		public virtual util::Cloneable<EditWidget, Widget>
+	class EditWidget : public Widget
 	{
+		IMPLEMENT_CLONEABLE(EditWidget, Widget)
+
 		/*--------+
 		| signals |
 		+--------*/

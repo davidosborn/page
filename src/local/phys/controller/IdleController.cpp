@@ -5,7 +5,7 @@ namespace page { namespace phys
 {
 	// construct
 	IdleController::IdleController() :
-		AnimationTargetController(preCollisionLayer) {}
+		AnimationTargetController(AnimationLayer::preCollision) {}
 
 	// update hooks
 	void IdleController::UpdateTargets(float deltaTime)

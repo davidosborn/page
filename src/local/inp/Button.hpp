@@ -1,17 +1,21 @@
 #ifndef    page_local_inp_Button_hpp
 #   define page_local_inp_Button_hpp
 
-namespace page
+#	include <string>
+
+namespace page { namespace inp
 {
-	namespace inp
+	enum Button
 	{
-		enum Button
-		{
-			leftButton,
-			middleButton,
-			rightButton
-		};
-	}
-}
+		leftButton,
+		middleButton,
+		rightButton
+	};
+
+	/**
+	 * Returns a printable representation of the button.
+	 */
+	std::string GetName(Button);
+}}
 
 #endif

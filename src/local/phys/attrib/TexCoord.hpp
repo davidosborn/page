@@ -4,31 +4,39 @@
 #	include "../../math/Vector.hpp"
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class TexCoord
 	{
-		namespace attrib
-		{
-			struct TexCoord
-			{
-				// construct
-				explicit TexCoord(const math::Vec2 & = 0);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::Vec2 &GetTexCoord() const;
-				void SetTexCoord(const math::Vec2 &);
+		public:
+		explicit TexCoord(const math::Vec2 & = 0);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				math::Vec2 texCoord;
-			};
-		}
-	}
-}
+		const math::Vec2 &GetTexCoord() const;
+		void SetTexCoord(const math::Vec2 &);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::Vec2 value;
+	};
+}}}
 
 #endif

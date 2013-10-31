@@ -24,10 +24,10 @@ namespace page { namespace cache
 	/**
 	 * A proxy representing a bounding skeleton in the cache.
 	 */
-	class BoundsProxy :
-		public BasicProxy<phys::Bounds>,
-		public virtual util::Cloneable<BoundsProxy, BasicProxy<phys::Bounds>>
+	class BoundsProxy : public BasicProxy<phys::Bounds>
 	{
+		IMPLEMENT_CLONEABLE(BoundsProxy, BasicProxy<phys::Bounds>)
+
 		/*-------+
 		| traits |
 		+-------*/

@@ -20,10 +20,10 @@ namespace page { namespace cache { namespace opengl
 	/**
 	 * A proxy representing a shader program in the cache.
 	 */
-	class ProgramProxy :
-		public BasicProxy<vid::opengl::Program>,
-		public virtual util::Cloneable<ProgramProxy, BasicProxy<vid::opengl::Program>>
+	class ProgramProxy : public BasicProxy<vid::opengl::Program>
 	{
+		IMPLEMENT_CLONEABLE(ProgramProxy, BasicProxy<vid::opengl::Program>)
+
 		/*-------+
 		| traits |
 		+-------*/

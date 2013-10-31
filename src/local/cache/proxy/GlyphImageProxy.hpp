@@ -15,10 +15,10 @@ namespace page { namespace cache
 	/**
 	 * A proxy representing a glyph image in the cache.
 	 */
-	class GlyphImageProxy :
-		public BasicProxy<res::Image>,
-		public virtual util::Cloneable<GlyphImageProxy, BasicProxy<res::Image>>
+	class GlyphImageProxy : public BasicProxy<res::Image>
 	{
+		IMPLEMENT_CLONEABLE(GlyphImageProxy, BasicProxy<res::Image>)
+
 		/*-------+
 		| traits |
 		+-------*/

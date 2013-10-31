@@ -4,7 +4,7 @@
 #include "../vid/DrawContext.hpp" // DrawContext::{Draw{Quad,Text},Get{Frame,PixelLogicalBox}}
 #include "DrawContext.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	// construct
 	DrawContext::DrawContext(Base &base, const res::Theme &theme) :

@@ -4,31 +4,39 @@
 #	include "../../math/Color.hpp" // RgbColor
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Emissive
 	{
-		namespace attrib
-		{
-			struct Emissive
-			{
-				// construct
-				explicit Emissive(const math::RgbColor<> & = 0);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::RgbColor<> &GetEmissive() const;
-				void SetEmissive(const math::RgbColor<> &);
+		public:
+		explicit Emissive(const math::RgbColor<> & = 0);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				math::RgbColor<> emissive;
-			};
-		}
-	}
-}
+		const math::RgbColor<> &GetEmissive() const;
+		void SetEmissive(const math::RgbColor<> &);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::RgbColor<> value;
+	};
+}}}
 
 #endif

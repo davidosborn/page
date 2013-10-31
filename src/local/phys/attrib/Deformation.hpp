@@ -6,42 +6,42 @@
 #	include "PositionNormal.hpp"
 #	include "TexCoord.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Deformation
 	{
-		namespace attrib
+		struct Vertex :
+			PositionNormal,
+			TexCoord
 		{
-			struct Deformation
-			{
-				struct Vertex :
-					PositionNormal,
-					TexCoord
-				{
-					protected:
-					// frame serialization
-					Frame GetFrame() const;
-					void Update(const Frame &);
-				};
+			protected:
+			/*--------------------+
+		| frame serialization |
+		+--------------------*/
 
-				// status
-				bool IsDeformed() const;
+			Frame GetFrame() const;
+			void SetFrame(const Frame &);
+		};
 
-				// modifiers
-				void UpdateDeformation();
-				void ResetDeformation();
+		// status
+		bool IsDeformed() const;
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		// modifiers
+		void UpdateDeformation();
+		void ResetDeformation();
 
-				private:
-				typedef std::unordered_map<unsigned, Vertex> Vertices;
-				Vertices vertices;
-			};
-		}
-	}
-}
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		private:
+		typedef std::unordered_map<unsigned, Vertex> Vertices;
+		Vertices vertices;
+	};
+}}}
 
 #endif

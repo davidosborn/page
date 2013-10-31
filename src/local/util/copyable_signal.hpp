@@ -26,12 +26,12 @@ namespace page { namespace util
 		+--------------------*/
 
 		/**
-		 * Does nothing; the connections are not copied.
+		 * Creates a new signal.  The connections are not copied.
 		 */
 		copyable_signal(const copyable_signal &);
 
 		/**
-		 * @copydoc copyable_signal(const copyable_signal &)
+		 * Creates a new signal.  The connections are not copied.
 		 */
 		copyable_signal &operator =(const copyable_signal &);
 

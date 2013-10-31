@@ -3,7 +3,7 @@
 #include "../DrawContext.hpp"
 #include "TextWidget.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/*-------------+
 	| constructors |
@@ -40,7 +40,7 @@ namespace page { namespace ui
 		return WidgetSize(Select(size, size * theme.scale,
 			GetTextSize(*theme.text.font, text.begin(), text.end(),
 				wrap ? size.x * theme.scale : 0) * theme.text.size),
-			Size::grow);
+			WidgetSize::Mode::grow);
 	}
 
 	void TextWidget::DoDraw(DrawContext &context) const

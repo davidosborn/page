@@ -1,36 +1,41 @@
 #include "Attenuation.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Attenuation::Attenuation(float value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	float Attenuation::GetAttenuation() const
 	{
-		namespace attrib
-		{
-			// construct
-			Attenuation::Attenuation(float attenuation) :
-				attenuation(attenuation) {}
-
-			// access
-			float Attenuation::GetAttenuation() const
-			{
-				return attenuation;
-			}
-			void Attenuation::SetAttenuation(float attenuation)
-			{
-				this->attenuation = attenuation;
-			}
-
-			// frame serialization
-			Frame Attenuation::GetFrame() const
-			{
-				Frame frame;
-				frame.attenuation = attenuation;
-				return frame;
-			}
-			void Attenuation::Update(const Frame &frame)
-			{
-				if (frame.attenuation) attenuation = *frame.attenuation;
-			}
-		}
+		return value;
 	}
-}
+
+	void Attenuation::SetAttenuation(float value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Attenuation::GetFrame() const
+	{
+		Frame frame;
+		frame.attenuation = value;
+		return frame;
+	}
+
+	void Attenuation::SetFrame(const Frame &frame)
+	{
+		if (frame.attenuation) value = *frame.attenuation;
+	}
+}}}

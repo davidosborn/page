@@ -3,35 +3,44 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class OpacityRange
 	{
-		namespace attrib
-		{
-			struct OpacityRange
-			{
-				// construct
-				explicit OpacityRange(float = 1);
-				OpacityRange(float min, float max);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetMinOpacity() const;
-				float GetMaxOpacity() const;
-				void SetMinOpacity(float);
-				void SetMaxOpacity(float);
-				void SetOpacityRange(float min, float max);
+		public:
+		explicit OpacityRange(float = 1);
+		OpacityRange(float min, float max);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float min, max;
-			};
-		}
-	}
-}
+		float GetMinOpacity() const;
+		float GetMaxOpacity() const;
+		void SetMinOpacity(float);
+		void SetMaxOpacity(float);
+		void SetOpacityRange(float);
+		void SetOpacityRange(float min, float max);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float min, max;
+	};
+}}}
 
 #endif

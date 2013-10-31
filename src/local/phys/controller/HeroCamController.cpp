@@ -12,7 +12,7 @@ namespace page { namespace phys
 {
 	// construct
 	HeroCamController::HeroCamController(const inp::Driver &driver, const Form &target) :
-		Controller(constraintLayer), driver(driver), aabb(cache::AabbProxy(target, false)),
+		Controller(AnimationLayer::postConstraint), driver(driver), aabb(cache::AabbProxy(target, false)),
 		orientation(target.GetOrientation()), center(.5), distance(4),
 		dependencies(1, &target)
 	{

@@ -5,7 +5,7 @@ namespace page { namespace phys
 {
 	// construct
 	LocomotionController::LocomotionController(const attrib::PositionOrientation &controlled) :
-		Controller(preCollisionLayer), controlled(controlled) {}
+		Controller(AnimationLayer::preCollision), controlled(controlled) {}
 
 	// target modifiers
 	bool LocomotionController::HasTarget() const

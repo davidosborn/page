@@ -10,10 +10,10 @@ namespace page { namespace cfg
 	/**
 	 * Represents a file containing configuration variables.
 	 */
-	class FileSource :
-		public Source,
-		public virtual util::Cloneable<FileSource, Source>
+	class FileSource : public Source
 	{
+		IMPLEMENT_CLONEABLE(FileSource, Source)
+
 		/*-------------+
 		| constructors |
 		+-------------*/

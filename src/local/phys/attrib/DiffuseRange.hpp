@@ -4,39 +4,49 @@
 #	include "../../math/Color.hpp" // RgbColor
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class DiffuseRange
 	{
-		namespace attrib
-		{
-			struct DiffuseRange
-			{
-				// construct
-				explicit DiffuseRange(const math::RgbColor<> & = 1);
-				DiffuseRange(
-					const math::RgbColor<> &min,
-					const math::RgbColor<> &max);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::RgbColor<> &GetMinDiffuse() const;
-				const math::RgbColor<> &GetMaxDiffuse() const;
-				void SetMinDiffuse(const math::RgbColor<> &);
-				void SetMaxDiffuse(const math::RgbColor<> &);
-				void SetDiffuseRange(
-					const math::RgbColor<> &min,
-					const math::RgbColor<> &max);
+		public:
+		explicit DiffuseRange(const math::RgbColor<> & = 1);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		DiffuseRange(
+			const math::RgbColor<> &min,
+			const math::RgbColor<> &max);
 
-				private:
-				math::RgbColor<> min, max;
-			};
-		}
-	}
-}
+		/*----------+
+		| accessors |
+		+----------*/
+
+		const math::RgbColor<> &GetMinDiffuse() const;
+		const math::RgbColor<> &GetMaxDiffuse() const;
+		void SetMinDiffuse(const math::RgbColor<> &);
+		void SetMaxDiffuse(const math::RgbColor<> &);
+		void SetDiffuseRange(const math::RgbColor<> &);
+		void SetDiffuseRange(
+			const math::RgbColor<> &min,
+			const math::RgbColor<> &max);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::RgbColor<> min, max;
+	};
+}}}
 
 #endif

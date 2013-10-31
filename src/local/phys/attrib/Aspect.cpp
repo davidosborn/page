@@ -1,35 +1,42 @@
 #include "Aspect.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Aspect::Aspect(float value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	float Aspect::GetAspect() const
 	{
-		namespace attrib
-		{
-			// construct
-			Aspect::Aspect(float aspect) : aspect(aspect) {}
-
-			// access
-			float Aspect::GetAspect() const
-			{
-				return aspect;
-			}
-			void Aspect::SetAspect(float aspect)
-			{
-				this->aspect = aspect;
-			}
-
-			// frame serialization
-			Frame Aspect::GetFrame() const
-			{
-				Frame frame;
-				frame.aspect = aspect;
-				return frame;
-			}
-			void Aspect::Update(const Frame &frame)
-			{
-				if (frame.aspect) aspect = *frame.aspect;
-			}
-		}
+		return value;
 	}
-}
+
+	void Aspect::SetAspect(float value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Aspect::GetFrame() const
+	{
+		Frame frame;
+		frame.aspect = value;
+		return frame;
+	}
+
+	void Aspect::SetFrame(const Frame &frame)
+	{
+		if (frame.aspect)
+			value = *frame.aspect;
+	}
+}}}

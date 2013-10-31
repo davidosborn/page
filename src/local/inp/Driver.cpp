@@ -14,300 +14,254 @@
 #include "device/registry.hpp" // MakeDevices
 #include "Driver.hpp"
 
-namespace page
+namespace page { namespace inp
 {
-	namespace inp
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Driver::Driver(wnd::Window &window) : window(window)
 	{
-		namespace
+		// connect signal handlers
 		{
-			// printable representations
-			std::string Repr(Button button)
-			{
-				switch (button)
-				{
-					case leftButton:   return "left";
-					case middleButton: return "middle";
-					case rightButton:  return "right";
-				}
-				assert(!"invalid mouse button");
-			}
-			std::string Repr(Key key)
-			{
-				switch (key)
-				{
-					case backspaceKey: return "backspace";
-					case deleteKey:    return "delete";
-					case downKey:      return "down";
-					case enterKey:     return "enter";
-					case escapeKey:    return "escape";
-					case leftKey:      return "left";
-					case pauseKey:     return "pause";
-					case printKey:     return "print";
-					case recordKey:    return "record";
-					case rightKey:     return "right";
-					case tabKey:       return "tab";
-					case upKey:        return "up";
-				}
-				assert(!"invalid key");
-			}
-			std::string Repr(char c)
-			{
-				if (c >= 0x20 && c <= 0x7e) return std::string(1, c);
-				else switch (c)
-				{
-					case 0x00: return "null";
-					case 0x01: return "start of header";
-					case 0x02: return "start of text";
-					case 0x03: return "end of text";
-					case 0x04: return "end of transmission";
-					case 0x05: return "enquiry";
-					case 0x06: return "acknowledgement";
-					case 0x07: return "bell";
-					case 0x08: return "backspace";
-					case 0x09: return "tab";
-					case 0x0a: return "line feed";
-					case 0x0b: return "vertical tab";
-					case 0x0c: return "form feed";
-					case 0x0d: return "carriage return";
-					case 0x0e: return "shift out";
-					case 0x0f: return "shift in";
-					case 0x10: return "data link escape";
-					case 0x11: return "device control 1; XON";
-					case 0x12: return "device control 2";
-					case 0x13: return "device control 3; XOFF";
-					case 0x14: return "device control 4";
-					case 0x15: return "negative acknowledgement";
-					case 0x16: return "synchronous idle";
-					case 0x17: return "end of transmission block";
-					case 0x18: return "cancel";
-					case 0x19: return "end of medium";
-					case 0x1a: return "substitute";
-					case 0x1b: return "escape";
-					case 0x1c: return "file separator";
-					case 0x1d: return "group separator";
-					case 0x1e: return "record separator";
-					case 0x1f: return "unit separator";
-					case 0x7f: return "delete";
-				}
-				return std::string();
-			}
+			using std::bind;
+			using namespace std::placeholders;
+			downSig      .connect(bind(&Driver::OnDown,       this, _1, _2, _3));
+			clickSig     .connect(bind(&Driver::OnClick,      this, _1, _2, _3));
+			dragSig      .connect(bind(&Driver::OnDrag,       this, _1, _2, _3));
+			dropSig      .connect(bind(&Driver::OnDrop,       this, _1, _2, _3, _4));
+			cancelDragSig.connect(bind(&Driver::OnCancelDrag, this, _1, _2, _3, _4));
+			scrollSig    .connect(bind(&Driver::OnScroll,     this, _1, _2));
+			charSig      .connect(bind(&Driver::OnChar,       this, _1));
+			keySig       .connect(bind(&Driver::OnKey,        this, _1));
 		}
 
-		// construct/destroy
-		Driver::Driver(wnd::Window &wnd) : wnd(wnd), userInterface(0),
-			cursorMode(pointCursorMode)
-		{
-			// connect signals
-			{
-				using std::bind;
-				using namespace std::placeholders;
-				// connect cursor signals
-				downSig.connect(bind(&Driver::OnDown, this, _1, _2, _3));
-				clickSig.connect(bind(&Driver::OnClick, this, _1, _2, _3));
-				dragSig.connect(bind(&Driver::OnDrag, this, _1, _2, _3));
-				dropSig.connect(bind(&Driver::OnDrop, this, _1, _2, _3, _4));
-				cancelDragSig.connect(bind(&Driver::OnCancelDrag, this, _1, _2, _3, _4));
-				scrollSig.connect(bind(&Driver::OnScroll, this, _1, _2));
-				// connect key signals
-				charSig.connect(bind(&Driver::OnChar, this, _1));
-				keySig.connect(bind(&Driver::OnKey, this, _1));
-			}
-			// initialize devices
-			devices = MakeDevices(wnd);
-		}
-		Driver::~Driver() {}
-
-		// cursor mode
-		Driver::CursorMode Driver::GetCursorMode() const
-		{
-			return cursorMode;
-		}
-		void Driver::SetCursorMode(CursorMode mode)
-		{
-			if (mode != cursorMode)
-			{
-				// NOTE: must call implementation function before changing mode
-				// to allow access to GetCursorPosition
-				DoSetCursorMode(mode);
-				cursorMode = mode;
-			}
-		}
-
-		// cursor pointing state
-		const math::Vec2 &Driver::GetCursorPosition() const
-		{
-			assert(cursorMode == pointCursorMode);
-			return pointCursor.position;
-		}
-
-		// cursor dragging state
-		bool Driver::IsDragging() const
-		{
-			assert(cursorMode == pointCursorMode);
-			return pointCursor.dragging;
-		}
-		const math::Vec2 &Driver::GetDragOrigin() const
-		{
-			assert(cursorMode == pointCursorMode && pointCursor.dragging);
-			return pointCursor.dragOrigin;
-		}
-
-		// control state
-		const math::Vec2 &Driver::GetDirection() const
-		{
-			return control.direction;
-		}
-		bool Driver::GetModifier(Modifier modifier) const
-		{
-			return control.modifiers[modifier];
-		}
-
-		// look state
-		const math::Euler<> &Driver::GetRotation() const
-		{
-			return look.rotation;
-		}
-		float Driver::GetLift() const
-		{
-			return look.lift;
-		}
-		float Driver::GetZoom() const
-		{
-			return look.zoom;
-		}
-
-		// update
-		void Driver::Update()
-		{
-			// update cursor
-			if (cursorMode == pointCursorMode)
-			{
-				pointCursor.position = EnterSpace(
-					AabbPositionSize(
-						wnd.GetPosition(),
-						math::Vec2i(wnd.GetSize()) - 1),
-					math::Vec2i(GetRawCursorPosition()));
-				pointCursor.inRange = Contains(math::Aabb<2>(0, 1), pointCursor.position);
-				pointCursor.position = Min(Max(pointCursor.position, 0), 1);
-			}
-			// update state
-			State state(Poll());
-			for (Devices::iterator iter(devices.begin()); iter != devices.end(); ++iter)
-			{
-				Device &device(**iter);
-				state += device.Poll();
-			}
-			Update(state);
-		}
-
-		// window access
-		wnd::Window &Driver::GetWindow()
-		{
-			return wnd;
-		}
-		const wnd::Window &Driver::GetWindow() const
-		{
-			return wnd;
-		}
-
-		// inspiration modifiers
-		void Driver::Imbue(const ui::UserInterface *userInterface)
-		{
-			this->userInterface = userInterface;
-			OnImbue(userInterface);
-		}
-
-		// inspiration access
-		const ui::UserInterface *Driver::GetUserInterface() const
-		{
-			return userInterface;
-		}
-
-		// update
-		void Driver::Update(const State &state)
-		{
-			// update control/look state
-			control = state.control;
-			look    = state.look;
-			// execute events
-			for (const auto &event : state.keyEvents)
-				keySig(event);
-			for (const auto &event : state.charEvents)
-				charSig(event);
-		}
-
-		// inspiration notification
-		void Driver::OnImbue(const ui::UserInterface *) {}
-
-		// cursor signal handlers
-		void Driver::OnDown(const math::Vec2 &pos, Button btn, bool _double)
-		{
-			std::cout << Repr(btn) << " mouse ";
-			if (_double) std::cout << "double-";
-			std::cout << "down at " << pos << std::endl;
-		}
-		void Driver::OnClick(const math::Vec2 &pos, Button btn, bool _double)
-		{
-			std::cout << Repr(btn) << " mouse ";
-			if (_double) std::cout << "double-";
-			std::cout << "click at " << pos << std::endl;
-		}
-		void Driver::OnDrag(const math::Vec2 &origin, Button btn, bool _double)
-		{
-			std::cout << Repr(btn) << " mouse ";
-			if (_double) std::cout << "double-";
-			std::cout << "dragging from " << origin << std::endl;
-			pointCursor.dragging = true;
-			pointCursor.dragOrigin = origin;
-		}
-		void Driver::OnDrop(const math::Vec2 &start, const math::Vec2 &pos, Button btn, bool _double)
-		{
-			std::cout << Repr(btn) << " mouse ";
-			if (_double) std::cout << "double-";
-			std::cout << "dropped at " << pos << std::endl;
-			pointCursor.dragging = false;
-		}
-		void Driver::OnCancelDrag(const math::Vec2 &start, const math::Vec2 &pos, Button btn, bool _double)
-		{
-			std::cout << Repr(btn) << " mouse ";
-			if (_double) std::cout << "double-";
-			std::cout << "drag cancelled at " << pos << std::endl;
-			pointCursor.dragging = false;
-		}
-		void Driver::OnScroll(const math::Vec2 &pos, float delta)
-		{
-			std::cout << "mouse scrolled " << (delta > 0 ? "foward" : "backward") << ' ';
-			delta = std::abs(delta);
-			if (math::Near(delta, 1.f)) std::cout << "once";
-			else if (math::Near(delta, 2.f)) std::cout << "twice";
-			else std::cout << delta << " times";
-			std::cout << " at " << pos << std::endl;
-		}
-
-		// key signal handlers
-		void Driver::OnKey(Key key)
-		{
-			std::cout << "received " << Repr(key) << " key" << std::endl;
-		}
-		void Driver::OnChar(char c)
-		{
-			// print hexadecimal representation
-			boost::io::ios_all_saver iosFormatSaver(std::cout);
-			std::cout.setf(std::ios_base::hex, std::ios_base::basefield);
-			std::cout.setf(std::ios_base::showbase);
-			std::cout.setf(std::ios_base::internal, std::ios_base::adjustfield);
-			std::cout.fill('0');
-			std::cout << "character " << std::setw(4) << static_cast<unsigned>(c);
-			iosFormatSaver.restore();
-
-			// print friendly representation if available
-			std::string repr(Repr(c));
-			if (!repr.empty()) std::cout << " (" << repr << ')';
-			std::cout << " entered" << std::endl;
-		}
-
-		// cursor pointing state
-		// construct
-		Driver::PointCursor::PointCursor() : inRange(false), dragging(false) {}
+		// initialize devices
+		devices = MakeDevices(window);
 	}
-}
+
+	/*------------+
+	| cursor mode |
+	+------------*/
+
+	Driver::CursorMode Driver::GetCursorMode() const
+	{
+		return cursorMode;
+	}
+
+	void Driver::SetCursorMode(CursorMode mode)
+	{
+		if (mode != cursorMode)
+		{
+			/*
+			 * We call DoSetCursorMode() before changing the internal cursor
+			 * mode to allow the implementation of DoSetCursorMode() to call
+			 * GetCursorPosition().
+			 */
+			DoSetCursorMode(mode);
+			cursorMode = mode;
+		}
+	}
+
+	/*-----------------------------------+
+	| cursor state for CursorMode::point |
+	+-----------------------------------*/
+
+	const math::Vec2 &Driver::GetCursorPosition() const
+	{
+		assert(cursorMode == CursorMode::point);
+		return cursorPointState.position;
+	}
+
+	bool Driver::IsDragging() const
+	{
+		assert(cursorMode == CursorMode::point);
+		return cursorPointState.dragging;
+	}
+
+	const math::Vec2 &Driver::GetDragOrigin() const
+	{
+		assert(cursorMode == CursorMode::point && cursorPointState.dragging);
+		return cursorPointState.dragOrigin;
+	}
+
+	cache::Proxy<res::Cursor> Driver::GetCursor() const
+	{
+		return cursor;
+	}
+
+	void Driver::SetCursor(const cache::ProxyInterface<res::Cursor> &cursor)
+	{
+		DoSetCursor(cursor);
+		this->cursor = cursor;
+	}
+
+	/*----------------------------------+
+	| cursor state for CursorMode::look |
+	+----------------------------------*/
+
+	const math::Euler<> &Driver::GetRotation() const
+	{
+		assert(cursorMode == CursorMode::look);
+		return cursorLookState.rotation;
+	}
+
+	float Driver::GetLift() const
+	{
+		assert(cursorMode == CursorMode::look);
+		return cursorLookState.lift;
+	}
+
+	float Driver::GetZoom() const
+	{
+		assert(cursorMode == CursorMode::look);
+		return cursorLookState.zoom;
+	}
+
+	/*--------------+
+	| control state |
+	+--------------*/
+
+	const math::Vec2 &Driver::GetDirection() const
+	{
+		return controlState.direction;
+	}
+
+	bool Driver::GetModifier(Modifier::Type modifier) const
+	{
+		return controlState.modifiers & modifier;
+	}
+
+	/*-------+
+	| update |
+	+-------*/
+
+	void Driver::Update()
+	{
+		// update cursor
+		if (cursorMode == CursorMode::point)
+		{
+			cursorPointState.position = EnterSpace(
+				AabbPositionSize(
+					window.GetPosition(),
+					math::Vec2i(window.GetSize()) - 1),
+				math::Vec2i(GetRawCursorPosition()));
+			cursorPointState.inRange = Contains(math::Aabb<2>(0, 1), cursorPointState.position);
+			cursorPointState.position = Min(Max(cursorPointState.position, 0), 1);
+		}
+
+		// build state by polling driver and devices
+		auto pollState(Poll());
+		for (auto &device : devices)
+			pollState += device->Poll();
+
+		// update internal state
+		cursorLookState = pollState.look;
+		controlState    = pollState.control;
+
+		// execute events
+		for (const auto &event : pollState.keyEvents)
+			keySig(event);
+		for (const auto &event : pollState.charEvents)
+			charSig(event);
+	}
+
+	/*--------------+
+	| window access |
+	+--------------*/
+
+	wnd::Window &Driver::GetWindow()
+	{
+		return window;
+	}
+
+	const wnd::Window &Driver::GetWindow() const
+	{
+		return window;
+	}
+
+	/*-----------------------+
+	| cursor signal handlers |
+	+-----------------------*/
+
+	void Driver::OnDown(const math::Vec2 &pos, Button btn, bool _double)
+	{
+		std::cout << Repr(btn) << " mouse ";
+		if (_double) std::cout << "double-";
+		std::cout << "down at " << pos << std::endl;
+	}
+
+	void Driver::OnClick(const math::Vec2 &pos, Button btn, bool _double)
+	{
+		std::cout << Repr(btn) << " mouse ";
+		if (_double) std::cout << "double-";
+		std::cout << "click at " << pos << std::endl;
+	}
+
+	void Driver::OnDrag(const math::Vec2 &origin, Button btn, bool _double)
+	{
+		std::cout << Repr(btn) << " mouse ";
+		if (_double) std::cout << "double-";
+		std::cout << "dragging from " << origin << std::endl;
+		cursorPointState.dragging = true;
+		cursorPointState.dragOrigin = origin;
+	}
+
+	void Driver::OnDrop(const math::Vec2 &start, const math::Vec2 &pos, Button btn, bool _double)
+	{
+		std::cout << Repr(btn) << " mouse ";
+		if (_double) std::cout << "double-";
+		std::cout << "dropped at " << pos << std::endl;
+		cursorPointState.dragging = false;
+	}
+
+	void Driver::OnCancelDrag(const math::Vec2 &start, const math::Vec2 &pos, Button btn, bool _double)
+	{
+		std::cout << Repr(btn) << " mouse ";
+		if (_double) std::cout << "double-";
+		std::cout << "drag cancelled at " << pos << std::endl;
+		cursorPointState.dragging = false;
+	}
+
+	void Driver::OnScroll(const math::Vec2 &pos, float delta)
+	{
+		std::cout << "mouse scrolled " << (delta > 0 ? "foward" : "backward") << ' ';
+		delta = std::abs(delta);
+		if (math::Near(delta, 1.f)) std::cout << "once";
+		else if (math::Near(delta, 2.f)) std::cout << "twice";
+		else std::cout << delta << " times";
+		std::cout << " at " << pos << std::endl;
+	}
+
+	/*------------------------+
+	| control signal handlers |
+	+------------------------*/
+
+	void Driver::OnKey(Key key)
+	{
+		std::cout << "received " << Repr(key) << " key" << std::endl;
+	}
+
+	void Driver::OnChar(char c)
+	{
+		// print hexadecimal representation
+		boost::io::ios_all_saver iosFormatSaver(std::cout);
+		std::cout.setf(std::ios_base::hex, std::ios_base::basefield);
+		std::cout.setf(std::ios_base::showbase);
+		std::cout.setf(std::ios_base::internal, std::ios_base::adjustfield);
+		std::cout.fill('0');
+		std::cout << "character " << std::setw(4) << static_cast<unsigned>(c);
+		iosFormatSaver.restore();
+
+		// print friendly representation if available
+		std::string repr(Repr(c));
+		if (!repr.empty()) std::cout << " (" << repr << ')';
+		std::cout << " entered" << std::endl;
+	}
+
+	// FIXME: I just switched to this from the old C-style MakeDriver technique
+	// but I think this needs to be registered with a factory that matches the
+	// Window implementation (ie: one for Win32, one for X11, etc).  More
+	// thought is warranted.
+	REGISTER_INPUT_DRIVER(Driver, "Win32 input driver")
+}}

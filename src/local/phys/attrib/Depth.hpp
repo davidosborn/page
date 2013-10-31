@@ -4,31 +4,39 @@
 #	include "../../math/float.hpp" // Inf
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Depth
 	{
-		namespace attrib
-		{
-			struct Depth
-			{
-				// construct
-				explicit Depth(float = math::Inf());
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetDepth() const;
-				void SetDepth(float);
+		public:
+		explicit Depth(float = math::Inf());
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float depth;
-			};
-		}
-	}
-}
+		float GetDepth() const;
+		void SetDepth(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

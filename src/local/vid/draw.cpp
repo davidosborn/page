@@ -1,7 +1,7 @@
 #include <memory> // unique_ptr
 
 #include "../cfg/vars.hpp"
-#include "../phys/Camera.hpp" // Camera::GetOpacity, GetViewFrustum
+#include "../phys/node/Camera.hpp" // Camera::GetOpacity, GetViewFrustum
 #include "../phys/Scene.hpp" // Scene::GetCameras
 #include "../gui/UserInterface.hpp" // UserInterface::Draw
 #include "DrawContext.hpp" // DrawContext::{{alpha,median}Filter,GetFilterCaps,MakeViewContext,Push{Alpha,Median}Filter,ScaleBias}
@@ -14,7 +14,7 @@ namespace page
 		void Draw(DrawContext &, const phys::Scene &, const phys::Camera &);
 
 		// interface rendering
-		void Draw(DrawContext &context, const ui::UserInterface &ui)
+		void Draw(DrawContext &context, const gui::Root &ui)
 		{
 			ui.Draw(context);
 		}

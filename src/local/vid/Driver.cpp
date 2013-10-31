@@ -7,93 +7,87 @@
 #include "DrawContext.hpp" // DrawContext::{~DrawContext,FilterSaver,GetFilterCaps,PushSaturationFilter,saturationFilter,ScaleBias}
 #include "Driver.hpp"
 
-namespace page
+namespace page { namespace vid
 {
-	namespace vid
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Driver::Driver(wnd::Window &window) :
+		window(window) {}
+
+	/*----------+
+	| rendering |
+	+----------*/
+
+	void Driver::Render(const math::Aabb<2> &logicalBox)
 	{
-		// construct/destroy
-		Driver::Driver(wnd::Window &wnd) :
-			wnd(wnd), scene(0), userInterface(0),
-			sceneSaturation(1), brightness(0), contrast(1) {}
-		Driver::~Driver() {}
-
-		// update
-		void Driver::Update()
+		if (!(All(Size(logicalBox)) && (scene || userInterface))) return;
+		const std::unique_ptr<DrawContext> context(MakeDrawContext(logicalBox));
+		if (scene)
 		{
-			Render();
-			Flush();
+			DrawContext::FilterSaver filterSaver(*context);
+			if (sceneSaturation < 1 && context->GetFilterCaps() & DrawContext::saturationFilter)
+				context->PushSaturationFilter(sceneSaturation, true);
+			Draw(*context, *scene);
 		}
-
-		// rendering
-		void Driver::Render(const math::Aabb<2> &logicalBox)
-		{
-			if (!(All(Size(logicalBox)) && (scene || userInterface))) return;
-			const std::unique_ptr<DrawContext> context(MakeDrawContext(logicalBox));
-			if (scene)
-			{
-				DrawContext::FilterSaver filterSaver(*context);
-				if (sceneSaturation < 1 && context->GetFilterCaps() & DrawContext::saturationFilter)
-					context->PushSaturationFilter(sceneSaturation, true);
-				Draw(*context, *scene);
-			}
-			if (userInterface)
-				Draw(*context, *userInterface);
-			if (brightness || contrast != 1)
-				context->ScaleBias(brightness, contrast);
-		}
-
-		// scene modifiers
-		void Driver::SetSceneSaturation(float saturation)
-		{
-			sceneSaturation = saturation;
-		}
-
-		// color correction
-		float Driver::GetBrightness() const
-		{
-			return brightness;
-		}
-		float Driver::GetContrast() const
-		{
-			return contrast;
-		}
-		void Driver::SetBrightness(float brightness)
-		{
-			this->brightness = brightness;
-		}
-		void Driver::SetContrast(float contrast)
-		{
-			this->contrast = contrast;
-		}
-
-		// window access
-		wnd::Window &Driver::GetWindow()
-		{
-			return wnd;
-		}
-		const wnd::Window &Driver::GetWindow() const
-		{
-			return wnd;
-		}
-
-		// inspiration modifiers
-		void Driver::Imbue(const phys::Scene *scene)
-		{
-			this->scene = scene;
-		}
-		void Driver::Imbue(const ui::UserInterface *userInterface)
-		{
-			this->userInterface = userInterface;
-		}
-
-		// inspiration access
-		const phys::Scene *Driver::GetScene() const
-		{
-			return scene;
-		}
-		const ui::UserInterface *Driver::GetUserInterface() const
-		{
-			return userInterface;
-		}
+		if (userInterface)
+			Draw(*context, *userInterface);
+		if (brightness || contrast != 1)
+			context->ScaleBias(brightness, contrast);
+		Flush();
 	}
-}
+
+	res::Image Driver::RenderImage(const math::Vec2u &size)
+	{
+		return DoRenderImage(size);
+	}
+
+	/*-----------------+
+	| color correction |
+	+-----------------*/
+
+	float Driver::GetSceneSaturation()
+	{
+		return sceneSaturation;
+	}
+
+	void Driver::SetSceneSaturation(float saturation)
+	{
+		sceneSaturation = saturation;
+	}
+
+	float Driver::GetBrightness() const
+	{
+		return brightness;
+	}
+
+	void Driver::SetBrightness(float brightness)
+	{
+		this->brightness = brightness;
+	}
+
+	float Driver::GetContrast() const
+	{
+		return contrast;
+	}
+
+	void Driver::SetContrast(float contrast)
+	{
+		this->contrast = contrast;
+	}
+
+	/*--------------+
+	| window access |
+	+--------------*/
+
+	wnd::Window &Driver::GetWindow()
+	{
+		return window;
+	}
+
+	const wnd::Window &Driver::GetWindow() const
+	{
+		return window;
+	}
+}}

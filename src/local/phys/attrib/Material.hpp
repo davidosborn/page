@@ -3,29 +3,30 @@
 
 #	include "../../cache/proxy/Proxy.hpp"
 
-namespace page
+namespace page { namespace res { class Material; }}
+
+namespace page { namespace phys { namespace attrib
 {
-	namespace res { class Material; }
-
-	namespace phys
+	class Material
 	{
-		namespace attrib
-		{
-			struct Material
-			{
-				// construct
-				Material() = default;
-				explicit Material(const cache::Proxy<res::Material> &);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const cache::Proxy<res::Material> &GetMaterial() const;
-				void SetMaterial(const cache::Proxy<res::Material> &);
+		public:
+		Material() = default;
+		Material(const cache::Proxy<res::Material> &);
 
-				private:
-				cache::Proxy<res::Material> material;
-			};
-		}
-	}
-}
+		/*----------+
+		| accessors |
+		+----------*/
+
+		const cache::Proxy<res::Material> &GetMaterial() const;
+		void SetMaterial(const cache::Proxy<res::Material> &);
+
+		private:
+		cache::Proxy<res::Material> value;
+	};
+}}}
 
 #endif

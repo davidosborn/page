@@ -1,22 +1,25 @@
-// blink controller
-// expects bind-pose with eyes closed
-
 #ifndef    page_local_phys_controller_BlinkController_hpp
 #   define page_local_phys_controller_BlinkController_hpp
 
 #	include <random> // mt19937
 
 #	include "../../math/Quat.hpp"
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
 	namespace attrib { class Pose; }
 
-	class BlinkController :
-		public Controller,
-		public virtual util::Cloneable<BlinkController, Controller>
+	/**
+	 * Controls the natural blinking of a character's eyes.
+	 *
+	 * @note The controller expects the character to have their eyes closed in
+	 * their bind pose.
+	 */
+	class BlinkController : public Controller
 	{
+		IMPLEMENT_CLONEABLE(BlinkController, Controller)
+
 		public:
 		// construct
 		explicit BlinkController(const attrib::Pose &);

@@ -3,24 +3,45 @@
 
 #	include <memory> // shared_ptr
 
-namespace page { namespace inp { class Driver; }}
+#	include "../util/class/special_member_functions.hpp" // Polymorphic
+
+namespace page
+{
+	namespace inp { class Driver; }
+	namespace res { class Character; }
+}
 
 namespace page { namespace game
 {
 	class Character;
 
-	struct Player
+	class Player : public util::Polymorphic<Player>
 	{
-		// construct/destroy
-		explicit Player(const std::shared_ptr<Character> &);
-		~Player();
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-		// character access
+		public:
+		explicit Player(const res::Character &);
+		explicit Player(const std::shared_ptr<Character> &);
+		~Player() override;
+
+		/*-------+
+		| update |
+		+-------*/
+
+		void Update(const inp::Driver &);
+
+		/*-----------------+
+		| character access |
+		+-----------------*/
+
 		std::shared_ptr<Character> GetCharacter();
 		std::shared_ptr<const Character> GetCharacter() const;
 
-		// update
-		void Update(const inp::Driver &);
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		private:
 		std::shared_ptr<Character> character;

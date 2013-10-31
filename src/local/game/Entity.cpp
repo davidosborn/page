@@ -3,20 +3,46 @@
 
 namespace page { namespace game
 {
-	// construct
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	Entity::Entity(const std::string &name, const cache::Proxy<res::Model> &model) :
-		phys::Body(model), name(name)
+		name(name), body(std::make_shared<phys::Body>(model))
 	{
 		// initialize attributes
-		SetRadius(.375);
-		SetType(phys::Collidable::passive);
+		body->SetRadius(.375);
+		body->SetType(phys::Collidable::Type::passive);
+
 		// initialize controllers
-		InsertController(phys::FrameController(GetFrame()));
+		// FIXME: disabled this, not sure what it was doing, locking the frame?
+		//body->AttachController(phys::FrameController(body->GetFrame()));
 	}
 
-	// attributes
+	Entity::Entity(const Entity &other) :
+		name(other.name), body(std::make_shared<phys::Body>(other.GetBody())) {}
+
+	/*----------+
+	| observers |
+	+----------*/
+
 	const std::string &Entity::GetName() const
 	{
 		return name;
+	}
+
+	phys::Body &Entity::GetBody()
+	{
+		return *body;
+	}
+
+	const phys::Body &Entity::GetBody() const
+	{
+		return *body;
+	}
+
+	const std::shared_ptr<phys::Body> &Entity::GetBodyPtr() const
+	{
+		return body;
 	}
 }}

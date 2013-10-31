@@ -16,7 +16,7 @@ namespace page { namespace phys
 
 	// construct
 	BlinkController::BlinkController(const attrib::Pose &pose) :
-		Controller(preCollisionLayer), state(openState), open(1.f)
+		Controller(AnimationLayer::preCollision), state(openState), open(1.f)
 	{
 		assert(Check(pose));
 		// FIXME: we should use bind-pose as open (relaxed) orientation and

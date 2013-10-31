@@ -2,7 +2,7 @@
 
 #include "../../math/float.hpp" // DecibelToLinear, Inf
 #include "../../math/interp.hpp" // HermiteScale
-#include "../../phys/Sound.hpp" // Sound->util::Identifiable, Sound::Get{PlayPosition,Volume}
+#include "../../phys/node/Sound.hpp" // Sound->util::Identifiable, Sound::Get{PlayPosition,Volume}
 #include "SpatialChannel.hpp"
 
 namespace page { namespace aud
@@ -36,7 +36,7 @@ namespace page { namespace aud
 	// sound access
 	phys::Sound *SpatialChannel::GetSound() const
 	{
-		return util::PointerFromId<phys::Sound>(id);
+		return util::GetPointerById<phys::Sound>(id);
 	}
 	util::Identifiable::Id SpatialChannel::GetId() const
 	{

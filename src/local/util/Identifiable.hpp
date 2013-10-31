@@ -1,48 +1,77 @@
-// instance identification
-// provides a unique identifier for each instance
-// provides a mapping from identifier to instance
-// similar in purpose to weak_ptr, but serializable and storage-independent
-// NOTE: polymorphic with dynamic_cast to support multiple inheritance
-
 #ifndef    page_local_util_Identifiable_hpp
 #   define page_local_util_Identifiable_hpp
 
-#	include <unordered_map>
+#	include <cstddef> // size_t
 
-namespace page
+#	include "class/special_member_functions.hpp" // Polymorphic
+
+namespace page { namespace util
 {
-	namespace util
+	/**
+	 * A mixin which maps each instance to a unique identifier.  The identifier
+	 * is unique across all derived classes, and is serializable and storage
+	 * independent.
+	 *
+	 * @note This class is polymorphic to allow dynamic_cast.
+	 */
+	class Identifiable : public Polymorphic<Identifiable>
 	{
-		struct Identifiable
-		{
-			typedef unsigned long Id;
+		public:
+		typedef std::size_t Id;
 
-			// construct/copy/destroy/assign
-			Identifiable();
-			Identifiable(const Identifiable &);
-			virtual ~Identifiable();
-			Identifiable &operator =(const Identifiable &);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-			// identification
-			Id GetId() const;
-			static Identifiable *FromId(Id);
+		Identifiable();
+		Identifiable(const Identifiable &);
+		~Identifiable() override;
+		Identifiable &operator =(const Identifiable &);
 
-			private:
-			Id id;
+		/*---------------+
+		| identification |
+		+---------------*/
 
-			// identity generation
-			static Id MakeId();
+		/**
+		 * Returns the ID associated with this instance.
+		 */
+		Id GetId() const;
 
-			// identity mapping
-			typedef std::unordered_map<Id, Identifiable *> Ids;
-			static Ids &GetIds();
-		};
+		/**
+		 * Returns the instance associated with the specified ID.
+		 */
+		static Identifiable *GetInstance(Id);
 
-		// identification
-		template <typename T> T *PointerFromId(Identifiable::Id);
-		template <typename T> T &ReferenceFromId(Identifiable::Id);
-	}
-}
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		/**
+		 * The ID associated with this instance.
+		 */
+		Id id;
+	};
+
+	/*-------------------------+
+	| type-safe identification |
+	+-------------------------*/
+
+	/**
+	 * Returns a pointer to the instance associated with the specified ID,
+	 * downcasted to the specified type.  If the instance is not based on the
+	 * specified type, returns nullptr.
+	 */
+	template <typename T>
+		T *GetPointerById(Identifiable::Id);
+
+	/**
+	 * Returns a reference to the instance associated with the specified ID,
+	 * downcasted to the specified type.  If the instance is not based on the
+	 * specified type, throws an exception.
+	 */
+	template <typename T>
+		T &GetReferenceById(Identifiable::Id);
+}}
 
 #	include "Identifiable.tpp"
 #endif

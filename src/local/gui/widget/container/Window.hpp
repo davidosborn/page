@@ -6,16 +6,17 @@
 #	include "../Widget.hpp"
 #	include "WidgetContainer.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/**
 	 * A window widget.
 	 */
 	class Window :
 		public Widget,
-		public WidgetContainer,
-		public virtual util::Cloneable<Window, Widget>
+		public WidgetContainer
 	{
+		IMPLEMENT_CLONEABLE(Window, Widget)
+
 		/*-------------+
 		| constructors |
 		+-------------*/
@@ -59,7 +60,7 @@ namespace page { namespace ui
 		+-----------------*/
 
 		private:
-		Size CalcSize(const res::Theme &) const override;
+		WidgetSize CalcSize(const res::Theme &) const override;
 		void DoDraw(DrawContext &) const override;
 		void DoUpdate(float deltaTime) override;
 

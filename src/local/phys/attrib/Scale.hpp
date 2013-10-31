@@ -6,47 +6,61 @@
 #	include "../Frame.hpp"
 #	include "../mixin/Transformable.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Scale :
+		public virtual Transformable
 	{
-		namespace attrib
-		{
-			struct Scale : virtual Transformable
-			{
-				// construct
-				explicit Scale(const math::Vec3 & = 1);
-				explicit Scale(const math::Mat3 &);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::Vec3 &GetScale() const;
-				void SetScale(const math::Vec3 &);
+		public:
+		explicit Scale(const math::Vec3 & = 1);
+		explicit Scale(const math::Mat3 &);
 
-				// matrix access
-				math::Mat3 GetMatrix() const;
-				math::Mat3 GetInvMatrix() const;
-				void SetMatrix(const math::Mat3 &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				// transform state
-				const math::Vec3 &GetLastScale() const;
-				const math::Vec3 &GetScaleForce() const;
-				const math::Vec3 &GetDeltaScale() const;
+		const math::Vec3 &GetScale() const;
+		void SetScale(const math::Vec3 &);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		// matrix view
+		math::Mat3 GetMatrix() const;
+		math::Mat3 GetInvMatrix() const;
+		void SetMatrix(const math::Mat3 &);
 
-				// transform modifiers
-				void BakeTransform();
-				void UpdateForce();
-				void UpdateDelta();
+		// transformation observers
+		const math::Vec3 &GetLastScale() const;
+		const math::Vec3 &GetScaleForce() const;
+		const math::Vec3 &GetDeltaScale() const;
 
-				private:
-				math::Vec3 scale, lastScale, force, delta;
-			};
-		}
-	}
-}
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-----------------------------+
+		| Transformable implementation |
+		+-----------------------------*/
+
+		public:
+		void BakeTransform() override;
+		void UpdateForce() override;
+		void UpdateDelta() override;
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::Vec3 value, lastValue = value;
+		math::Vec3 force = 1, delta = 1;
+	};
+}}}
 
 #endif

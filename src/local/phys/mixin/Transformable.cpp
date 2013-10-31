@@ -1,10 +1,6 @@
 #include "Transformable.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
-	{
-		// destroy
-		Transformable::~Transformable() {}
-	}
-}
+	Transformable::Transformable(const Transformable &) {}
+}}

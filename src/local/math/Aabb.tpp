@@ -39,6 +39,10 @@ namespace page { namespace math
 	{
 		return Aabb<n, T>(Inf<T>(), -Inf<T>());
 	}
+	template <unsigned n, typename T> Aabb<n, T> UnitAabb()
+	{
+		return Aabb<n, T>(0, 1);
+	}
 
 	/*----------------+
 	| unary operators |

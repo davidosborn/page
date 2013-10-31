@@ -2,17 +2,17 @@
 #   define page_local_phys_controller_EyeController_hpp
 
 #	include "../../math/Vector.hpp"
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
 	class Positionable;
 	namespace attrib { class Pose; }
 
-	class EyeController :
-		public Controller,
-		public virtual util::Cloneable<EyeController, Controller>
+	class EyeController : public Controller
 	{
+		IMPLEMENT_CLONEABLE(EyeController, Controller)
+
 		public:
 		// construct
 		explicit EyeController(const attrib::Pose &);

@@ -3,31 +3,39 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Aspect
 	{
-		namespace attrib
-		{
-			struct Aspect
-			{
-				// construct
-				explicit Aspect(float = 4.f / 3);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetAspect() const;
-				void SetAspect(float);
+		public:
+		explicit Aspect(float = 4.f / 3);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float aspect;
-			};
-		}
-	}
-}
+		float GetAspect() const;
+		void SetAspect(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

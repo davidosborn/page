@@ -3,15 +3,15 @@
 
 #	include "Widget.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/**
 	 * A button widget.
 	 */
-	class ButtonWidget :
-		public Widget,
-		public virtual util::Cloneable<ButtonWidget, Widget>
+	class ButtonWidget : public Widget
 	{
+		IMPLEMENT_CLONEABLE(ButtonWidget, Widget)
+
 		/*--------+
 		| signals |
 		+--------*/

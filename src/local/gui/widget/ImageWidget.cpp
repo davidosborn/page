@@ -7,7 +7,7 @@
 #include "../DrawContext.hpp" // DrawContext::DrawImage
 #include "ImageWidget.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/*-------------+
 	| constructors |
@@ -27,7 +27,7 @@ namespace page { namespace ui
 	{
 		return WidgetSize(
 			Select(size, size * theme.scale, (*img)->size),
-			Select(size, Size::grow, Size::shrink));
+			Select(size, WidgetSize::Mode::grow, WidgetSize::Mode::shrink));
 	}
 
 	void ImageWidget::DoDraw(DrawContext &context) const

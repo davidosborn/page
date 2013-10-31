@@ -71,8 +71,9 @@ namespace page { namespace math
 	| aliases |
 	+--------*/
 
-	typedef Matrix<3> Mat3;
-	typedef Matrix<4> Mat4;
+	typedef Matrix<3>    Mat3;
+	typedef Matrix<3, 4> Mat34;
+	typedef Matrix<4>    Mat4;
 
 	typedef Vector<2> Vec2;
 	typedef Vector<3> Vec3;

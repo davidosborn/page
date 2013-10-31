@@ -17,7 +17,7 @@ namespace page
 
 namespace page { namespace wnd
 {
-	class Window : public virtual util::Cloneable<Window>
+	class Window : public util::Cloneable<Window>
 	{
 		public:
 		// construct/destroy

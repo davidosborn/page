@@ -31,6 +31,17 @@ namespace page { namespace cache
 		return !s.empty();
 	}
 
+	std::string Signature::GetType() const
+	{
+		return s.substr(0, s.find('(') - 1);
+	}
+
+	std::string Signature::GetSource() const
+	{
+		auto i = s.find('(') + 1;
+		return s.substr(i, s.size() - i - 1);
+	}
+
 	/*----------------------------+
 	| stream insertion/extraction |
 	+----------------------------*/

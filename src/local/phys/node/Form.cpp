@@ -84,17 +84,21 @@ namespace page
 			return *model;
 		}
 
-		// frame serialization
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
 		Frame Form::GetFrame() const
 		{
 			return
 				Opacity::GetFrame() +
-				Pose::GetFrame();
+				Pose   ::GetFrame();
 		}
-		void Form::Update(const Frame &frame)
+
+		void Form::SetFrame(const Frame &frame)
 		{
-			Opacity::Update(frame);
-			Pose::Update(frame);
+			Opacity::SetFrame(frame);
+			Pose   ::SetFrame(frame);
 		}
 	}
 }

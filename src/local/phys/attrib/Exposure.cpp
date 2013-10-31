@@ -1,35 +1,41 @@
 #include "Exposure.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Exposure::Exposure(float value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	float Exposure::GetExposure() const
 	{
-		namespace attrib
-		{
-			// construct
-			Exposure::Exposure(float exposure) : exposure(exposure) {}
-
-			// access
-			float Exposure::GetExposure() const
-			{
-				return exposure;
-			}
-			void Exposure::SetExposure(float exposure)
-			{
-				this->exposure = exposure;
-			}
-
-			// frame serialization
-			Frame Exposure::GetFrame() const
-			{
-				Frame frame;
-				frame.exposure = exposure;
-				return frame;
-			}
-			void Exposure::Update(const Frame &frame)
-			{
-				if (frame.exposure) exposure = *frame.exposure;
-			}
-		}
+		return value;
 	}
-}
+
+	void Exposure::SetExposure(float value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Exposure::GetFrame() const
+	{
+		Frame frame;
+		frame.exposure = value;
+		return frame;
+	}
+
+	void Exposure::SetFrame(const Frame &frame)
+	{
+		if (frame.exposure) value = *frame.exposure;
+	}
+}}}

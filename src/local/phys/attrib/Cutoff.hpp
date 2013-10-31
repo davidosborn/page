@@ -3,31 +3,42 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/**
+	 * The cutoff angle for spotlights.
+	 */
+	class Cutoff
 	{
-		namespace attrib
-		{
-			struct Cutoff // angle
-			{
-				// construct
-				explicit Cutoff(float = 0);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetCutoff() const;
-				void SetCutoff(float);
+		public:
+		explicit Cutoff(float = 0);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float cutoff;
-			};
-		}
-	}
-}
+		float GetCutoff() const;
+		void SetCutoff(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

@@ -1,5 +1,5 @@
 #include <algorithm> // find_if_not
-#include <cassert> // assert
+#include <cassert>
 #include <istream> // basic_istream
 #include <iterator> // istreambuf_iterator
 #include <sstream> // basic_istringstream

@@ -3,31 +3,39 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Exposure
 	{
-		namespace attrib
-		{
-			struct Exposure
-			{
-				// construct
-				explicit Exposure(float = 0);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetExposure() const;
-				void SetExposure(float);
+		public:
+		explicit Exposure(float = 0);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float exposure;
-			};
-		}
-	}
-}
+		float GetExposure() const;
+		void SetExposure(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

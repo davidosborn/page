@@ -18,10 +18,10 @@ namespace page { namespace cache { namespace opengl
 	/**
 	 * A proxy representing a texture in the cache.
 	 */
-	class TextureProxy :
-		public BasicProxy<vid::opengl::Texture>,
-		public virtual util::Cloneable<TextureProxy, BasicProxy<vid::opengl::Texture>>
+	class TextureProxy : public BasicProxy<vid::opengl::Texture>
 	{
+		IMPLEMENT_CLONEABLE(TextureProxy, BasicProxy<vid::opengl::Texture>)
+
 		/*-------+
 		| traits |
 		+-------*/

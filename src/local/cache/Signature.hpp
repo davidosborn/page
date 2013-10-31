@@ -38,7 +38,20 @@ namespace page { namespace cache
 		std::string &str();
 		const std::string &str() const;
 
+		/**
+		 * Returns @c true if the signature is not empty.
+		 */
 		explicit operator bool() const;
+
+		/**
+		 * Returns the type part of the signature.
+		 */
+		std::string GetType() const;
+
+		/**
+		 * Returns the source part of the signature.
+		 */
+		std::string GetSource() const;
 
 		/*-------------+
 		| data members |

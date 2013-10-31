@@ -1,85 +1,99 @@
 #include "Position.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Position::Position(const math::Vec3 &value) :
+		value(value) {}
+
+	Position::Position(const math::Mat34 &matrix) :
+		value(GetTranslation(matrix)) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	const math::Vec3 &Position::GetPosition() const
 	{
-		namespace attrib
+		return value;
+	}
+
+	void Position::SetPosition(const math::Vec3 &value)
+	{
+		// NOTE: comparing value to avoid redundant dirty marking
+		if (value != this->value)
 		{
-			// construct
-			Position::Position(const math::Vec3 &position) :
-				position(position), lastPosition(position) {}
-			Position::Position(const math::Matrix<3, 4> &matrix) :
-				position(GetTranslation(matrix)), lastPosition(position) {}
-
-			// access
-			const math::Vec3 &Position::GetPosition() const
-			{
-				return position;
-			}
-			void Position::SetPosition(const math::Vec3 &position)
-			{
-				// NOTE: comparing value to avoid redundant dirty marking
-				if (Any(position != this->position))
-				{
-					this->position = position;
-					dirtyTransformSig();
-				}
-			}
-
-			// matrix access
-			math::Matrix<3, 4> Position::GetMatrix() const
-			{
-				return TranslationMatrix(position);
-			}
-			math::Matrix<3, 4> Position::GetInvMatrix() const
-			{
-				return TranslationMatrix(-position);
-			}
-			void Position::SetMatrix(const math::Matrix<3, 4> &matrix)
-			{
-				SetPosition(GetTranslation(matrix));
-			}
-
-			// transform state
-			const math::Vec3 &Position::GetLastPosition() const
-			{
-				return lastPosition;
-			}
-			const math::Vec3 &Position::GetForce() const
-			{
-				return force;
-			}
-			const math::Vec3 &Position::GetVelocity() const
-			{
-				return velocity;
-			}
-
-			// frame serialization
-			Frame Position::GetFrame() const
-			{
-				Frame frame;
-				frame.position = position;
-				return frame;
-			}
-			void Position::Update(const Frame &frame)
-			{
-				if (frame.position) SetPosition(*frame.position);
-			}
-
-			// transform modifiers
-			void Position::BakeTransform()
-			{
-				lastPosition = position;
-			}
-			void Position::UpdateForce()
-			{
-				force = position - lastPosition;
-			}
-			void Position::UpdateDelta()
-			{
-				velocity = position - lastPosition;
-			}
+			this->value = value;
+			dirtyTransformSig();
 		}
 	}
-}
+
+	math::Mat34 Position::GetMatrix() const
+	{
+		return TranslationMatrix(value);
+	}
+
+	math::Mat34 Position::GetInvMatrix() const
+	{
+		return TranslationMatrix(-value);
+	}
+
+	void Position::SetMatrix(const math::Mat34 &matrix)
+	{
+		SetPosition(GetTranslation(matrix));
+	}
+
+	const math::Vec3 &Position::GetLastPosition() const
+	{
+		return lastValue;
+	}
+
+	const math::Vec3 &Position::GetForce() const
+	{
+		return force;
+	}
+
+	const math::Vec3 &Position::GetVelocity() const
+	{
+		return velocity;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Position::GetFrame() const
+	{
+		Frame frame;
+		frame.position = value;
+		return frame;
+	}
+
+	void Position::SetFrame(const Frame &frame)
+	{
+		if (frame.position)
+			SetPosition(*frame.position);
+	}
+
+	/*-----------------------------+
+	| Transformable implementation |
+	+-----------------------------*/
+
+	void Position::BakeTransform()
+	{
+		lastValue = value;
+	}
+
+	void Position::UpdateForce()
+	{
+		force = value - lastValue;
+	}
+
+	void Position::UpdateDelta()
+	{
+		velocity = value - lastValue;
+	}
+}}}

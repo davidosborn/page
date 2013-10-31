@@ -534,13 +534,13 @@ namespace page { namespace math
 	template <unsigned n, typename T> Matrix<n, n + 1, T> TranslationMatrix(const Vector<n, T> &v)
 	{
 		Matrix<n, n + 1, T> r;
-		r.Col(n) = v;
+		r.Column(n) = v;
 		return r;
 	}
 	template <unsigned n, typename T> Matrix<n, n + 1, T> TranslationMatrix(T t)
 	{
 		Matrix<n, n + 1, T> r;
-		r.Col(n) = t;
+		r.Column(n) = t;
 		return r;
 	}
 	template <typename T> Matrix<2, 2, T> RotationMatrix(T t)
@@ -659,7 +659,7 @@ namespace page { namespace math
 		for (typename Matrix<3, 4, U>::ConstColumnIterator col(m2.Columns().begin()); col != m2.Columns().end(); ++col)
 			for (typename Matrix<3, 4, T>::ConstRowIterator row(m1.Rows().begin()); row != m1.Rows().end(); ++row)
 				*iter++ = Dot(Vector<3, T>(Vector<4, T>(*row)), Vector<3, U>(*col));
-		r.Col(3) += m1.Col(3);
+		r.Column(3) += m1.Column(3);
 		return r;
 	}
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator +(const Matrix<nr, nc, T> &m1, const Matrix<nr, nc, U> &m2)
@@ -836,11 +836,11 @@ namespace page { namespace math
 	// transformation extraction
 	template <unsigned n, typename T> Vector<n, T> GetTranslation(const Matrix<n, n + 1, T> &m)
 	{
-		return m.Col(n);
+		return m.Column(n);
 	}
 	template <unsigned n, typename T> Vector<n - 1, T> GetTranslation(const Matrix<n, n, T> &m)
 	{
-		return Vector<n - 1, T>(m.Col(n - 1));
+		return Vector<n - 1, T>(m.Column(n - 1));
 	}
 	template <typename T> T GetRotation(const Matrix<2, 2, T> &m)
 	{

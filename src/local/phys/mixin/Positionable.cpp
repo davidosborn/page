@@ -4,7 +4,9 @@ namespace page
 {
 	namespace phys
 	{
-		// destroy
-		Positionable::~Positionable() {}
+		math::Vec3 Positionable::GetVelocity() const
+		{
+			return GetPosition() - GetLastPosition();
+		}
 	}
 }

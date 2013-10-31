@@ -40,6 +40,7 @@ namespace page { namespace math
 
 	template <unsigned n, typename T, typename U> Aabb<n, typename ArithmeticConversion<T, U>::Result> AabbPositionSize(const Vector<n, T> &position, const Vector<n, U> &size);
 	template <unsigned n, typename T = DefaultType> Aabb<n, T> InverseInfiniteAabb();
+	template <unsigned n, typename T = DefaultType> Aabb<n, T> UnitAabb();
 
 	/*----------------+
 	| unary operators |

@@ -6,7 +6,7 @@
 
 namespace page { namespace wnd
 {
-	class Console : public virtual util::Cloneable<Console>
+	class Console : public util::Cloneable<Console>
 	{
 		public:
 		virtual void Put(char) = 0;

@@ -1,9 +1,9 @@
 #include <cassert>
 
-#include "Widget.hpp" // Widget::Set{Clone,MinSize,Position,Visible}
+#include "../Widget.hpp" // Widget::Set{Clone,MinSize,Position,Visible}
 #include "WidgetContainer.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	// modifiers
 	void WidgetContainer::Insert(const Widget &widget)

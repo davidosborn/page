@@ -3,31 +3,39 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Volume
 	{
-		namespace attrib
-		{
-			struct Volume
-			{
-				// construct
-				explicit Volume(float = 0);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetVolume() const;
-				void SetVolume(float);
+		public:
+		explicit Volume(float = 0);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float volume;
-			};
-		}
-	}
-}
+		float GetVolume() const;
+		void SetVolume(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

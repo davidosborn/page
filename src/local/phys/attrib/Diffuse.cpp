@@ -1,36 +1,41 @@
 #include "Diffuse.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Diffuse::Diffuse(const math::RgbColor<> &value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	const math::RgbColor<> &Diffuse::GetDiffuse() const
 	{
-		namespace attrib
-		{
-			// construct
-			Diffuse::Diffuse(const math::RgbColor<> &diffuse) :
-				diffuse(diffuse) {}
-
-			// access
-			const math::RgbColor<> &Diffuse::GetDiffuse() const
-			{
-				return diffuse;
-			}
-			void Diffuse::SetDiffuse(const math::RgbColor<> &diffuse)
-			{
-				this->diffuse = diffuse;
-			}
-
-			// frame serialization
-			Frame Diffuse::GetFrame() const
-			{
-				Frame frame;
-				frame.diffuse = diffuse;
-				return frame;
-			}
-			void Diffuse::Update(const Frame &frame)
-			{
-				if (frame.diffuse) diffuse = *frame.diffuse;
-			}
-		}
+		return value;
 	}
-}
+
+	void Diffuse::SetDiffuse(const math::RgbColor<> &value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Diffuse::GetFrame() const
+	{
+		Frame frame;
+		frame.diffuse = value;
+		return frame;
+	}
+
+	void Diffuse::SetFrame(const Frame &frame)
+	{
+		if (frame.diffuse) value = *frame.diffuse;
+	}
+}}}

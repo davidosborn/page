@@ -17,10 +17,10 @@ namespace page { namespace cache { namespace opengl
 	/**
 	 * A proxy representing a font texture in the cache.
 	 */
-	class FontTextureProxy :
-		public BasicProxy<vid::opengl::FontTexture>,
-		public virtual util::Cloneable<FontTextureProxy, BasicProxy<vid::opengl::FontTexture>>
+	class FontTextureProxy : public BasicProxy<vid::opengl::FontTexture>
 	{
+		IMPLEMENT_CLONEABLE(FontTextureProxy, BasicProxy<vid::opengl::FontTexture>)
+
 		/*-------+
 		| traits |
 		+-------*/

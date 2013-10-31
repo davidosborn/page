@@ -3,35 +3,44 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class SizeRange
 	{
-		namespace attrib
-		{
-			struct SizeRange
-			{
-				// construct
-				explicit SizeRange(float = 1);
-				SizeRange(float min, float max);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetMinSize() const;
-				float GetMaxSize() const;
-				void SetMinSize(float);
-				void SetMaxSize(float);
-				void SetSizeRange(float min, float max);
+		public:
+		explicit SizeRange(float = 1);
+		SizeRange(float min, float max);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float min, max;
-			};
-		}
-	}
-}
+		float GetMinSize() const;
+		float GetMaxSize() const;
+		void SetMinSize(float);
+		void SetMaxSize(float);
+		void SetSizeRange(float);
+		void SetSizeRange(float min, float max);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float min, max;
+	};
+}}}
 
 #endif

@@ -1,5 +1,3 @@
-// skeletal deformation
-
 #ifndef    page_local_phys_attrib_Pose_hpp
 #   define page_local_phys_attrib_Pose_hpp
 
@@ -7,152 +5,376 @@
 #	include <unordered_map>
 #	include <vector>
 
-#	include <boost/iterator/indirect_iterator.hpp>
-#	include <boost/signal.hpp>
-
 #	include "../../math/Matrix.hpp"
 #	include "../../res/type/Skeleton.hpp" // Skeleton::Bone
+#	include "../../util/class/special_member_functions.hpp" // Unmovable
+#	include "../../util/copyable_signal.hpp"
 #	include "../../util/Identifiable.hpp"
 #	include "PositionOrientationScale.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/**
+	 * The skeletal deformation aspect of a node.
+	 */
+	class Pose :
+		public PositionOrientationScale,
+		public util::Identifiable
 	{
-		namespace attrib
+		public:
+		/**
+		 * An individual bone, as part of a skeletal deformation.
+		 */
+		class Bone :
+			public PositionOrientationScale,
+			public util::Unmovable<Bone>
 		{
-			struct Pose : PositionOrientationScale, util::Identifiable
-			{
-				struct Bone : PositionOrientationScale
-				{
-					// construct/copy/assign
-					// NOTE: copy transfers parentage like auto_ptr
-					// FIXME: should require std::move to support copy
-					Bone(Pose &, const res::Skeleton::Bone &, Bone *parent);
-					Bone(Pose &, const Bone &, Bone *parent);
-					Bone(const Bone &);
-					Bone &operator =(const Bone &);
+			/*-------------+
+			| constructors |
+			+-------------*/
 
-					// name/parent
-					std::string GetName() const;
-					Bone *GetParent();
-					const Bone *GetParent() const;
+			public:
+			Bone(Pose &, const res::Skeleton::Bone &, Bone *parent);
+			Bone(Pose &, const Bone &, Bone *parent);
+			Bone(Pose &, Bone &&, Bone *parent);
 
-					// matrix access
-					const math::Matrix<3, 4> &GetSkinMatrix() const;
-					const math::Mat3 &GetNormSkinMatrix() const;
-					const math::Matrix<3, 4> &GetPoseMatrix() const;
-					const math::Mat3 &GetNormPoseMatrix() const;
-					const math::Matrix<3, 4> &GetInvPoseMatrix() const;
-					const math::Mat3 &GetNormInvPoseMatrix() const;
-					const math::Matrix<3, 4> &GetBindMatrix() const;
-					const math::Mat3 &GetNormBindMatrix() const;
-					const math::Matrix<3, 4> &GetInvBindMatrix() const;
-					const math::Mat3 &GetNormInvBindMatrix() const;
+			/*----------+
+			| observers |
+			+----------*/
 
-					// bind-pose
-					void SetBind();
-					void Reset();
+			/**
+			 * Returns the skeletal deformation that the bone belongs to.
+			 */
+			Pose &GetPose();
 
-					// bind-pose transformation
-					math::Vec3 GetBindPosition() const;
-					math::Quat<> GetBindOrientation() const;
-					math::Vec3 GetBindScale() const;
+			/**
+			 * Returns the skeletal deformation that the bone belongs to.
+			 */
+			const Pose &GetPose() const;
 
-					// mark dirty on transformation
-					void SetPosition(const math::Vec3 &);
-					void SetOrientation(const math::Quat<> &);
-					void SetNormal(const math::Vec3 &);
-					void SetScale(const math::Vec3 &);
-					void SetMatrix(const math::Matrix<3, 4> &);
-					void SetMatrix(const math::Mat3 &);
+			/**
+			 * Returns the bone's name.
+			 */
+			std::string GetName() const;
 
-					// owner access
-					Pose &GetPose();
-					const Pose &GetPose() const;
+			/**
+			 * Returns a pointer to the bone that is a parent of this bone, or
+			 * @c nullptr if it is the root bone.
+			 */
+			Bone *GetParent();
 
-					private:
-					// dirty
-					void UpdateDirty() const;
-					void UpdateInvDirty() const;
-					void MarkDirty() const;
-					void MarkInvDirty() const;
+			/**
+			 * Returns a pointer to the bone that is a parent of this bone, or
+			 * @c nullptr if it is the root bone.
+			 */
+			const Bone *GetParent() const;
 
-					Pose *pose;
-					std::string name;
-					Bone *parent;
-					typedef std::vector<Bone *> Children;
-					Children children;
-					mutable bool dirty, invDirty;
-					mutable math::Matrix<3, 4> skinMatrix;
-					mutable math::Mat3 normSkinMatrix;
-					mutable math::Matrix<3, 4> poseMatrix;
-					mutable math::Mat3 normPoseMatrix;
-					mutable math::Matrix<3, 4> invPoseMatrix;
-					mutable math::Mat3 normInvPoseMatrix;
-					math::Matrix<3, 4> bindMatrix;
-					math::Mat3 normBindMatrix;
-					math::Matrix<3, 4> invBindMatrix;
-					math::Mat3 normInvBindMatrix;
-					math::Vec3 bindPosition;
-					math::Quat<> bindOrientation;
-					math::Vec3 bindScale;
-				};
+			/*----------+
+			| modifiers |
+			+----------*/
 
-				// construct/copy/assign
-				Pose();
-				explicit Pose(const res::Skeleton &);
-				Pose(const Pose &);
-				Pose &operator =(const Pose &);
+			/**
+			 * Detaches the bone from its parent and children.  The children are
+			 * left as orphans, without a parent.
+			 */
+			void Detach();
 
-				// status
-				bool IsPosed() const;
+			/*----------+
+			| bind pose |
+			+----------*/
 
-				private:
-				// container types required for bone iterator types
-				typedef std::unordered_map<std::string, Bone> Bones;
-				typedef std::vector<Bone *> OrderedBones;
+			/**
+			 * Returns the position of the bone in its bind pose.
+			 */
+			math::Vec3 GetBindPosition() const;
 
-				public:
-				// bone iterator types
-				typedef boost::indirect_iterator<OrderedBones::const_iterator> BoneIterator;
-				typedef boost::indirect_iterator<OrderedBones::const_iterator, const Bone> ConstBoneIterator;
+			/**
+			 * Returns the orientation of the bone in its bind pose.
+			 */
+			math::Quat<> GetBindOrientation() const;
 
-				// bone iterators
-				BoneIterator BeginBones();
-				ConstBoneIterator BeginBones() const;
-				BoneIterator EndBones();
-				ConstBoneIterator EndBones() const;
+			/**
+			 * Returns the scale of the bone in its bind pose.
+			 */
+			math::Vec3 GetBindScale() const;
 
-				// bone access
-				Bone *GetBone(const std::string &);
-				const Bone *GetBone(const std::string &) const;
+			/**
+			 * Returns the bind-pose matrix.
+			 */
+			const math::Mat34 &GetBindMatrix() const;
 
-				// bind-pose
-				void SetBindPose();
-				void ResetPose();
+			/**
+			 * Returns the normalized bind-pose matrix.
+			 */
+			const math::Mat3 &GetNormBindMatrix() const;
 
-				// signals
-				boost::signal<void ()> dirtyPoseSig;
+			/**
+			 * Returns the inverse-bind-pose matrix.
+			 */
+			const math::Mat34 &GetInvBindMatrix() const;
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+			/**
+			 * Returns the normalized inverse-bind-pose matrix.
+			 */
+			const math::Mat3 &GetNormInvBindMatrix() const;
 
-				private:
-				// rebuild from new skeleton
-				// maintains state of existing bones
-				void Rebuild(const res::Skeleton &);
+			/**
+			 * Uses the current pose as the bind pose.
+			 */
+			void SetBindPose();
 
-				// insert dependency path from skeleton
-				Bone &CopyTreePath(const res::Skeleton::Bone &);
+			/**
+			 * Resets the pose to the bind pose.
+			 */
+			void ResetToBindPose();
 
-				Bones bones;
-				OrderedBones orderedBones;
-			};
-		}
-	}
-}
+			/*---------------+
+			| transformation |
+			+---------------*/
+
+			/**
+			 * Returns the pose matrix.
+			 */
+			const math::Mat34 &GetPoseMatrix() const;
+
+			/**
+			 * Returns the normalized pose matrix.
+			 */
+			const math::Mat3 &GetNormPoseMatrix() const;
+
+			/**
+			 * Returns the inverse-pose matrix.
+			 */
+			const math::Mat34 &GetInvPoseMatrix() const;
+
+			/**
+			 * Returns the normalized inverse-pose matrix.
+			 */
+			const math::Mat3 &GetNormInvPoseMatrix() const;
+
+			/**
+			 * Returns the skinning matrix.
+			 */
+			const math::Mat34 &GetSkinMatrix() const;
+
+			/**
+			 * Returns the normalized skinning matrix.
+			 */
+			const math::Mat3 &GetNormSkinMatrix() const;
+
+			private:
+			/**
+			 * If the bone has been marked as dirty, regenerate its
+			 * transformation matrices to account for its new transformation.
+			 */
+			void UpdateDirty() const;
+
+			/**
+			 * Mark the bone as dirty, meaning that it has been transformed and
+			 * its transformation matrices are no longer valid.
+			 */
+			void MarkDirty() const;
+
+			/*-------------+
+			| data members |
+			+-------------*/
+
+			/**
+			 * The skeletal deformation that the bone belongs to.
+			 */
+			Pose *pose;
+
+			/**
+			 * The bone's name.
+			 */
+			std::string name;
+
+			/**
+			 * The bone's parent.
+			 */
+			Bone *parent;
+
+			/**
+			 * The bone's children.
+			 */
+			std::vector<Bone *> children;
+
+			/**
+			 * The position of the bone in its bind pose.
+			 */
+			math::Vec3 bindPosition;
+
+			/**
+			 * The orientation of the bone in its bind pose.
+			 */
+			math::Quat<> bindOrientation;
+
+			/**
+			 * The scale of the bone in its bind pose.
+			 */
+			math::Vec3 bindScale;
+
+			/**
+			 * The bind-pose matrix.
+			 */
+			math::Mat34 bindMatrix;
+
+			/**
+			 * The normalized bind-pose matrix.
+			 */
+			math::Mat3 normBindMatrix;
+
+			/**
+			 * The inverse-bind-pose matrix.
+			 */
+			math::Mat34 invBindMatrix;
+
+			/**
+			 * The normalized inverse-bind-pose matrix.
+			 */
+			math::Mat3 normInvBindMatrix;
+
+			/**
+			 * @c true if the bone has been transformed, in which case the
+			 * following matrices will need to be regenerated.
+			 */
+			mutable bool dirty = true;
+
+			/**
+			 * The pose matrix.
+			 */
+			mutable math::Mat34 poseMatrix;
+
+			/**
+			 * The normalized pose matrix.
+			 */
+			mutable math::Mat3 normPoseMatrix;
+
+			/**
+			 * The inverse-pose matrix.
+			 */
+			mutable math::Mat34 invPoseMatrix;
+
+			/**
+			 * The normalized inverse-pose matrix.
+			 */
+			mutable math::Mat3 normInvPoseMatrix;
+
+			/**
+			 * The skinning matrix.
+			 */
+			mutable math::Mat34 skinMatrix;
+
+			/**
+			 * The normalized skinning matrix.
+			 */
+			mutable math::Mat3 normSkinMatrix;
+		};
+
+		/*-------------+
+		| constructors |
+		+-------------*/
+
+		public:
+		Pose() = default;
+		explicit Pose(const res::Skeleton &);
+		Pose(const Pose &);
+		Pose(Pose &&) = default;
+		Pose &operator =(const Pose &);
+		Pose &operator =(Pose &&) = default;
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		/**
+		 * @c true if the pose contains one or more bones.
+		 */
+		bool IsPosed() const;
+
+		/*----------+
+		| modifiers |
+		+----------*/
+
+		/**
+		 * Uses the current pose as the bind pose.
+		 */
+		void SetBindPose();
+
+		/**
+		 * Resets the pose to the bind pose.
+		 */
+		void ResetToBindPose();
+
+		private:
+		/**
+		 * Rebuilds the pose from a new skeleton while maintaining the state of
+		 * the bones in the new skeleton that already exist in the pose.
+		 */
+		void Rebuild(const res::Skeleton &);
+
+		/**
+		 * Adds a bone from a skeleton resource, including its parent bones if
+		 * they haven't already been added.
+		 */
+		Bone &CopyTreePath(const res::Skeleton::Bone &);
+
+		/*------+
+		| bones |
+		+------*/
+
+		public:
+		/**
+		 * Returns an ordered sequence of bones.
+		 */
+		const std::vector<Bone> &GetBones() const;
+
+		/**
+		 * Returns a pointer to the bone with the specified name, or @c nullptr
+		 * if no bone has that name.
+		 */
+		Bone *GetBone(const std::string &);
+
+		/**
+		 * Returns a pointer to the bone with the specified name, or @c nullptr
+		 * if no bone has that name.
+		 */
+		const Bone *GetBone(const std::string &) const;
+
+		/*--------+
+		| signals |
+		+--------*/
+
+		util::copyable_signal<void ()> dirtyPoseSig;
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		/**
+		 * An ordered sequence of bones, where the parents appear before the
+		 * children.
+		 */
+		std::vector<Bone> bones;
+
+		/**
+		 * An associative array mapping the name of a bone to its index in @c
+		 * bones.
+		 *
+		 * @note Using an index instead of a pointer allows the default move
+		 * constructor and assignment operator to be used.
+		 */
+		std::unordered_map<std::string, decltype(bones)::size_type> bonesByName;
+	};
+}}}
 
 #endif

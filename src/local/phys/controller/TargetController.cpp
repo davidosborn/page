@@ -5,7 +5,7 @@ namespace page
 	namespace phys
 	{
 		// construct
-		TargetController::TargetController(Layer layer, float fadeDuration) :
+		TargetController::TargetController(AnimationLayer layer, float fadeDuration) :
 			Controller(layer), fadeDuration(fadeDuration) {}
 
 		// modifiers

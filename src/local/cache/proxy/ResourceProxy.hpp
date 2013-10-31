@@ -11,10 +11,10 @@ namespace page { namespace cache
 	 * A proxy representing a cached resource.
 	 */
 	template <typename T>
-		class ResourceProxy :
-			public BasicProxy<T>,
-			public virtual util::Cloneable<ResourceProxy<T>, BasicProxy<T>>
+		class ResourceProxy : public BasicProxy<T>
 	{
+		IMPLEMENT_CLONEABLE(ResourceProxy, BasicProxy<T>)
+
 		/*-------+
 		| traits |
 		+-------*/
@@ -26,7 +26,9 @@ namespace page { namespace cache
 		| constructors |
 		+-------------*/
 
-		explicit ResourceProxy(const std::string &path = "");
+		ResourceProxy() = default;
+		ResourceProxy(std::nullptr_t);
+		explicit ResourceProxy(const std::string &path);
 
 		/*--------------------------+
 		| BasicProxy implementation |

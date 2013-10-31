@@ -13,23 +13,34 @@ namespace page
 
 namespace page { namespace game
 {
-	struct Character : Entity
+	class Character : public Entity
 	{
 		friend class Player;
 
-		// construct
+		/*-------------+
+		| constructors |
+		+-------------*/
+
+		public:
 		explicit Character(const res::Character &);
 
-		// actions
+		/*--------+
+		| actions |
+		+--------*/
+
 		void Goto(const math::Vec3 &);
 		void Say(const std::string &);
 
-		// properties
-		// FIXME: implement
+		/*----------+
+		| observers |
+		+----------*/
 
-		// conditions
 		bool IsIdle() const;
 		bool IsMoving() const;
+
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		private:
 		std::shared_ptr<phys::PathfindingController> pathfindingController;

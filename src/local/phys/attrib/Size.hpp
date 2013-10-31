@@ -3,31 +3,39 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Size
 	{
-		namespace attrib
-		{
-			struct Size
-			{
-				// construct
-				explicit Size(float = 1);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetSize() const;
-				void SetSize(float);
+		public:
+		explicit Size(float = 1);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float size;
-			};
-		}
-	}
-}
+		float GetSize() const;
+		void SetSize(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

@@ -19,7 +19,7 @@ namespace page { namespace cache
 	BoundsProxy::BoundsProxy(const res::Model &model, bool pose) :
 		BoundsProxy(
 			GetGeometricallyDistinctMeshes(model),
-			pose ? model.skeleton : Proxy<res::Skeleton>()) {}
+			pose ? model.skeleton : nullptr) {}
 
 	void BoundsProxy::Init()
 	{

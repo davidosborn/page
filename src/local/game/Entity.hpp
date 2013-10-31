@@ -1,22 +1,41 @@
 #ifndef    page_local_game_Entity_hpp
 #   define page_local_game_Entity_hpp
 
+#	include <memory> // shared_ptr
 #	include <string>
 
-#	include "../phys/Body.hpp"
+#	include "../phys/node/Body.hpp"
+#	include "../util/class/special_member_functions.hpp" // Polymorphic
 
 namespace page { namespace game
 {
-	struct Entity : phys::Body
+	class Entity : public util::Polymorphic<Entity>
 	{
-		// construct
-		Entity(const std::string &name, const cache::Proxy<res::Model> &);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-		// attributes
+		public:
+		Entity(const std::string &name, const cache::Proxy<res::Model> &);
+		Entity(const Entity &other);
+
+		/*----------+
+		| observers |
+		+----------*/
+
 		const std::string &GetName() const;
+
+		phys::Body &GetBody();
+		const phys::Body &GetBody() const;
+		const std::shared_ptr<phys::Body> &GetBodyPtr() const;
+
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		private:
 		std::string name;
+		std::shared_ptr<phys::Body> body;
 	};
 }}
 

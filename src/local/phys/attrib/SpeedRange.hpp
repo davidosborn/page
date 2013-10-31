@@ -3,35 +3,44 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class SpeedRange
 	{
-		namespace attrib
-		{
-			struct SpeedRange
-			{
-				// construct
-				explicit SpeedRange(float = 0);
-				SpeedRange(float min, float max);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetMinSpeed() const;
-				float GetMaxSpeed() const;
-				void SetMinSpeed(float);
-				void SetMaxSpeed(float);
-				void SetSpeedRange(float min, float max);
+		public:
+		explicit SpeedRange(float = 0);
+		SpeedRange(float min, float max);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float min, max;
-			};
-		}
-	}
-}
+		float GetMinSpeed() const;
+		float GetMaxSpeed() const;
+		void SetMinSpeed(float);
+		void SetMaxSpeed(float);
+		void SetSpeedRange(float);
+		void SetSpeedRange(float min, float max);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float min, max;
+	};
+}}}
 
 #endif

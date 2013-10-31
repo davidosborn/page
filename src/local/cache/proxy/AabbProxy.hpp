@@ -18,10 +18,10 @@ namespace page { namespace cache
 	/**
 	 * A proxy representing an axis-aligned bounding-box in the cache.
 	 */
-	class AabbProxy :
-		public BasicProxy<math::Aabb<3>>,
-		public virtual util::Cloneable<AabbProxy, BasicProxy<math::Aabb<3>>>
+	class AabbProxy : public BasicProxy<math::Aabb<3>>
 	{
+		IMPLEMENT_CLONEABLE(AabbProxy, BasicProxy<math::Aabb<3>>)
+
 		/*-------+
 		| traits |
 		+-------*/

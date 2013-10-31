@@ -4,39 +4,49 @@
 #	include "../../math/Color.hpp" // RgbColor
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class AmbientRange
 	{
-		namespace attrib
-		{
-			struct AmbientRange
-			{
-				// construct
-				explicit AmbientRange(const math::RgbColor<> & = 1);
-				AmbientRange(
-					const math::RgbColor<> &min,
-					const math::RgbColor<> &max);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::RgbColor<> &GetMinAmbient() const;
-				const math::RgbColor<> &GetMaxAmbient() const;
-				void SetMinAmbient(const math::RgbColor<> &);
-				void SetMaxAmbient(const math::RgbColor<> &);
-				void SetAmbientRange(
-					const math::RgbColor<> &min,
-					const math::RgbColor<> &max);
+		public:
+		explicit AmbientRange(const math::RgbColor<> & = 1);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		AmbientRange(
+			const math::RgbColor<> &min,
+			const math::RgbColor<> &max);
 
-				private:
-				math::RgbColor<> min, max;
-			};
-		}
-	}
-}
+		/*----------+
+		| accessors |
+		+----------*/
+
+		const math::RgbColor<> &GetMinAmbient() const;
+		const math::RgbColor<> &GetMaxAmbient() const;
+		void SetMinAmbient(const math::RgbColor<> &);
+		void SetMaxAmbient(const math::RgbColor<> &);
+		void SetAmbientRange(const math::RgbColor<> &);
+		void SetAmbientRange(
+			const math::RgbColor<> &min,
+			const math::RgbColor<> &max);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::RgbColor<> min, max;
+	};
+}}}
 
 #endif

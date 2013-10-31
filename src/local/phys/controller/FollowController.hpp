@@ -5,16 +5,16 @@
 #	include "../../math/fwd.hpp" // Aabb
 #	include "../../math/Quat.hpp"
 #	include "../../math/Vector.hpp"
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
 	class Form;
 
-	class FollowController :
-		public Controller,
-		public virtual util::Cloneable<FollowController, Controller>
+	class FollowController : public Controller
 	{
+		IMPLEMENT_CLONEABLE(FollowController, Controller)
+
 		public:
 		// construct
 		explicit FollowController(

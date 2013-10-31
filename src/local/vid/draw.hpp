@@ -8,14 +8,14 @@ namespace page
 		class Camera;
 		class Scene;
 	}
-	namespace ui { class UserInterface; }
+	namespace gui { class Root; }
 
 	namespace vid
 	{
 		class DrawContext;
 
 		// interface rendering
-		void Draw(DrawContext &, const ui::UserInterface &);
+		void Draw(DrawContext &, const gui::Root &);
 
 		// scene rendering
 		void Draw(DrawContext &, const phys::Scene &);

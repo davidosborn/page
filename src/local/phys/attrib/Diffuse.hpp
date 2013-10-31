@@ -4,31 +4,39 @@
 #	include "../../math/Color.hpp" // RgbColor
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Diffuse
 	{
-		namespace attrib
-		{
-			struct Diffuse
-			{
-				// construct
-				explicit Diffuse(const math::RgbColor<> & = 1);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::RgbColor<> &GetDiffuse() const;
-				void SetDiffuse(const math::RgbColor<> &);
+		public:
+		explicit Diffuse(const math::RgbColor<> & = 1);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				math::RgbColor<> diffuse;
-			};
-		}
-	}
-}
+		const math::RgbColor<> &GetDiffuse() const;
+		void SetDiffuse(const math::RgbColor<> &);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::RgbColor<> value;
+	};
+}}}
 
 #endif

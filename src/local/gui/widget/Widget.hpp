@@ -1,75 +1,21 @@
-#ifndef    page_local_ui_widget_Widget_hpp
-#   define page_local_ui_widget_Widget_hpp
+#ifndef    page_local_gui_widget_Widget_hpp
+#   define page_local_gui_widget_Widget_hpp
 
 #	include "../../math/Vector.hpp"
 #	include "../../util/class/Cloneable.hpp"
 #	include "../../util/copyable_signal.hpp"
+#	include "../../inp/Key.hpp"
 
 namespace page { namespace res { class Theme; }}
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	class DrawContext;
-
-////////// WidgetSize //////////////////////////////////////////////////////////
-
-	/**
-	 * A set of parameters for specifying the size of a widget.
-	 */
-	struct WidgetSize
-	{
-		/**
-		 * The sizing mode for widgets, which determines how the widget should
-		 * fit within its context.
-		 */
-		enum class Mode
-		{
-			/**
-			 * Indicates that the widget should be as small as possible.
-			 */
-			shrink,
-
-			/**
-			 * Indicates that the widget should be the same size as its
-			 * neighbouring widgets.
-			 */
-			grow,
-
-			/**
-			 * Indicates that the widget should fill the space of its container.
-			 */
-			max
-		};
-
-		/*-------------+
-		| constructors |
-		+-------------*/
-
-		explicit WidgetSize(
-			math::Vec2            const& min  = 0,
-			math::Vector<2, Mode> const& mode = Mode::shrink);
-
-		/*-------------+
-		| data members |
-		+-------------*/
-
-		/**
-		 * The widget's minimum size.
-		 */
-		math::Vec2 min;
-
-		/**
-		 * The widget's sizing mode.
-		 */
-		math::Vector<2, Mode> mode;
-	};
-
-////////// Widget //////////////////////////////////////////////////////////////
 
 	/**
 	 * The base class for user-interface widgets.
 	 */
-	class Widget : public virtual util::Cloneable<Widget>
+	class Widget : public util::Cloneable<Widget>
 	{
 		/*-------------+
 		| constructors |
@@ -86,19 +32,19 @@ namespace page { namespace ui
 		+------------*/
 
 		/**
-		 * @return The widget's position.
+		 * Returns the widget's position.
 		 */
 		const math::Vec2 &GetPosition() const;
 
 		/**
-		 * @return The widget's minimum size.
+		 * Returns the widget's minimum size.
 		 */
 		const math::Vec2 &GetMinSize() const;
 
 		/**
-		 * @return The widget's current size.
+		 * Returns the widget's size constraints.
 		 */
-		WidgetSize GetSize(const res::Theme &) const;
+		WidgetSizeConstraints GetSizeConstraints(const res::Theme &) const;
 
 		/**
 		 * Sets the widget's position.
@@ -222,49 +168,14 @@ namespace page { namespace ui
 		 *
 		 * @param[in] _1 The key that was pressed.
 		 */
-		util::copyable_signal<void (Key)> onKey;
-
-		/*----------+
-		| constants |
-		+----------*/
-
-		protected:
-		/**
-		 * The duration of the fade-in transition for glow effects.
-		 */
-		static constexpr float glowFadeInDuration;
-
-		/**
-		 * The duration of the fade-out transition for glow effects.
-		 */
-		static constexpr float glowFadeOutDuration;
-
-		/**
-		 * The exponent of the fade transition for glow effects.
-		 */
-		static constexpr float glowFadeExponent;
-
-		/**
-		 * The duration of the fade-in transition for visibility.
-		 */
-		static constexpr float visibilityFadeInDuration;
-
-		/**
-		 * The duration of the fade-out transition for visibility.
-		 */
-		static constexpr float visibilityFadeOutDuration;
-
-		/**
-		 * The exponent of the fade transition for visibility.
-		 */
-		static constexpr float visibilityFadeExponent;
+		util::copyable_signal<void (inp::Key)> onKey;
 
 		/*-----------------------+
 		| virtual implementation |
 		+-----------------------*/
 
 		private:
-		virtual WidgetSize CalcSize(const res::Theme &) const = 0;
+		virtual WidgetSizeConstraints GetSizeConstraints(const res::Theme &) const = 0;
 		virtual void DoDraw(DrawContext &) const = 0;
 		virtual void DoUpdate(float deltaTime);
 
@@ -274,10 +185,46 @@ namespace page { namespace ui
 
 		virtual void OnClick();
 
+		/*----------+
+		| constants |
+		+----------*/
+
+		protected:
+		/**
+		 * The duration of the fade-in transition for glow effects.
+		 */
+		static const float glowFadeInDuration;
+
+		/**
+		 * The duration of the fade-out transition for glow effects.
+		 */
+		static const float glowFadeOutDuration;
+
+		/**
+		 * The exponent of the fade transition for glow effects.
+		 */
+		static const float glowFadeExponent;
+
+		/**
+		 * The duration of the fade-in transition for visibility.
+		 */
+		static const float visibilityFadeInDuration;
+
+		/**
+		 * The duration of the fade-out transition for visibility.
+		 */
+		static const float visibilityFadeOutDuration;
+
+		/**
+		 * The exponent of the fade transition for visibility.
+		 */
+		static const float visibilityFadeExponent;
+
 		/*-------------+
 		| data members |
 		+-------------*/
 
+		private:
 		/**
 		 * The coordinates of the top-left corner of the widget.
 		 */
@@ -288,23 +235,21 @@ namespace page { namespace ui
 		 */
 		math::Vec2 minSize;
 
-		////////////////////////////////////////////////////////////////////////
-
 		/**
-		 * @defgroup widget-visibility
-		 * The variables that control the widget's visibility.
+		 * @defgroup widget-visible
+		 * The data members that control the widget's visibility.
 		 * @{
 		 */
-
 		/**
-		 * @c true if the widget is meant to be visible, not counting its
+		 * @c true if the widget is currently visible, not counting its
 		 * transition state or opacity.
 		 */
 		bool visible;
 
 		/**
-		 * The widget's visibility, which is also the current state of its
-		 * transition to being fully visible, in the range @f$[0,1]@f$.
+		 * The widget's visibility, which is the current state of its transition
+		 * between being invisible and being fully visible, in the range
+		 * @f$[0,1]@f$.
 		 */
 		float visibility = visible;
 
@@ -312,34 +257,29 @@ namespace page { namespace ui
 		 * The widget's opacity, when fully visible.
 		 */
 		float opacity = 1.0;
-
 		///@}
-
-		////////////////////////////////////////////////////////////////////////
 
 		/**
 		 * @defgroup widget-glow
-		 * The variables that control the widget's glow effect.
+		 * The data members that control the widget's glow effect.
 		 * @{
 		 */
-
 		/**
-		 * @c true if the widget is meant to be glowing, not counting its
+		 * @c true if the widget is currently glowing, not counting its
 		 * transition state or glow intensity.
 		 */
 		bool glow = false;
 
 		/**
-		 * The widget's glowiness, which is also the current state of its
-		 * transition to being fully glowing, in the range @f$[0,1]@f$.
+		 * The widget's transition state between not glowing and fully glowing,
+		 * in the range @f$[0,1]@f$.
 		 */
-		float glowiness = glow;
+		float glowTransitionState = glow;
 
 		/**
 		 * The intensity of the widget's glow effect.
 		 */
 		float glowIntensity = 1.0;
-
 		///@}
 	};
 }}

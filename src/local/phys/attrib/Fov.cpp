@@ -1,36 +1,42 @@
 #include <algorithm> // max, min
 #include "Fov.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Fov::Fov(float value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	float Fov::GetFov() const
 	{
-		namespace attrib
-		{
-			// construct
-			Fov::Fov(float fov) : fov(fov) {}
-
-			// access
-			float Fov::GetFov() const
-			{
-				return fov;
-			}
-			void Fov::SetFov(float fov)
-			{
-				this->fov = std::min(std::max(fov, 0.f), 180.f);
-			}
-
-			// frame serialization
-			Frame Fov::GetFrame() const
-			{
-				Frame frame;
-				frame.fov = fov;
-				return frame;
-			}
-			void Fov::Update(const Frame &frame)
-			{
-				if (frame.fov) fov = *frame.fov;
-			}
-		}
+		return value;
 	}
-}
+
+	void Fov::SetFov(float value)
+	{
+		this->value = std::min(std::max(value, 0.f), 180.f);
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Fov::GetFrame() const
+	{
+		Frame frame;
+		frame.fov = value;
+		return frame;
+	}
+
+	void Fov::SetFrame(const Frame &frame)
+	{
+		if (frame.fov) value = *frame.fov;
+	}
+}}}

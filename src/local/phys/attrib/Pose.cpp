@@ -1,415 +1,429 @@
-#include <algorithm> // find
+#include <utility> // move
+
+#include <boost/range/algorithm/find.hpp> // find
 
 #include "Pose.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+////////// Pose::Bone //////////////////////////////////////////////////////////
+
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Pose::Bone::Bone()
 	{
-		namespace attrib
+		dirtyTransformSig.Connect([]
 		{
-			// pose bone
-			// construct/copy/assign
-			Pose::Bone::Bone(Pose &pose, const res::Skeleton::Bone &skelBone, Bone *parent) :
-				PositionOrientationScale(skelBone.position, skelBone.orientation, skelBone.scale),
-				pose(&pose), name(skelBone.name), parent(parent),
-				dirty(true), invDirty(true)
+			if (!dirty)
 			{
-				SetBind();
-				if (parent) parent->children.push_back(this);
-			}
-			Pose::Bone::Bone(Pose &pose, const Bone &other, Bone *parent) :
-				PositionOrientationScale(other), pose(&pose),
-				name(other.name), parent(parent),
-				dirty(other.dirty), invDirty(other.invDirty),
-				skinMatrix(other.skinMatrix), normSkinMatrix(other.normSkinMatrix),
-				poseMatrix(other.poseMatrix), normPoseMatrix(other.normPoseMatrix),
-				invPoseMatrix(other.invPoseMatrix), normInvPoseMatrix(other.normInvPoseMatrix),
-				bindMatrix(other.bindMatrix), normBindMatrix(other.normBindMatrix),
-				invBindMatrix(other.invBindMatrix), normInvBindMatrix(other.normInvBindMatrix),
-				bindPosition(other.bindPosition), bindOrientation(other.bindOrientation), bindScale(other.bindScale)
-			{
-				if (parent)
+				for (Children::const_iterator iter(children.begin()); iter != children.end(); ++iter)
 				{
-					Children::iterator child(std::find(parent->children.begin(), parent->children.end(), &other));
-					if (child != parent->children.end()) *child = this;
-					else parent->children.push_back(this);
+					const Bone &child(**iter);
+					child.MarkDirty();
 				}
+				dirty = true;
 			}
-			Pose::Bone::Bone(const Bone &other) :
-				PositionOrientationScale(other), pose(other.pose),
-				name(other.name), parent(other.parent), children(other.children),
-				dirty(other.dirty), invDirty(other.invDirty),
-				skinMatrix(other.skinMatrix), normSkinMatrix(other.normSkinMatrix),
-				poseMatrix(other.poseMatrix), normPoseMatrix(other.normPoseMatrix),
-				invPoseMatrix(other.invPoseMatrix), normInvPoseMatrix(other.normInvPoseMatrix),
-				bindMatrix(other.bindMatrix), normBindMatrix(other.normBindMatrix),
-				invBindMatrix(other.invBindMatrix), normInvBindMatrix(other.normInvBindMatrix),
-				bindPosition(other.bindPosition), bindOrientation(other.bindOrientation), bindScale(other.bindScale)
-			{
-				if (parent)
-				{
-					Children::iterator child(std::find(parent->children.begin(), parent->children.end(), &other));
-					if (child != parent->children.end()) *child = this;
-					else parent->children.push_back(this);
-				}
-			}
-			Pose::Bone &Pose::Bone::operator =(const Bone &other)
-			{
-				PositionOrientationScale::operator =(other);
-				pose = other.pose;
-				name = other.name;
-				parent = other.parent;
-				children = other.children;
-				dirty = other.dirty;
-				invDirty = other.invDirty;
-				skinMatrix = other.skinMatrix;
-				normSkinMatrix = other.normSkinMatrix;
-				poseMatrix = other.poseMatrix;
-				normPoseMatrix = other.normPoseMatrix;
-				invPoseMatrix = other.invPoseMatrix;
-				normInvPoseMatrix = other.normInvPoseMatrix;
-				bindMatrix = other.bindMatrix;
-				normBindMatrix = other.normBindMatrix;
-				invBindMatrix = other.invBindMatrix;
-				normInvBindMatrix = other.normInvBindMatrix;
-				bindPosition = other.bindPosition;
-				bindOrientation = other.bindOrientation;
-				bindScale = other.bindScale;
-				if (parent)
-				{
-					Children::iterator child(std::find(parent->children.begin(), parent->children.end(), &other));
-					if (child != parent->children.end()) *child = this;
-					else parent->children.push_back(this);
-				}
-			}
+			/**
+			 * @todo This signal gets called every time a bone is transformed,
+			 * which could result in a lot of unnecessary function calls.  A
+			 * polling approach would make more sense.
+			 */
+			GetPose().dirtyPoseSig();
+		});
+	}
 
-			// name/parent
-			std::string Pose::Bone::GetName() const
-			{
-				return name;
-			}
-			Pose::Bone *Pose::Bone::GetParent()
-			{
-				return parent;
-			}
-			const Pose::Bone *Pose::Bone::GetParent() const
-			{
-				return parent;
-			}
+	Pose::Bone::Bone(Pose &pose, const res::Skeleton::Bone &skelBone, Bone *parent) :
+		PositionOrientationScale(bone.position, bone.orientation, bone.scale),
+		pose(&pose), name(bone.name), parent(parent)
+	{
+		SetBindPose();
 
-			// matrix access
-			const math::Matrix<3, 4> &Pose::Bone::GetSkinMatrix() const
-				{ return UpdateDirty(), skinMatrix; }
-			const math::Mat3 &Pose::Bone::GetNormSkinMatrix() const
-				{ return UpdateDirty(), normSkinMatrix; }
-			const math::Matrix<3, 4> &Pose::Bone::GetPoseMatrix() const
-				{ return UpdateDirty(), poseMatrix; }
-			const math::Mat3 &Pose::Bone::GetNormPoseMatrix() const
-				{ return UpdateDirty(), normPoseMatrix; }
-			const math::Matrix<3, 4> &Pose::Bone::GetInvPoseMatrix() const
-				{ return UpdateInvDirty(), invPoseMatrix; }
-			const math::Mat3 &Pose::Bone::GetNormInvPoseMatrix() const
-				{ return UpdateInvDirty(), normInvPoseMatrix; }
-			const math::Matrix<3, 4> &Pose::Bone::GetBindMatrix() const
-				{ return bindMatrix; }
-			const math::Mat3 &Pose::Bone::GetNormBindMatrix() const
-				{ return normBindMatrix; }
-			const math::Matrix<3, 4> &Pose::Bone::GetInvBindMatrix() const
-				{ return invBindMatrix; }
-			const math::Mat3 &Pose::Bone::GetNormInvBindMatrix() const
-				{ return normInvBindMatrix; }
+		if (parent)
+			parent->children.push_back(this);
+	}
 
-			// bind-pose
-			void Pose::Bone::SetBind()
-			{
-				// bind matrix
-				bindMatrix = GetMatrix();
-				normBindMatrix = Orientation::GetMatrix();
-				if (parent)
-				{
-					bindMatrix = parent->bindMatrix * bindMatrix;
-					normBindMatrix = parent->normBindMatrix * normBindMatrix;
-				}
-				// inverse bind matrix
-				invBindMatrix = GetInvMatrix();
-				normInvBindMatrix = Orientation::GetInvMatrix();
-				if (parent)
-				{
-					invBindMatrix *= parent->invBindMatrix;
-					normInvBindMatrix *= parent->normInvBindMatrix;
-				}
-				// bind transformation
-				bindPosition = GetPosition();
-				bindOrientation = GetOrientation();
-				bindScale = GetScale();
-			}
-			void Pose::Bone::Reset()
-			{
-				SetPosition(bindPosition);
-				SetOrientation(bindOrientation);
-				SetScale(bindScale);
-			}
+	Pose::Bone::Bone(Pose &pose, const Bone &other, Bone *parent) :
+		PositionOrientationScale(other),
 
-			// bind-pose transformation
-			math::Vec3 Pose::Bone::GetBindPosition() const
-				{ return bindPosition; }
-			math::Quat<> Pose::Bone::GetBindOrientation() const
-				{ return bindOrientation; }
-			math::Vec3 Pose::Bone::GetBindScale() const
-				{ return bindScale; }
+		pose             (&pose),
+		name             (other.name),
+		parent           (parent),
+		bindPosition     (other.bindPosition),
+		bindOrientation  (other.bindOrientation),
+		bindScale        (other.bindScale),
+		bindMatrix       (other.bindMatrix),
+		normBindMatrix   (other.normBindMatrix),
+		invBindMatrix    (other.invBindMatrix),
+		normInvBindMatrix(other.normInvBindMatrix),
+		dirty            (other.dirty),
+		skinMatrix       (other.skinMatrix),
+		normSkinMatrix   (other.normSkinMatrix),
+		poseMatrix       (other.poseMatrix),
+		normPoseMatrix   (other.normPoseMatrix),
+		invPoseMatrix    (other.invPoseMatrix),
+		normInvPoseMatrix(other.normInvPoseMatrix),
+	{
+		if (parent)
+			parent->children.push_back(this);
+	}
 
-			// mark dirty on transformation
-			void Pose::Bone::SetPosition(const math::Vec3 &position)
-			{
-				// NOTE: comparing value to avoid redundant dirty marking
-				if (Any(position != PositionOrientationScale::GetPosition()))
-				{
-					PositionOrientationScale::SetPosition(position);
-					MarkDirty();
-					GetPose().dirtyPoseSig();
-				}
-			}
-			void Pose::Bone::SetOrientation(const math::Quat<> &orientation)
-			{
-				// NOTE: comparing value to avoid redundant dirty marking
-				if (orientation != PositionOrientationScale::GetOrientation())
-				{
-					PositionOrientationScale::SetOrientation(orientation);
-					MarkDirty();
-					GetPose().dirtyPoseSig();
-				}
-			}
-			void Pose::Bone::SetNormal(const math::Vec3 &normal)
-			{
-				// NOTE: comparing value to avoid redundant dirty marking
-				if (Any(normal != PositionOrientationScale::GetNormal()))
-				{
-					PositionOrientationScale::SetNormal(normal);
-					MarkDirty();
-					GetPose().dirtyPoseSig();
-				}
-			}
-			void Pose::Bone::SetScale(const math::Vec3 &scale)
-			{
-				// NOTE: comparing value to avoid redundant dirty marking
-				if (Any(scale != PositionOrientationScale::GetScale()))
-				{
-					PositionOrientationScale::SetScale(scale);
-					MarkDirty();
-					GetPose().dirtyPoseSig();
-				}
-			}
-			void Pose::Bone::SetMatrix(const math::Matrix<3, 4> &matrix)
-			{
-				// NOTE: comparing value to avoid redundant dirty marking
-				if (matrix != PositionOrientationScale::GetMatrix())
-				{
-					PositionOrientationScale::SetMatrix(matrix);
-					MarkDirty();
-					GetPose().dirtyPoseSig();
-				}
-			}
-			void Pose::Bone::SetMatrix(const math::Mat3 &matrix)
-			{
-				// NOTE: comparing value to avoid redundant dirty marking
-				if (matrix != math::Mat3(PositionOrientationScale::GetMatrix()))
-				{
-					PositionOrientationScale::SetMatrix(matrix);
-					MarkDirty();
-					GetPose().dirtyPoseSig();
-				}
-			}
+	Pose::Bone::Bone(Pose &pose, Bone &&other, Bone *parent) :
+		PositionOrientationScale(std::move(other)),
 
-			// owner access
-			Pose &Pose::Bone::GetPose()
-			{
-				assert(pose);
-				return *pose;
-			}
-			const Pose &Pose::Bone::GetPose() const
-			{
-				assert(pose);
-				return *pose;
-			}
+		pose             (&pose),
+		name             (std::move(other.name)),
+		parent           (parent),
+		bindPosition     (std::move(other.bindPosition)),
+		bindOrientation  (std::move(other.bindOrientation)),
+		bindScale        (std::move(other.bindScale)),
+		bindMatrix       (std::move(other.bindMatrix)),
+		normBindMatrix   (std::move(other.normBindMatrix)),
+		invBindMatrix    (std::move(other.invBindMatrix)),
+		normInvBindMatrix(std::move(other.normInvBindMatrix)),
+		dirty            (std::move(other.dirty)),
+		skinMatrix       (std::move(other.skinMatrix)),
+		normSkinMatrix   (std::move(other.normSkinMatrix)),
+		poseMatrix       (std::move(other.poseMatrix)),
+		normPoseMatrix   (std::move(other.normPoseMatrix)),
+		invPoseMatrix    (std::move(other.invPoseMatrix)),
+		normInvPoseMatrix(std::move(other.normInvPoseMatrix))
+	{
+		Detach();
 
-			// dirty
-			void Pose::Bone::UpdateDirty() const
-			{
-				if (dirty)
-				{
-					poseMatrix = GetMatrix();
-					normPoseMatrix = Orientation::GetMatrix();
-					if (parent)
-					{
-						poseMatrix = parent->GetPoseMatrix() * poseMatrix;
-						normPoseMatrix = parent->GetNormPoseMatrix() * normPoseMatrix;
-					}
-					skinMatrix = poseMatrix * invBindMatrix;
-					normSkinMatrix = normPoseMatrix * normInvBindMatrix;
-					dirty = false;
-				}
-			}
-			void Pose::Bone::UpdateInvDirty() const
-			{
-				if (invDirty)
-				{
-					invPoseMatrix = GetInvMatrix();
-					normInvPoseMatrix = Orientation::GetInvMatrix();
-					if (parent)
-					{
-						invPoseMatrix *= parent->GetInvPoseMatrix();
-						normInvPoseMatrix *= parent->GetNormInvPoseMatrix();
-					}
-					invDirty = false;
-				}
-			}
-			void Pose::Bone::MarkDirty() const
-			{
-				if (!dirty)
-				{
-					for (Children::const_iterator iter(children.begin()); iter != children.end(); ++iter)
-					{
-						const Bone &child(**iter);
-						child.MarkDirty();
-					}
-					dirty = true;
-				}
-			}
-			void Pose::Bone::MarkInvDirty() const
-			{
-				if (!invDirty)
-				{
-					for (Children::const_iterator iter(children.begin()); iter != children.end(); ++iter)
-					{
-						const Bone &child(**iter);
-						child.MarkInvDirty();
-					}
-					invDirty = true;
-				}
-			}
+		if (parent)
+			parent->children.push_back(this);
+	}
 
-			// pose
-			// construct/copy/assign
-			Pose::Pose() {}
-			Pose::Pose(const res::Skeleton &skel)
-			{
-				for (res::Skeleton::Bones::const_iterator bone(skel.bones.begin()); bone != skel.bones.end(); ++bone)
-					CopyTreePath(*bone);
-			}
-			Pose::Pose(const Pose &other)
-			{
-				orderedBones.reserve(other.orderedBones.size());
-				for (ConstBoneIterator otherBone(other.BeginBones()); otherBone != other.EndBones(); ++otherBone)
-				{
-					const Bone *otherBoneParent = otherBone->GetParent();
-					Bone *boneParent = otherBoneParent ? &bones.find(otherBoneParent->GetName())->second : 0;
-					orderedBones.push_back(&bones.insert(std::make_pair(otherBone->GetName(), Bone(*this, *otherBone, boneParent))).first->second);
-				}
-			}
-			Pose &Pose::operator =(const Pose &other)
-			{
-				orderedBones.reserve(other.orderedBones.size());
-				for (ConstBoneIterator otherBone(other.BeginBones()); otherBone != other.EndBones(); ++otherBone)
-				{
-					const Bone *otherBoneParent = otherBone->GetParent();
-					Bone *boneParent = otherBoneParent ? &bones.find(otherBoneParent->GetName())->second : 0;
-					orderedBones.push_back(&bones.insert(std::make_pair(otherBone->GetName(), Bone(*this, *otherBone, boneParent))).first->second);
-				}
-				return *this;
-			}
+	Pose::Bone::~Bone()
+	{
+		Detach();
+	}
 
-			// status
-			bool Pose::IsPosed() const
-			{
-				return !bones.empty();
-			}
+	/*----------+
+	| observers |
+	+----------*/
 
-			// bone iterators
-			Pose::BoneIterator Pose::BeginBones()
-				{ return BoneIterator(orderedBones.begin()); }
-			Pose::ConstBoneIterator Pose::BeginBones() const
-				{ return ConstBoneIterator(orderedBones.begin()); }
-			Pose::BoneIterator Pose::EndBones()
-				{ return BoneIterator(orderedBones.end()); }
-			Pose::ConstBoneIterator Pose::EndBones() const
-				{ return ConstBoneIterator(orderedBones.end()); }
+	Pose &Pose::Bone::GetPose()
+	{
+		assert(pose);
+		return *pose;
+	}
 
-			// bone access
-			Pose::Bone *Pose::GetBone(const std::string &name)
-			{
-				Pose::Bones::iterator iter(bones.find(name));
-				return iter != bones.end() ? &iter->second : 0;
-			}
-			const Pose::Bone *Pose::GetBone(const std::string &name) const
-			{
-				Pose::Bones::const_iterator iter(bones.find(name));
-				return iter != bones.end() ? &iter->second : 0;
-			}
+	const Pose &Pose::Bone::GetPose() const
+	{
+		assert(pose);
+		return *pose;
+	}
 
-			// bind-pose
-			void Pose::SetBindPose()
-			{
-				for (BoneIterator bone(BeginBones()); bone != EndBones(); ++bone)
-					bone->SetBind();
-			}
-			void Pose::ResetPose()
-			{
-				for (BoneIterator bone(BeginBones()); bone != EndBones(); ++bone)
-					bone->Reset();
-			}
+	std::string Pose::Bone::GetName() const
+	{
+		return name;
+	}
 
-			// frame serialization
-			Frame Pose::GetFrame() const
-			{
-				Frame frame(PositionOrientationScale::GetFrame());
-				for (Bones::const_iterator iter(bones.begin()); iter != bones.end(); ++iter)
-				{
-					const Bone &bone(iter->second);
-					Frame::Bone frameBone =
-					{
-						bone.GetPosition(),
-						bone.GetOrientation(),
-						bone.GetScale()
-					};
-					frame.bones.insert(std::make_pair(iter->first, frameBone));
-				}
-				return frame;
-			}
-			void Pose::Update(const Frame &frame)
-			{
-				PositionOrientationScale::Update(frame);
-				for (Frame::Bones::const_iterator iter(frame.bones.begin()); iter != frame.bones.end(); ++iter)
-				{
-					if (Bone *bone = GetBone(iter->first))
-					{
-						const Frame::Bone &frameBone(iter->second);
-						if (frameBone.position) bone->SetPosition(*frameBone.position);
-						if (frameBone.orientation) bone->SetOrientation(*frameBone.orientation);
-						if (frameBone.scale) bone->SetScale(*frameBone.scale);
-					}
-				}
-			}
+	Pose::Bone *Pose::Bone::GetParent()
+	{
+		return parent;
+	}
 
-			// rebuild from new skeleton
-			void Pose::Rebuild(const res::Skeleton &skel)
-			{
-				// FIXME: implement
-			}
+	const Pose::Bone *Pose::Bone::GetParent() const
+	{
+		return parent;
+	}
 
-			// insert dependency path from skeleton
-			Pose::Bone &Pose::CopyTreePath(const res::Skeleton::Bone &skelBone)
-			{
-				Bones::iterator boneIter(bones.find(skelBone.name));
-				if (boneIter == bones.end())
-				{
-					Bone *parentBone = skelBone.parent ? &CopyTreePath(*skelBone.parent) : 0;
-					boneIter = bones.insert(std::make_pair(skelBone.name, Bone(*this, skelBone, parentBone))).first;
-					orderedBones.push_back(&boneIter->second);
-				}
-				return boneIter->second;
-			}
+	/*----------+
+	| modifiers |
+	+----------*/
+
+	void Pose::Bone::Detach()
+	{
+		// detach parent
+		if (parent)
+		{
+			auto iter(boost::find(parent->children, this));
+			assert(iter != parent->children.end());
+			parent->children.erase(iter);
+		}
+
+		// detach children
+		for (auto &child : children)
+		{
+			assert(child.parent == this);
+			child.parent = nullptr;
 		}
 	}
-}
 
+	/*----------+
+	| bind pose |
+	+----------*/
+
+	math::Vec3 Pose::Bone::GetBindPosition() const
+	{
+		return bindPosition;
+	}
+
+	math::Quat<> Pose::Bone::GetBindOrientation() const
+	{
+		return bindOrientation;
+	}
+
+	math::Vec3 Pose::Bone::GetBindScale() const
+	{
+		return bindScale;
+	}
+
+	const math::Mat34 &Pose::Bone::GetBindMatrix() const
+	{
+		return bindMatrix;
+	}
+
+	const math::Mat3 &Pose::Bone::GetNormBindMatrix() const
+	{
+		return normBindMatrix;
+	}
+
+	const math::Mat34 &Pose::Bone::GetInvBindMatrix() const
+	{
+		return invBindMatrix;
+	}
+
+	const math::Mat3 &Pose::Bone::GetNormInvBindMatrix() const
+	{
+		return normInvBindMatrix;
+	}
+
+	void Pose::Bone::SetBindPose()
+	{
+		// bind matrix
+		bindMatrix = GetMatrix();
+		normBindMatrix = Orientation::GetMatrix();
+		if (parent)
+		{
+			bindMatrix = parent->bindMatrix * bindMatrix;
+			normBindMatrix = parent->normBindMatrix * normBindMatrix;
+		}
+
+		// inverse bind matrix
+		invBindMatrix = GetInvMatrix();
+		normInvBindMatrix = Orientation::GetInvMatrix();
+		if (parent)
+		{
+			invBindMatrix *= parent->invBindMatrix;
+			normInvBindMatrix *= parent->normInvBindMatrix;
+		}
+
+		// bind transformation
+		bindPosition = GetPosition();
+		bindOrientation = GetOrientation();
+		bindScale = GetScale();
+	}
+
+	void Pose::Bone::ResetToBindPose()
+	{
+		SetPosition(bindPosition);
+		SetOrientation(bindOrientation);
+		SetScale(bindScale);
+	}
+
+	/*---------------+
+	| transformation |
+	+---------------*/
+
+	const math::Mat34 &Pose::Bone::GetPoseMatrix() const
+	{
+		UpdateDirty();
+		return poseMatrix;
+	}
+
+	const math::Mat3 &Pose::Bone::GetNormPoseMatrix() const
+	{
+		UpdateDirty();
+		return normPoseMatrix;
+	}
+
+	const math::Mat34 &Pose::Bone::GetInvPoseMatrix() const
+	{
+		UpdateDirty();
+		return invPoseMatrix;
+	}
+
+	const math::Mat3 &Pose::Bone::GetNormInvPoseMatrix() const
+	{
+		UpdateDirty();
+		return normInvPoseMatrix;
+	}
+
+	const math::Mat34 &Pose::Bone::GetSkinMatrix() const
+	{
+		UpdateDirty();
+		return skinMatrix;
+	}
+
+	const math::Mat3 &Pose::Bone::GetNormSkinMatrix() const
+	{
+		UpdateDirty();
+		return normSkinMatrix;
+	}
+
+	void Pose::Bone::UpdateDirty() const
+	{
+		if (dirty)
+		{
+			poseMatrix     = GetMatrix();
+			normPoseMatrix = Orientation::GetMatrix();
+
+			if (parent)
+			{
+				poseMatrix     = parent->GetPoseMatrix()     * poseMatrix;
+				normPoseMatrix = parent->GetNormPoseMatrix() * normPoseMatrix;
+			}
+
+			skinMatrix     = poseMatrix     * invBindMatrix;
+			normSkinMatrix = normPoseMatrix * normInvBindMatrix;
+
+			dirty = false;
+		}
+	}
+
+	void Pose::Bone::MarkDirty() const
+	{
+		if (!dirty)
+		{
+			for (const auto &child : children)
+				child->MarkDirty();
+
+			dirty = true;
+		}
+	}
+
+////////// Pose ////////////////////////////////////////////////////////////////
+
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Pose::Pose(const res::Skeleton &skeleton)
+	{
+		for (const auto &skelBone : skeleton.bones)
+			CopyTreePath(skelBone);
+	}
+
+	Pose::Pose(const Pose &other)
+	{
+		bones.reserve(other.bones.size());
+		for (const auto &otherBone : other.bones)
+		{
+			auto otherBoneParent(otherBone.GetParent());
+			auto boneParent(otherBoneParent ? bonesByName.find(otherBoneParent->GetName())->second : nullptr);
+			bones.emplace_back(*this, otherBone, boneParent);
+			bonesByName.insert(std::make_pair(otherBone.GetName(), &bones.back()));
+		}
+	}
+
+	Pose &Pose::operator =(Pose other)
+	{
+		std::swap(*this, other);
+	}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	bool Pose::IsPosed() const
+	{
+		return !bones.empty();
+	}
+
+	/*----------+
+	| modifiers |
+	+----------*/
+
+	void Pose::SetBindPose()
+	{
+		for (auto &bone : bones)
+			bone.SetBindPose();
+	}
+
+	void Pose::ResetToBindPose()
+	{
+		for (auto &bone : bones)
+			bone.ResetToBindPose();
+	}
+
+	void Pose::Rebuild(const res::Skeleton &skeleton)
+	{
+		// FIXME: implement
+	}
+
+	Pose::Bone &Pose::CopyTreePath(const res::Skeleton::Bone &skelBone)
+	{
+		auto boneIter(bonesByName.find(skelBone.name));
+		if (boneIter == bonesByName.end())
+		{
+			auto parentBone(skelBone.parent ? &CopyTreePath(*skelBone.parent) : nullptr);
+			bones.emplace_back(*this, skelBone, parentBone);
+			boneIter = bonesByName.insert(std::make_pair(skelBone.name, &bones.back()));
+		}
+		return *boneIter;
+	}
+
+	/*------+
+	| bones |
+	+------*/
+
+	auto Pose::GetBones()
+	{
+		return bones;
+	}
+
+	Pose::Bone *Pose::GetBone(const std::string &name)
+	{
+		auto iter(bonesByName.find(name));
+		return iter != bonesByName.end() ? &bones[iter->second] : nullptr;
+	}
+
+	const Pose::Bone *Pose::GetBone(const std::string &name) const
+	{
+		auto iter(bonesByName.find(name));
+		return iter != bonesByName.end() ? &bones[iter->second] : nullptr;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Pose::GetFrame() const
+	{
+		Frame frame(PositionOrientationScale::GetFrame());
+
+		// bones
+		for (const auto &bone : bones)
+		{
+			Frame::Bone boneFrame
+			{
+				bone.GetPosition(),
+				bone.GetOrientation(),
+				bone.GetScale()
+			};
+			frame.bones.insert(std::make_pair(bone.GetName(), boneFrame));
+		}
+
+		return frame;
+	}
+
+	void Pose::SetFrame(const Frame &frame)
+	{
+		PositionOrientationScale::SetFrame(frame);
+
+		// bones
+		for (const auto &kv : frame.bones)
+			if (Bone *bone = GetBone(kv.first))
+			{
+				const auto &boneFrame(kv.second);
+				if (boneFrame.position)    bone->SetPosition   (*boneFrame.position);
+				if (boneFrame.orientation) bone->SetOrientation(*boneFrame.orientation);
+				if (boneFrame.scale)       bone->SetScale      (*boneFrame.scale);
+			}
+	}
+}}}

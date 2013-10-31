@@ -3,29 +3,30 @@
 
 #	include "../../cache/proxy/Proxy.hpp"
 
-namespace page
+namespace page { namespace res { class Mesh; }}
+
+namespace page { namespace phys { namespace attrib
 {
-	namespace res { class Mesh; }
-
-	namespace phys
+	class Mesh
 	{
-		namespace attrib
-		{
-			struct Mesh
-			{
-				// construct
-				Mesh() = default;
-				explicit Mesh(const cache::Proxy<res::Mesh> &);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const cache::Proxy<res::Mesh> &GetMesh() const;
-				void SetMesh(const cache::Proxy<res::Mesh> &);
+		public:
+		Mesh() = default;
+		Mesh(const cache::Proxy<res::Mesh> &);
 
-				private:
-				cache::Proxy<res::Mesh> mesh;
-			};
-		}
-	}
-}
+		/*----------+
+		| accessors |
+		+----------*/
+
+		const cache::Proxy<res::Mesh> &GetMesh() const;
+		void SetMesh(const cache::Proxy<res::Mesh> &);
+
+		private:
+		cache::Proxy<res::Mesh> value;
+	};
+}}}
 
 #endif

@@ -1,12 +1,12 @@
 #include <algorithm> // count, max
 
-#include "../../res/type/Font.hpp" // Font::{lineHeight,maxBearing}, GetMaxLineWidth
-#include "../../res/type/Theme.hpp" // GetThickness, Theme::window
-#include "../../vid/DrawContext.hpp" // DrawContext::{FrameSaver,PushFrame}
-#include "../DrawContext.hpp"
+#include "../../../res/type/Font.hpp" // Font::{lineHeight,maxBearing}, GetMaxLineWidth
+#include "../../../res/type/Theme.hpp" // GetThickness, Theme::window
+#include "../../../vid/DrawContext.hpp" // DrawContext::{FrameSaver,PushFrame}
+#include "../../DrawContext.hpp"
 #include "Window.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/*-------------+
 	| constructors |
@@ -48,18 +48,18 @@ namespace page { namespace ui
 	}
 
 	// metrics
-	Window::Size Window::CalcSize(const res::Theme &theme) const
+	auto Window::CalcSize(const res::Theme &theme) const -> WidgetSize
 	{
 		// account for frame and margin
 		math::Aabb<2> frameThickness(GetThickness(theme.window.frame));
-		Size size(frameThickness.min + frameThickness.max + theme.window.margin * 2);
+		auto size(frameThickness.min + frameThickness.max + theme.window.margin * 2);
 		// account for title
 		math::Vec2 titleSize(GetTitleSize(theme));
 		size.min.y += titleSize.y;
 		// account for child widget
 		if (child)
 		{
-			Size childSize(child->GetSize(theme));
+			auto childSize(child->GetSize(theme));
 			size.min.x += std::max(childSize.min.x, titleSize.x);
 			size.min.y += childSize.min.y;
 			size.mode = Max(childSize.mode, size.mode);
@@ -163,7 +163,7 @@ namespace page { namespace ui
 			// account for title
 			aabb.min.y += GetTitleHeight(theme);
 			// account for child widget
-			Size childSize(child->GetSize(theme));
+			auto childSize(child->GetSize(theme));
 			float width = aabb.max.x - aabb.min.x;
 			if (width > childSize.min.x && childSize.mode.y == Size::shrink)
 				aabb = Shrink(aabb, math::Vec2(width - childSize.min.x, 0));

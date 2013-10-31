@@ -4,9 +4,9 @@
 #	include <memory> // shared_ptr
 #	include <vector>
 
-#	include "../math/fwd.hpp" // Vector
+#	include "../../../math/fwd.hpp" // Vector
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	class Widget;
 

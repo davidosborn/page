@@ -16,7 +16,7 @@ namespace page { namespace cfg
 	/**
 	 * The base class for configuration storage-mediums.
 	 */
-	class Source : public virtual util::Cloneable<Source>
+	class Source : public util::Cloneable<Source>
 	{
 		/*-------------+
 		| constructors |

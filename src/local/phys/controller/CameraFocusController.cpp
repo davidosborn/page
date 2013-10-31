@@ -9,7 +9,7 @@ namespace page { namespace phys
 {
 	// construct
 	CameraFocusController::CameraFocusController(const Camera &camera, const Positionable &target) :
-		Controller(constraintLayer), camera(camera), target(&target)
+		Controller(AnimationLayer::postConstraint), camera(camera), target(&target)
 	{
 		// initialize dependencies
 		if (const Controllable *dependency = dynamic_cast<const Controllable *>(this->target))

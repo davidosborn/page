@@ -8,7 +8,7 @@ namespace page { namespace phys
 {
 	// construct
 	AnimationController::AnimationController(const res::Animation &anim, float timeScale) :
-		Controller(preCollisionLayer),
+		Controller(AnimationLayer::preCollision),
 		time(0), timeScale(timeScale), duration(anim.duration),
 		position(anim.position),
 		orientation(anim.orientation),

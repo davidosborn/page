@@ -9,7 +9,7 @@ namespace page { namespace phys
 {
 	// construct
 	EyeController::EyeController(const attrib::Pose &pose) :
-		Controller(constraintLayer), mode(noMode)
+		Controller(AnimationLayer::postConstraint), mode(noMode)
 	{
 		assert(Check(pose));
 	}

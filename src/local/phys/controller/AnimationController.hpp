@@ -5,15 +5,15 @@
 #	include <vector>
 
 #	include "../../res/type/Animation.hpp" // Animation::{Bones,Vertices}
-#	include "../Controller.hpp"
 #	include "animation/Interpolator.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
-	class AnimationController :
-		public Controller,
-		public virtual util::Cloneable<AnimationController, Controller>
+	class AnimationController : public Controller
 	{
+		IMPLEMENT_CLONEABLE(AnimationController, Controller)
+
 		public:
 		// construct
 		explicit AnimationController(const res::Animation &, float timeScale = 1);

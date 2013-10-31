@@ -1,4 +1,4 @@
-#include "../../res/Index.hpp" // GetIndex, Index::Load
+#include "../../res/Index.hpp" // Index::Load
 #include "../../res/type/TypeRegistry.hpp"
 
 namespace page { namespace cache
@@ -8,8 +8,13 @@ namespace page { namespace cache
 	+-------------*/
 
 	template <typename T>
+		ResourceProxy<T>::ResourceProxy(std::nullptr_t) {}
+
+	template <typename T>
 		ResourceProxy<T>::ResourceProxy(const std::string &path) :
-			BasicProxy<T>(Signature("resource", GLOBAL(res::TypeRegistry).Query<T>().name, path)),
+			BasicProxy<T>(!path.empty() ?
+				Signature("resource", GLOBAL(res::TypeRegistry).Query<T>().name, path) :
+				Signature()),
 			path(path) {}
 
 	/*---------------+
@@ -19,6 +24,6 @@ namespace page { namespace cache
 	template <typename T>
 		auto ResourceProxy<T>::DoLock() const -> pointer
 	{
-		return res::GetIndex().Load<T>(path);
+		return GLOBAL(res::Index).Load<T>(path);
 	}
 }}

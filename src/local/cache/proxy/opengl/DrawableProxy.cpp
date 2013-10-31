@@ -47,7 +47,7 @@ namespace page { namespace cache { namespace opengl
 		if (partId)
 		{
 			// create drawable
-			phys::Form::Part &part(util::ReferenceFromId<phys::Form::Part>(partId));
+			phys::Form::Part &part(util::GetReferenceById<phys::Form::Part>(partId));
 			bool dynamic = part.GetForm().IsPosed() || part.IsDeformed();
 			std::unique_ptr<vid::opengl::Drawable> drawable(
 				vid::opengl::MakeDrawable(*mesh, dynamic));

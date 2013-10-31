@@ -1,36 +1,41 @@
 #include "Specular.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Specular::Specular(const math::RgbColor<> &value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	const math::RgbColor<> &Specular::GetSpecular() const
 	{
-		namespace attrib
-		{
-			// construct
-			Specular::Specular(const math::RgbColor<> &specular) :
-				specular(specular) {}
-
-			// access
-			const math::RgbColor<> &Specular::GetSpecular() const
-			{
-				return specular;
-			}
-			void Specular::SetSpecular(const math::RgbColor<> &specular)
-			{
-				this->specular = specular;
-			}
-
-			// frame serialization
-			Frame Specular::GetFrame() const
-			{
-				Frame frame;
-				frame.specular = specular;
-				return frame;
-			}
-			void Specular::Update(const Frame &frame)
-			{
-				if (frame.specular) specular = *frame.specular;
-			}
-		}
+		return value;
 	}
-}
+
+	void Specular::SetSpecular(const math::RgbColor<> &value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Specular::GetFrame() const
+	{
+		Frame frame;
+		frame.specular = value;
+		return frame;
+	}
+
+	void Specular::SetFrame(const Frame &frame)
+	{
+		if (frame.specular) value = *frame.specular;
+	}
+}}}

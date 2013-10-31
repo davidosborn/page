@@ -7,10 +7,10 @@
 
 namespace page { namespace wnd { namespace x11
 {
-	class Window :
-		public wnd::Window,
-		public virtual util::Cloneable<Window, wnd::Window>
+	class Window : public wnd::Window
 	{
+		IMPLEMENT_CLONEABLE(Window, wnd::Window)
+
 		public:
 		// construct/destroy
 		explicit Window(const std::string &title);

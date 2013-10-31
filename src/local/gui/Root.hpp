@@ -3,7 +3,7 @@
 
 #	include "../math/Aabb.hpp"
 #	include "../util/class/special_member_functions.hpp" // Polymorphic
-#	include "WidgetContainer.hpp"
+#	include "widget/container/WidgetContainer.hpp"
 
 namespace page
 {
@@ -16,7 +16,7 @@ namespace page { namespace gui
 	class Widget;
 
 	/**
-	 * Represents the GUI.
+	 * The root node of the GUI hierarchy.
 	 */
 	class Root :
 		public WidgetContainer,
@@ -26,11 +26,12 @@ namespace page { namespace gui
 		| constructors |
 		+-------------*/
 
+		public:
 		explicit Root(const std::shared_ptr<const res::Theme> &);
 
-		/*-----------+
-		| properties |
-		+-----------*/
+		/*------+
+		| theme |
+		+------*/
 
 		/**
 		 * @return The GUI's theme.
@@ -61,7 +62,11 @@ namespace page { namespace gui
 
 		// update
 		void Update(float deltaTime);
-		bool UpdateCursor(const math::Vec2 &position, float aspect);
+
+		/**
+		 * Updates the mouse-over state of child widgets.
+		 */
+		bool UpdateCursor(const math::Vec2 &cursorPosition, float aspect);
 
 		/*-------------+
 		| data members |

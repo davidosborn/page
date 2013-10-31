@@ -13,10 +13,10 @@ namespace page { namespace cache { namespace win32
 	/**
 	 * A proxy representing a cursor in the cache.
 	 */
-	class CursorProxy :
-		public BasicProxy<HCURSOR>,
-		public virtual util::Cloneable<CursorProxy, BasicProxy<HCURSOR>>
+	class CursorProxy : public BasicProxy<HCURSOR>
 	{
+		IMPLEMENT_CLONEABLE(CursorProxy, BasicProxy<HCURSOR>)
+
 		/*-------+
 		| traits |
 		+-------*/

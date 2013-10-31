@@ -12,10 +12,10 @@ namespace page { namespace cfg { namespace win32
 	/**
 	 * Represents a folder in the Windows registry.
 	 */
-	class RegistrySource :
-		public Source,
-		public virtual util::Cloneable<RegistrySource, Source>
+	class RegistrySource : public Source
 	{
+		IMPLEMENT_CLONEABLE(RegistrySource, Source)
+
 		/*-------------+
 		| constructors |
 		+-------------*/

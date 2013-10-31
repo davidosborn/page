@@ -1,35 +1,41 @@
 #include "Volume.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Volume::Volume(float value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	float Volume::GetVolume() const
 	{
-		namespace attrib
-		{
-			// construct
-			Volume::Volume(float volume) : volume(volume) {}
-
-			// access
-			float Volume::GetVolume() const
-			{
-				return volume;
-			}
-			void Volume::SetVolume(float volume)
-			{
-				this->volume = volume;
-			}
-
-			// frame serialization
-			Frame Volume::GetFrame() const
-			{
-				Frame frame;
-				frame.volume = volume;
-				return frame;
-			}
-			void Volume::Update(const Frame &frame)
-			{
-				if (frame.volume) volume = *frame.volume;
-			}
-		}
+		return value;
 	}
-}
+
+	void Volume::SetVolume(float value)
+	{
+		this->value = value;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Volume::GetFrame() const
+	{
+		Frame frame;
+		frame.volume = value;
+		return frame;
+	}
+
+	void Volume::SetFrame(const Frame &frame)
+	{
+		if (frame.volume) value = *frame.volume;
+	}
+}}}

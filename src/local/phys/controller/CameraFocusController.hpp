@@ -1,17 +1,17 @@
 #ifndef    page_local_phys_controller_CameraFocusController_hpp
 #   define page_local_phys_controller_CameraFocusController_hpp
 
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace phys
 {
 	class Camera;
 	class Positionable;
 
-	class CameraFocusController :
-		public Controller,
-		public virtual util::Cloneable<CameraFocusController, Controller>
+	class CameraFocusController : public Controller
 	{
+		IMPLEMENT_CLONEABLE(CameraFocusController, Controller)
+
 		public:
 		// construct
 		CameraFocusController(const Camera &, const Positionable &target);

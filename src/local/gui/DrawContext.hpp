@@ -6,7 +6,7 @@
 
 namespace page { namespace vid { class DrawContext; }}
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	struct DrawContext
 	{

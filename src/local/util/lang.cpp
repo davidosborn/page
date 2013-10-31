@@ -9,7 +9,7 @@
 
 #include "../err/report.hpp" // ReportWarning, std::exception
 #include "../log/Indenter.hpp"
-#include "../res/Index.hpp" // GetIndex, Index::Open
+#include "../res/Index.hpp" // Index::Open
 #include "../res/Stream.hpp" // Stream::{~Stream,GetLine}
 #include "functional/locale.hpp" // isspace_function
 #include "string/operations.hpp" // Partition, Split
@@ -528,7 +528,7 @@ namespace page
 				log::Indenter indenter;
 				try
 				{
-					const std::unique_ptr<res::Stream> stream(res::GetIndex().Open("lang/english.dict"));
+					const std::unique_ptr<res::Stream> stream(GLOBAL(res::Index).Open("lang/english.dict"));
 					for (std::string line;;)
 					{
 						// ignore comments and empty lines

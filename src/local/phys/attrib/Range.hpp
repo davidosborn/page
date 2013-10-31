@@ -3,31 +3,39 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Range
 	{
-		namespace attrib
-		{
-			struct Range
-			{
-				// construct
-				explicit Range(float = 1);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetRange() const;
-				void SetRange(float);
+		public:
+		explicit Range(float = 1);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float range;
-			};
-		}
-	}
-}
+		float GetRange() const;
+		void SetRange(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

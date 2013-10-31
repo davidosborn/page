@@ -3,7 +3,7 @@
 namespace page { namespace phys
 {
 	// construct
-	FrameController::FrameController(const Frame &frame, Layer layer) :
+	FrameController::FrameController(const Frame &frame, AnimationLayer layer) :
 		Controller(layer), frame(frame) {}
 
 	// generate frame

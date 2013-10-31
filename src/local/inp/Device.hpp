@@ -1,22 +1,24 @@
 #ifndef    page_local_inp_Device_hpp
 #   define page_local_inp_Device_hpp
 
-#	include "../util/class/special_member_functions.hpp" // Uncopyable
+#	include "../util/class/special_member_functions.hpp" // Polymorphic, Uncopyable
 #	include "State.hpp"
 
-namespace page
+namespace page { namespace inp
 {
-	namespace inp
+	/**
+	 * An input device.
+	 */
+	class Device :
+		public util::Polymorphic<Device>,
+		public util::Uncopyable<Device>
 	{
-		struct Device : util::Uncopyable<Device>
-		{
-			// destroy
-			virtual ~Device();
-
-			// state query
-			virtual State Poll() = 0;
-		};
-	}
-}
+		public:
+		/**
+		 * Returns the current state of the device.
+		 */
+		virtual PollState Poll() = 0;
+	};
+}}
 
 #endif

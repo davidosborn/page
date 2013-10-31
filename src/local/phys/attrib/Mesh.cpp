@@ -1,25 +1,26 @@
 #include "../../cache/proxy/ResourceProxy.hpp"
 #include "Mesh.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
-	{
-		namespace attrib
-		{
-			// construct
-			Mesh::Mesh(const cache::Proxy<res::Mesh> &mesh) :
-				mesh(mesh) {}
+	/*-------------+
+	| constructors |
+	+-------------*/
 
-			// access
-			const cache::Proxy<res::Mesh> &Mesh::GetMesh() const
-			{
-				return *mesh;
-			}
-			void Mesh::SetMesh(const cache::Proxy<res::Mesh> &mesh)
-			{
-				this->mesh = mesh;
-			}
-		}
+	Mesh::Mesh(const cache::Proxy<res::Mesh> &value) :
+		value(value) {}
+
+	/*----------+
+	| accessors |
+	+----------*/
+
+	const cache::Proxy<res::Mesh> &Mesh::GetMesh() const
+	{
+		return *value;
 	}
-}
+
+	void Mesh::SetMesh(const cache::Proxy<res::Mesh> &value)
+	{
+		this->value = value;
+	}
+}}}

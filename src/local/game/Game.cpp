@@ -4,14 +4,20 @@
 
 #include "../aud/Driver.hpp"
 #include "../cache/Cache.hpp" // Cache::{Purge,Update}
+#include "../cache/proxy/ResourceProxy.hpp"
 #include "../cfg/vars.hpp"
 #include "../err/report.hpp" // ReportWarning, std::exception
+//#include "../gui/Root.hpp"
+//#include "../gui/window/DebugWindow.hpp"
+//#include "../gui/window/SpeechWindow.hpp"
 #include "../inp/Driver.hpp"
 #include "../log/Indenter.hpp"
 #include "../math/interp.hpp" // HermiteScale
+#include "../phys/Scene.hpp"
 #include "../res/clip/Stream.hpp"
-#include "../res/Index.hpp" // GetIndex, Index::Refresh
+#include "../res/Index.hpp" // Index::Refresh
 #include "../res/save/SaverRegistry.hpp"
+#include "../res/type/Scene.hpp"
 #include "../script/Driver.hpp"
 #include "../sys/process.hpp" // Sleep
 #include "../sys/timer/Timer.hpp" // MakeTimer, Timer::{GetDelta,Update}
@@ -20,13 +26,14 @@
 #include "../vid/Driver.hpp"
 #include "../wnd/Window.hpp"
 #include "../wnd/WindowRegistry.hpp"
+#include "Character.hpp"
 #include "Game.hpp"
-#include "Scene.hpp"
-#include "UserInterface.hpp"
+#include "Player.hpp" // Player::Update
 
 // TEST: scripting
-#include "../cache/proxy/ResourceProxy.hpp"
 #include "../res/type/Script.hpp"
+
+namespace page { namespace res { class Character; }}
 
 namespace page { namespace game
 {
@@ -35,15 +42,18 @@ namespace page { namespace game
 		pauseFadeOutDuration = 1,
 		pauseFadeExponent    = 1.5;
 
-	// construct/destroy
-	Game::Game() : exit(false), timeScale(1), paused(false), pauseLevel(0)
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Game::Game()
 	{
 		// NOTE: resources must be indexed before initializing the video
 		// driver, which uses GLSL shader resources
 		std::cout << "initializing resources" << std::endl;
 		{
 			log::Indenter indenter;
-			res::GetIndex(); // build the resource index
+			GLOBAL(res::Index); // build the resource index
 		}
 		std::cout << "creating window" << std::endl;
 		{
@@ -80,16 +90,12 @@ namespace page { namespace game
 		std::cout << "initializing scene" << std::endl;
 		{
 			log::Indenter indenter;
-			scene.reset(new Scene(window->GetAudioDriver()));
-			window->GetAudioDriver().Imbue(scene.get());
-			window->GetVideoDriver().Imbue(scene.get());
+			LoadScene(*cache::ResourceProxy<res::Scene>("scene/village/village.scene"));
 		}
 		std::cout << "initializing user interface" << std::endl;
 		{
 			log::Indenter indenter;
-			userInterface.reset(new UserInterface(window->GetAudioDriver()));
-			window->GetInputDriver().Imbue(userInterface.get());
-			window->GetVideoDriver().Imbue(userInterface.get());
+//			gui.reset(new gui::Root(cache::ResourceProxy<res::Theme>("ui/theme/default.theme").lock()));
 		}
 		std::cout << "initializing timer" << std::endl;
 		{
@@ -99,13 +105,59 @@ namespace page { namespace game
 		// TEST: scripting
 		scriptDriver->Run(*cache::ResourceProxy<res::Script>("script/test.lua"));
 	}
+
 	Game::~Game()
 	{
 		GLOBAL(cache::Cache).Purge();
 		// FIXME: clipStream may print statistics here if still recording
 	}
 
-	// main loop
+	/*----------+
+	| modifiers |
+	+----------*/
+
+	void Game::LoadScene(const res::Scene &scene)
+	{
+		this->scene->Reset(scene);
+
+		// start music
+		if (scene.music)
+		{
+			boost::optional<log::Indenter> indenter;
+			if (*CVAR(logVerbose))
+			{
+				std::cout << "playing music: " << scene.music.GetSignature().GetSource() << std::endl;
+				indenter = boost::in_place();
+			}
+			try
+			{
+				music = window->GetAudioDriver().Play(scene.music, true, true, 5);
+			}
+			catch (const std::exception &e)
+			{
+				err::ReportWarning(e);
+				if (*CVAR(logVerbose))
+					std::cout << "failed to play music" << std::endl;
+			}
+		}
+
+		// create player
+		player.reset(new Player(std::make_shared<Character>(*cache::ResourceProxy<res::Character>("character/male-1/male.char"))));
+		auto playerBody(player->GetCharacter()->GetBodyPtr());
+		this->scene->Insert(playerBody);
+		playerBody->SetTrack(this->scene->GetTrack());
+		this->scene->SetFocus(playerBody);
+	}
+
+	void Game::Quit()
+	{
+		exit = true;
+	}
+
+	/*----------+
+	| main loop |
+	+----------*/
+
 	void Game::Run()
 	{
 		timer->Reset();
@@ -122,18 +174,17 @@ namespace page { namespace game
 					{
 						window->GetInputDriver().Update();
 						UpdateCursor();
-						userInterface->Update(deltaTime);
+//						gui->Update(deltaTime);
 						UpdatePause(deltaTime);
 						if (timeScale)
 						{
-							/*player.Update();
-							UpdatePlayer();
-							UpdateScene();
-							UpdateMenu();*/
-							scriptDriver->Update(deltaTime * timeScale);
-							scene->Update(window->GetInputDriver(), deltaTime * timeScale);
+							float deltaTimeScaled = deltaTime * timeScale;
+							scriptDriver->Update(deltaTimeScaled);
+							if (player)
+								player->Update(window->GetInputDriver());
+							scene->Update(deltaTimeScaled);
 						}
-						window->GetVideoDriver().Update();
+//						window->GetVideoDriver().Render(*gui);
 						window->GetAudioDriver().Update(deltaTime);
 						UpdateRecording();
 						GLOBAL(cache::Cache).Update(deltaTime);
@@ -144,48 +195,31 @@ namespace page { namespace game
 		}
 	}
 
-	// modifiers
-	void Game::Quit()
-	{
-		exit = true;
-	}
+	/*-------+
+	| update |
+	+-------*/
 
-	// scene access
-	Scene &Game::GetScene()
-	{
-		assert(scene);
-		return *scene;
-	}
-	const Scene &Game::GetScene() const
-	{
-		assert(scene);
-		return *scene;
-	}
-
-	// update
 	void Game::UpdateCursor()
 	{
-		if (window->GetInputDriver().GetCursorMode() == inp::Driver::pointCursorMode)
-		{
-			math::Vec2 cursorPos(window->GetInputDriver().GetCursorPosition());
-			if (!userInterface->UpdateCursor(cursorPos, Aspect(window->GetSize())))
-			{
-				// FIXME: fall back to game-level cursor interaction
-			}
-		}
+/*		if (window->GetInputDriver().GetCursorMode() == inp::Driver::CursorMode::point)
+			gui->UpdateCursor(
+				window->GetInputDriver().GetCursorPosition(),
+				Aspect(window->GetSize()));*/
 	}
+
 	void Game::UpdatePause(float deltaTime)
 	{
-		if (paused && pauseLevel < 1 || !paused && pauseLevel)
+		if (paused && pauseScale < 1 || !paused && pauseScale)
 		{
-			pauseLevel = paused ?
-				std::min(pauseLevel + deltaTime / pauseFadeInDuration,  1.f) :
-				std::max(pauseLevel - deltaTime / pauseFadeOutDuration, 0.f);
-			float invSoftPauseLevel = 1 - math::HermiteScale(pauseLevel, pauseFadeExponent);
-			window->GetVideoDriver().SetSceneSaturation(invSoftPauseLevel);
-			timeScale = invSoftPauseLevel;
+			pauseScale = paused ?
+				std::min(pauseScale + deltaTime / pauseFadeInDuration,  1.f) :
+				std::max(pauseScale - deltaTime / pauseFadeOutDuration, 0.f);
+			float invSoftPauseScale = 1 - math::HermiteScale(pauseScale, pauseFadeExponent);
+			window->GetVideoDriver().SetSceneSaturation(invSoftPauseScale);
+			timeScale = invSoftPauseScale;
 		}
 	}
+
 	void Game::UpdateRecording()
 	{
 		if (clipStream)
@@ -196,7 +230,10 @@ namespace page { namespace game
 		}
 	}
 
-	// timing
+	/*-------+
+	| timing |
+	+-------*/
+
 	float Game::FixDeltaTime(float deltaTime)
 	{
 		// lock frame rate when recording
@@ -217,20 +254,25 @@ namespace page { namespace game
 		return deltaTime;
 	}
 
-	// signal handlers
+	/*----------------+
+	| signal handlers |
+	+----------------*/
+
 	void Game::OnExit()
 	{
 		Quit();
 	}
+
 	void Game::OnFocus(bool focus)
 	{
 		if (focus)
 		{
-			res::GetIndex().Refresh();
+			GLOBAL(res::Index).Refresh();
 			window->GetAudioDriver().Resume();
 		}
 		else window->GetAudioDriver().Pause();
 	}
+
 	void Game::OnKey(inp::Key key)
 	{
 		switch (key)
@@ -247,14 +289,14 @@ namespace page { namespace game
 				// pause
 				// FIXME: waiting for implementation
 				//window->GetAudioDriver().Pause(pauseFadeInDuration);
-				userInterface->Pause();
+				//userInterface->Pause();
 			}
 			else
 			{
 				// resume
 				// FIXME: waiting for implementation
 				//window->GetAudioDriver().Resume(pauseFadeOutDuration);
-				userInterface->Resume();
+				//userInterface->Resume();
 			}
 			break;
 			case inp::printKey: // take screenshot
@@ -299,16 +341,16 @@ namespace page { namespace game
 			case inp::tabKey: // toggle camera
 			{
 				inp::Driver &inputDriver(window->GetInputDriver());
-				if (scene->GetCameraMode() == phys::Scene::sceneCameraMode)
+				if (scene->GetCameraMode() == phys::Scene::CameraMode::scene)
 				{
 					// switch to detail camera
-					inputDriver.SetCursorMode(inp::Driver::lookCursorMode);
+					inputDriver.SetCursorMode(inp::Driver::CursorMode::look);
 					scene->UseDetailCamera(inputDriver);
 				}
 				else
 				{
 					// switch to scene camera
-					inputDriver.SetCursorMode(inp::Driver::pointCursorMode);
+					inputDriver.SetCursorMode(inp::Driver::CursorMode::point);
 					scene->UseSceneCamera();
 				}
 			}

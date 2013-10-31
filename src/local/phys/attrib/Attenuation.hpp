@@ -3,31 +3,39 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Attenuation
 	{
-		namespace attrib
-		{
-			struct Attenuation
-			{
-				// construct
-				explicit Attenuation(float = 0);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetAttenuation() const;
-				void SetAttenuation(float);
+		public:
+		explicit Attenuation(float = 0);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float attenuation;
-			};
-		}
-	}
-}
+		float GetAttenuation() const;
+		void SetAttenuation(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

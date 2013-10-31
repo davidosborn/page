@@ -3,31 +3,42 @@
 
 #	include "../Frame.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	/**
+	 * The falloff exponent for spotlights.
+	 */
+	class Falloff
 	{
-		namespace attrib
-		{
-			struct Falloff // exponent
-			{
-				// construct
-				explicit Falloff(float = 1);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				float GetFalloff() const;
-				void SetFalloff(float);
+		public:
+		explicit Falloff(float = 1);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				private:
-				float falloff;
-			};
-		}
-	}
-}
+		float GetFalloff() const;
+		void SetFalloff(float);
+
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		float value;
+	};
+}}}
 
 #endif

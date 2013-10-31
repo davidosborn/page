@@ -6,15 +6,15 @@
 #	include "../../math/Color.hpp" // RgbaColor
 #	include "Widget.hpp"
 
-namespace page { namespace ui
+namespace page { namespace gui
 {
 	/**
 	 * A widget that displays a block of text.
 	 */
-	class TextWidget :
-		public Widget,
-		public virtual util::Cloneable<TextWidget, Widget>
+	class TextWidget : public Widget
 	{
+		IMPLEMENT_CLONEABLE(TextWidget, Widget)
+
 		/*-------------+
 		| constructors |
 		+-------------*/

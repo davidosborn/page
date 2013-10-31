@@ -7,47 +7,62 @@
 #	include "../mixin/Positionable.hpp"
 #	include "../mixin/Transformable.hpp"
 
-namespace page
+namespace page { namespace phys { namespace attrib
 {
-	namespace phys
+	class Position :
+		public virtual Positionable,
+		public virtual Transformable
 	{
-		namespace attrib
-		{
-			struct Position : virtual Positionable, virtual Transformable
-			{
-				// construct
-				explicit Position(const math::Vec3 & = 0);
-				explicit Position(const math::Matrix<3, 4> &);
+		/*-------------+
+		| constructors |
+		+-------------*/
 
-				// access
-				const math::Vec3 &GetPosition() const;
-				void SetPosition(const math::Vec3 &);
+		public:
+		explicit Position(const math::Vec3 & = 0);
+		explicit Position(const math::Mat34 &);
 
-				// matrix access
-				math::Matrix<3, 4> GetMatrix() const;
-				math::Matrix<3, 4> GetInvMatrix() const;
-				void SetMatrix(const math::Matrix<3, 4> &);
+		/*----------+
+		| accessors |
+		+----------*/
 
-				// transform state
-				const math::Vec3 &GetLastPosition() const;
-				const math::Vec3 &GetForce() const;
-				const math::Vec3 &GetVelocity() const;
+		const math::Vec3 &GetPosition() const;
+		void SetPosition(const math::Vec3 &);
 
-				protected:
-				// frame serialization
-				Frame GetFrame() const;
-				void Update(const Frame &);
+		// matrix view
+		math::Mat34 GetMatrix() const;
+		math::Mat34 GetInvMatrix() const;
+		void SetMatrix(const math::Mat34 &);
 
-				// transform modifiers
-				void BakeTransform();
-				void UpdateForce();
-				void UpdateDelta();
+		// transformation observers
+		const math::Vec3 &GetLastPosition() const;
+		const math::Vec3 &GetForce() const;
+		const math::Vec3 &GetVelocity() const;
 
-				private:
-				math::Vec3 position, lastPosition, force, velocity;
-			};
-		}
-	}
-}
+		/*--------------------+
+		| frame serialization |
+		+--------------------*/
+
+		protected:
+		Frame GetFrame() const;
+		void SetFrame(const Frame &);
+
+		/*-----------------------------+
+		| Transformable implementation |
+		+-----------------------------*/
+
+		public:
+		void BakeTransform() override;
+		void UpdateForce() override;
+		void UpdateDelta() override;
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
+		private:
+		math::Vec3 value, lastValue = value;
+		math::Vec3 force, velocity;
+	};
+}}}
 
 #endif

@@ -4,35 +4,32 @@
 #	include <memory> // shared_ptr
 #	include <string>
 
-namespace page
+namespace page { namespace game
 {
-	namespace game
+	class Character;
+	class Game;
+	class Object;
+}}
+
+namespace page { namespace script
+{
+	struct Router
 	{
-		class Character;
-		class Game;
-		class Object;
-	}
+		// construct
+		explicit Router(game::Game &);
 
-	namespace script
-	{
-		struct Router
-		{
-			// construct
-			explicit Router(game::Game &);
+		// operations
+		void Quit();
 
-			// operations
-			void Quit();
+		// entity management
+		std::shared_ptr<game::Character> MakeCharacter(const std::string &);
+		std::shared_ptr<game::Object> MakeObject(const std::string &);
+		void Remove(const std::shared_ptr<game::Character> &);
+		void Remove(const std::shared_ptr<game::Object> &);
 
-			// entity management
-			std::shared_ptr<game::Character> MakeCharacter(const std::string &);
-			std::shared_ptr<game::Object> MakeObject(const std::string &);
-			void Remove(const std::shared_ptr<game::Character> &);
-			void Remove(const std::shared_ptr<game::Object> &);
-
-			private:
-			game::Game *game;
-		};
-	}
-}
+		private:
+		game::Game *game;
+	};
+}}
 
 #endif

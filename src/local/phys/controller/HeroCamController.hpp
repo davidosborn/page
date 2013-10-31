@@ -4,7 +4,7 @@
 #	include "../../cache/proxy/Proxy.hpp"
 #	include "../../math/Euler.hpp"
 #	include "../../math/fwd.hpp" // Aabb
-#	include "../Controller.hpp"
+#	include "Controller.hpp"
 
 namespace page { namespace inp { class Driver; }}
 
@@ -12,10 +12,10 @@ namespace page { namespace phys
 {
 	class Form;
 
-	class HeroCamController :
-		public Controller,
-		public virtual util::Cloneable<HeroCamController, Controller>
+	class HeroCamController : public Controller
 	{
+		IMPLEMENT_CLONEABLE(HeroCamController, Controller)
+
 		public:
 		// construct
 		HeroCamController(const inp::Driver &, const Form &);

@@ -8,10 +8,10 @@ namespace page { namespace cfg
 	/**
 	 * Provides access to configuration variables specified on the command line.
 	 */
-	class CmdlineSource :
-		public Source,
-		public virtual util::Cloneable<CmdlineSource, Source>
+	class CmdlineSource : public Source
 	{
+		IMPLEMENT_CLONEABLE(CmdlineSource, Source)
+
 		/*-------------+
 		| constructors |
 		+-------------*/

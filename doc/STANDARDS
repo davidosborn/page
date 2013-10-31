@@ -11,3 +11,13 @@ When catching all exceptions, prefer to catch std::exception, not "...".
 Use the following to prevent ntdll.dll things in gdb:
 http://stackoverflow.com/questions/1621059/breakpoints-out-of-nowhere-when-debugging-with-gdb-inside-ntdll
 handle SIGTRAP nostop
+
+Use a raw pointer if you need an optional reference to an object but you don't
+want to take ownership of it.  For example, pointers are used to store the
+connection between the GUI and the input/video drivers.
+
+Use cache::Proxy if you want to access a resource that would benefit from being
+cached, or if another cached object might want to refer to that resource by its
+proxy.  Otherwise, you can use GLOBAL(res::Index).Load() to load a shared_ptr to
+the resource and store the shared_ptr if you want it to stay in memory.  And if
+you want to parse the resource yourself, use GLOBAL(res::Index).Open().

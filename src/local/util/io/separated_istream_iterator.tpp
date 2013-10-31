@@ -1,4 +1,4 @@
-#include <cassert> // assert
+#include <cassert>
 #include <istream> // basic_istream
 #include <string> // basic_string
 
