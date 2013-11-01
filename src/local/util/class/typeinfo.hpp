@@ -18,7 +18,7 @@ namespace page
 			const std::type_info &GetIncompleteTypeInfo()
 		{
 			class Local {};
-			return typeid (Local);
+			return typeid(Local);
 		}
 	}
 }

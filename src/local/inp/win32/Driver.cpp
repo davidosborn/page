@@ -554,5 +554,9 @@ namespace page { namespace inp { namespace win32
 		repeatSpeed = 400 - repeatSpeed * 12;
 	}
 
+	/*-------------+
+	| registration |
+	+-------------*/
+
 	REGISTER_DRIVER(Driver, wnd::win32::Window, STRINGIZE(WIN32_NAME) " input driver")
 }}}

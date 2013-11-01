@@ -1,3 +1,11 @@
+Big logic issue!!
+In DriverRegistry (aud, inp, and vid), Make() should consider drivers that are
+compatible with a base class of the provided Window instance, not only drivers
+that match the fully-derived Window type.  Otherwise, aud::NullDriver won't be
+considered EVER!  Same deal with aud::openal::Driver actually.
+
+-----------------------
+
 Specify dependencies in Controller constructor, not through pure-virtual function.
 
 Optimization: use polling rather than dirty signals.

@@ -11,7 +11,7 @@ namespace page { namespace wnd
 	{
 		Register(
 			Record(
-				typeid (T),
+				typeid(T),
 				util::factory_function<T>(),
 				std::forward<RecordArgs>(recordArgs)...));
 	}

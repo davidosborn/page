@@ -1,5 +1,6 @@
 #include <cassert>
 
+#include "DriverRegistry.hpp" // REGISTER_DRIVER
 #include "NullDriver.hpp"
 
 namespace page { namespace aud
@@ -38,4 +39,10 @@ namespace page { namespace aud
 		assert(!"not supported");
 		return 0;
 	}
+
+	/*-------------+
+	| registration |
+	+-------------*/
+
+	REGISTER_DRIVER(NullDriver, wnd::Window, "null audio driver", -100)
 }}

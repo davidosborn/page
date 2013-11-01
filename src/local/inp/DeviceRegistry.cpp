@@ -50,7 +50,7 @@ namespace page { namespace inp
 
 		std::vector<std::unique_ptr<Device>> devices;
 
-		auto iter(windowTypes.find(typeid (window)));
+		auto iter(windowTypes.find(typeid(window)));
 		if (iter != windowTypes.end())
 		{
 			const auto &windowTypeRecord(iter->second);

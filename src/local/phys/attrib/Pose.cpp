@@ -324,6 +324,7 @@ namespace page { namespace phys { namespace attrib
 	Pose &Pose::operator =(Pose other)
 	{
 		std::swap(*this, other);
+		return *this;
 	}
 
 	/*----------+

@@ -1,6 +1,7 @@
 #include <X11/Xlib.h>
 
 #include "../../err/Exception.hpp"
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../ConsoleRegistry.hpp" // REGISTER_CONSOLE
 #include "Console.hpp"
 

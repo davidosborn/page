@@ -10,9 +10,9 @@ namespace page { namespace inp
 		void DriverRegistry::Register(RecordArgs &&... recordArgs)
 	{
 		Register(
-			typeid (Window),
+			typeid(Window),
 			Record(
-				typeid (T),
+				typeid(T),
 				util::factory_function<T>(),
 				std::forward<RecordArgs>(recordArgs)...));
 	}

@@ -2,12 +2,12 @@
 
 #include "../util/functional/factory.hpp" // factory_function
 
-namespace page { namespace inp
+namespace page { namespace aud
 {
-////////// DeviceRegistry /////////////////////////////////////////////////////
+////////// DriverRegistry /////////////////////////////////////////////////////
 
 	template <typename T, typename Window, typename... RecordArgs>
-		void DeviceRegistry::Register(RecordArgs &&... recordArgs)
+		void DriverRegistry::Register(RecordArgs &&... recordArgs)
 	{
 		Register(
 			typeid(Window),

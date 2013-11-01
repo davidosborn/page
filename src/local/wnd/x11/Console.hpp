@@ -1,6 +1,8 @@
 #ifndef    page_local_wnd_x11_Console_hpp
 #   define page_local_wnd_x11_Console_hpp
 
+#	include <string>
+
 #	include "../Console.hpp"
 
 namespace page { namespace wnd { namespace x11

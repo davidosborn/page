@@ -147,5 +147,9 @@ namespace page { namespace inp { namespace x11
 		return keys[keycode / CHAR_BIT] & 1 << keycode % CHAR_BIT;
 	}
 
+	/*-------------+
+	| registration |
+	+-------------*/
+
 	REGISTER_DRIVER(Driver, wnd::x11::Window, STRINGIZE(X11_NAME) " input driver")
 }}}

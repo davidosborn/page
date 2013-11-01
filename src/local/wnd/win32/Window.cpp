@@ -2,14 +2,12 @@
 
 #include <windowsx.h> // GET_[XY]_LPARAM
 
-#include "../../aud/Driver.hpp" // MakeDriver
 #include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"
-#include "../../inp/Driver.hpp" // MakeDriver
 #include "../../res/type/image/win32.hpp" // MakeBitmap
 #include "../../util/cpp.hpp" // STRINGIZE
 #include "../../util/locale/convert.hpp" // Convert
-#include "../../vid/Driver.hpp" // Driver::RenderImage, MakeDriver
+#include "../../vid/Driver.hpp" // Driver::RenderImage
 #include "../../win32/resource.h" // IDI_ICON
 #include "../WindowRegistry.hpp" // REGISTER_WINDOW
 #include "Window.hpp"
@@ -51,7 +49,10 @@ namespace page { namespace wnd { namespace win32
 		}
 	}
 
-	// construct/destroy
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	Window::Window(const std::string &title) :
 		alive(false), min(false), full(*CVAR(windowFullscreen)),
 		waitFocus(false), moving(false), sizing(false),
@@ -118,6 +119,7 @@ namespace page { namespace wnd { namespace win32
 			math::Vec2i(rect.left, rect.top),
 			math::Vec2u(rect.right, rect.bottom));
 	}
+
 	Window::~Window()
 	{
 		Deinit();
@@ -126,6 +128,21 @@ namespace page { namespace wnd { namespace win32
 		DestroyWindow(hwnd);
 		GetWindowMap().erase(hwnd);
 		if (full) SetFull(false);
+	}
+
+	/*--------------------+
+	| copy/move semantics |
+	+--------------------*/
+
+	Window::Window(const Window &other)
+	{
+		// FIXME: create new window with same title, position, and size as other
+	}
+
+	Window &Window::operator =(Window other)
+	{
+		std::swap(*this, other);
+		return *this;
 	}
 
 	// update
@@ -159,20 +176,6 @@ namespace page { namespace wnd { namespace win32
 			GetDeviceCaps(hdc, VERTRES));
 		ReleaseDC(NULL, hdc);
 		return size;
-	}
-
-	// driver factory functions
-	aud::Driver *Window::MakeAudioDriver()
-	{
-		return aud::MakeDriver(*this);
-	}
-	inp::Driver *Window::MakeInputDriver()
-	{
-		return inp::MakeDriver(*this);
-	}
-	vid::Driver *Window::MakeVideoDriver()
-	{
-		return vid::MakeDriver(*this);
 	}
 
 	// fullscreen modifiers

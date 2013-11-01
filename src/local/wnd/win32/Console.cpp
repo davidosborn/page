@@ -1,6 +1,7 @@
 #include <windows.h>
 
 #include "../../err/Exception.hpp"
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../../util/locale/convert.hpp" // Convert
 #include "../ConsoleRegistry.hpp" // REGISTER_CONSOLE
 #include "Console.hpp"

@@ -9,6 +9,8 @@ namespace page { namespace util
 {
 	/**
 	 * A wrapper around @c boost::signal to make it copyable.
+	 *
+	 * The connections are not copied when the signal is copied.
 	 */
 	template <typename Signature>
 		class copyable_signal : public boost::signal<Signature>

@@ -1,6 +1,8 @@
 #ifndef    page_local_wnd_x11_Window_hpp
 #   define page_local_wnd_x11_Window_hpp
 
+#	include <string>
+
 #	include <X11/Xlib.h> // Atom, Display, Window, XEvent
 
 #	include "../Window.hpp"
@@ -11,10 +13,20 @@ namespace page { namespace wnd { namespace x11
 	{
 		IMPLEMENT_CLONEABLE(Window, wnd::Window)
 
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
-		// construct/destroy
 		explicit Window(const std::string &title);
-		~Window();
+		~Window() override;
+
+		/*--------------------+
+		| copy/move semantics |
+		+--------------------*/
+
+		Window(const Window &);
+		Window &operator =(const Window &);
 
 		// update
 		void Update();
@@ -25,17 +37,12 @@ namespace page { namespace wnd { namespace x11
 		::Window GetWindow() const;
 
 		// event signal
-		util::copyable_signal<void (const XEvent &)> eventSig;
+		boost::signal<void (const XEvent &)> eventSig;
 
 		// environment state
 		math::Vec2u GetScreenSize() const;
 
 		private:
-		// driver factory functions
-		aud::Driver *MakeAudioDriver();
-		inp::Driver *MakeInputDriver();
-		vid::Driver *MakeVideoDriver();
-
 		// fullscreen modifiers
 		void SetFull(bool);
 		void SwitchFull();

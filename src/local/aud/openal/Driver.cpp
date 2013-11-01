@@ -6,7 +6,9 @@
 #include "../../err/Exception.hpp"
 #include "../../log/Indenter.hpp"
 #include "../../math/float.hpp" // DecibelToLinear
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../../util/string/operations.hpp" // Trim
+#include "../DriverRegistry.hpp" // REGISTER_DRIVER
 #include "channel/AmbientChannel.hpp" // AmbientChannel::AmbientChannel
 #include "channel/SpatialChannel.hpp" // SpatialChannel::SpatialChannel
 #include "Driver.hpp"
@@ -110,9 +112,9 @@ namespace page { namespace aud
 		}
 	}
 
-	// factory function
-	Driver *MakeDriver(wnd::Window &wnd)
-	{
-		return new openal::Driver(wnd);
-	}
+	/*-------------+
+	| registration |
+	+-------------*/
+
+	REGISTER_DRIVER(Driver, wnd::Window, STRINGZE(OPENAL_NAME) " audio driver", 25)
 }}

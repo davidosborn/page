@@ -3,11 +3,9 @@
 #include <X11/Xatom.h> // XA_STRING
 #include <X11/Xutil.h> // XSetWMName, XTextProperty
 
-#include "../../aud/Driver.hpp" // MakeDriver
 #include "../../cfg/vars.hpp"
 #include "../../err/Exception.hpp"
-#include "../../inp/Driver.hpp" // MakeDriver
-#include "../../vid/Driver.hpp" // MakeDriver
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../WindowRegistry.hpp" // REGISTER_WINDOW
 #include "Window.hpp"
 
@@ -26,7 +24,10 @@ enum // _NET_WM_STATE actions
 
 namespace page { namespace wnd { namespace x11
 {
-	// construct/destroy
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	Window::Window(const std::string &title)
 	{
 		// open display
@@ -100,11 +101,27 @@ namespace page { namespace wnd { namespace x11
 			math::Vec2i(attrib.x, attrib.y),
 			math::Vec2u(attrib.width, attrib.height));
 	}
+
 	Window::~Window()
 	{
 		Deinit();
 		XDestroyWindow(display, w);
 		XCloseDisplay(display);
+	}
+
+	/*--------------------+
+	| copy/move semantics |
+	+--------------------*/
+
+	Window::Window(const Window &other)
+	{
+		// FIXME: create new window with same title, position, and size as other
+	}
+
+	Window &Window::operator =(Window other)
+	{
+		std::swap(*this, other);
+		return *this;
 	}
 
 	// update
@@ -175,20 +192,6 @@ namespace page { namespace wnd { namespace x11
 		XWindowAttributes attrib;
 		XGetWindowAttributes(display, RootWindow(display, screen), &attrib);
 		return math::Vec2u(attrib.width, attrib.height);
-	}
-
-	// driver factory functions
-	aud::Driver *Window::MakeAudioDriver()
-	{
-		return aud::MakeDriver(*this);
-	}
-	inp::Driver *Window::MakeInputDriver()
-	{
-		return inp::MakeDriver(*this);
-	}
-	vid::Driver *Window::MakeVideoDriver()
-	{
-		return vid::MakeDriver(*this);
 	}
 
 	// fullscreen modifiers

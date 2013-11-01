@@ -1,6 +1,8 @@
 #ifndef    page_local_wnd_win32_Window_hpp
 #   define page_local_wnd_win32_Window_hpp
 
+#	include <string>
+
 #	include <windows.h> // HWND, LPARAM, LRESULT, UINT, WPARAM
 
 #	include "../Window.hpp"
@@ -11,10 +13,20 @@ namespace page { namespace wnd { namespace win32
 	{
 		IMPLEMENT_CLONEABLE(Window, wnd::Window)
 
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
-		// construct/destroy
 		explicit Window(const std::string &title);
-		~Window();
+		~Window() override;
+
+		/*--------------------+
+		| copy/move semantics |
+		+--------------------*/
+
+		Window(const Window &);
+		Window &operator =(const Window &);
 
 		// update
 		void Update();
@@ -23,17 +35,12 @@ namespace page { namespace wnd { namespace win32
 		HWND GetHwnd() const;
 
 		// message signal
-		util::copyable_signal<void (UINT, WPARAM, LPARAM)> messageSig;
+		boost::signal<void (UINT, WPARAM, LPARAM)> messageSig;
 
 		// environment state
 		math::Vec2u GetScreenSize() const;
 
 		private:
-		// driver factory functions
-		aud::Driver *MakeAudioDriver();
-		inp::Driver *MakeInputDriver();
-		vid::Driver *MakeVideoDriver();
-
 		// fullscreen modifiers
 		static void SetFull(bool);
 		void SwitchFull();

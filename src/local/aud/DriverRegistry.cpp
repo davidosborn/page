@@ -14,7 +14,7 @@
 #include "Driver.hpp" // Driver::~Driver
 #include "DriverRegistry.hpp"
 
-namespace page { namespace inp
+namespace page { namespace aud
 {
 ////////// DriverRegistryRecord ///////////////////////////////////////////////
 
@@ -67,6 +67,11 @@ namespace page { namespace inp
 			std::cout << "creating driver" << std::endl;
 			indenter = boost::in_place();
 		}
+
+		// FIXME: what we need to do here is take all the records for the
+		// derived window type and all the records for the base window type
+		// (ie: Window) and merge the lists (which are each sorted, but we have
+		// to sort them together).  Then we can iterate over the result.
 
 		auto iter(windowTypes.find(typeid(window)));
 		if (iter != windowTypes.end())

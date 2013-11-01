@@ -5,6 +5,7 @@ extern "C"
 
 #include "../../err/Exception.hpp"
 #include "../../math/Vector.hpp"
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../../util/gcc/init_priority.hpp" // REG_INIT_PRIORITY
 #include "FfmpegEncoder.hpp"
 

@@ -1,7 +1,9 @@
 #include <climits> // CHAR_BIT
 
 #include "../../err/Exception.hpp"
+#include "../../util/cpp.hpp" // STRINGIZE
 #include "../../wnd/win32/Window.hpp" // Window->wnd::Window
+#include "../DriverRegistry.hpp" // REGISTER_DRIVER
 #include "Driver.hpp"
 
 namespace page { namespace aud
@@ -85,9 +87,9 @@ namespace page { namespace aud
 		}
 	}
 
-	// factory function
-	Driver *MakeDriver(wnd::Window &wnd)
-	{
-		return new win32::Driver(dynamic_cast<wnd::win32::Window &>(wnd));
-	}
+	/*-------------+
+	| registration |
+	+-------------*/
+
+	REGISTER_DRIVER(Driver, wnd::win32::Window, STRINGZE(WIN32_NAME) " audio driver")
 }}
