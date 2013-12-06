@@ -143,7 +143,7 @@ namespace page { namespace res
 #	define REGISTER_SCANNER(...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \

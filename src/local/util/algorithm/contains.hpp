@@ -3,7 +3,7 @@
 
 #	include <utility> // declval
 
-#	include "../type_traits/sfinae.hpp"
+#	include "../type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT, ENABLE_IF
 
 namespace page
 {

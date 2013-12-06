@@ -45,9 +45,9 @@ namespace page { namespace wnd
 		 * constructor.
 		 */
 		void InitState(
-			bool                focus,
-			math::Vec2i const & position,
-			math::Vec2u const & size);
+			bool               focus,
+			math::Vec2i const& position,
+			math::Vec2u const& size);
 
 		/**
 		 * Destroys the drivers that have been created.

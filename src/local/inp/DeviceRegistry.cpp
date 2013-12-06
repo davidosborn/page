@@ -9,7 +9,6 @@
 #include "../err/report.hpp" // ReportWarning
 #include "../log/Indenter.hpp"
 #include "../util/functional/member.hpp" // member_of
-#include "../wnd/Window.hpp" // typeid
 #include "Device.hpp" // Device::~Device
 #include "DeviceRegistry.hpp"
 
@@ -18,25 +17,25 @@ namespace page { namespace inp
 ////////// DeviceRegistryRecord ///////////////////////////////////////////////
 
 	DeviceRegistryRecord::DeviceRegistryRecord(
-		std::type_info        const& type,
-		DeviceFactoryFunction const& factoryFunction,
-		std::string           const& name) :
+		std::type_info           const& type,
+		DeviceFactoryFunction    const& factoryFunction,
+		DeviceCompatibleFunction const& compatibleFunction,
+		std::string              const& name) :
 			type(type),
 			factoryFunction(factoryFunction),
+			compatibleFunction(compatibleFunction),
 			name(name)
 	{
-		assert(factoryFunction != nullptr);
+		assert(factoryFunction    != nullptr);
+		assert(compatibleFunction != nullptr);
 	}
 
 ////////// DeviceRegistry /////////////////////////////////////////////////////
 
-	void DeviceRegistry::Register(const std::type_info &windowType, const Record &record)
+	void DeviceRegistry::Register(const Record &record)
 	{
-		// get window-type record for window type
-		auto &windowTypeRecord(windowTypes.insert({windowType, {}}).first->second);
-
 		// add record to list
-		windowTypeRecord.records.push_back(record);
+		records.push_back(record);
 	}
 
 	std::vector<std::unique_ptr<Device>> DeviceRegistry::MakeAll(wnd::Window &window) const
@@ -50,12 +49,8 @@ namespace page { namespace inp
 
 		std::vector<std::unique_ptr<Device>> devices;
 
-		auto iter(windowTypes.find(typeid(window)));
-		if (iter != windowTypes.end())
-		{
-			const auto &windowTypeRecord(iter->second);
-
-			for (const auto &record : windowTypeRecord.records)
+		for (const auto &record : records)
+			if (record.compatibleFunction(window))
 			{
 				boost::optional<log::Indenter> indenter;
 				if (*CVAR(logVerbose))
@@ -73,7 +68,6 @@ namespace page { namespace inp
 					err::ReportWarning(e);
 				}
 			}
-		}
 
 		return devices;
 	}

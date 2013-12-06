@@ -3,6 +3,7 @@
 
 #	include <memory> // unique_ptr
 
+#	include "../aud/SoundProxy.hpp"
 #	include "../inp/Key.hpp"
 #	include "../util/class/special_member_functions.hpp" // Polymorphic, Uncopyable
 

@@ -23,7 +23,7 @@
 #	include <boost/mpl/vector.hpp>
 
 #	include "../util/io/separated_ostream_iterator.hpp"
-#	include "../util/type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT_1
+#	include "../util/type_traits/sfinae.hpp" // DEFINE_SFINAE_TYPE_TRAIT
 
 namespace page { namespace err
 {

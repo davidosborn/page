@@ -1,10 +1,10 @@
-Big logic issue!!
-In DriverRegistry (aud, inp, and vid), Make() should consider drivers that are
-compatible with a base class of the provided Window instance, not only drivers
-that match the fully-derived Window type.  Otherwise, aud::NullDriver won't be
-considered EVER!  Same deal with aud::openal::Driver actually.
+In C++14, simple observers can be replaced with "decltype(auto) GetX() const",
+with the function being defined (ie: implemented) inside the class at the point
+of its declaration.
 
------------------------
+The Win32 input driver needs some better commenting/cleaning (although it works).
+
+What is the purpose of util::Share?  Is util::NopDeleter useful?
 
 Specify dependencies in Controller constructor, not through pure-virtual function.
 

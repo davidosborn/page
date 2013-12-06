@@ -160,33 +160,16 @@ namespace page { namespace inp { namespace win32
 		UINT mshMousewheel;
 
 		/**
-		 * The system's current configuration.
-		 *
-		 * @todo This should be moved into a static singleton, so that multiple
-		 * input drivers don't have to maintain separate copies of the same
-		 * system settings.
-		 */
-		struct SystemSettings
-		{
-			Limits();
-
-			UINT doubleTime;
-			math::Vec2u doubleRange, dragRange;
-			unsigned repeatDelay;
-			DWORD repeatSpeed;
-		} systemSettings;
-
-		/**
 		 * Cursor state.
 		 */
 		struct CursorState
 		{
-			enum Icon
+			enum class Icon
 			{
-				noIcon,
-				arrowIcon,
-				themeIcon
-			} icon = noIcon;
+				none,
+				arrow,
+				theme
+			} icon = Icon::none;
 			bool visible = true;
 			math::Vec2u pointPosition;
 		} cursorState;
@@ -196,18 +179,67 @@ namespace page { namespace inp { namespace win32
 		 */
 		struct MouseState
 		{
+			/**
+			 * @c true if at least one mouse button is being pressed.
+			 */
 			bool down = false;
+
+			/**
+			 * @c true if the mouse is currently in a dragging state.  The
+			 * dragging state will be entered when a mouse button is held down
+			 * and the cursor is moved beyond a certain threshold.
+			 */
 			bool dragging = false;
+
+			/**
+			 * @c true if the same mouse button was pressed, released, and
+			 * pressed again within a certain timeframe, which would signal a
+			 * double-click or double-drag operation.
+			 */
 			bool _double = false;
+
+			/**
+			 * @c true if mouse-button presses should be ignored.
+			 */
 			bool ignoreDown = false;
-			Button downButton = 0;
+
+			/**
+			 * The mouse button that was last pressed.
+			 */
+			Button downButton;
+
+			/**
+			 * The time when the mouse button was last pressed.
+			 */
 			LONG downTime;
+
+			/**
+			 * The cursor position when the mouse button was last pressed.
+			 */
 			math::Vec2u downPosition;
+
+			/**
+			 * The amount that the scroll wheel has turned since the last frame,
+			 * in mouse-wheel units.
+			 */
 			float deltaScroll = 0;
 
-			// repeating
+			/**
+			 * @defgroup mouse-button-repeating
+			 * @{
+			 */
+			/**
+			 * @c true if the last mouse-button press is currently in a
+			 * repeating state.  The repeating state will be entered when a
+			 * mouse button is held down beyond a certain period of time.
+			 */
 			bool repeating = false;
+
+			/**
+			 * The timer used to implement mouse-button repeating.
+			 */
 			UINT_PTR repeatTimer = 0;
+			///@}
 		} mouseState;
 	};
 }}}

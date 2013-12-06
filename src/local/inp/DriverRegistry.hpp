@@ -5,9 +5,7 @@
 #	include <list>
 #	include <memory> // unique_ptr
 #	include <string>
-#	include <typeindex>
 #	include <typeinfo>
-#	include <unordered_map>
 
 #	include "../util/class/Monostate.hpp"
 #	include "../util/gcc/init_priority.hpp" // REG_INIT_PRIORITY
@@ -24,6 +22,12 @@ namespace page { namespace inp
 	 */
 	using DriverFactoryFunction = std::function<std::unique_ptr<Driver> (wnd::Window &)>;
 
+	/**
+	 * A function that will return @c true if the driver is compatible with the
+	 * specified window.
+	 */
+	using DriverCompatibleFunction = std::function<bool (wnd::Window &)>;
+
 ////////// DriverRegistryRecord ////////////////////////////////////////////////
 
 	/**
@@ -33,10 +37,11 @@ namespace page { namespace inp
 	struct DriverRegistryRecord
 	{
 		DriverRegistryRecord(
-			std::type_info        const& type,
-			DriverFactoryFunction const& factoryFunction,
-			std::string           const& name,
-			int                          priority = 0);
+			std::type_info           const& type,
+			DriverFactoryFunction    const& factoryFunction,
+			DriverCompatibleFunction const& compatibleFunction,
+			std::string              const& name,
+			int                             priority = 0);
 
 		/**
 		 * The type of the driver.
@@ -47,6 +52,11 @@ namespace page { namespace inp
 		 * @copydoc DriverFactoryFunction
 		 */
 		DriverFactoryFunction factoryFunction;
+
+		/**
+		 * @copydoc DriverCompatibleFunction
+		 */
+		DriverCompatibleFunction compatibleFunction;
 
 		/**
 		 * The name of the driver.
@@ -85,7 +95,7 @@ namespace page { namespace inp
 		/**
 		 * @copydoc Register
 		 */
-		void Register(const std::type_info &windowType, const Record &);
+		void Register(const Record &);
 
 		public:
 		/**
@@ -95,11 +105,7 @@ namespace page { namespace inp
 		std::unique_ptr<Driver> Make(wnd::Window &) const;
 
 		private:
-		struct WindowTypeRecord
-		{
-			std::list<Record> records;
-		};
-		std::unordered_map<std::type_index, WindowTypeRecord> windowTypes;
+		std::list<Record> records;
 	};
 }}
 
@@ -107,15 +113,18 @@ namespace page { namespace inp
 
 	/**
 	 * Registers a type with @c DriverRegistry.
+	 *
+	 * @note @a WINDOW must be a fully-defined type; a forward declaration is
+	 * not sufficient, as @c dynamic_cast will be applied to it.
 	 */
 #	define REGISTER_DRIVER(T, WINDOW, ...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \
-					GLOBAL(::page::wnd::DriverRegistry).Register<T, WINDOW>(__VA_ARGS__); \
+					GLOBAL(::page::inp::DriverRegistry).Register<T, WINDOW>(__VA_ARGS__); \
 				} \
 			} initializer __attribute__((init_priority(REG_INIT_PRIORITY))); \
 		}

@@ -74,19 +74,27 @@ namespace page { namespace math
 
 	template <unsigned n, typename Iterator>
 		auto BasicSlice<n, Iterator>::begin() const noexcept -> const iterator &
-			{ return iter; }
+	{
+		return iter;
+	}
 
 	template <unsigned n, typename Iterator>
 		auto BasicSlice<n, Iterator>::end() const -> iterator
-			{ return begin() + n; }
+	{
+		return begin() + n;
+	}
 
 	template <unsigned n, typename Iterator>
 		auto BasicSlice<n, Iterator>::rbegin() const -> reverse_iterator
-			{ return reverse_iterator(end()); }
+	{
+		return reverse_iterator(end());
+	}
 
 	template <unsigned n, typename Iterator>
 		auto BasicSlice<n, Iterator>::rend() const -> reverse_iterator
-			{ return reverse_iterator(begin()); }
+	{
+		return reverse_iterator(begin());
+	}
 
 	/*---------------+
 	| element access |
@@ -95,6 +103,45 @@ namespace page { namespace math
 	template <unsigned n, typename Iterator>
 		auto BasicSlice<n, Iterator>::operator [](size_type i) const -> reference
 			{ return begin()[i]; }
+
+////////// Slice (2 component) /////////////////////////////////////////////////
+
+	/*-----------+
+	| assignment |
+	+-----------*/
+
+	template <typename Iterator>
+		const Slice<2, Iterator> &Slice<2, Iterator>::operator =(const Slice &other) const
+	{
+		static_cast<const Base &>(*this) = other;
+		return *this;
+	}
+
+////////// Slice (3 component) /////////////////////////////////////////////////
+
+	/*-----------+
+	| assignment |
+	+-----------*/
+
+	template <typename Iterator>
+		const Slice<3, Iterator> &Slice<3, Iterator>::operator =(const Slice &other) const
+	{
+		static_cast<const Base &>(*this) = other;
+		return *this;
+	}
+
+////////// Slice (4 component) /////////////////////////////////////////////////
+
+	/*-----------+
+	| assignment |
+	+-----------*/
+
+	template <typename Iterator>
+		const Slice<4, Iterator> &Slice<4, Iterator>::operator =(const Slice &other) const
+	{
+		static_cast<const Base &>(*this) = other;
+		return *this;
+	}
 
 ////////////////////////////////////////////////////////////////////////////////
 

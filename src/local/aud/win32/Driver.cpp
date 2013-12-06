@@ -2,7 +2,7 @@
 
 #include "../../err/Exception.hpp"
 #include "../../util/cpp.hpp" // STRINGIZE
-#include "../../wnd/win32/Window.hpp" // Window->wnd::Window
+#include "../../wnd/win32/Window.hpp" // REGISTER_DRIVER, Window->wnd::Window
 #include "../DriverRegistry.hpp" // REGISTER_DRIVER
 #include "Driver.hpp"
 
@@ -91,5 +91,5 @@ namespace page { namespace aud
 	| registration |
 	+-------------*/
 
-	REGISTER_DRIVER(Driver, wnd::win32::Window, STRINGZE(WIN32_NAME) " audio driver")
+	REGISTER_DRIVER(Driver, wnd::win32::Window, STRINGIZE(WIN32_NAME) " audio driver")
 }}

@@ -152,7 +152,7 @@ namespace page { namespace res { namespace clip
 #	define REGISTER_ENCODER(T, ...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \

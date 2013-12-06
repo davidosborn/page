@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "../cfg/vars.hpp"
 #include "channel/AmbientChannel.hpp"
 #include "channel/SpatialChannel.hpp"
@@ -8,73 +6,8 @@
 
 namespace page { namespace aud
 {
-	// sound proxy
-	// construct
-	SoundProxy::SoundProxy() {}
-	SoundProxy::SoundProxy(const std::shared_ptr<Sound> &sound) :
-		sound(sound) {}
-
-	// state
-	bool SoundProxy::IsPlaying() const
-	{
-		assert(sound);
-		return sound->IsPlaying();
-	}
-	float SoundProxy::GetVolume() const
-	{
-		assert(sound);
-		return sound->GetVolume();
-	}
-
-	// modifiers
-	void SoundProxy::Reset()
-	{
-		sound.reset();
-	}
-	void SoundProxy::Reset(const std::shared_ptr<Sound> &sound)
-	{
-		this->sound = sound;
-	}
-	void SoundProxy::Stop()
-	{
-		assert(sound);
-		sound->Stop();
-	}
-	void SoundProxy::Pause()
-	{
-		assert(sound);
-		sound->Pause();
-	}
-	void SoundProxy::Resume()
-	{
-		assert(sound);
-		sound->Resume();
-	}
-	void SoundProxy::SetVolume(float volume)
-	{
-		assert(sound);
-		sound->SetVolume(volume);
-	}
-
-	// validity
-	SoundProxy::operator bool() const
-	{
-		return sound != nullptr;
-	}
-
-	// relational operators
-	bool SoundProxy::operator ==(const SoundProxy &other) const
-	{
-		return sound == other.sound;
-	}
-	bool SoundProxy::operator !=(const SoundProxy &other) const
-	{
-		return sound != other.sound;
-	}
-
-	// driver
 	// construct/destroy
-	Driver::Driver(wnd::Window &wnd) : wnd(wnd), scene(0) {}
+	Driver::Driver(wnd::Window &window) : window(window), scene(0) {}
 	Driver::~Driver() {}
 
 	// update
@@ -214,11 +147,11 @@ namespace page { namespace aud
 	// window access
 	wnd::Window &Driver::GetWindow()
 	{
-		return wnd;
+		return window;
 	}
 	const wnd::Window &Driver::GetWindow() const
 	{
-		return wnd;
+		return window;
 	}
 
 	// inspiration modifiers

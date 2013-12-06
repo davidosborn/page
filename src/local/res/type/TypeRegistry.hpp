@@ -136,7 +136,7 @@ namespace page { namespace res
 #	define REGISTER_TYPE(T, ...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \

@@ -16,7 +16,7 @@ namespace page
 			| constructors |
 			+-------------*/
 
-			using TimeFilter::TimeFilter;
+			using PrefixFilter::PrefixFilter;
 
 			/*----------------------------+
 			| PrefixFilter implementation |

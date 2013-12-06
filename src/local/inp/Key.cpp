@@ -8,25 +8,26 @@ namespace page { namespace inp
 	{
 		switch (key)
 		{
-			case backspaceKey: return "backspace";
-			case deleteKey:    return "delete";
-			case downKey:      return "down";
-			case enterKey:     return "enter";
-			case escapeKey:    return "escape";
-			case leftKey:      return "left";
-			case pauseKey:     return "pause";
-			case printKey:     return "print";
-			case recordKey:    return "record";
-			case rightKey:     return "right";
-			case tabKey:       return "tab";
-			case upKey:        return "up";
+			case Key::backspace: return "backspace";
+			case Key::delete_:   return "delete";
+			case Key::down:      return "down";
+			case Key::enter:     return "enter";
+			case Key::escape:    return "escape";
+			case Key::left:      return "left";
+			case Key::pause:     return "pause";
+			case Key::print:     return "print";
+			case Key::record:    return "record";
+			case Key::right:     return "right";
+			case Key::tab:       return "tab";
+			case Key::up:        return "up";
 		}
 		assert(!"invalid key");
 	}
 
 	std::string GetName(char c)
 	{
-		if (c >= 0x20 && c <= 0x7e) return std::string(1, c);
+		if (c >= 0x20 && c <= 0x7e)
+			return std::string(1, c);
 		else switch (c)
 		{
 			case 0x00: return "null";

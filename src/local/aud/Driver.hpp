@@ -6,6 +6,7 @@
 
 #	include "../cache/proxy/fwd.hpp" // Proxy
 #	include "../util/class/special_member_functions.hpp" // Uncopyable
+#	include "SoundProxy.hpp"
 
 namespace page
 {
@@ -23,35 +24,6 @@ namespace page { namespace aud
 	class AmbientChannel;
 	class Sound;
 	class SpatialChannel;
-
-	struct SoundProxy
-	{
-		// construct
-		SoundProxy();
-		explicit SoundProxy(const std::shared_ptr<Sound> &);
-
-		// state
-		bool IsPlaying() const;
-		float GetVolume() const;
-
-		// modifiers
-		void Reset();
-		void Reset(const std::shared_ptr<Sound> &);
-		void Stop();
-		void Pause();
-		void Resume();
-		void SetVolume(float);
-
-		// validity
-		explicit operator bool() const;
-
-		// relational operators
-		bool operator ==(const SoundProxy &) const;
-		bool operator !=(const SoundProxy &) const;
-
-		private:
-		std::shared_ptr<Sound> sound;
-	};
 
 	struct Driver : util::Uncopyable<Driver>
 	{
@@ -95,7 +67,7 @@ namespace page { namespace aud
 		virtual AmbientChannel *MakeAmbientChannel(const Sound &) const = 0;
 		virtual SpatialChannel *MakeSpatialChannel(const phys::Sound &) const = 0;
 
-		wnd::Window &wnd;
+		wnd::Window &window;
 		typedef std::vector<std::shared_ptr<Sound>> Sounds;
 		Sounds sounds;
 		typedef std::vector<std::shared_ptr<AmbientChannel>> AmbientChannels;

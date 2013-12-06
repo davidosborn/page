@@ -4,15 +4,15 @@
 #	include <cstddef> // ptrdiff_t, size_t
 #	include <iosfwd> // basic_[io]stream
 #	include <iterator> // reverse_iterator
-#	include <type_traits> // enable_if, is_integral
+#	include <type_traits> // is_integral
 
+#	include "../util/type_traits/sfinae.hpp" // ENABLE_IF
 #	include "ArithmeticConversion.hpp"
 #	include "float.hpp" // Real
 #	include "fwd.hpp" // DefaultType, Vector
 
 namespace page { namespace math
 {
-
 ////////// BasicVector /////////////////////////////////////////////////////////
 
 	/**
@@ -261,62 +261,62 @@ namespace page { namespace math
 	/**
 	 * Returns a vector filled with zeros.
 	 */
-	template <unsigned n, typename T = DefaultType>
-		typename std::enable_if<n != 4, Vector<n, T>>::type
-		ZeroVector();
+	template <unsigned n, typename T = DefaultType,
+		ENABLE_IF(n != 4)>
+		Vector<n, T> ZeroVector();
 
 	/**
 	 * Returns a 4-dimensional vector filled with zeros, with the last component
 	 * defaulting to 1.
 	 */
-	template <unsigned n, typename T = DefaultType>
-		typename std::enable_if<n == 4, Vector<n, T>>::type
-		ZeroVector(T = 1);
+	template <unsigned n, typename T = DefaultType,
+		ENABLE_IF(n == 4)>
+		Vector<n, T> ZeroVector(T = 1);
 
 	/**
 	 * Returns a vector filled with ones.
 	 */
-	template <unsigned n, typename T = DefaultType>
-		typename std::enable_if<n != 4, Vector<n, T>>::type
-		ScaleVector();
+	template <unsigned n, typename T = DefaultType,
+		ENABLE_IF(n != 4)>
+		Vector<n, T> ScaleVector();
 
 	/**
 	 * Returns a 4-dimensional vector filled with ones, with the last component
 	 * defaulting to 1.
 	 */
-	template <unsigned n, typename T = DefaultType>
-		typename std::enable_if<n == 4, Vector<n, T>>::type
-		ScaleVector(T = 1);
+	template <unsigned n, typename T = DefaultType,
+		ENABLE_IF(n == 4)>
+		Vector<n, T> ScaleVector(T = 1);
 
 	/**
 	 * Returns a unit vector pointing along the Z axis.
 	 */
-	template <unsigned n, typename T = DefaultType>
-		typename std::enable_if<n != 4, Vector<n, T>>::type
-		NormVector();
+	template <unsigned n, typename T = DefaultType,
+		ENABLE_IF(n != 4)>
+		Vector<n, T> NormVector();
 
 	/**
 	 * Returns a 4-dimensional unit vector pointing along the Z axis, with the
 	 * last component defaulting to 0.
 	 */
-	template <unsigned n, typename T = DefaultType>
-		typename std::enable_if<n == 4, Vector<n, T>>::type
-		NormVector(T = 0);
+	template <unsigned n, typename T = DefaultType,
+		ENABLE_IF(n == 4)>
+		Vector<n, T> NormVector(T = 0);
 
 	/**
 	 * Returns a unit vector pointing along the Y axis.
 	 */
-	template <unsigned n, typename T = DefaultType>
-		typename std::enable_if<n != 4, Vector<n, T>>::type
-		UpVector();
+	template <unsigned n, typename T = DefaultType,
+		ENABLE_IF(n == 2 || n == 3)>
+		Vector<n, T> UpVector();
 
 	/**
 	 * Returns a 4-dimensional unit vector pointing along the Y axis, with the
 	 * last component defaulting to 0.
 	 */
-	template <unsigned n, typename T = DefaultType>
-		typename std::enable_if<n == 4, Vector<n, T>>::type
-		UpVector(T = 0);
+	template <unsigned n, typename T = DefaultType,
+		ENABLE_IF(n == 4)>
+		Vector<n, T> UpVector(T = 0);
 
 	/*----------------+
 	| unary operators |

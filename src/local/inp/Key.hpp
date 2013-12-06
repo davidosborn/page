@@ -5,20 +5,20 @@
 
 namespace page { namespace inp
 {
-	enum Key
+	enum class Key
 	{
-		backspaceKey,
-		deleteKey,
-		downKey,
-		enterKey,
-		escapeKey,
-		leftKey,
-		pauseKey,
-		printKey,
-		recordKey,
-		rightKey,
-		tabKey,
-		upKey
+		backspace,
+		delete_,
+		down,
+		enter,
+		escape,
+		left,
+		pause,
+		print,
+		record,
+		right,
+		tab,
+		up
 	};
 
 	/**

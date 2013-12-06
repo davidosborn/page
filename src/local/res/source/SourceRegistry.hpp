@@ -100,7 +100,7 @@ namespace page { namespace res
 #	define REGISTER_SOURCE(T, ...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \

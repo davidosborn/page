@@ -2,7 +2,8 @@
 
 namespace page { namespace phys { namespace attrib
 {
-	// deformation vertex
+////////// Deformation::Vertex /////////////////////////////////////////////////
+
 	/*--------------------+
 	| frame serialization |
 	+--------------------*/
@@ -20,14 +21,21 @@ namespace page { namespace phys { namespace attrib
 		TexCoord::SetFrame(frame);
 	}
 
-	// deformation
-	// status
+////////// Deformation /////////////////////////////////////////////////////////
+
+	/*----------+
+	| observers |
+	+----------*/
+
 	bool Deformation::IsDeformed() const
 	{
 		return !vertices.empty();
 	}
 
-	// modifiers
+	/*----------+
+	| modifiers |
+	+----------*/
+
 	void Deformation::UpdateDeformation()
 	{
 		// FIXME: if any vertices have returned to their original
@@ -46,28 +54,28 @@ namespace page { namespace phys { namespace attrib
 	Frame Deformation::GetFrame() const
 	{
 		Frame frame;
-		for (Vertices::const_iterator iter(vertices.begin()); iter != vertices.end(); ++iter)
+		for (const auto &kv : vertices)
 		{
-			const Vertex &vertex(iter->second);
+			const Vertex &vertex(kv.second);
 			Frame::Vertex frameVertex =
 			{
 				vertex.GetPosition(),
 				vertex.GetNormal(),
 				vertex.GetTexCoord()
 			};
-			frame.vertices.insert(std::make_pair(iter->first, frameVertex));
+			frame.vertices.insert(std::make_pair(kv.first, frameVertex));
 		}
 		return frame;
 	}
 
 	void Deformation::SetFrame(const Frame &frame)
 	{
-		for (Frame::Vertices::const_iterator iter(frame.vertices.begin()); iter != frame.vertices.end(); ++iter)
+		for (const auto &kv : frame.vertices)
 		{
-			const Frame::Vertex &frameVertex(iter->second);
-			Vertex &vertex(vertices[iter->first]);
+			const Frame::Vertex &frameVertex(kv.second);
+			Vertex &vertex(vertices[kv.first]);
 			if (frameVertex.position) vertex.SetPosition(*frameVertex.position);
-			if (frameVertex.normal) vertex.SetNormal(*frameVertex.normal);
+			if (frameVertex.normal)   vertex.SetNormal  (*frameVertex.normal);
 			if (frameVertex.texCoord) vertex.SetTexCoord(*frameVertex.texCoord);
 		}
 	}

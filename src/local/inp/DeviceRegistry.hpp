@@ -5,9 +5,7 @@
 #	include <list>
 #	include <memory> // unique_ptr
 #	include <string>
-#	include <typeindex>
 #	include <typeinfo>
-#	include <unordered_map>
 #	include <vector>
 
 #	include "../util/class/Monostate.hpp"
@@ -25,6 +23,12 @@ namespace page { namespace inp
 	 */
 	using DeviceFactoryFunction = std::function<std::unique_ptr<Device> (wnd::Window &)>;
 
+	/**
+	 * A function that will return @c true if the dervice is compatible with the
+	 * specified window.
+	 */
+	using DeviceCompatibleFunction = std::function<bool (wnd::Window &)>;
+
 ////////// DeviceRegistryRecord ////////////////////////////////////////////////
 
 	/**
@@ -34,9 +38,10 @@ namespace page { namespace inp
 	struct DeviceRegistryRecord
 	{
 		DeviceRegistryRecord(
-			std::type_info        const& type,
-			DeviceFactoryFunction const& factoryFunction,
-			std::string           const& name);
+			std::type_info           const& type,
+			DeviceFactoryFunction    const& factoryFunction,
+			DeviceCompatibleFunction const& compatibleFunction,
+			std::string              const& name);
 
 		/**
 		 * The type of the device.
@@ -47,6 +52,11 @@ namespace page { namespace inp
 		 * @copydoc DeviceFactoryFunction
 		 */
 		DeviceFactoryFunction factoryFunction;
+
+		/**
+		 * @copydoc DeviceCompatibleFunction
+		 */
+		DeviceCompatibleFunction compatibleFunction;
 
 		/**
 		 * The name of the device.
@@ -79,7 +89,7 @@ namespace page { namespace inp
 		/**
 		 * @copydoc Register
 		 */
-		void Register(const std::type_info &windowType, const Record &);
+		void Register(const Record &);
 
 		public:
 		/**
@@ -89,11 +99,7 @@ namespace page { namespace inp
 		std::vector<std::unique_ptr<Device>> MakeAll(wnd::Window &) const;
 
 		private:
-		struct WindowTypeRecord
-		{
-			std::list<Record> records;
-		};
-		std::unordered_map<std::type_index, WindowTypeRecord> windowTypes;
+		std::list<Record> records;
 	};
 }}
 
@@ -101,15 +107,18 @@ namespace page { namespace inp
 
 	/**
 	 * Registers a type with @c DeviceRegistry.
+	 *
+	 * @note @a WINDOW must be a fully-defined type; a forward declaration is
+	 * not sufficient, as @c dynamic_cast will be applied to it.
 	 */
 #	define REGISTER_DEVICE(T, WINDOW, ...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \
-					GLOBAL(::page::wnd::DeviceRegistry).Register<T, WINDOW>(__VA_ARGS__); \
+					GLOBAL(::page::inp::DeviceRegistry).Register<T, WINDOW>(__VA_ARGS__); \
 				} \
 			} initializer __attribute__((init_priority(REG_INIT_PRIORITY))); \
 		}

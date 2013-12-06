@@ -16,7 +16,7 @@ namespace page { namespace phys { namespace attrib
 
 	const cache::Proxy<res::Material> &Material::GetMaterial() const
 	{
-		return *value;
+		return value;
 	}
 
 	void Material::SetMaterial(const cache::Proxy<res::Material> &value)

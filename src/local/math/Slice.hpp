@@ -132,6 +132,20 @@ namespace page { namespace math
 		using Base::BasicSlice;
 		using Base::operator =;
 
+		/*-----------+
+		| assignment |
+		+-----------*/
+
+		/**
+		 * @note The default assignment operator cannot be used because of the
+		 * reference data-members.
+		 */
+		const Slice &operator =(const Slice &) const;
+
+		/*-------------+
+		| data members |
+		+-------------*/
+
 		typename Base::reference
 			x = this->begin()[0],
 			y = this->begin()[1];
@@ -154,6 +168,20 @@ namespace page { namespace math
 		public:
 		using Base::BasicSlice;
 		using Base::operator =;
+
+		/*-----------+
+		| assignment |
+		+-----------*/
+
+		/**
+		 * @note The default assignment operator cannot be used because of the
+		 * reference data-members.
+		 */
+		const Slice &operator =(const Slice &) const;
+
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		typename Base::reference
 			x = this->begin()[0],
@@ -178,6 +206,20 @@ namespace page { namespace math
 		public:
 		using Base::BasicSlice;
 		using Base::operator =;
+
+		/*-----------+
+		| assignment |
+		+-----------*/
+
+		/**
+		 * @note The default assignment operator cannot be used because of the
+		 * reference data-members.
+		 */
+		const Slice &operator =(const Slice &) const;
+
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		typename Base::reference
 			x = this->begin()[0],

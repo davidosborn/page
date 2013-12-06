@@ -1,7 +1,7 @@
 #ifndef    page_local_log_filter_IndentFilter_hpp
 #   define page_local_log_filter_IndentFilter_hpp
 
-#	include "../../util/memory/Deleter.hpp" // Share
+#	include "../../util/memory/Share.hpp"
 #	include "IndentFilterState.hpp"
 #	include "PrefixFilter.hpp"
 

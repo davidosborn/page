@@ -1,11 +1,11 @@
 #include <iostream> // cout
 
-#include "cfg/State.hpp"
+#include "cfg/CmdlineParser.hpp"
+#include "cfg/state/State.hpp"
 #include "err/report.hpp" // ReportError, std::exception
 #include "game/Game.hpp" // Game::{{,~}Game,Run}
 #include "log/print.hpp" // Print{Info,Stats}
-#include "opt.hpp" // Parse
-#include "sys.hpp" // PrintInfo
+#include "sys/info.hpp" // PrintInfo
 
 #ifdef USE_WIN32
 #	include <windows.h>
@@ -17,16 +17,17 @@ int main(int argc, char *argv[])
 #endif
 {
 	using namespace page;
+
 	int status = 0;
 	try
 	{
-		opt::Parse(argc, argv);
+		GLOBAL(cfg::CmdlineParser).Parse(argc, argv);
 		sys::PrintInfo();
 		log::PrintInfo();
 
 		game::Game().Run();
 
-		GLOBAL(cfg::State).Write();
+		GLOBAL(cfg::State).Commit();
 		log::PrintStats();
 	}
 	catch (const std::exception &e)
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
 		err::ReportError(e);
 		status = 1;
 	}
+
 	std::cout << "exiting with status " << status << std::endl;
 	return status;
 }

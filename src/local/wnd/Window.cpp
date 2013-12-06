@@ -41,9 +41,9 @@ namespace page { namespace wnd
 	+---------------*/
 
 	void Window::InitState(
-		bool                focus,
-		math::Vec2i const & position,
-		math::Vec2u const & size)
+		bool               focus,
+		math::Vec2i const& position,
+		math::Vec2u const& size)
 	{
 		this->focus    = focus;
 		this->position = position;

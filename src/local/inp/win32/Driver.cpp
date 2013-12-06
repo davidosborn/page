@@ -10,10 +10,10 @@
 #include "../../err/Exception.hpp"
 #include "../../math/Aabb.hpp"
 #include "../../math/win32.hpp" // Make{Rect,Vector}
-#include "../../wnd/win32/Window.hpp" // Window->wnd::Window, Window::GetHwnd
-#include "../../wnd/Window.hpp" // Window::{{focus,message,move,size}Sig,Get{Position,Size},HasFocus}
+#include "../../wnd/win32/Window.hpp" // REGISTER_DRIVER, Window->wnd::Window
 #include "../DriverRegistry.hpp" // REGISTER_DRIVER
 #include "Driver.hpp"
+#include "SystemSettings.hpp"
 
 namespace page { namespace inp { namespace win32
 {
@@ -69,7 +69,7 @@ namespace page { namespace inp { namespace win32
 
 	void Driver::DoSetCursorMode(CursorMode mode)
 	{
-		ShowCursor(mode == pointCursorMode);
+		ShowCursor(mode == CursorMode::point);
 	}
 
 	void Driver::DoSetCursor(const cache::Proxy<res::Cursor> &cursor)
@@ -87,20 +87,20 @@ namespace page { namespace inp { namespace win32
 				((GetAsyncKeyState(VK_LEFT)  & 0x8000) >> 15),
 				((GetAsyncKeyState(VK_UP)    & 0x8000) >> 15) -
 				((GetAsyncKeyState(VK_DOWN)  & 0x8000) >> 15));
-		state.control.modifiers[runModifier] = GetAsyncKeyState(VK_SHIFT)   & 0x8000;
-		state.control.modifiers[altModifier] = GetAsyncKeyState(VK_CONTROL) & 0x8000;
+		state.control.modifiers |= Modifier::run & bool(GetAsyncKeyState(VK_SHIFT)   & 0x8000);
+		state.control.modifiers |= Modifier::alt & bool(GetAsyncKeyState(VK_CONTROL) & 0x8000);
 
 		// look
-		if (GetCursorMode() == lookCursorMode)
+		if (GetCursorMode() == CursorMode::look)
 		{
 			math::Vec2 translation(
 				math::Vec2(GetRawCursorTranslation()) /
 				GetWindow().GetScreenSize());
-			if (GetMouseButton(leftButton))
+			if (GetMouseButton(Button::left))
 			{
 				state.look.lift = translation.y;
 			}
-			else if (GetMouseButton(rightButton))
+			else if (GetMouseButton(Button::right))
 			{
 				state.look.zoom = translation.y;
 			}
@@ -117,14 +117,14 @@ namespace page { namespace inp { namespace win32
 		// FIXME: we should be putting key/char events here, rather than
 		// firing them off directly from OnMessage
 
-		return pollState;
+		return state;
 	}
 
 	math::Vec2u Driver::GetRawCursorPosition() const
 	{
 		POINT pt;
 		GetCursorPos(&pt);
-		return math::MakeVector(pt);
+		return math::win32::MakeVector(pt);
 	}
 
 	/*---------------+
@@ -153,7 +153,7 @@ namespace page { namespace inp { namespace win32
 					math::Vec2i(GetWindow().GetSize())));
 			auto center(Center(Shrink(box, 0, 1)));
 			SetCursorPos(center.x, center.y);
-			auto rect(math::MakeRect(box));
+			auto rect(math::win32::MakeRect(box));
 			ClipCursor(&rect);
 		}
 		cursorState.visible = show;
@@ -168,7 +168,7 @@ namespace page { namespace inp { namespace win32
 					math::Vec2i(GetWindow().GetSize())),
 				GetRawCursorPosition()))
 		{
-			cursorState.icon = Cursor::noIcon;
+			cursorState.icon = CursorState::Icon::none;
 			PostMessage(GetWindow().GetHwnd(), WM_SETCURSOR,
 				reinterpret_cast<WPARAM>(GetWindow().GetHwnd()),
 				MAKELPARAM(HTCLIENT, WM_MOUSEMOVE));
@@ -185,19 +185,26 @@ namespace page { namespace inp { namespace win32
 				math::Vec2i(GetWindow().GetSize())));
 		auto center(Center(Shrink(box, 0, 1)));
 		SetCursorPos(center.x, center.y);
-		return math::MakeVector(pt) - center;
+		return math::win32::MakeVector(pt) - center;
 	}
 
 	bool Driver::GetMouseButton(Button button) const
 	{
+		// redirect requested button according to system settings
 		if (GetSystemMetrics(SM_SWAPBUTTON))
-			button = static_cast<Button>(std::abs(button - 2));
+			switch (button)
+			{
+				case Button::left:  button = Button::right;
+				case Button::right: button = Button::left;
+			}
+
+		// return current state of requested button
 		int key;
 		switch (button)
 		{
-			case leftButton:   key = VK_LBUTTON; break;
-			case middleButton: key = VK_MBUTTON; break;
-			case rightButton:  key = VK_RBUTTON; break;
+			case Button::left:   key = VK_LBUTTON; break;
+			case Button::middle: key = VK_MBUTTON; break;
+			case Button::right:  key = VK_RBUTTON; break;
 			default: assert(!"invalid mouse button");
 		}
 		return GetAsyncKeyState(key) & 0x8000;
@@ -209,7 +216,7 @@ namespace page { namespace inp { namespace win32
 
 	void Driver::OnFocus(bool focus)
 	{
-		if (GetCursorMode() == pointCursorMode)
+		if (GetCursorMode() == CursorMode::point)
 		{
 			if (focus)
 			{
@@ -235,7 +242,7 @@ namespace page { namespace inp { namespace win32
 		switch (msg)
 		{
 			case WM_SETTINGCHANGE:
-			systemSettings = SystemSettings();
+			GLOBAL(SystemSettings).Update();
 			break;
 
 			// cursor messages
@@ -243,25 +250,23 @@ namespace page { namespace inp { namespace win32
 			case WM_DISPLAYCHANGE:
 			if (cursorState.visible && LOWORD(lparam) == HTCLIENT)
 			{
-				Cursor::Icon targetIcon =
-					GetWindow().HasFocus() && cursor ?
-					Cursor::themeIcon : Cursor::arrowIcon;
-				HCURSOR handle;
-				switch (targetIcon)
+				if (GetWindow().HasFocus())
 				{
-					case Cursor::arrowIcon:
-					handle = LoadCursor(NULL, IDC_ARROW);
-					break;
-					case Cursor::themeIcon:
-					handle = *cache::win32::CursorProxy(cursor,
-						GetWindow().GetScreenSize().y);
-					break;
-					default: assert(!"invalid cursor icon");
+					if (auto cursor = GetCursor())
+					{
+						::SetCursor(*cache::win32::CursorProxy(cursor, GetWindow().GetScreenSize().y));
+						cursorState.icon = CursorState::Icon::theme;
+					}
+					else goto DefaultCursor;
 				}
-				SetCursor(handle);
-				cursorState.icon = targetIcon;
+				else
+				{
+					DefaultCursor:
+					::SetCursor(LoadCursor(NULL, IDC_ARROW));
+					cursorState.icon = CursorState::Icon::arrow;
+				}
 			}
-			else cursorState.icon = Cursor::noIcon;
+			else cursorState.icon = CursorState::Icon::none;
 			break;
 
 			// keyboard messages
@@ -271,25 +276,25 @@ namespace page { namespace inp { namespace win32
 
 			case WM_KEYDOWN:
 			if (wparam == VK_ESCAPE &&
-				GetCursorMode() == pointCursorMode && mouseState.down)
-				ResetMouseState(NormScreenVector(math::MakeVector(GetMessagePos())));
+				GetCursorMode() == CursorMode::point && mouseState.down)
+				ResetMouseState(NormScreenVector(math::win32::MakeVector(GetMessagePos())));
 			else
 			{
 				Key key;
 				switch (wparam)
 				{
-					case VK_BACK:   key = backspaceKey; break;
-					case VK_DELETE: key = deleteKey;    break;
-					case VK_DOWN:   key = downKey;      break;
-					case VK_RETURN: key = enterKey;     break;
-					case VK_ESCAPE: key = escapeKey;    break;
-					case VK_LEFT:   key = leftKey;      break;
-					case VK_PAUSE:  key = pauseKey;     break;
-					case VK_F12:    key = printKey;     break;
-					case VK_F9:     key = recordKey;    break;
-					case VK_RIGHT:  key = rightKey;     break;
-					case VK_TAB:    key = tabKey;       break;
-					case VK_UP:     key = upKey;        break;
+					case VK_BACK:   key = Key::backspace; break;
+					case VK_DELETE: key = Key::delete_;   break;
+					case VK_DOWN:   key = Key::down;      break;
+					case VK_RETURN: key = Key::enter;     break;
+					case VK_ESCAPE: key = Key::escape;    break;
+					case VK_LEFT:   key = Key::left;      break;
+					case VK_PAUSE:  key = Key::pause;     break;
+					case VK_F12:    key = Key::print;     break;
+					case VK_F9:     key = Key::record;    break;
+					case VK_RIGHT:  key = Key::right;     break;
+					case VK_TAB:    key = Key::tab;       break;
+					case VK_UP:     key = Key::up;        break;
 					default: goto NoKey;
 				}
 				keySig(key);
@@ -298,21 +303,21 @@ namespace page { namespace inp { namespace win32
 			break;
 
 			// mouse messages
-			case WM_LBUTTONDOWN: OnButtonDown(leftButton, wparam, lparam); break;
-			case WM_MBUTTONDOWN: OnButtonDown(middleButton, wparam, lparam); break;
-			case WM_RBUTTONDOWN: OnButtonDown(rightButton, wparam, lparam); break;
-			case WM_LBUTTONUP: OnButtonUp(leftButton, wparam, lparam); break;
-			case WM_MBUTTONUP: OnButtonUp(middleButton, wparam, lparam); break;
-			case WM_RBUTTONUP: OnButtonUp(rightButton, wparam, lparam); break;
-			case WM_MOUSEMOVE: OnMouseMove(wparam, lparam); break;
-			case WM_MOUSEWHEEL: OnMouseWheel(wparam, lparam); break;
+			case WM_LBUTTONDOWN: OnButtonDown(Button::left,   wparam, lparam); break;
+			case WM_MBUTTONDOWN: OnButtonDown(Button::middle, wparam, lparam); break;
+			case WM_RBUTTONDOWN: OnButtonDown(Button::right,  wparam, lparam); break;
+			case WM_LBUTTONUP:   OnButtonUp  (Button::left,   wparam, lparam); break;
+			case WM_MBUTTONUP:   OnButtonUp  (Button::middle, wparam, lparam); break;
+			case WM_RBUTTONUP:   OnButtonUp  (Button::right,  wparam, lparam); break;
+			case WM_MOUSEMOVE:   OnMouseMove (wparam, lparam); break;
+			case WM_MOUSEWHEEL:  OnMouseWheel(wparam, lparam); break;
 		}
 		if (msg == mshMousewheel) OnMouseWheel(wparam, lparam);
 	}
 
 	void Driver::OnMove(const math::Vec2i &position)
 	{
-		if (GetCursorMode() == lookCursorMode)
+		if (GetCursorMode() == CursorMode::look)
 		{
 			// update cursor clipping
 			ClipCursor(NULL);
@@ -322,14 +327,14 @@ namespace page { namespace inp { namespace win32
 					math::Vec2i(GetWindow().GetSize())));
 			auto center(Center(Shrink(box, 0, 1)));
 			SetCursorPos(center.x, center.y);
-			auto rect(math::MakeRect(box));
+			auto rect(math::win32::MakeRect(box));
 			ClipCursor(&rect);
 		}
 	}
 
 	void Driver::OnSize(const math::Vec2u &size)
 	{
-		if (GetCursorMode() == lookCursorMode)
+		if (GetCursorMode() == CursorMode::look)
 		{
 			// update cursor clipping
 			ClipCursor(NULL);
@@ -339,7 +344,7 @@ namespace page { namespace inp { namespace win32
 					math::Vec2i(size)));
 			auto center(Center(Shrink(box, 0, 1)));
 			SetCursorPos(center.x, center.y);
-			auto rect(math::MakeRect(box));
+			auto rect(math::win32::MakeRect(box));
 			ClipCursor(&rect);
 		}
 	}
@@ -350,7 +355,7 @@ namespace page { namespace inp { namespace win32
 
 	void Driver::OnButtonDown(Button button, WPARAM wparam, LPARAM lparam)
 	{
-		if (GetCursorMode() != pointCursorMode) return;
+		if (GetCursorMode() != CursorMode::point) return;
 		if (mouseState.ignoreDown)
 		{
 			mouseState.ignoreDown = false;
@@ -360,7 +365,7 @@ namespace page { namespace inp { namespace win32
 		StartMouseRepeatTimer();
 
 		// cancel dragging
-		auto position(math::MakeVector(lparam));
+		auto position(math::win32::MakeVector(lparam));
 		auto normPosition(NormClientVector(position));
 		ResetMouseDrag(normPosition);
 
@@ -368,10 +373,10 @@ namespace page { namespace inp { namespace win32
 		auto time = GetMessageTime();
 		mouseState._double =
 			button == mouseState.downButton &&
-			time - mouseState.downTime <= systemSettings.doubleTime &&
+			time - mouseState.downTime <= GLOBAL(SystemSettings).GetDoubleTime() &&
 			All(Abs(
 				math::Vec2i(position) -
-				math::Vec2i(mouseState.downPosition)) <= systemSettings.doubleRange);
+				math::Vec2i(mouseState.downPosition)) <= GLOBAL(SystemSettings).GetDoubleThreshold());
 		downSig(normPosition, button, mouseState._double);
 
 		// update mouse state
@@ -383,14 +388,14 @@ namespace page { namespace inp { namespace win32
 
 	void Driver::OnButtonUp(Button button, WPARAM wparam, LPARAM lparam)
 	{
-		if (GetCursorMode() != pointCursorMode) return;
+		if (GetCursorMode() != CursorMode::point) return;
 		if (mouseState.down && button == mouseState.downButton)
 		{
 			ReleaseCapture();
 			StopMouseRepeatTimer();
 
 			// signal click/drop
-			math::Vec2u position(math::MakeVector(lparam));
+			math::Vec2u position(math::win32::MakeVector(lparam));
 			math::Vec2 normPosition(NormClientVector(position));
 			if (mouseState.dragging)
 			{
@@ -409,14 +414,14 @@ namespace page { namespace inp { namespace win32
 
 	void Driver::OnMouseMove(WPARAM wparam, LPARAM lparam)
 	{
-		if (GetCursorMode() != pointCursorMode) return;
+		if (GetCursorMode() != CursorMode::point) return;
 		if (mouseState.down && !mouseState.dragging)
 		{
 			// check for dragging
-			math::Vec2u position(math::MakeVector(lparam));
+			math::Vec2u position(math::win32::MakeVector(lparam));
 			if (Any(Abs(
 					math::Vec2i(position) -
-					math::Vec2i(mouseState.downPosition)) >= systemSettings.dragRange))
+					math::Vec2i(mouseState.downPosition)) >= GLOBAL(SystemSettings).GetDragThreshold()))
 			{
 				StopMouseRepeatTimer();
 				dragSig(
@@ -433,11 +438,11 @@ namespace page { namespace inp { namespace win32
 		auto delta = static_cast<float>(GET_WHEEL_DELTA_WPARAM(wparam)) / WHEEL_DELTA;
 		switch (GetCursorMode())
 		{
-			case pointCursorMode:
+			case CursorMode::point:
 			scrollSig(NormScreenVector(math::win32::MakeVector(lparam)), delta);
 			break;
 
-			case lookCursorMode:
+			case CursorMode::look:
 			mouseState.deltaScroll += delta;
 			break;
 		}
@@ -454,7 +459,7 @@ namespace page { namespace inp { namespace win32
 
 	void Driver::ResetMouseState(const math::Vec2 &position)
 	{
-		assert(GetCursorMode() == pointCursorMode);
+		assert(GetCursorMode() == CursorMode::point);
 		if (mouseState.dragging) ResetMouseDrag(position);
 		else StopMouseRepeatTimer();
 		mouseState.down = false;
@@ -463,7 +468,7 @@ namespace page { namespace inp { namespace win32
 
 	void Driver::ResetMouseDrag(const math::Vec2 &position)
 	{
-		assert(GetCursorMode() == pointCursorMode);
+		assert(GetCursorMode() == CursorMode::point);
 		if (mouseState.dragging)
 		{
 			cancelDragSig(
@@ -481,7 +486,7 @@ namespace page { namespace inp { namespace win32
 	void Driver::StartMouseRepeatTimer()
 	{
 		mouseState.repeating = false;
-		mouseState.repeatTimer = SetTimer(0, mouseState.repeatTimer, systemSettings.repeatDelay, &Driver::MouseRepeatTimerRouter);
+		mouseState.repeatTimer = SetTimer(0, mouseState.repeatTimer, GLOBAL(SystemSettings).GetRepeatDelay(), &Driver::MouseRepeatTimerRouter);
 		GetMouseRepeatTimerDriverMap().insert(std::make_pair(mouseState.repeatTimer, this));
 	}
 
@@ -500,7 +505,7 @@ namespace page { namespace inp { namespace win32
 		if (!mouseState.repeating)
 		{
 			mouseState.repeating = true;
-			SetTimer(0, mouseState.repeatTimer, systemSettings.repeatSpeed, &Driver::MouseRepeatTimerRouter);
+			SetTimer(0, mouseState.repeatTimer, GLOBAL(SystemSettings).GetRepeatSpeed(), &Driver::MouseRepeatTimerRouter);
 		}
 		downSig(
 			NormScreenVector(math::win32::MakeVector(GetMessagePos())),
@@ -529,29 +534,6 @@ namespace page { namespace inp { namespace win32
 	math::Vec2 Driver::NormScreenVector(const math::Vec2i &v) const
 	{
 		return NormClientVector(v - GetWindow().GetPosition());
-	}
-
-	/*-------------+
-	| data members |
-	+-------------*/
-
-	Driver::Limits::Limits()
-	{
-		doubleTime = GetDoubleClickTime();
-		doubleRange = math::Vec2i(
-			GetSystemMetrics(SM_CXDOUBLECLK),
-			GetSystemMetrics(SM_CYDOUBLECLK)) / 2;
-		dragRange = math::Vec2i(
-			GetSystemMetrics(SM_CXDRAG),
-			GetSystemMetrics(SM_CYDRAG)) / 2;
-		if (!SystemParametersInfo(SPI_GETKEYBOARDDELAY, 0, &repeatDelay, 0))
-			THROW((err::Exception<err::InpModuleTag, err::Win32PlatformTag>("failed to query keyboard repeat delay") <<
-				boost::errinfo_api_function("SystemParametersInfo")))
-		repeatDelay = (repeatDelay + 1) * 250;
-		if (!SystemParametersInfo(SPI_GETKEYBOARDSPEED, 0, &repeatSpeed, 0))
-			THROW((err::Exception<err::InpModuleTag, err::Win32PlatformTag>("failed to query keyboard repeat speed") <<
-				boost::errinfo_api_function("SystemParametersInfo")))
-		repeatSpeed = 400 - repeatSpeed * 12;
 	}
 
 	/*-------------+

@@ -1,5 +1,5 @@
-#include "../../opt.hpp" // cfgVars
 #include "../../util/class/special_member_functions.hpp" // Uncopyable
+#include "../CmdlineParser.hpp"
 #include "CmdlineSource.hpp"
 
 namespace page { namespace cfg
@@ -68,7 +68,7 @@ namespace page { namespace cfg
 
 	boost::optional<std::string> CmdlineSource::Reader::Read(const std::string &key)
 	{
-		for (const auto &kv : opt::cfgVars)
+		for (const auto &kv : GLOBAL(CmdlineParser).GetCfgVars())
 			if (kv.first == key)
 				return kv.second;
 		return boost::none;

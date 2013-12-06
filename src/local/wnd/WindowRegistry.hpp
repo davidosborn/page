@@ -102,7 +102,7 @@ namespace page { namespace wnd
 #	define REGISTER_WINDOW(T, ...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \

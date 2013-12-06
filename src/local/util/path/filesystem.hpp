@@ -5,39 +5,46 @@
 
 #	include "../../cfg/vars.hpp"
 
-namespace page
+namespace page { namespace util
 {
-	namespace util
-	{
-		/**
-		 * Returns the path in absolute form, relative to the specified root or
-		 * the installation directory by default.
-		 */
-		std::string AbsolutePath(
-			std::string const& path,
-			std::string const& root = *CVAR(installPath));
+	/**
+	 * Returns the path in absolute form, relative to the specified root or
+	 * the installation directory by default.
+	 */
+	std::string AbsolutePath(
+		std::string const& path,
+		std::string const& root = *CVAR(installPath));
 
-		/**
-		 * Returns the most user-friendly representation of the path.
-		 */
-		std::string PrettyPath(const std::string &path);
+	/**
+	 * Returns the filename part of the path.
+	 */
+	std::string Basename(const std::string &path);
 
-		/**
-		 * Returns the path as a URL, relative to the specified root or the
-		 * installation directory by default.
-		 */
-		std::string UrlPath(
-			std::string const& path,
-			std::string const& root = *CVAR(installPath));
+	/**
+	 * Returns the directory part of the path.
+	 */
+	std::string Dirname(const std::string &path);
 
-		/**
-		 * Returns the path in relative form, relative to the specified root or
-		 * the installation directory by default.
-		 */
-		std::string RelativePath(
-			std::string const& path,
-			std::string const& root = *CVAR(installPath));
-	}
-}
+	/**
+	 * Returns the most user-friendly representation of the path.
+	 */
+	std::string PrettyPath(const std::string &path);
+
+	/**
+	 * Returns the path in relative form, relative to the specified root or
+	 * the installation directory by default.
+	 */
+	std::string RelativePath(
+		std::string const& path,
+		std::string const& root = *CVAR(installPath));
+
+	/**
+	 * Returns the path as a URL, relative to the specified root or the
+	 * installation directory by default.
+	 */
+	std::string UrlPath(
+		std::string const& path,
+		std::string const& root = *CVAR(installPath));
+}}
 
 #endif

@@ -526,45 +526,56 @@ namespace page { namespace math
 
 ////////// free functions //////////////////////////////////////////////////////
 
-	// initialization
+	/*---------------+
+	| initialization |
+	+---------------*/
+
 	template <unsigned nr, unsigned nc, typename T> Matrix<nr, nc, T> ZeroMatrix()
 	{
 		return Matrix<nr, nc, T>(0);
 	}
+
 	template <unsigned n, typename T> Matrix<n, n + 1, T> TranslationMatrix(const Vector<n, T> &v)
 	{
 		Matrix<n, n + 1, T> r;
 		r.Column(n) = v;
 		return r;
 	}
+
 	template <unsigned n, typename T> Matrix<n, n + 1, T> TranslationMatrix(T t)
 	{
 		Matrix<n, n + 1, T> r;
 		r.Column(n) = t;
 		return r;
 	}
+
 	template <typename T> Matrix<2, 2, T> RotationMatrix(T t)
 	{
 		return Matrix<2, 2, T>(
 			std::cos(t), -std::sin(t),
 			std::sin(t), std::cos(t));
 	}
+
 	template <typename T> Matrix<3, 3, T> RotationMatrix(const Axan<T> &a)
 	{
 		return Matrix<3, 3, T>(a);
 	}
+
 	template <typename T> Matrix<3, 3, T> RotationMatrix(const Euler<T> &e)
 	{
 		return Matrix<3, 3, T>(e);
 	}
+
 	template <typename T> Matrix<3, 3, T> RotationMatrix(const Quat<T> &q)
 	{
 		return Matrix<3, 3, T>(q);
 	}
+
 	template <typename T> Matrix<3, 3, T> RotationMatrix(const Vector<3, T> &v1, const Vector<3, T> &v2)
 	{
 		return Matrix<3, 3, T>(Axan<T>(v1, v2));
 	}
+
 	template <typename T> Matrix<3, 3, T> LookMatrix(const Vector<3, T> &v, const Vector<3, T> &up)
 	{
 		assert(All(Near(v, Norm(v))));
@@ -572,18 +583,21 @@ namespace page { namespace math
 		auto s(Norm(Cross(v, up)));
 		return Tpos(Matrix<3, 3, T>(s, Norm(Cross(s, v)), -v));
 	}
+
 	template <unsigned n, typename T> Matrix<n, n, T> ScaleMatrix(const Vector<n, T> &v)
 	{
 		Matrix<n, n, T> r;
 		r.Diagonal() = v;
 		return r;
 	}
+
 	template <unsigned n, typename T> Matrix<n, n, T> ScaleMatrix(T t)
 	{
 		Matrix<n, n, T> r;
 		r.Diagonal() = t;
 		return r;
 	}
+
 	template <typename T> Matrix<4, 4, T> PerspectiveMatrix(T fov, T aspect, T near, T far)
 	{
 		// based on the definition of gluPerspective
@@ -596,6 +610,7 @@ namespace page { namespace math
 				near * far * 2 / (near - far),
 			0, 0, -1, 0);
 	}
+
 	template <typename T> Matrix<4, 4, T> InvPerspectiveMatrix(T fov, T aspect, T near, T far)
 	{
 		// based on the definition of gluPerspective
@@ -609,6 +624,7 @@ namespace page { namespace math
 				(near - far) / (near * far * 2),
 				(near + far) / (near * far * 2));
 	}
+
 	template <typename T> Matrix<3, 4, T> OrthoMatrix(T left, T right, T bottom, T top, T near, T far)
 	{
 		// based on the definition of glOrtho
@@ -618,6 +634,7 @@ namespace page { namespace math
 			0, 2 / (top - bottom), 0, (top + bottom) / (top - bottom),
 			0, 0, 2 / (near - far), (far + near) / (far - near));
 	}
+
 	template <typename T> Matrix<3, 4, T> InvOrthoMatrix(T left, T right, T bottom, T top, T near, T far)
 	{
 		// based on the definition of glOrtho
@@ -628,11 +645,15 @@ namespace page { namespace math
 			0, 0, (near - far) / 2, -(near + far) / 2);
 	}
 
-	// unary operators
+	/*----------------+
+	| unary operators |
+	+----------------*/
+
 	template <unsigned nr, unsigned nc, typename T> Matrix<nr, nc, T> operator +(const Matrix<nr, nc, T> &m)
 	{
 		return m;
 	}
+
 	template <unsigned nr, unsigned nc, typename T> Matrix<nr, nc, T> operator -(const Matrix<nr, nc, T> &m)
 	{
 		Matrix<nr, nc, T> r;
@@ -640,7 +661,10 @@ namespace page { namespace math
 		return r;
 	}
 
-	// arithmetic operators
+	/*---------------------+
+	| arithmetic operators |
+	+---------------------*/
+
 	template <unsigned nr, unsigned nc, typename T, typename U, unsigned n> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator *(const Matrix<nr, n, T> &m1, const Matrix<n, nc, U> &m2)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -651,6 +675,7 @@ namespace page { namespace math
 				*iter++ = Dot(Vector<n, T>(*row), Vector<n, U>(*col));
 		return r;
 	}
+
 	template <typename T, typename U> Matrix<3, 4, typename ArithmeticConversion<T, U>::Result> operator *(const Matrix<3, 4, T> &m1, const Matrix<3, 4, U> &m2)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -662,6 +687,7 @@ namespace page { namespace math
 		r.Column(3) += m1.Column(3);
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator +(const Matrix<nr, nc, T> &m1, const Matrix<nr, nc, U> &m2)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -669,6 +695,7 @@ namespace page { namespace math
 		std::transform(m1.begin(), m1.end(), m2.begin(), r.begin(), std::plus<R>());
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator -(const Matrix<nr, nc, T> &m1, const Matrix<nr, nc, U> &m2)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -677,7 +704,6 @@ namespace page { namespace math
 		return r;
 	}
 
-	// scalar arithmetic operators
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator *(const Matrix<nr, nc, T> &m, U t)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -685,6 +711,7 @@ namespace page { namespace math
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::multiplies<R>(), std::placeholders::_1, t));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator /(const Matrix<nr, nc, T> &m, U t)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -692,6 +719,7 @@ namespace page { namespace math
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::divides<R>(), std::placeholders::_1, t));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator +(const Matrix<nr, nc, T> &m, U t)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -699,6 +727,7 @@ namespace page { namespace math
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::plus<R>(), std::placeholders::_1, t));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator -(const Matrix<nr, nc, T> &m, U t)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -707,7 +736,6 @@ namespace page { namespace math
 		return r;
 	}
 
-	// reverse scalar arithmetic operators
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator *(T t, const Matrix<nr, nc, U> &m)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -715,6 +743,7 @@ namespace page { namespace math
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::multiplies<R>(), t, std::placeholders::_1));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator /(T t, const Matrix<nr, nc, U> &m)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -722,6 +751,7 @@ namespace page { namespace math
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::divides<R>(), t, std::placeholders::_1));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator +(T t, const Matrix<nr, nc, U> &m)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -729,6 +759,7 @@ namespace page { namespace math
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::plus<R>(), t, std::placeholders::_1));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, typename ArithmeticConversion<T, U>::Result> operator -(T t, const Matrix<nr, nc, U> &m)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -737,53 +768,66 @@ namespace page { namespace math
 		return r;
 	}
 
-	// relational operators
+	/*---------------------+
+	| relational operators |
+	+---------------------*/
+
 	template <unsigned nr, unsigned nc, typename T, typename U> bool operator ==(const Matrix<nr, nc, T> &m1, const Matrix<nr, nc, U> &m2)
 	{
 		return std::equal(m1.begin(), m1.end(), m2.begin());
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> bool operator !=(const Matrix<nr, nc, T> &m1, const Matrix<nr, nc, U> &m2)
 	{
 		return !std::equal(m1.begin(), m1.end(), m2.begin());
 	}
 
-	// logical operators
+	/*------------------+
+	| logical operators |
+	+------------------*/
+
 	template <unsigned nr, unsigned nc> Matrix<nr, nc, bool> operator &&(const Matrix<nr, nc, bool> &m1, const Matrix<nr, nc, bool> &m2)
 	{
 		Matrix<nr, nc, bool> r;
 		std::transform(m1.begin(), m1.end(), m2.begin(), r.begin(), std::logical_and<bool>());
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc> Matrix<nr, nc, bool> operator ||(const Matrix<nr, nc, bool> &m1, const Matrix<nr, nc, bool> &m2)
 	{
 		Matrix<nr, nc, bool> r;
 		std::transform(m1.begin(), m1.end(), m2.begin(), r.begin(), std::logical_or<bool>());
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc> Matrix<nr, nc, bool> operator &&(const Matrix<nr, nc, bool> &m, bool t)
 	{
 		Matrix<nr, nc, bool> r;
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::logical_and<bool>(), std::placeholders::_1, t));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc> Matrix<nr, nc, bool> operator ||(const Matrix<nr, nc, bool> &m, bool t)
 	{
 		Matrix<nr, nc, bool> r;
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::logical_or<bool>(), std::placeholders::_1, t));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc> Matrix<nr, nc, bool> operator &&(bool t, const Matrix<nr, nc, bool> &m)
 	{
 		Matrix<nr, nc, bool> r;
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::logical_and<bool>(), t, std::placeholders::_1));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc> Matrix<nr, nc, bool> operator ||(bool t, const Matrix<nr, nc, bool> &m)
 	{
 		Matrix<nr, nc, bool> r;
 		std::transform(m.begin(), m.end(), r.begin(), std::bind(std::logical_or<bool>(), t, std::placeholders::_1));
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc> Matrix<nr, nc, bool> operator !(const Matrix<nr, nc, bool> &m)
 	{
 		Matrix<nr, nc, bool> r;
@@ -791,74 +835,86 @@ namespace page { namespace math
 		return r;
 	}
 
-	// assignment operators
+	/*------------------------------+
+	| compound assignment operators |
+	+------------------------------*/
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator *=(Matrix<nr, nc, T> &m1, const Matrix<nc, nc, U> &m2)
 	{
 		return m1 = m1 * m2;
 	}
+
 	template <typename T, typename U> Matrix<3, 4, T> &operator *=(Matrix<3, 4, T> &m1, const Matrix<3, 4, U> &m2)
 	{
 		return m1 = m1 * m2;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator +=(Matrix<nr, nc, T> &m1, const Matrix<nr, nc, U> &m2)
 	{
 		std::transform(m1.begin(), m1.end(), m2.begin(), m1.begin(), std::plus<T>());
 		return m1;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator -=(Matrix<nr, nc, T> &m1, const Matrix<nr, nc, U> &m2)
 	{
 		std::transform(m1.begin(), m1.end(), m2.begin(), m1.begin(), std::minus<T>());
 		return m1;
 	}
 
-	// scalar assignment operators
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator *=(Matrix<nr, nc, T> &m, U t)
 	{
 		std::transform(m.begin(), m.end(), m.begin(), std::bind(std::multiplies<T>(), std::placeholders::_1, t));
 		return m;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator /=(Matrix<nr, nc, T> &m, U t)
 	{
 		std::transform(m.begin(), m.end(), m.begin(), std::bind(std::divides<T>(), std::placeholders::_1, t));
 		return m;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator +=(Matrix<nr, nc, T> &m, U t)
 	{
 		std::transform(m.begin(), m.end(), m.begin(), std::bind(std::plus<T>(), std::placeholders::_1, t));
 		return m;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, T> &operator -=(Matrix<nr, nc, T> &m, U t)
 	{
 		std::transform(m.begin(), m.end(), m.begin(), std::bind(std::minus<T>(), std::placeholders::_1, t));
 		return m;
 	}
 
-	// transformation extraction
+	/*--------------------------+
+	| transformation extraction |
+	+--------------------------*/
+
 	template <unsigned n, typename T> Vector<n, T> GetTranslation(const Matrix<n, n + 1, T> &m)
 	{
 		return m.Column(n);
 	}
+
 	template <unsigned n, typename T> Vector<n - 1, T> GetTranslation(const Matrix<n, n, T> &m)
 	{
 		return Vector<n - 1, T>(m.Column(n - 1));
 	}
+
 	template <typename T> T GetRotation(const Matrix<2, 2, T> &m)
 	{
 		// FIXME: implement
 	}
-	template <unsigned nr, unsigned nc, typename T> typename std::enable_if<nr == nc && (nr == 3 || nr == 4) || nr == 3 && nc == 4, Axan<T>>::type GetRotation(const Matrix<nr, nc, T> &m)
+
+	template <unsigned nr, unsigned nc, typename T, ENABLE_IF_IMPL(nr == nc && (nr == 3 || nr == 4) || nr == 3 && nc == 4)> Axan<T> GetRotation(const Matrix<nr, nc, T> &m)
 	{
 		return Axan<T>(Norm(m));
 	}
-	template <unsigned nr, unsigned nc, typename T,
-		typename std::enable_if<nr == nc && (nr == 3 || nr == 4) || nr == 3 && nc == 4>::type * = nullptr>
-		Quat<T> GetOrientation(const Matrix<nr, nc, T> &m)
+
+	template <unsigned nr, unsigned nc, typename T, ENABLE_IF_IMPL(nr == nc && (nr == 3 || nr == 4) || nr == 3 && nc == 4)> Quat<T> GetOrientation(const Matrix<nr, nc, T> &m)
 	{
 		return Quat<T>(Norm(m));
 	}
 
-	template <unsigned nr, unsigned nc, typename T>
-		Vector<nr < nc ? nr : nc, T> GetScale(const Matrix<nr, nc, T> &m)
+	template <unsigned nr, unsigned nc, typename T> Vector<nr < nc ? nr : nc, T> GetScale(const Matrix<nr, nc, T> &m)
 	{
 		Vector<nr < nc ? nr : nc, T> r;
 		auto row(m.Rows().begin());
@@ -867,8 +923,7 @@ namespace page { namespace math
 		return r;
 	}
 
-	template <typename T>
-		Vector<3, T> GetScale(const Matrix<4, 4, T> &m)
+	template <typename T> Vector<3, T> GetScale(const Matrix<4, 4, T> &m)
 	{
 		Vector<3, T> r;
 		auto row(m.Rows().begin());
@@ -881,8 +936,7 @@ namespace page { namespace math
 	| other operations |
 	+-----------------*/
 
-	template <unsigned nr, unsigned nc, typename T, typename U>
-		Matrix<nr, nc, bool> Near(const Matrix<nr, nc, T> &a, const Matrix<nr, nc, U> &b)
+	template <unsigned nr, unsigned nc, typename T, typename U> Matrix<nr, nc, bool> Near(const Matrix<nr, nc, T> &a, const Matrix<nr, nc, U> &b)
 	{
 		Matrix<nr, nc, bool> r;
 		std::transform(a.begin(), a.end(), b.begin(), r.begin(),
@@ -890,16 +944,14 @@ namespace page { namespace math
 		return r;
 	}
 
-	template <unsigned nr, unsigned nc, typename T>
-		Matrix<nc, nr, T> Tpos(const Matrix<nr, nc, T> &m)
+	template <unsigned nr, unsigned nc, typename T> Matrix<nc, nr, T> Tpos(const Matrix<nr, nc, T> &m)
 	{
 		Matrix<nc, nr, T> r;
 		std::copy(m.Rows().begin(), m.Rows().end(), r.Columns().begin());
 		return r;
 	}
 
-	template <unsigned nr, unsigned nc, typename T>
-		Matrix<nr, nc, T> Norm(Matrix<nr, nc, T> m)
+	template <unsigned nr, unsigned nc, typename T> Matrix<nr, nc, T> Norm(Matrix<nr, nc, T> m)
 	{
 		auto scale(GetScale(m));
 		for (auto col(m.Columns().begin()); col != m.Columns().end(); ++col)
@@ -907,7 +959,10 @@ namespace page { namespace math
 		return m;
 	}
 
-	// AABB transformation
+	/*--------------------+
+	| AABB transformation |
+	+--------------------*/
+
 	template <typename T, typename U> Aabb<3, typename ArithmeticConversion<T, U>::Result> operator *(const Matrix<3, 3, T> &m, const Aabb<3, U> &a)
 	{
 		// Real-Time Collision Detection, Christer Ericson, 2005
@@ -920,13 +975,17 @@ namespace page { namespace math
 		}
 		return r;
 	}
+
 	template <typename T, typename U> Aabb<3, typename ArithmeticConversion<T, U>::Result> operator *(const Matrix<3, 4, T> &m, const Aabb<3, U> &a)
 	{
 		// Real-Time Collision Detection, Christer Ericson, 2005
 		return Mat3(m) * a + GetTranslation(m);
 	}
 
-	// vector transformation
+	/*----------------------+
+	| vector transformation |
+	+----------------------*/
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Vector<nr, typename ArithmeticConversion<T, U>::Result> operator *(const Matrix<nr, nc, T> &m, const Vector<nc, U> &v)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -936,6 +995,7 @@ namespace page { namespace math
 			*iter++ = Dot(Vector<nc, T>(*row), v);
 		return r;
 	}
+
 	template <typename T, typename U> Vector<3, typename ArithmeticConversion<T, U>::Result> operator *(const Matrix<3, 4, T> &m, const Vector<3, U> &v)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -945,6 +1005,7 @@ namespace page { namespace math
 			*iter++ = Dot(Vector<3, T>(Vector<4, T>(*row)), v) + row->w;
 		return r;
 	}
+
 	template <unsigned nr, unsigned nc, typename T, typename U> Vector<nc, typename ArithmeticConversion<T, U>::Result> operator *(const Vector<nr, T> &v, const Matrix<nr, nc, U> &m)
 	{
 		typedef typename ArithmeticConversion<T, U>::Result R;
@@ -954,12 +1015,16 @@ namespace page { namespace math
 			*iter++ = Dot(v, Vector<nr, U>(*col));
 		return r;
 	}
+
 	template <unsigned n, typename T, typename U> Vector<n, T> &operator *=(Vector<n, T> &v, const Matrix<n, n, U> &m)
 	{
 		return v = v * m;
 	}
 
-	// stream insertion/extraction
+	/*----------------------------+
+	| stream insertion/extraction |
+	+----------------------------*/
+
 	template <typename Char, typename CharTraits, unsigned nr, unsigned nc, typename T>
 		std::basic_ostream<Char, CharTraits> &operator <<(std::basic_ostream<Char, CharTraits> &os, const Matrix<nr, nc, T> &m)
 	{
@@ -969,6 +1034,7 @@ namespace page { namespace math
 		os << CharTraits::to_char_type(')');
 		return os;
 	}
+
 	template <typename Char, typename CharTraits, unsigned nr, unsigned nc, typename T>
 		std::basic_istream<Char, CharTraits> &operator >>(std::basic_istream<Char, CharTraits> &is, Matrix<nr, nc, T> &m)
 	{
@@ -991,7 +1057,10 @@ namespace page { namespace math
 		return is;
 	}
 
-	// standard-library compatibility
+	/*-------------------------------+
+	| standard-library compatibility |
+	+-------------------------------*/
+
 	template <unsigned nr, unsigned nc, typename T> void swap(Matrix<nr, nc, T> &a, Matrix<nr, nc, T> &b)
 	{
 		std::swap_ranges(a.begin(), a.end(), b.begin());

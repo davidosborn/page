@@ -47,13 +47,15 @@ namespace page { namespace cfg
 		+-----------------*/
 
 		/**
-		 * Reads configuration variables from disk, incorporating the changes to
-		 * unmodified variables while retaining the modified ones.
+		 * Updates the configuration state by reading the unmodified
+		 * configuration variables from disk.  The modified configuration
+		 * variables are left alone.
 		 */
 		void Update();
 
 		/**
-		 * Writes modified configuration variables to disk.
+		 * Saves the configuration state by writing the modified configuration
+		 * variables to disk.
 		 */
 		void Commit();
 

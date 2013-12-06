@@ -7,7 +7,7 @@
 
 namespace page
 {
-	namespace gui
+	namespace wnd
 	{
 		class Console;
 	}
@@ -35,7 +35,7 @@ namespace page
 			+-------------*/
 
 			private:
-			std::shared_ptr<gui::Console> console;
+			std::shared_ptr<wnd::Console> console;
 		};
 	}
 }

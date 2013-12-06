@@ -16,7 +16,7 @@ namespace page { namespace phys { namespace attrib
 
 	const cache::Proxy<res::Mesh> &Mesh::GetMesh() const
 	{
-		return *value;
+		return value;
 	}
 
 	void Mesh::SetMesh(const cache::Proxy<res::Mesh> &value)

@@ -8,9 +8,9 @@ namespace page { namespace inp
 	{
 		switch (button)
 		{
-			case leftButton:   return "left";
-			case middleButton: return "middle";
-			case rightButton:  return "right";
+			case Button::left:   return "left";
+			case Button::middle: return "middle";
+			case Button::right:  return "right";
 		}
 		assert(!"invalid mouse button");
 	}

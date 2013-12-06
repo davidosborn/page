@@ -5,11 +5,11 @@
 
 namespace page { namespace inp
 {
-	enum Button
+	enum class Button
 	{
-		leftButton,
-		middleButton,
-		rightButton
+		left,
+		middle,
+		right
 	};
 
 	/**

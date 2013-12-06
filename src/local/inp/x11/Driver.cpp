@@ -6,7 +6,7 @@
 
 #include "../../util/algorithm/stdext.hpp" // for_each_if
 #include "../../util/functional/locale.hpp" // isprint_function
-#include "../../wnd/x11/Window.hpp"
+#include "../../wnd/x11/Window.hpp" // REGISTER_DRIVER, Window->wnd::Window
 #include "../DriverRegistry.hpp" // REGISTER_DRIVER
 #include "Driver.hpp"
 
@@ -113,24 +113,24 @@ namespace page { namespace inp { namespace x11
 				Key key;
 				switch (keysym)
 				{
-					case XK_BackSpace: key = backspaceKey; break;
-					case XK_Delete:    key = deleteKey;    break;
+					case XK_BackSpace: key = Key::backspace; break;
+					case XK_Delete:    key = Key::delete_;   break;
 					case XK_Down:
-					case XK_KP_Down:   key = downKey;      break;
+					case XK_KP_Down:   key = Key::down;      break;
 					case XK_Return:
-					case XK_KP_Enter:  key = enterKey;     break;
-					case XK_Escape:    key = escapeKey;    break;
+					case XK_KP_Enter:  key = Key::enter;     break;
+					case XK_Escape:    key = Key::escape;    break;
 					case XK_Left:
-					case XK_KP_Left:   key = leftKey;      break;
-					case XK_Pause:     key = pauseKey;     break;
+					case XK_KP_Left:   key = Key::left;      break;
+					case XK_Pause:     key = Key::pause;     break;
 					case XK_Print:
-					case XK_F12:       key = printKey;     break;
-					case XK_F9:        key = recordKey;    break;
+					case XK_F12:       key = Key::print;     break;
+					case XK_F9:        key = Key::record;    break;
 					case XK_Right:
-					case XK_KP_Right:  key = rightKey;     break;
-					case XK_Tab:       key = tabKey;       break;
+					case XK_KP_Right:  key = Key::right;     break;
+					case XK_Tab:       key = Key::tab;       break;
 					case XK_Up:
-					case XK_KP_Up:     key = upKey;        break;
+					case XK_KP_Up:     key = Key::up;        break;
 					default: goto NoKey;
 				}
 				keySig(key);

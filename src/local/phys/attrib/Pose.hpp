@@ -15,7 +15,7 @@
 namespace page { namespace phys { namespace attrib
 {
 	/**
-	 * The skeletal deformation aspect of a node.
+	 * The skeletal deformation part of a node.
 	 */
 	class Pose :
 		public PositionOrientationScale,
@@ -288,7 +288,7 @@ namespace page { namespace phys { namespace attrib
 		+----------*/
 
 		/**
-		 * @c true if the pose contains one or more bones.
+		 * Returns @c true if the pose contains one or more bones.
 		 */
 		bool IsPosed() const;
 

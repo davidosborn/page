@@ -19,7 +19,7 @@ namespace page
 
 		void ConsoleSink::DoWrite(const std::string &s)
 		{
-			console->Write(s);
+			console->Put(s);
 		}
 	}
 }

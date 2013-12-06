@@ -278,13 +278,13 @@ namespace page { namespace game
 	{
 		switch (key)
 		{
-			case inp::backspaceKey: // turn around
+			case inp::Key::backspace: // turn around
 			// FIXME: implement
 			break;
-			case inp::escapeKey: // exit game
+			case inp::Key::escape: // exit game
 			exit = true;
 			break;
-			case inp::pauseKey: // pause game
+			case inp::Key::pause: // pause game
 			if ((paused = !paused))
 			{
 				// pause
@@ -300,7 +300,7 @@ namespace page { namespace game
 				//userInterface->Resume();
 			}
 			break;
-			case inp::printKey: // take screenshot
+			case inp::Key::print: // take screenshot
 			{
 				std::cout << "taking screenshot" << std::endl;
 				log::Indenter indenter;
@@ -319,7 +319,7 @@ namespace page { namespace game
 				}
 			}
 			break;
-			case inp::recordKey: // record video
+			case inp::Key::record: // record video
 			if (!clipStream)
 			{
 				std::cout << "recording clip" << std::endl;
@@ -339,7 +339,7 @@ namespace page { namespace game
 				clipStream.reset();
 			}
 			break;
-			case inp::tabKey: // toggle camera
+			case inp::Key::tab: // toggle camera
 			{
 				inp::Driver &inputDriver(window->GetInputDriver());
 				if (scene->GetCameraMode() == phys::Scene::CameraMode::scene)

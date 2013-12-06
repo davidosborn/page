@@ -24,7 +24,7 @@ namespace page { namespace phys { namespace attrib
 	void Position::SetPosition(const math::Vec3 &value)
 	{
 		// NOTE: comparing value to avoid redundant dirty marking
-		if (value != this->value)
+		if (Any(value != this->value))
 		{
 			this->value = value;
 			dirtyTransformSig();

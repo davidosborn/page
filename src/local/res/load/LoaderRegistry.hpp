@@ -157,7 +157,7 @@ namespace page { namespace res
 #	define REGISTER_LOADER(T, ...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \

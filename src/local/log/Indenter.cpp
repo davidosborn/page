@@ -1,4 +1,4 @@
-#include "../util/memory/Deleter.hpp" // Share
+#include "../util/memory/Share.hpp"
 #include "filter/IndentFilterState.hpp"
 #include "Indenter.hpp"
 

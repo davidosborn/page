@@ -1552,7 +1552,7 @@ fi
 # initialize compiler flags for selected platform, features, and packages
 
 CPPFLAGS="-imacros config.h -iquote . -isystem $topdir/src/system -isystem $topdir/src/system/c++"
-CXXFLAGS="$CXXFLAGS -std=gnu++11 -pedantic-errors -pipe -Werror -Wno-virtual-move-assign"
+CXXFLAGS="$CXXFLAGS -std=gnu++1y -pedantic-errors -pipe -Werror -Wno-virtual-move-assign"
 LDFLAGS=
 LIBS="-lboost_filesystem -lboost_signals -lboost_system"
 
@@ -1640,8 +1640,10 @@ local/aud/Channel
 local/aud/channel/AmbientChannel
 local/aud/channel/SpatialChannel
 local/aud/Driver
-local/aud/NullDriver
+local/aud/DriverRegistry
+local/aud/DummyDriver
 local/aud/Sound
+local/aud/SoundProxy
 local/cache/Cache
 local/cache/proxy/AabbProxy
 local/cache/proxy/BasicProxyInterface
@@ -1649,13 +1651,14 @@ local/cache/proxy/BoundsProxy
 local/cache/proxy/GlyphImageProxy
 local/cache/proxy/SkinProxy
 local/cache/Signature
-local/cfg/var/BasicVar
+local/cfg/CmdlineParser
 local/cfg/source/CmdlineSource
 local/cfg/source/FileSource
 local/cfg/source/Source
 local/cfg/state/BasicState
 local/cfg/state/CommonState
 local/cfg/state/State
+local/cfg/var/BasicVar
 local/err/init
 local/err/report
 local/err/tags
@@ -1690,7 +1693,6 @@ local/log/stream/Stream
 local/main
 local/math/algorithm
 local/math/pow2
-local/opt
 local/phys/aabb
 local/phys/attrib/Ambient
 local/phys/attrib/AmbientRange
@@ -1846,6 +1848,7 @@ local/util/raii/ScopeGuard
 local/vid/draw
 local/vid/DrawContext
 local/vid/Driver
+local/vid/DriverRegistry
 local/vid/Filter
 local/vid/ViewContext
 local/wnd/Console
@@ -1857,7 +1860,7 @@ EOF
 
 if [ "$host_cpu" = i386 -o "$host_cpu" = amd64 ]; then
 	add_cxx_sources <<\EOF
-local/sys/i386"
+local/sys/i386
 EOF
 fi
 

@@ -30,7 +30,7 @@ namespace page { namespace phys { namespace attrib
 	{
 		assert(All(Near(value, Norm(value))));
 		// NOTE: comparing value to avoid redundant dirty marking
-		if (value != this->value)
+		if (Any(value != this->value))
 		{
 			// HACK: normalize to correct floating-point drift
 			this->value = Norm(value);

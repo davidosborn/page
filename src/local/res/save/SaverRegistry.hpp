@@ -206,7 +206,7 @@ namespace page { namespace res
 #	define REGISTER_SAVER(T, ...) \
 		namespace \
 		{ \
-			struct Initializer() \
+			struct Initializer \
 			{ \
 				Initializer() \
 				{ \

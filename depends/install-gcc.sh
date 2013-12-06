@@ -8,9 +8,9 @@ set -e
 ################################################################################
 # package definitions
 
-GNU_MIRROR=ftp://gnu.mirror.iweb.com/gnu
+GNU_MIRROR=ftp://gnu.mirror.iweb.com
 
-GCC_VERSION=4.8.0
+GCC_VERSION=4.8.2
 GDB_VERSION=7.5.1
 GMP_VERSION=5.1.1
 MPFR_VERSION=3.1.2

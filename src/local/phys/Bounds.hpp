@@ -96,13 +96,13 @@ namespace page { namespace phys
 			 * A weight along the bone that determines the starting point of the
 			 * capsule.
 			 */
-			float startWeight = math::Inf<float>();
+			float startWeight = 0;
 
 			/**
 			 * A weight along the bone that determines the ending point of the
 			 * capsule.
 			 */
-			float endWeight = -math::Inf<float>();
+			float endWeight = 1;
 
 			/**
 			 * The radius of the bounding capsule.
