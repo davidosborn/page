@@ -32,7 +32,6 @@ namespace page { namespace math
 		Quat<T> Slerp(const Quat<T> &a, const Quat<T> &b, U mu)
 	{
 		// Van Verth, Essential Mathematics for Games, 2004
-		typedef typename ArithmeticConversion<T, U>::Result R;
 		Quat<T> a2(a);
 		T dot = Dot(a, b);
 		if (dot < 0)

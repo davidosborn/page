@@ -200,6 +200,7 @@
 	// HACK: avoid MinGW CRTDLL assert to keep stack frames
 #	if defined __MINGW32__ && defined DEBUG && defined __i386__ && !defined __USE_CRTIMP && !defined RC_INVOKED
 #		include <_mingw.h> // __MINGW_ATTRIB_NORETURN
+#		undef __MINGW_H
 extern "C"
 {
 	void __cdecl abort(void) __MINGW_ATTRIB_NORETURN;

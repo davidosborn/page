@@ -28,16 +28,24 @@ namespace page { namespace util
 		+--------------------*/
 
 		/**
-		 * Creates a new signal.  The connections are not copied.
+		 * Copies the signal.  The connections are not copied.
 		 */
 		copyable_signal(const copyable_signal &);
 
 		/**
-		 * Creates a new signal.  The connections are not copied.
+		 * Copies the signal.  The connections are not copied.
 		 */
 		copyable_signal &operator =(const copyable_signal &);
 
-		DEFINE_MOVE(copyable_signal, default)
+		/**
+		 * Moves the signal.  The connections are retained.
+		 */
+		copyable_signal(copyable_signal &&);
+
+		/**
+		 * Moves the signal.  The connections are retained.
+		 */
+		copyable_signal &operator =(copyable_signal &&);
 	};
 }}
 

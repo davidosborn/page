@@ -5,9 +5,10 @@
 #	include <unordered_map>
 #	include <vector>
 
+#	include <boost/optional.hpp>
+
 #	include "../../math/Matrix.hpp"
 #	include "../../res/type/Skeleton.hpp" // Skeleton::Bone
-#	include "../../util/class/special_member_functions.hpp" // Unmovable
 #	include "../../util/copyable_signal.hpp"
 #	include "../../util/Identifiable.hpp"
 #	include "PositionOrientationScale.hpp"
@@ -16,32 +17,73 @@ namespace page { namespace phys { namespace attrib
 {
 	/**
 	 * The skeletal deformation part of a node.
+	 *
+	 * The bones are designed to be copyable and moveable, and are stored in a
+	 * std::vector to support cache locality.  Bones are referenced by their
+	 * index in the vector, rather than by their memory address, to simplify
+	 * storage issues.
+	 *
+	 * @note Using std::list to store the bones would destroy cache locality.
+	 * Using pointers for bone references would make it hard to copy/move the
+	 * bones as required by std::vector and for basic tasks (it has been tried
+	 * before).
+	 *
+	 * @todo res::Skeleton could be modified to also represent parent-bone
+	 * references by indices rather than by pointers, for simplicity and to
+	 * match up closer to this implementation.
 	 */
 	class Pose :
 		public PositionOrientationScale,
 		public util::Identifiable
 	{
+////////// Pose::Bone //////////////////////////////////////////////////////////
+
 		public:
 		/**
 		 * An individual bone, as part of a skeletal deformation.
 		 */
 		class Bone :
-			public PositionOrientationScale,
-			public util::Unmovable<Bone>
+			public PositionOrientationScale
 		{
 			/*-------------+
 			| constructors |
 			+-------------*/
 
 			public:
-			Bone(Pose &, const res::Skeleton::Bone &, Bone *parent);
-			Bone(Pose &, const Bone &, Bone *parent);
-			Bone(Pose &, Bone &&, Bone *parent);
+			/**
+			 * Creates a default bone.
+			 *
+			 * @note This constructor does not initialize the bone's bind pose.
+			 * The caller should do this with SetBindPose() before using it.
+			 */
+			explicit Bone(Pose &, const std::string &name);
+
+			/**
+			 * Creates a bone from a skeleton-bone resource.  If @a parent
+			 * points to a bone, this bone will be attached to it as a child.
+			 *
+			 * @note This constructor does not initialize the bone's bind pose.
+			 * The caller should do this with SetBindPose() before using it.
+			 */
+			Bone(Pose &, const res::Skeleton::Bone &, Bone *parent = nullptr);
+
+			Bone(const Bone &);
+			Bone(Bone &&);
+
+			/**
+			 * Provides both copy assignment and move assignment using the "Copy
+			 * and Swap" idiom.
+			 */
+			Bone &operator =(Bone);
+
+			private:
+			void Init();
 
 			/*----------+
 			| observers |
 			+----------*/
 
+			public:
 			/**
 			 * Returns the skeletal deformation that the bone belongs to.
 			 */
@@ -55,7 +97,12 @@ namespace page { namespace phys { namespace attrib
 			/**
 			 * Returns the bone's name.
 			 */
-			std::string GetName() const;
+			const std::string &GetName() const;
+
+			/**
+			 * Returns the bone's index within the pose.
+			 */
+			unsigned GetIndex() const;
 
 			/**
 			 * Returns a pointer to the bone that is a parent of this bone, or
@@ -74,6 +121,11 @@ namespace page { namespace phys { namespace attrib
 			+----------*/
 
 			/**
+			 * Attaches the bone to a parent bone.
+			 */
+			void SetParent(Bone &);
+
+			/**
 			 * Detaches the bone from its parent and children.  The children are
 			 * left as orphans, without a parent.
 			 */
@@ -86,17 +138,17 @@ namespace page { namespace phys { namespace attrib
 			/**
 			 * Returns the position of the bone in its bind pose.
 			 */
-			math::Vec3 GetBindPosition() const;
+			const math::Vec3 &GetBindPosition() const;
 
 			/**
 			 * Returns the orientation of the bone in its bind pose.
 			 */
-			math::Quat<> GetBindOrientation() const;
+			const math::Quat<> &GetBindOrientation() const;
 
 			/**
 			 * Returns the scale of the bone in its bind pose.
 			 */
-			math::Vec3 GetBindScale() const;
+			const math::Vec3 &GetBindScale() const;
 
 			/**
 			 * Returns the bind-pose matrix.
@@ -190,14 +242,14 @@ namespace page { namespace phys { namespace attrib
 			std::string name;
 
 			/**
-			 * The bone's parent.
+			 * The index of the bone's parent in the associated pose.
 			 */
-			Bone *parent;
+			boost::optional<unsigned> parentIndex;
 
 			/**
-			 * The bone's children.
+			 * The indices of the bone's children in the associated pose.
 			 */
-			std::vector<Bone *> children;
+			std::vector<unsigned> childIndices;
 
 			/**
 			 * The position of the bone in its bind pose.
@@ -271,6 +323,8 @@ namespace page { namespace phys { namespace attrib
 			mutable math::Mat3 normSkinMatrix;
 		};
 
+////////// Pose ////////////////////////////////////////////////////////////////
+
 		/*-------------+
 		| constructors |
 		+-------------*/
@@ -278,10 +332,6 @@ namespace page { namespace phys { namespace attrib
 		public:
 		Pose() = default;
 		explicit Pose(const res::Skeleton &);
-		Pose(const Pose &);
-		Pose(Pose &&) = default;
-		Pose &operator =(const Pose &);
-		Pose &operator =(Pose &&) = default;
 
 		/*----------+
 		| observers |
@@ -314,8 +364,9 @@ namespace page { namespace phys { namespace attrib
 		void Rebuild(const res::Skeleton &);
 
 		/**
-		 * Adds a bone from a skeleton resource, including its parent bones if
-		 * they haven't already been added.
+		 * Adds a bone and its parents from a skeleton resource if they haven't
+		 * already been added.  Returns the index of the specified bone in the
+		 * pose.
 		 */
 		Bone &CopyTreePath(const res::Skeleton::Bone &);
 
@@ -326,6 +377,8 @@ namespace page { namespace phys { namespace attrib
 		public:
 		/**
 		 * Returns an ordered sequence of bones.
+		 *
+		 * @todo Use @c decltype(auto) in C++14.
 		 */
 		const std::vector<Bone> &GetBones() const;
 
@@ -367,13 +420,9 @@ namespace page { namespace phys { namespace attrib
 		std::vector<Bone> bones;
 
 		/**
-		 * An associative array mapping the name of a bone to its index in @c
-		 * bones.
-		 *
-		 * @note Using an index instead of a pointer allows the default move
-		 * constructor and assignment operator to be used.
+		 * An associative array mapping the name of a bone to its index.
 		 */
-		std::unordered_map<std::string, decltype(bones)::size_type> bonesByName;
+		std::unordered_map<std::string, unsigned> bonesByName;
 	};
 }}}
 

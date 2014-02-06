@@ -15,11 +15,11 @@ namespace page { namespace util
 	 * the zipped iterators.
 	 */
 	template <typename... Ranges>
-		auto zip(const Ranges &... ranges) ->
+		auto zip(Ranges &&... ranges) ->
 			boost::iterator_range<
 				boost::zip_iterator<
 					boost::tuple<
-						decltype(std::begin(ranges))...
+						decltype(std::begin(std::forward<Ranges>(ranges)))...
 						>
 					>
 				>
@@ -28,12 +28,12 @@ namespace page { namespace util
 			boost::iterator_range<
 				boost::zip_iterator<
 					boost::tuple<
-						decltype(std::begin(ranges))...
+						decltype(std::begin(std::forward<Ranges>(ranges)))...
 						>
 					>
 				>(
-			boost::make_zip_iterator(boost::make_tuple(std::begin(ranges)...)),
-			boost::make_zip_iterator(boost::make_tuple(std::end(ranges)...)));
+			boost::make_zip_iterator(boost::make_tuple(std::begin(std::forward<Ranges>(ranges))...)),
+			boost::make_zip_iterator(boost::make_tuple(std::end  (std::forward<Ranges>(ranges))...)));
 	}
 }}
 

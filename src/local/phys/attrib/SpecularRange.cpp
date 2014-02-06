@@ -36,7 +36,7 @@ namespace page { namespace phys { namespace attrib
 		this->max = max;
 	}
 
-	void SpecularRange::SetSpeedRange(const math::RgbColor<> &value)
+	void SpecularRange::SetSpecularRange(const math::RgbColor<> &value)
 	{
 		this->min = value;
 		this->max = value;

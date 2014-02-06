@@ -36,7 +36,7 @@ namespace page { namespace phys { namespace attrib
 		this->max = max;
 	}
 
-	void SpeedRange::SetSizeRange(float value)
+	void SizeRange::SetSizeRange(float value)
 	{
 		this->min = value;
 		this->max = value;
