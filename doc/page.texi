@@ -13,7 +13,7 @@
 @copying
 This manual is for PAGE, the Portable Adventure Game Engine.
 
-Copyright @copyright{} 2006-2013 David Osborn
+Copyright @copyright{} 2006-2014 David Osborn
 
 @noindent
 Permission is granted to use and redistribute this software in source and binary form, with or without modification, subject to the following conditions:
@@ -23,15 +23,15 @@ Permission is granted to use and redistribute this software in source and binary
 Redistributions in source form must retain the above copyright notice, this list of conditions, and the following disclaimer.
 
 @item
-Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation and/or other materials provided with the distribution, and in the same place and form as other copyright, license, and disclaimer information.
-@end enumerate
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the same place and form as other copyright, license, and disclaimer information.
 
-@noindent
-As a special exception, distributions of derivative works in binary form may include an acknowledgement in place of the above copyright notice, this list of conditions, and the following disclaimer in the documentation and/or other materials provided with the distribution, and in the same place and form as other acknowledgements, similar in substance to the following:
+@item
+Redistributions in binary form must also include an acknowledgement in the same place and form as other acknowledgements (such as the credits), similar in substance to the following:
 
 @quotation
 Portions of this software are based on the work of David Osborn.
 @end quotation
+@end enumerate
 
 @noindent
 This software is provided "as is", without any express or implied warranty. In no event will the authors be liable for any damages arising out of the use of this software.

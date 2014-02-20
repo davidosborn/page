@@ -1,3 +1,30 @@
+/**
+ * @copyright
+ *
+ * Copyright (c) 2006-2014 David Osborn
+ *
+ * Permission is granted to use and redistribute this software in source and
+ * binary form, with or without modification, subject to the following
+ * conditions:
+ *
+ * 1. Redistributions in source form must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the same place
+ *    and form as other copyright, license, and disclaimer information.
+ *
+ * 3. Redistributions in binary form must also include an acknowledgement in the
+ *    same place and form as other acknowledgements (such as the credits),
+ *    similar in substance to the following:
+ *
+ *       Portions of this software are based on the work of David Osborn.
+ *
+ * This software is provided "as is", without any express or implied warranty.
+ * In no event will the authors be liable for any damages arising out of the use
+ * of this software.
+ */
+
 #include <algorithm> // max
 #include <cassert>
 #include <unordered_map>
@@ -13,6 +40,7 @@ namespace page { namespace phys
 		// phoneme keyframes
 		typedef std::vector<Frame> Keyframes;
 		typedef std::unordered_map<std::string, Keyframes> PhonemeKeyframes;
+
 		PhonemeKeyframes MakePhonemeKeyframes()
 		{
 			PhonemeKeyframes phonemeKeyframes;
@@ -177,6 +205,7 @@ namespace page { namespace phys
 			}
 			return phonemeKeyframes;
 		}
+
 		const PhonemeKeyframes &GetPhonemeKeyframes()
 		{
 			static PhonemeKeyframes phonemeKeyframes(MakePhonemeKeyframes());
@@ -184,30 +213,39 @@ namespace page { namespace phys
 		}
 	}
 
-	// construct
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	LipsyncController::LipsyncController(const attrib::Pose &pose) :
 		TargetController(AnimationLayer::preCollision, .25)
 	{
-		assert(Check(pose));
+		assert(IsCompatibleWith(pose));
 	}
 
-	// modifiers
+	bool LipsyncController::IsCompatibleWith(const attrib::Pose &pose)
+	{
+		return pose.GetBone("jaw");
+	}
+
+	/*----------+
+	| modifiers |
+	+----------*/
+
 	void LipsyncController::PushText(const std::string &text)
 	{
 		phonemes += util::GetPhonemes(text);
 	}
+
 	void LipsyncController::PushPhonemes(const std::string &phonemes)
 	{
 		this->phonemes += phonemes;
 	}
 
-	// check compatibility
-	bool LipsyncController::Check(const attrib::Pose &pose)
-	{
-		return pose.GetBone("jaw");
-	}
+	/*-------+
+	| update |
+	+-------*/
 
-	// update targets
 	void LipsyncController::UpdateTargets(float deltaTime)
 	{
 		if (phonemeDuration)

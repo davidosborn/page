@@ -1,3 +1,30 @@
+/**
+ * @copyright
+ *
+ * Copyright (c) 2006-2014 David Osborn
+ *
+ * Permission is granted to use and redistribute this software in source and
+ * binary form, with or without modification, subject to the following
+ * conditions:
+ *
+ * 1. Redistributions in source form must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the same place
+ *    and form as other copyright, license, and disclaimer information.
+ *
+ * 3. Redistributions in binary form must also include an acknowledgement in the
+ *    same place and form as other acknowledgements (such as the credits),
+ *    similar in substance to the following:
+ *
+ *       Portions of this software are based on the work of David Osborn.
+ *
+ * This software is provided "as is", without any express or implied warranty.
+ * In no event will the authors be liable for any damages arising out of the use
+ * of this software.
+ */
+
 #include <cassert>
 #include <cmath> // copysign
 
@@ -9,12 +36,18 @@
 
 namespace page { namespace phys
 {
-	// construct
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	GaitController::GaitController(const attrib::PositionOrientation &body, const cache::Proxy<res::Gait> &gait) :
 		AnimationTargetController(AnimationLayer::postCollision, false), body(body),
 		gait(gait), state(noState), stride(0) {}
 
-	// modifiers
+	/*----------+
+	| modifiers |
+	+----------*/
+
 	void GaitController::SetState(State state)
 	{
 		if (state == this->state) return;
@@ -29,6 +62,7 @@ namespace page { namespace phys
 		}
 		this->state = state;
 	}
+
 	void GaitController::SetState(const res::Gait::State &state)
 	{
 		if (state.animation)
@@ -43,7 +77,10 @@ namespace page { namespace phys
 		}
 	}
 
-	// update hooks
+	/*-------------+
+	| update hooks |
+	+-------------*/
+
 	void GaitController::UpdateTargets(float deltaTime)
 	{
 		if (Any(body.GetForce()))
@@ -55,6 +92,7 @@ namespace page { namespace phys
 		else if (body.GetTorque()) SetState(turnState);
 		else SetState(noState);
 	}
+
 	float GaitController::FixDeltaTime(float deltaTime)
 	{
 		if (stride) switch (state)

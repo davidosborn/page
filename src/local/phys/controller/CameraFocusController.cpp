@@ -1,38 +1,68 @@
+/**
+ * @copyright
+ *
+ * Copyright (c) 2006-2014 David Osborn
+ *
+ * Permission is granted to use and redistribute this software in source and
+ * binary form, with or without modification, subject to the following
+ * conditions:
+ *
+ * 1. Redistributions in source form must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the same place
+ *    and form as other copyright, license, and disclaimer information.
+ *
+ * 3. Redistributions in binary form must also include an acknowledgement in the
+ *    same place and form as other acknowledgements (such as the credits),
+ *    similar in substance to the following:
+ *
+ *       Portions of this software are based on the work of David Osborn.
+ *
+ * This software is provided "as is", without any express or implied warranty.
+ * In no event will the authors be liable for any damages arising out of the use
+ * of this software.
+ */
+
 #include "../../math/Matrix.hpp" // LookMatrix
 #include "../../math/Vector.hpp"
-#include "../Camera.hpp"
-#include "../mixin/Controllable.hpp" // dynamic_cast
 #include "../mixin/Positionable.hpp" // Positionable::GetPosition
+#include "../node/Node.hpp" // dynamic_cast
+#include "../node/Camera.hpp"
 #include "CameraFocusController.hpp"
 
 namespace page { namespace phys
 {
-	// construct
+	/*-------------+
+	| constructors |
+	+-------------*/
+
 	CameraFocusController::CameraFocusController(const Camera &camera, const Positionable &target) :
-		Controller(AnimationLayer::postConstraint), camera(camera), target(&target)
+		Controller(AnimationLayer::postConstraint), camera(camera)
 	{
-		// initialize dependencies
-		if (const Controllable *dependency = dynamic_cast<const Controllable *>(this->target))
-			dependencies.push_back(dependency);
+		Track(target);
 	}
 
-	// modifiers
+	/*----------+
+	| modifiers |
+	+----------*/
+
 	void CameraFocusController::Track(const Positionable &target)
 	{
 		this->target = &target;
-		// initialize dependencies
-		dependencies.clear();
-		if (const Controllable *dependency = dynamic_cast<const Controllable *>(this->target))
+
+		// set dependencies
+		Dependencies dependencies;
+		if (auto dependency = dynamic_cast<const Node *>(this->target))
 			dependencies.push_back(dependency);
+		SetDependencies(dependencies);
 	}
 
-	// dependencies
-	Controller::Dependencies CameraFocusController::GetDependencies() const
-	{
-		return dependencies;
-	}
+	/*--------------------------+
+	| Controller implementation |
+	+--------------------------*/
 
-	// generate frame
 	Frame CameraFocusController::DoGetFrame(const Frame &, const Frame &) const
 	{
 		Frame frame;
