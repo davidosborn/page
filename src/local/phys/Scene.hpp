@@ -68,11 +68,30 @@ namespace page { namespace phys
 	 */
 	class Scene
 	{
+		/*------+
+		| types |
+		+------*/
+
+		public:
+		enum class CameraMode
+		{
+			detail,
+			scene
+		};
+
+		enum class CameraType
+		{
+			none,
+			cameraSet,
+			detail,
+			follow,
+			overview
+		};
+
 		/*-------------+
 		| constructors |
 		+-------------*/
 
-		public:
 		/**
 		 * Creates an empty scene.
 		 */
@@ -139,8 +158,8 @@ namespace page { namespace phys
 		 * Returns all of the forms that are visible within the specified view
 		 * frustum, ordered by their material.
 		 */
-		std::unordered_multimap<cache::Proxy<res::Material>, const Form::Part *>
-			GetVisibleFormsByMaterial(const math::ViewFrustum<> &) const;
+		typedef std::unordered_multimap<cache::Proxy<res::Material>, const Form::Part *> FormsByMaterialView;
+		FormsByMaterialView GetVisibleFormsByMaterial(const math::ViewFrustum<> &) const;
 
 		/**
 		 * Returns all of the lights in the scene.
@@ -205,11 +224,6 @@ namespace page { namespace phys
 		| camera |
 		+-------*/
 
-		enum class CameraMode
-		{
-			detail,
-			scene
-		};
 		CameraMode GetCameraMode() const;
 		void UseDetailCamera(const inp::Driver &);
 		void UseSceneCamera();
@@ -273,14 +287,7 @@ namespace page { namespace phys
 
 		// camera state
 		CameraMode cameraMode;
-		enum CameraType
-		{
-			noCameraType,
-			cameraSetCameraType,
-			detailCameraType,
-			followCameraType,
-			overviewCameraType
-		} cameraType;
+		CameraType cameraType;
 		res::CameraSet::Cameras::const_iterator cameraSetCamera;
 		std::shared_ptr<FollowController> followCameraController;
 

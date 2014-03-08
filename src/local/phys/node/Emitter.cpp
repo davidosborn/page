@@ -29,7 +29,10 @@
 
 namespace page { namespace phys
 {
-	// update
+	/*-------+
+	| update |
+	+-------*/
+
 	void Emitter::Update()
 	{
 		// FIXME: create particles

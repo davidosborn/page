@@ -55,9 +55,19 @@ namespace page { namespace phys
 	{
 		IMPLEMENT_CLONEABLE(Light, Node)
 
+		/*----------+
+		| observers |
+		+----------*/
+
 		public:
-		// attenuation state
+		/**
+		 * Returns the minimum attenuation distance.
+		 */
 		float GetMinRange() const;
+
+		/**
+		 * Returns the maximum attenuation distance.
+		 */
 		float GetMaxRange() const;
 
 		/*--------------------+

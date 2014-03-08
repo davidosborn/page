@@ -42,9 +42,16 @@ namespace page { namespace phys
 	{
 		IMPLEMENT_CLONEABLE(Body, Node)
 
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		public:
-		// construct
 		explicit Body(const cache::Proxy<res::Model> &);
+
+		/*----------+
+		| accessors |
+		+----------*/
 
 		// FIXME: why does an ambiguity exist here?
 		using Trackable::SetPosition;

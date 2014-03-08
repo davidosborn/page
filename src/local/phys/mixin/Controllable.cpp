@@ -29,6 +29,7 @@
 #include <cassert>
 
 #include "Controllable.hpp"
+#include "../controller/Controller.hpp"
 
 namespace page { namespace phys
 {
@@ -40,7 +41,7 @@ namespace page { namespace phys
 	{
 		auto layerIndex(static_cast<unsigned>(layer));
 		if (layerIndex >= layers.size()) return;
-		auto &controllers(layers[layer]);
+		auto &controllers(layers[layerIndex]);
 		if (controllers.empty()) return;
 
 		// execute controllers
@@ -55,7 +56,7 @@ namespace page { namespace phys
 				continue;
 			}
 			Frame controllerFrame(controller.GetFrame(baseFrame, accumFrame));
-			Blend(accumFrame, controllerFrame, controller.GetOpacity(), baseFrame);
+			Blend(accumFrame, controllerFrame, controller.GetOpacity());
 			++iter;
 		}
 		SetFrame(accumFrame);
@@ -87,7 +88,7 @@ namespace page { namespace phys
 
 	void Controllable::DetachController(const std::weak_ptr<Controller> &controller)
 	{
-		RemoveController(controller.lock());
+		DetachController(controller.lock());
 	}
 
 	void Controllable::DetachController(const std::shared_ptr<Controller> &controller)

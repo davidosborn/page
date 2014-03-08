@@ -45,7 +45,7 @@ namespace page { namespace phys
 
 	const cache::Proxy<res::Sound> &Sound::GetSound() const
 	{
-		return *sound;
+		return sound;
 	}
 
 	bool Sound::IsPlaying() const
@@ -72,7 +72,7 @@ namespace page { namespace phys
 		if (playing)
 		{
 			playPosition += deltaTime;
-			float duration = GetDuration(**sound);
+			float duration = GetDuration(*sound);
 			if (playPosition >= duration)
 			{
 				if (!loop)

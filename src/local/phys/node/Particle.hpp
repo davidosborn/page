@@ -37,6 +37,7 @@
 #	include "../attrib/Position.hpp"
 #	include "../attrib/Size.hpp"
 #	include "../attrib/Specular.hpp"
+#	include "../mixin/Controllable.hpp"
 #	include "Node.hpp"
 
 namespace page { namespace res { class Material; }}
@@ -45,6 +46,7 @@ namespace page { namespace phys
 {
 	class Particle :
 		public Node,
+		public Controllable,
 		public attrib::Ambient,
 		public attrib::Diffuse,
 		public attrib::Emissive,
@@ -56,7 +58,11 @@ namespace page { namespace phys
 	{
 		IMPLEMENT_CLONEABLE(Particle, Node)
 
-		// construct
+		/*-------------+
+		| constructors |
+		+-------------*/
+
+		public:
 		explicit Particle(const cache::Proxy<res::Material> &material);
 
 		/*--------------------+
@@ -66,6 +72,10 @@ namespace page { namespace phys
 		protected:
 		Frame GetFrame() const override;
 		void SetFrame(const Frame &) override;
+
+		/*-------------+
+		| data members |
+		+-------------*/
 
 		private:
 		float lifetime, drag, mass;

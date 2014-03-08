@@ -27,14 +27,14 @@
 
 #include "Body.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Body::Body(const cache::Proxy<res::Model> &model) : Form(model)
 	{
-		// construct
-		Body::Body(const cache::Proxy<res::Model> &model) : Form(model)
-		{
-			Trackable::Init();
-		}
+		Trackable::Init();
 	}
-}
+}}

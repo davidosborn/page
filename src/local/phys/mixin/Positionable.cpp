@@ -25,15 +25,13 @@
  * of this software.
  */
 
+#include "../../math/Vector.hpp"
 #include "Positionable.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+	math::Vec3 Positionable::GetVelocity() const
 	{
-		math::Vec3 Positionable::GetVelocity() const
-		{
-			return GetPosition() - GetLastPosition();
-		}
+		return GetPosition() - GetLastPosition();
 	}
-}
+}}

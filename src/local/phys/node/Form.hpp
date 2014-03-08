@@ -54,39 +54,73 @@ namespace page { namespace phys
 	{
 		IMPLEMENT_CLONEABLE(Form, Node)
 
+////////// Form::Part //////////////////////////////////////////////////////////
+
 		public:
 		class Part :
+			public Controllable,
 			public attrib::Deformation,
 			public attrib::Material,
 			public attrib::Mesh,
 			public attrib::PositionOrientationScale,
 			public util::Identifiable
 		{
+			/*-------------+
+			| constructors |
+			+-------------*/
+
 			public:
-			// construct
 			Part(Form &, const res::Model::Part &);
 
-			// owner access
+			/*----------+
+			| observers |
+			+----------*/
+
 			Form &GetForm();
 			const Form &GetForm() const;
-
-			// ancestor access
 			const res::Model::Part &GetModelPart() const;
+
+			/*--------------------+
+			| frame serialization |
+			+--------------------*/
+
+			protected:
+			Frame GetFrame() const override;
+			void SetFrame(const Frame &) override;
+
+			/*-------------+
+			| data members |
+			+-------------*/
 
 			private:
 			Form *form;
 		};
 
-		// construct
+////////// Form ////////////////////////////////////////////////////////////////
+
+		/*------+
+		| types |
+		+------*/
+
+		typedef std::vector<Part> Parts;
+
+		/*-------------+
+		| constructors |
+		+-------------*/
+
 		explicit Form(const res::Scene::Form &);
 		explicit Form(const cache::Proxy<res::Model> &);
 
-		// part access
-		typedef std::vector<Part> Parts;
+		private:
+		void InitParts();
+
+		/*----------+
+		| observers |
+		+----------*/
+
+		public:
 		Parts &GetParts();
 		const Parts &GetParts() const;
-
-		// ancestor access
 		const cache::Proxy<res::Model> &GetModel() const;
 
 		/*--------------------+
@@ -97,10 +131,11 @@ namespace page { namespace phys
 		Frame GetFrame() const override;
 		void SetFrame(const Frame &) override;
 
-		private:
-		// initialization
-		void InitParts();
+		/*-------------+
+		| data members |
+		+-------------*/
 
+		private:
 		Parts parts;
 		cache::Proxy<res::Model> model;
 	};

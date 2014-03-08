@@ -66,8 +66,11 @@ namespace page { namespace phys
 	{
 		IMPLEMENT_CLONEABLE(Emitter, Node)
 
+		/*-------+
+		| update |
+		+-------*/
+
 		public:
-		// update
 		void Update();
 
 		/*--------------------+

@@ -29,103 +29,117 @@
 
 #include "Form.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
+////////// Form::Part //////////////////////////////////////////////////////////
+
+	/*-------------+
+	| constructors |
+	+-------------*/
+
+	Form::Part::Part(Form &form, const res::Model::Part &part) :
+		Material(part.material), Mesh(part.mesh), form(&form) {}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	Form &Form::Part::GetForm()
 	{
-		// form part
-		// construct
-		Form::Part::Part(Form &form, const res::Model::Part &part) :
-			Material(part.material), Mesh(part.mesh), form(&form) {}
+		assert(form);
+		return *form;
+	}
 
-		// owner access
-		Form &Form::Part::GetForm()
-		{
-			assert(form);
-			return *form;
-		}
-		const Form &Form::Part::GetForm() const
-		{
-			assert(form);
-			return *form;
-		}
+	const Form &Form::Part::GetForm() const
+	{
+		assert(form);
+		return *form;
+	}
 
-		// ancestor access
-		const res::Model::Part &Form::Part::GetModelPart() const
-		{
-			assert(GetForm().GetModel());
-			// FIXME: implement; need more information
-		}
+	const res::Model::Part &Form::Part::GetModelPart() const
+	{
+		assert(GetForm().GetModel());
+		// FIXME: implement; need more information
+	}
 
-		// frame serialization
-		Frame Form::Part::GetFrame() const
-		{
-			return
-				Deformation             ::GetFrame() +
-				PositionOrientationScale::GetFrame();
-		}
-		void Form::Part::Update(const Frame &frame)
-		{
-			Deformation             ::Update(frame);
-			PositionOrientationScale::Update(frame);
-		}
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
 
-		// form
-		// construct
-		Form::Form(const res::Scene::Form &form) : Form(form.model)
-		{
-			// initialize transform
-			SetPosition   (form.position);
-			SetOrientation(form.orientation);
-			SetScale      (form.scale);
-		}
-		Form::Form(const cache::Proxy<res::Model> &model) :
-			Pose(model && model->skeleton ? Pose(*model->skeleton) : Pose()),
-			model(model)
-		{
-			if (model)
-			{
-				assert(this->model && *this->model);
-				const res::Model &model(**this->model);
-				// copy model parts
-				parts.reserve(model.parts.size());
-				for (res::Model::Parts::const_iterator part(model.parts.begin()); part != model.parts.end(); ++part)
-					parts.push_back(Part(*this, *part));
-			}
-		}
+	Frame Form::Part::GetFrame() const
+	{
+		return
+			Deformation             ::GetFrame() +
+			PositionOrientationScale::GetFrame();
+	}
 
-		// part access
-		Form::Parts &Form::GetParts()
-		{
-			return parts;
-		}
-		const Form::Parts &Form::GetParts() const
-		{
-			return parts;
-		}
+	void Form::Part::SetFrame(const Frame &frame)
+	{
+		Deformation             ::SetFrame(frame);
+		PositionOrientationScale::SetFrame(frame);
+	}
 
-		// ancestor access
-		const cache::Proxy<res::Model> &Form::GetModel() const
-		{
-			assert(model);
-			return *model;
-		}
+////////// Form ////////////////////////////////////////////////////////////////
 
-		/*--------------------+
-		| frame serialization |
-		+--------------------*/
+	/*-------------+
+	| constructors |
+	+-------------*/
 
-		Frame Form::GetFrame() const
-		{
-			return
-				Opacity::GetFrame() +
-				Pose   ::GetFrame();
-		}
+	Form::Form(const res::Scene::Form &form) : Form(form.model)
+	{
+		// initialize transform
+		SetPosition   (form.position);
+		SetOrientation(form.orientation);
+		SetScale      (form.scale);
+	}
 
-		void Form::SetFrame(const Frame &frame)
+	Form::Form(const cache::Proxy<res::Model> &model) :
+		Pose(model && model->skeleton ? Pose(*model->skeleton) : Pose()),
+		model(model)
+	{
+		if (model)
 		{
-			Opacity::SetFrame(frame);
-			Pose   ::SetFrame(frame);
+			// copy model parts
+			const auto &model(*this->model);
+			parts.reserve(model.parts.size());
+			for (const auto &part : model.parts)
+				parts.push_back(Part(*this, part));
 		}
 	}
-}
+
+	/*----------+
+	| observers |
+	+----------*/
+
+	Form::Parts &Form::GetParts()
+	{
+		return parts;
+	}
+
+	const Form::Parts &Form::GetParts() const
+	{
+		return parts;
+	}
+
+	const cache::Proxy<res::Model> &Form::GetModel() const
+	{
+		return model;
+	}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Form::GetFrame() const
+	{
+		return
+			Opacity::GetFrame() +
+			Pose   ::GetFrame();
+	}
+
+	void Form::SetFrame(const Frame &frame)
+	{
+		Opacity::SetFrame(frame);
+		Pose   ::SetFrame(frame);
+	}
+}}

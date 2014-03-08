@@ -27,36 +27,39 @@
 
 #include "Particle.hpp"
 
-namespace page
+namespace page { namespace phys
 {
-	namespace phys
-	{
-		// construct
-		Particle::Particle(const cache::Proxy<res::Material> &material) :
-			Material(material) {}
+	/*-------------+
+	| constructors |
+	+-------------*/
 
-		// frame serialization
-		// FIXME: should Particle be Controllable?
-		/*Frame Particle::GetFrame() const
-		{
-			return
-				Ambient ::GetFrame() +
-				Diffuse ::GetFrame() +
-				Emissive::GetFrame() +
-				Position::GetFrame() +
-				Opacity ::GetFrame() +
-				Size    ::GetFrame() +
-				Specular::GetFrame();
-		}
-		void Particle::Update(const Frame &frame)
-		{
-			Ambient ::Update(frame);
-			Diffuse ::Update(frame);
-			Emissive::Update(frame);
-			Position::Update(frame);
-			Opacity ::Update(frame);
-			Size    ::Update(frame);
-			Specular::Update(frame);
-		}*/
+	Particle::Particle(const cache::Proxy<res::Material> &material) :
+		Material(material) {}
+
+	/*--------------------+
+	| frame serialization |
+	+--------------------*/
+
+	Frame Particle::GetFrame() const
+	{
+		return
+			Ambient ::GetFrame() +
+			Diffuse ::GetFrame() +
+			Emissive::GetFrame() +
+			Position::GetFrame() +
+			Opacity ::GetFrame() +
+			Size    ::GetFrame() +
+			Specular::GetFrame();
 	}
-}
+
+	void Particle::SetFrame(const Frame &frame)
+	{
+		Ambient ::SetFrame(frame);
+		Diffuse ::SetFrame(frame);
+		Emissive::SetFrame(frame);
+		Position::SetFrame(frame);
+		Opacity ::SetFrame(frame);
+		Size    ::SetFrame(frame);
+		Specular::SetFrame(frame);
+	}
+}}
